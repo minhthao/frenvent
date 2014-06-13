@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3EC5351E194A8D92000FDF2A /* MyFbEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC5351D194A8D92000FDF2A /* MyFbEvent.swift */; };
+		3EC53520194A8E44000FDF2A /* Attendee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC5351F194A8E44000FDF2A /* Attendee.swift */; };
+		3EC53522194A9012000FDF2A /* FriendFbEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC53521194A9012000FDF2A /* FriendFbEvent.swift */; };
 		3EFF5CF81946F08B00270E24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5CF71946F08B00270E24 /* AppDelegate.swift */; };
 		3EFF5CFA1946F08B00270E24 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5CF91946F08B00270E24 /* FirstViewController.swift */; };
 		3EFF5CFC1946F08B00270E24 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5CFB1946F08B00270E24 /* SecondViewController.swift */; };
 		3EFF5CFF1946F08B00270E24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF5CFD1946F08B00270E24 /* Main.storyboard */; };
 		3EFF5D011946F08B00270E24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EFF5D001946F08B00270E24 /* Images.xcassets */; };
 		3EFF5D0D1946F08B00270E24 /* frenventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5D0C1946F08B00270E24 /* frenventTests.swift */; };
+		3EFF5D181946F33D00270E24 /* FbEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5D171946F33D00270E24 /* FbEvent.swift */; };
+		3EFF5D1B1947E84300270E24 /* TimeSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF5D1A1947E84300270E24 /* TimeSupport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +31,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3EC5351D194A8D92000FDF2A /* MyFbEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyFbEvent.swift; path = Objects/MyFbEvent.swift; sourceTree = "<group>"; };
+		3EC5351F194A8E44000FDF2A /* Attendee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attendee.swift; path = Objects/Attendee.swift; sourceTree = "<group>"; };
+		3EC53521194A9012000FDF2A /* FriendFbEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FriendFbEvent.swift; path = Objects/FriendFbEvent.swift; sourceTree = "<group>"; };
 		3EFF5CF21946F08B00270E24 /* frenvent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = frenvent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EFF5CF61946F08B00270E24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EFF5CF71946F08B00270E24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +44,8 @@
 		3EFF5D061946F08B00270E24 /* frenventTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = frenventTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EFF5D0B1946F08B00270E24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EFF5D0C1946F08B00270E24 /* frenventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = frenventTests.swift; sourceTree = "<group>"; };
+		3EFF5D171946F33D00270E24 /* FbEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FbEvent.swift; path = Objects/FbEvent.swift; sourceTree = "<group>"; };
+		3EFF5D1A1947E84300270E24 /* TimeSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSupport.swift; path = Supports/TimeSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +87,8 @@
 		3EFF5CF41946F08B00270E24 /* frenvent */ = {
 			isa = PBXGroup;
 			children = (
+				3EFF5D191947E7AC00270E24 /* Supports */,
+				3EFF5D161946F2FF00270E24 /* Objects */,
 				3EFF5CF71946F08B00270E24 /* AppDelegate.swift */,
 				3EFF5CF91946F08B00270E24 /* FirstViewController.swift */,
 				3EFF5CFB1946F08B00270E24 /* SecondViewController.swift */,
@@ -110,6 +122,25 @@
 				3EFF5D0B1946F08B00270E24 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3EFF5D161946F2FF00270E24 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				3EFF5D171946F33D00270E24 /* FbEvent.swift */,
+				3EC5351D194A8D92000FDF2A /* MyFbEvent.swift */,
+				3EC5351F194A8E44000FDF2A /* Attendee.swift */,
+				3EC53521194A9012000FDF2A /* FriendFbEvent.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		3EFF5D191947E7AC00270E24 /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				3EFF5D1A1947E84300270E24 /* TimeSupport.swift */,
+			);
+			name = Supports;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,8 +242,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC53522194A9012000FDF2A /* FriendFbEvent.swift in Sources */,
+				3EC5351E194A8D92000FDF2A /* MyFbEvent.swift in Sources */,
 				3EFF5CFC1946F08B00270E24 /* SecondViewController.swift in Sources */,
 				3EFF5CF81946F08B00270E24 /* AppDelegate.swift in Sources */,
+				3EFF5D1B1947E84300270E24 /* TimeSupport.swift in Sources */,
+				3EFF5D181946F33D00270E24 /* FbEvent.swift in Sources */,
+				3EC53520194A8E44000FDF2A /* Attendee.swift in Sources */,
 				3EFF5CFA1946F08B00270E24 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,6 +437,7 @@
 				3EFF5D121946F08B00270E24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3EFF5D131946F08B00270E24 /* Build configuration list for PBXNativeTarget "frenventTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +446,7 @@
 				3EFF5D151946F08B00270E24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
