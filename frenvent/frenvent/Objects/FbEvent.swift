@@ -21,5 +21,7 @@ class FbEvent {
     var totalInterested: Int = 0
     var host = String()
     
+    var distance: Double = 0    //this variable did not subject to the conversion below
+    
     //TODO to write the conversion from the JSON and conversion to JSON in order to get/upload the public events
 }
