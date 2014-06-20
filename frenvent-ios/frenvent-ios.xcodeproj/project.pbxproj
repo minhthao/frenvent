@@ -11,6 +11,11 @@
 		3ED7EAE11952D7E4004C5ED2 /* frenvent_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EADF1952D7E4004C5ED2 /* frenvent_ios.xcdatamodeld */; };
 		3ED7EAE31952D7E4004C5ED2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED7EAE21952D7E4004C5ED2 /* Images.xcassets */; };
 		3ED7EAEF1952D7E5004C5ED2 /* frenvent_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EAEE1952D7E5004C5ED2 /* frenvent_iosTests.swift */; };
+		3ED7EAFB1952DA2E004C5ED2 /* FbEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EAFA1952DA2E004C5ED2 /* FbEvent.swift */; };
+		3ED7EAFF1952DA78004C5ED2 /* Attendee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EAFE1952DA78004C5ED2 /* Attendee.swift */; };
+		3ED7EB041952DB9A004C5ED2 /* TimeSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EB031952DB9A004C5ED2 /* TimeSupport.swift */; };
+		3ED7EB0819537176004C5ED2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ED7EB0719537176004C5ED2 /* Main.storyboard */; };
+		3ED7EB0C195384CB004C5ED2 /* FriendEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7EB0B195384CB004C5ED2 /* FriendEventsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +37,11 @@
 		3ED7EAE81952D7E4004C5ED2 /* frenvent-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "frenvent-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED7EAED1952D7E5004C5ED2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3ED7EAEE1952D7E5004C5ED2 /* frenvent_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = frenvent_iosTests.swift; sourceTree = "<group>"; };
+		3ED7EAFA1952DA2E004C5ED2 /* FbEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FbEvent.swift; path = Objects/FbEvent.swift; sourceTree = "<group>"; };
+		3ED7EAFE1952DA78004C5ED2 /* Attendee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Attendee.swift; path = Objects/Attendee.swift; sourceTree = "<group>"; };
+		3ED7EB031952DB9A004C5ED2 /* TimeSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeSupport.swift; path = Support/TimeSupport.swift; sourceTree = "<group>"; };
+		3ED7EB0719537176004C5ED2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		3ED7EB0B195384CB004C5ED2 /* FriendEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FriendEventsViewController.swift; path = MainViews/FriendEvents/FriendEventsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,10 +83,14 @@
 		3ED7EADA1952D7E4004C5ED2 /* frenvent-ios */ = {
 			isa = PBXGroup;
 			children = (
+				3ED7EB091953843F004C5ED2 /* MainViews */,
+				3ED7EB021952DB6D004C5ED2 /* Supports */,
+				3ED7EAF81952D9FC004C5ED2 /* Objects */,
 				3ED7EADD1952D7E4004C5ED2 /* AppDelegate.swift */,
 				3ED7EAE21952D7E4004C5ED2 /* Images.xcassets */,
 				3ED7EADF1952D7E4004C5ED2 /* frenvent_ios.xcdatamodeld */,
 				3ED7EADB1952D7E4004C5ED2 /* Supporting Files */,
+				3ED7EB0719537176004C5ED2 /* Main.storyboard */,
 			);
 			path = "frenvent-ios";
 			sourceTree = "<group>";
@@ -104,6 +118,39 @@
 				3ED7EAED1952D7E5004C5ED2 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3ED7EAF81952D9FC004C5ED2 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				3ED7EAFA1952DA2E004C5ED2 /* FbEvent.swift */,
+				3ED7EAFE1952DA78004C5ED2 /* Attendee.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		3ED7EB021952DB6D004C5ED2 /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				3ED7EB031952DB9A004C5ED2 /* TimeSupport.swift */,
+			);
+			name = Supports;
+			sourceTree = "<group>";
+		};
+		3ED7EB091953843F004C5ED2 /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+				3ED7EB0A19538455004C5ED2 /* FriendEvents */,
+			);
+			name = MainViews;
+			sourceTree = "<group>";
+		};
+		3ED7EB0A19538455004C5ED2 /* FriendEvents */ = {
+			isa = PBXGroup;
+			children = (
+				3ED7EB0B195384CB004C5ED2 /* FriendEventsViewController.swift */,
+			);
+			name = FriendEvents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3ED7EAE31952D7E4004C5ED2 /* Images.xcassets in Resources */,
+				3ED7EB0819537176004C5ED2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,8 +251,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED7EAFF1952DA78004C5ED2 /* Attendee.swift in Sources */,
 				3ED7EADE1952D7E4004C5ED2 /* AppDelegate.swift in Sources */,
 				3ED7EAE11952D7E4004C5ED2 /* frenvent_ios.xcdatamodeld in Sources */,
+				3ED7EAFB1952DA2E004C5ED2 /* FbEvent.swift in Sources */,
+				3ED7EB0C195384CB004C5ED2 /* FriendEventsViewController.swift in Sources */,
+				3ED7EB041952DB9A004C5ED2 /* TimeSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +362,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "frenvent-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -321,6 +374,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "frenvent-ios/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -381,6 +435,7 @@
 				3ED7EAF41952D7E5004C5ED2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3ED7EAF51952D7E5004C5ED2 /* Build configuration list for PBXNativeTarget "frenvent-iosTests" */ = {
 			isa = XCConfigurationList;
@@ -389,6 +444,7 @@
 				3ED7EAF71952D7E5004C5ED2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
