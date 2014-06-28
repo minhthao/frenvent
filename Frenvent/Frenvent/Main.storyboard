@@ -226,7 +226,7 @@
             <objects>
                 <tabBarController definesPresentationContext="YES" id="Vt3-Mt-RmT" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Friend" id="elI-8u-VUN"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="dRm-Q4-RQb">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>

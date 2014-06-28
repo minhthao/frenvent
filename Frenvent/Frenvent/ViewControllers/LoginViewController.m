@@ -52,7 +52,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     [defaults setObject:[user objectID] forKey:FB_LOGIN_USER_ID];
+    NSLog(@"%@", [user objectID]);
     [defaults setObject:[user name] forKey:FB_LOGIN_USER_NAME];
+    NSLog(@"%@", [user name]);
     [defaults setObject:[user objectForKey:@"gender"] forKey:FB_LOGIN_USER_GENDER];
     
     [defaults synchronize];
