@@ -6,13 +6,12 @@
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
-#import "FriendInterested.h"
+#import "FriendToEvent.h"
 #import "Event.h"
 #import "Friend.h"
 
 
-@implementation FriendInterested
-
+@implementation FriendToEvent
 @dynamic eid;
 @dynamic name;
 @dynamic startTime;

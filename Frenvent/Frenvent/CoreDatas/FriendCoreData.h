@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Friend.h"
 
 @interface FriendCoreData : NSObject
+
++ (void) addFriend:(NSString *)uid :(NSString *)name;
++ (Friend *) getFriendWithUid:(NSString *)uid;
++ (NSArray *) getAllFriends;
++ (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid;
++ (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid;
++ (void) removeAllEvents;
 
 @end

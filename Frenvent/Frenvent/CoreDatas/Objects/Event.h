@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class FriendInterested;
+@class FriendToEvent;
+
+extern NSString * const RSVP_ATTENDING;
+extern NSString * const RSVP_UNSURE;
+extern NSString * const RSVP_DECLINED;
+extern NSString * const RSVP_NOT_REPLIED;
+extern NSString * const RSVP_NOT_INVITED;
 
 @interface Event : NSManagedObject
 
@@ -30,8 +36,8 @@
 
 @interface Event (CoreDataGeneratedAccessors)
 
-- (void)addFriendsInterestedObject:(FriendInterested *)value;
-- (void)removeFriendsInterestedObject:(FriendInterested *)value;
+- (void)addFriendsInterestedObject:(FriendToEvent *)value;
+- (void)removeFriendsInterestedObject:(FriendToEvent *)value;
 - (void)addFriendsInterested:(NSSet *)values;
 - (void)removeFriendsInterested:(NSSet *)values;
 

@@ -7,7 +7,7 @@
 //
 
 #import "Friend.h"
-#import "FriendInterested.h"
+#import "FriendToEvent.h"
 
 
 @implementation Friend

@@ -14,12 +14,14 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+@synthesize locationManager = _locationManager;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    NSSet *set = [NSSet setWithObjects:FBLoggingBehaviorFBRequests, nil];
+    [FBSettings setLoggingBehavior:set];
+    [FBLoginView class];
+    [FBSettings enablePlatformCompatibility:true];
     return YES;
 }
 
@@ -137,6 +139,19 @@
     
     return _persistentStoreCoordinator;
 }
+
+#pragma mark - CLLocationManager
+// Returns the location manager of the application
+// If the location doesn't already exist, it is then created
+- (CLLocationManager *)locationManager {
+    if (_locationManager == nil) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    }
+    return _locationManager;
+}
+
 
 #pragma mark - Application's Documents directory
 

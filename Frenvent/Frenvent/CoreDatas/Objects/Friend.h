@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class FriendInterested;
+@class FriendToEvent;
 
 @interface Friend : NSManagedObject
 
@@ -20,8 +20,8 @@
 
 @interface Friend (CoreDataGeneratedAccessors)
 
-- (void)addEventsInterestedObject:(FriendInterested *)value;
-- (void)removeEventsInterestedObject:(FriendInterested *)value;
+- (void)addEventsInterestedObject:(FriendToEvent *)value;
+- (void)removeEventsInterestedObject:(FriendToEvent *)value;
 - (void)addEventsInterested:(NSSet *)values;
 - (void)removeEventsInterested:(NSSet *)values;
 

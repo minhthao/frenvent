@@ -11,7 +11,7 @@
 
 @class Event, Friend;
 
-@interface FriendInterested : NSManagedObject
+@interface FriendToEvent : NSManagedObject
 
 @property (nonatomic, retain) NSString * eid;
 @property (nonatomic, retain) NSString * name;

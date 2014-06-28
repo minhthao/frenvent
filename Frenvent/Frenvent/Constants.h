@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const FB_LOGIN_USER_NAME;
+extern NSString * const FB_LOGIN_USER_ID;
+extern NSString * const FB_LOGIN_USER_GENDER;
+
 @interface Constants : NSObject
 
 @end

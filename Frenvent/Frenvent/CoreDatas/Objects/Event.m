@@ -7,8 +7,13 @@
 //
 
 #import "Event.h"
-#import "FriendInterested.h"
+#import "FriendToEvent.h"
 
+NSString * const RSVP_ATTENDING = @"attending";
+NSString * const RSVP_UNSURE = @"unsure";
+NSString * const RSVP_DECLINED = @"declined";
+NSString * const RSVP_NOT_REPLIED = @"not_replied";
+NSString * const RSVP_NOT_INVITED = @"not_invited";
 
 @implementation Event
 
