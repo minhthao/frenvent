@@ -81,8 +81,6 @@
     friendToEvent.uid = friend.uid;
     friendToEvent.name = friend.name;
     
-    [context insertObject:friendToEvent];
-    
     //here, we all the friend to event pair to both the friend and event managed objects
     [friend addEventsInterestedObject:friendToEvent];
     [event addFriendsInterestedObject:friendToEvent];

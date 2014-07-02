@@ -58,8 +58,9 @@
  * Add a friend to the core data
  * @param uid
  * @param name
+ * @return added Friend
  */
-+ (void) addFriend:(NSString *)uid :(NSString *)name {
++ (Friend *) addFriend:(NSString *)uid :(NSString *)name {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Friend"
                                               inManagedObjectContext:context];
@@ -68,9 +69,10 @@
     friend.uid = uid;
     friend.name = name;
     
-    [context insertObject:friend];
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);
+    
+    return friend;
 }
 
 /**
@@ -112,7 +114,7 @@
 }
 
 
-+ (void) removeAllEvents {
++ (void) removeAllFriends {
     NSArray *items = [self getAllFriends];
     NSManagedObjectContext *context = [self managedObjectContext];
     

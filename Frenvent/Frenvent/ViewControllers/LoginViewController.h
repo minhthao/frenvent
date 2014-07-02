@@ -10,4 +10,6 @@
 
 @interface LoginViewController : UIViewController <FBLoginViewDelegate, CLLocationManagerDelegate>
 
+@property (nonatomic, strong) CLLocationManager *locationManager;
+
 @end

@@ -219,13 +219,90 @@
 
 /**
  * Add an event to the core data
- * @param Event
+ * @param All event fields
+ * @return Event
  */
-+ (void) addEvent:(Event *)event {
++ (Event *) addEvent:(NSString *)eid :(NSString *)name :(NSString *)picture
+                    :(int64_t)startTime :(int64_t)endTime
+                    :(NSString *)location :(double)longitude :(double)latitude
+                    :(NSString *)host :(NSString *)privacy
+                    :(int32_t)numInterested :(NSString *)rsvp {
+    
     NSManagedObjectContext *context = [self managedObjectContext];
-    [context insertObject:event];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event"
+                                              inManagedObjectContext:context];
+    
+    Event *event = [[Event alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    event.eid = eid;
+    event.name = name;
+    event.picture =  picture;
+    event.startTime = startTime;
+    event.endTime = endTime;
+    event.location = location;
+    event.longitude = longitude;
+    event.latitude = latitude;
+    event.host = host;
+    event.privacy = privacy;
+    event.numInterested = numInterested;
+    event.rsvp = rsvp;
+
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding event - error:%@", error);
+    
+    return event;
+}
+
+/**
+ * Add an event to the core data
+ * @param EventObj
+ * @return Event
+ */
++ (Event *) addEvent:(NSDictionary *)eventObj {
+    NSNull *nullInstance = [NSNull null];
+    
+    NSString *eid = [eventObj[@"eid"] stringValue];
+    NSString *name = eventObj[@"name"];
+    
+    NSString *picture = @"";
+    if (eventObj[@"pic_big"] !=  nullInstance)
+        picture = eventObj[@"pic_big"];
+    
+    
+    uint64_t startTime = [TimeSupport getUnixTime: [TimeSupport getDateTimeInStandardFormat:eventObj[@"start_time"]]];
+    
+    uint64_t endTime = 0;
+    if (eventObj[@"end_time"] != nullInstance)
+        endTime = [TimeSupport getUnixTime: [TimeSupport getDateTimeInStandardFormat:eventObj[@"end_time"]]];
+    
+    NSString *location = @"";
+    if (eventObj[@"location"] != nullInstance)
+        location = eventObj[@"location"];
+    
+    NSDictionary *venue = eventObj[@"venue"];
+    
+    double longitude = 0;
+    double latitude = 0;
+    if ([venue isKindOfClass:[NSDictionary class]] && venue[@"longitude"] != nil && venue[@"latitude"] != nil) {
+        longitude = [venue[@"longitude"] doubleValue];
+        latitude = [venue[@"latitude"] doubleValue];
+    }
+   
+    NSString *host = @"";
+    if (eventObj[@"host"] != nullInstance)
+        host = eventObj[@"host"];
+
+    NSString *privacy = @"";
+    if (eventObj[@"privacy"] != nullInstance)
+        privacy = eventObj[@"privacy"];
+
+    int32_t numInterested = [eventObj[@"attending_count"] intValue] + [eventObj[@"unsure_count"] intValue];
+    
+    NSString *rsvp = RSVP_NOT_INVITED;
+    if (eventObj[@"rsvp"] != nil) {
+        rsvp = eventObj[@"rsvp"];
+    }
+    
+    return [self addEvent:eid :name :picture :startTime :endTime :location :longitude :latitude :host :privacy :numInterested :rsvp];
 }
 
 #pragma mark - public update methods

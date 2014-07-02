@@ -147,7 +147,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param time in standard format
  * @return unix time
  */
-+ (NSInteger) getUnixTime: (NSString *)dateTimeInStandardFormat {
++ (int64_t) getUnixTime: (NSString *)dateTimeInStandardFormat {
     NSDateFormatter *standardFormat = [self getStandardDateFormat];
     NSDate *date = [standardFormat dateFromString:dateTimeInStandardFormat];
     return (NSInteger) [date timeIntervalSince1970];
@@ -256,7 +256,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the start time in today's timeframe
  * @return time in unix
  */
-+ (NSInteger) getTodayTimeFrameStartTimeInUnix {
++ (int64_t) getTodayTimeFrameStartTimeInUnix {
     return [self getUnixTime:[self getDateTimeOfTodayInStandardFormat]];
 }
 
@@ -264,7 +264,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the end time in today's timeframe
  * @return time in unix
  */
-+ (NSInteger) getTodayTimeFrameEndTimeInUnix {
++ (int64_t) getTodayTimeFrameEndTimeInUnix {
     return [self getTodayTimeFrameStartTimeInUnix] + NUM_SECOND_IN_DAY;
 }
 
@@ -272,7 +272,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the start time in this weekend's timeframe
  * @return time in unix
  */
-+ (NSInteger) getThisWeekendTimeFrameStartTimeInUnix {
++ (int64_t) getThisWeekendTimeFrameStartTimeInUnix {
     NSInteger todayDateIndexInWeek = [self getTodayDateIndexInWeek];
     
     NSInteger startingDateIndexFromToday = NUM_WEEKDAY_IN_WEEK - todayDateIndexInWeek;
@@ -287,7 +287,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the end time in this weekend's timeframe
  * @return time in unix
  */
-+ (NSInteger) getThisWeekendTimeFrameEndTimeInUnix {
++ (int64_t) getThisWeekendTimeFrameEndTimeInUnix {
     NSInteger todayDateIndexInWeek = [self getTodayDateIndexInWeek];
     NSInteger endDateIndexFromToday = NUM_DAY_IN_WEEK - todayDateIndexInWeek;
     return [self getUnixTime:[self getDateTimeOfIthDateFromTodayInStandardFormat:endDateIndexFromToday]];
@@ -297,7 +297,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the start time in this week's timeframe
  * @return time in unix
  */
-+ (NSInteger) getThisWeekTimeFrameStartTimeInUnix {
++ (int64_t) getThisWeekTimeFrameStartTimeInUnix {
     return [self getTodayTimeFrameStartTimeInUnix];
 }
 
@@ -305,7 +305,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the end time in this week's timeframe
  * @return time in unix
  */
-+ (NSInteger) getThisWeekTimeFrameEndTimeInUnix {
++ (int64_t) getThisWeekTimeFrameEndTimeInUnix {
     return [self getThisWeekendTimeFrameEndTimeInUnix];
 }
 
@@ -313,7 +313,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the start time in next week's timeframe 
  * @return time in unix
  */
-+ (NSInteger) getNextWeekTimeFrameStartTimeInUnix {
++ (int64_t) getNextWeekTimeFrameStartTimeInUnix {
     return [self getThisWeekTimeFrameEndTimeInUnix];
 }
 
@@ -321,7 +321,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * Get the end time in next week's timeframe
  * @return time in unix
  */
-+ (NSInteger) getNextWeekTimeFrameEndTimeInUnix {
++ (int64_t) getNextWeekTimeFrameEndTimeInUnix {
     return [self getNextWeekTimeFrameStartTimeInUnix] + NUM_DAY_IN_WEEK * NUM_SECOND_IN_DAY;
 }
 

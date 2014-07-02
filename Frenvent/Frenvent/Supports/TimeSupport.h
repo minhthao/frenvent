@@ -11,7 +11,7 @@
 @interface TimeSupport : NSObject
 
 + (NSString *) getDateTimeInStandardFormat: (NSString *)dateTimeInFacebookFormat;
-+ (NSInteger) getUnixTime: (NSString *)dateTimeInStandardFormat;
++ (int64_t) getUnixTime: (NSString *)dateTimeInStandardFormat;
 + (NSString *) getDateTimeFromUnixTimeInStandardFormat: (NSInteger)dateTimeInUnix;
 + (NSString *) getDateTimeOfTodayInStandardFormat;
 + (NSString *) getDateTimeOfIthDateFromTodayInStandardFormat: (NSInteger) ithValue;
@@ -19,13 +19,13 @@
 + (NSString *) getFullDisplayDateTime: (NSInteger)startTimeInUnix
                                      : (NSInteger)endTimeInUnix;
 
-+ (NSInteger) getTodayTimeFrameStartTimeInUnix;
-+ (NSInteger) getTodayTimeFrameEndTimeInUnix;
-+ (NSInteger) getThisWeekendTimeFrameStartTimeInUnix;
-+ (NSInteger) getThisWeekendTimeFrameEndTimeInUnix;
-+ (NSInteger) getThisWeekTimeFrameStartTimeInUnix;
-+ (NSInteger) getThisWeekTimeFrameEndTimeInUnix;
-+ (NSInteger) getNextWeekTimeFrameStartTimeInUnix;
-+ (NSInteger) getNextWeekTimeFrameEndTimeInUnix;
++ (int64_t) getTodayTimeFrameStartTimeInUnix;
++ (int64_t) getTodayTimeFrameEndTimeInUnix;
++ (int64_t) getThisWeekendTimeFrameStartTimeInUnix;
++ (int64_t) getThisWeekendTimeFrameEndTimeInUnix;
++ (int64_t) getThisWeekTimeFrameStartTimeInUnix;
++ (int64_t) getThisWeekTimeFrameEndTimeInUnix;
++ (int64_t) getNextWeekTimeFrameStartTimeInUnix;
++ (int64_t) getNextWeekTimeFrameEndTimeInUnix;
 
 @end

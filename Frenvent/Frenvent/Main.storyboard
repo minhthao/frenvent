@@ -62,8 +62,8 @@
                     </view>
                     <connections>
                         <outlet property="loginView" destination="Rxt-fb-LvP" id="oec-1M-vUs"/>
-                        <segue destination="xh3-kP-8fO" kind="push" identifier="initialize" id="rVc-Jt-2Rm"/>
-                        <segue destination="Vt3-Mt-RmT" kind="push" identifier="mainViewWithoutInitialize" id="kGt-qh-Ff4"/>
+                        <segue destination="xh3-kP-8fO" kind="modal" identifier="initialize" id="rVc-Jt-2Rm"/>
+                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithoutInitialize" id="kGt-qh-Ff4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdw-0P-bYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -118,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="799" y="-1114"/>
         </scene>
-        <!--View Controller - First Loading-->
+        <!--First Loading View Controller - First Loading-->
         <scene sceneID="2rm-oB-bSw">
             <objects>
-                <viewController title="First Loading" id="xh3-kP-8fO" sceneMemberID="viewController">
+                <viewController title="First Loading" id="xh3-kP-8fO" customClass="FirstLoadingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bwQ-LY-bIg"/>
                         <viewControllerLayoutGuide type="bottom" id="sR0-Vb-DvA"/>
@@ -143,7 +143,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="u6n-a3-HC1"/>
                     <connections>
-                        <segue destination="Vt3-Mt-RmT" kind="push" identifier="mainViewWithInitialize" id="LV5-il-pdw"/>
+                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithInitialize" id="LV5-il-pdw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MsM-nn-jTy" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -11,9 +11,7 @@
 #import "Constants.h"
 #import "AppDelegate.h"
 
-@interface LoginViewController () <FBLoginViewDelegate>
-
-@property (nonatomic, strong) CLLocationManager *locationManager;
+@interface LoginViewController ()
 
 @property (nonatomic, weak) IBOutlet FBLoginView *loginView;
 
@@ -21,14 +19,21 @@
 
 @implementation LoginViewController
 
+@synthesize locationManager = _locationManager;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.loginView.delegate = self;
+    self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     if ([FBSession activeSession].isOpen) {
-        [self performSegueWithIdentifier:@"mainViewWithoutInitialize" sender:nil];
-    } else {
-        self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults boolForKey:LOGIN_DATA_INITIALIZED])
+            [self performSegueWithIdentifier:@"mainViewWithoutInitialize" sender:Nil];
+        else [self performSegueWithIdentifier:@"initialize" sender:Nil];
     }
 }
 
@@ -51,31 +56,28 @@
 - (void) loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    [defaults setObject:[user objectID] forKey:FB_LOGIN_USER_ID];
-    NSLog(@"%@", [user objectID]);
-    [defaults setObject:[user name] forKey:FB_LOGIN_USER_NAME];
-    NSLog(@"%@", [user name]);
-    [defaults setObject:[user objectForKey:@"gender"] forKey:FB_LOGIN_USER_GENDER];
+    if ([defaults objectForKey:FB_LOGIN_USER_ID] == nil) {
     
-    [defaults synchronize];
-    
-    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) {
-        [self performSegueWithIdentifier:@"mainViewWithoutInitialize" sender:nil];
-    } else {
-        [[self locationManager] startUpdatingLocation];
+        [defaults setObject:[user objectID] forKey:FB_LOGIN_USER_ID];
+        [defaults setObject:[user name] forKey:FB_LOGIN_USER_NAME];
+        [defaults setObject:[user objectForKey:@"gender"] forKey:FB_LOGIN_USER_GENDER];
+
+        [defaults synchronize];
+
+        if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
+            [self performSegueWithIdentifier:@"initialize" sender:Nil];
+        else [[self locationManager] startUpdatingLocation];
     }
 }
 
 - (void) loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-    NSLog(@"soething");
 }
 
 #pragma mark - location manager delegates
 //delegate for location manager, call back for reauthorization
 - (void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (!status == kCLAuthorizationStatusNotDetermined) {
-        [self performSegueWithIdentifier:@"mainViewWithoutInitialize" sender:nil];
-    }
+    if (status != kCLAuthorizationStatusNotDetermined)
+        [self performSegueWithIdentifier:@"initialize" sender:Nil];
 }
 
 //delegate for location manager, call back for location update
@@ -88,8 +90,13 @@
  * Lazily obtain the managed object context
  * @return managed object context
  */
-+ (CLLocationManager *) locationManager {
-    return [(AppDelegate *)[[UIApplication sharedApplication] delegate] locationManager];
+- (CLLocationManager *)locationManager {
+    if (_locationManager == nil) {
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    }
+    return _locationManager;
 }
 
 @end

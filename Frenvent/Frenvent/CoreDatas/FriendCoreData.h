@@ -11,11 +11,11 @@
 
 @interface FriendCoreData : NSObject
 
-+ (void) addFriend:(NSString *)uid :(NSString *)name;
++ (Friend *) addFriend:(NSString *)uid :(NSString *)name;
 + (Friend *) getFriendWithUid:(NSString *)uid;
 + (NSArray *) getAllFriends;
 + (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid;
 + (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid;
-+ (void) removeAllEvents;
++ (void) removeAllFriends;
 
 @end

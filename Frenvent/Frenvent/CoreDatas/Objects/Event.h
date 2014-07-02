@@ -20,17 +20,17 @@ extern NSString * const RSVP_NOT_INVITED;
 @interface Event : NSManagedObject
 
 @property (nonatomic, retain) NSString * eid;
-@property (nonatomic, retain) NSNumber * endTime;
+@property (nonatomic) int64_t endTime;
 @property (nonatomic, retain) NSString * host;
-@property (nonatomic, retain) NSNumber * latitude;
+@property (nonatomic) double latitude;
 @property (nonatomic, retain) NSString * location;
-@property (nonatomic, retain) NSNumber * longitude;
+@property (nonatomic) double longitude;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * numInterested;
+@property (nonatomic) int32_t numInterested;
 @property (nonatomic, retain) NSString * picture;
 @property (nonatomic, retain) NSString * privacy;
 @property (nonatomic, retain) NSString * rsvp;
-@property (nonatomic, retain) NSNumber * startTime;
+@property (nonatomic) int64_t startTime;
 @property (nonatomic, retain) NSSet *friendsInterested;
 @end
 

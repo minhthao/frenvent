@@ -12,6 +12,13 @@ extern NSString * const FB_LOGIN_USER_NAME;
 extern NSString * const FB_LOGIN_USER_ID;
 extern NSString * const FB_LOGIN_USER_GENDER;
 
+extern NSString * const LOGIN_DATA_INITIALIZED;
+
+
+extern NSInteger const QUERY_TYPE_INITIALIZE;
+extern NSInteger const QUERY_TYPE_REFRESH;
+extern NSInteger const QUERY_TYPE_BACKGROUND_SERVICE;
+
 @interface Constants : NSObject
 
 @end

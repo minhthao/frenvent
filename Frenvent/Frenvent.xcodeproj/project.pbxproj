@@ -27,7 +27,6 @@
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3C4195C03C80023EF58 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C3195C03C80023EF58 /* Friend.m */; };
-		3EACE3C7195C03C80023EF58 /* FriendToEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C6195C03C80023EF58 /* FriendToEvent.m */; };
 		3EACE3CA195C03C80023EF58 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C9195C03C80023EF58 /* Event.m */; };
 		3EACE3CD195C08CA0023EF58 /* FriendToEventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3CC195C08CA0023EF58 /* FriendToEventCoreData.m */; };
 		3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */; };
@@ -48,6 +47,10 @@
 		3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3F3195E2CF30023EF58 /* AFURLSessionManager.m */; };
 		3EACE3FE195E2E4B0023EF58 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EACE3FD195E2E4B0023EF58 /* SDWebImage.framework */; };
 		3EACE401195E37FB0023EF58 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE400195E37FB0023EF58 /* Constants.m */; };
+		3EACE406195F8E2A0023EF58 /* FriendEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE405195F8E2A0023EF58 /* FriendEventsRequest.m */; };
+		3ECBC991196026F700BA75DB /* FirstLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECBC990196026F700BA75DB /* FirstLoadingViewController.m */; };
+		3ECBC9941960BAC700BA75DB /* FriendToEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECBC9931960BAC700BA75DB /* FriendToEvent.m */; };
+		3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECBC99919634F5F00BA75DB /* MyEventsRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,8 +90,6 @@
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3C2195C03C80023EF58 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
 		3EACE3C3195C03C80023EF58 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
-		3EACE3C5195C03C80023EF58 /* FriendToEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendToEvent.h; path = CoreDatas/Objects/FriendToEvent.h; sourceTree = "<group>"; };
-		3EACE3C6195C03C80023EF58 /* FriendToEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendToEvent.m; path = CoreDatas/Objects/FriendToEvent.m; sourceTree = "<group>"; };
 		3EACE3C8195C03C80023EF58 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
 		3EACE3C9195C03C80023EF58 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
 		3EACE3CB195C08CA0023EF58 /* FriendToEventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendToEventCoreData.h; path = CoreDatas/FriendToEventCoreData.h; sourceTree = "<group>"; };
@@ -124,6 +125,14 @@
 		3EACE3FD195E2E4B0023EF58 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Frenvent/frameworks/SDWebImage.framework; sourceTree = "<group>"; };
 		3EACE3FF195E37FB0023EF58 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		3EACE400195E37FB0023EF58 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		3EACE404195F8E2A0023EF58 /* FriendEventsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendEventsRequest.h; path = FbRequests/MainRequests/FriendEventsRequest.h; sourceTree = "<group>"; };
+		3EACE405195F8E2A0023EF58 /* FriendEventsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendEventsRequest.m; path = FbRequests/MainRequests/FriendEventsRequest.m; sourceTree = "<group>"; };
+		3ECBC98F196026F700BA75DB /* FirstLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirstLoadingViewController.h; path = ViewControllers/FirstLoadingViewController.h; sourceTree = "<group>"; };
+		3ECBC990196026F700BA75DB /* FirstLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FirstLoadingViewController.m; path = ViewControllers/FirstLoadingViewController.m; sourceTree = "<group>"; };
+		3ECBC9921960BAC700BA75DB /* FriendToEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendToEvent.h; path = CoreDatas/Objects/FriendToEvent.h; sourceTree = "<group>"; };
+		3ECBC9931960BAC700BA75DB /* FriendToEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendToEvent.m; path = CoreDatas/Objects/FriendToEvent.m; sourceTree = "<group>"; };
+		3ECBC99819634F5F00BA75DB /* MyEventsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyEventsRequest.h; path = FbRequests/MainRequests/MyEventsRequest.h; sourceTree = "<group>"; };
+		3ECBC99919634F5F00BA75DB /* MyEventsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyEventsRequest.m; path = FbRequests/MainRequests/MyEventsRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +209,7 @@
 		3E57FB321959517200D3293D /* Frenvent */ = {
 			isa = PBXGroup;
 			children = (
+				3EACE402195F8DB40023EF58 /* FbRequests */,
 				3EACE3DF195E2CD90023EF58 /* Libs */,
 				3EACE3D3195DFAA50023EF58 /* ViewControllers */,
 				3E57FB61195952FD00D3293D /* CoreDatas */,
@@ -271,10 +281,10 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				3ECBC9921960BAC700BA75DB /* FriendToEvent.h */,
+				3ECBC9931960BAC700BA75DB /* FriendToEvent.m */,
 				3EACE3C8195C03C80023EF58 /* Event.h */,
 				3EACE3C9195C03C80023EF58 /* Event.m */,
-				3EACE3C5195C03C80023EF58 /* FriendToEvent.h */,
-				3EACE3C6195C03C80023EF58 /* FriendToEvent.m */,
 				3EACE3C2195C03C80023EF58 /* Friend.h */,
 				3EACE3C3195C03C80023EF58 /* Friend.m */,
 			);
@@ -284,8 +294,11 @@
 		3EACE3D3195DFAA50023EF58 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3ECBC98E196026A800BA75DB /* MainViews */,
 				3EACE3D4195DFB2D0023EF58 /* LoginViewController.h */,
 				3EACE3D5195DFB2D0023EF58 /* LoginViewController.m */,
+				3ECBC98F196026F700BA75DB /* FirstLoadingViewController.h */,
+				3ECBC990196026F700BA75DB /* FirstLoadingViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -323,6 +336,32 @@
 			);
 			name = AFNetworking;
 			path = Libs/AFNetworking;
+			sourceTree = "<group>";
+		};
+		3EACE402195F8DB40023EF58 /* FbRequests */ = {
+			isa = PBXGroup;
+			children = (
+				3EACE403195F8DD10023EF58 /* MainRequests */,
+			);
+			name = FbRequests;
+			sourceTree = "<group>";
+		};
+		3EACE403195F8DD10023EF58 /* MainRequests */ = {
+			isa = PBXGroup;
+			children = (
+				3EACE404195F8E2A0023EF58 /* FriendEventsRequest.h */,
+				3EACE405195F8E2A0023EF58 /* FriendEventsRequest.m */,
+				3ECBC99819634F5F00BA75DB /* MyEventsRequest.h */,
+				3ECBC99919634F5F00BA75DB /* MyEventsRequest.m */,
+			);
+			name = MainRequests;
+			sourceTree = "<group>";
+		};
+		3ECBC98E196026A800BA75DB /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = MainViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,6 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ECBC991196026F700BA75DB /* FirstLoadingViewController.m in Sources */,
 				3EACE3F4195E2CF30023EF58 /* AFHTTPRequestOperation.m in Sources */,
 				3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */,
 				3E57FB681959587400D3293D /* TimeSupport.m in Sources */,
@@ -428,6 +468,7 @@
 				3EACE3C4195C03C80023EF58 /* Friend.m in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
+				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
 				3EACE3CA195C03C80023EF58 /* Event.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
@@ -437,8 +478,9 @@
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3EACE3F5195E2CF30023EF58 /* AFHTTPRequestOperationManager.m in Sources */,
 				3EACE3CD195C08CA0023EF58 /* FriendToEventCoreData.m in Sources */,
-				3EACE3C7195C03C80023EF58 /* FriendToEvent.m in Sources */,
+				3EACE406195F8E2A0023EF58 /* FriendEventsRequest.m in Sources */,
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
+				3ECBC9941960BAC700BA75DB /* FriendToEvent.m in Sources */,
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,

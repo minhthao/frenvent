@@ -17,14 +17,26 @@
 + (NSArray *) getNearbyEvents:(double)lowerLongitude :(double)lowerLatitude
                              :(double)upperLongitude :(double)upperLatitude;
 + (NSArray *) getFriendsEvents;
-+ (NSArray *) getEventsWithMatchingName: (NSString *)name;
-+ (Event *) getEventWithEid: (NSString *)eid;
++ (NSArray *) getEventsWithMatchingName:(NSString *)name;
++ (Event *) getEventWithEid:(NSString *)eid;
 
 + (void) removeAllEvents;
 + (void) removeUserAssociatedEvents;
-+ (void) removeEventWithEid: (NSString *)eid;
++ (void) removeEventWithEid:(NSString *)eid;
 
-+ (void) addEvent: (Event *)event;
++ (Event *) addEvent:(NSString *)eid
+                 :(NSString *)name
+                 :(NSString *)picture
+                 :(int64_t)startTime
+                 :(int64_t)endTime
+                 :(NSString *)location
+                 :(double)longitude
+                 :(double)latitude
+                 :(NSString *)host
+                 :(NSString *)privacy
+                 :(int32_t)numInterested
+                 :(NSString *)rsvp;
++ (Event *) addEvent: (NSDictionary *)eventObj;
 
 + (void) updateEventRsvp:(NSString *)eid :(NSString *)newRsvp; //Still todo the notification callback
 @end
