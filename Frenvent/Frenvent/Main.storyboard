@@ -95,7 +95,8 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Featured Events" id="0HH-Tt-Qtx">
-                        <barButtonItem key="rightBarButtonItem" title="Filter" id="AUg-jG-Zzr"/>
+                        <barButtonItem key="leftBarButtonItem" title="Filter" id="AUg-jG-Zzr"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="b6h-5e-HYV"/>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="27b-i6-zbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -268,7 +269,9 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <navigationItem key="navigationItem" title="Invited Events" id="bDX-av-SU2"/>
+                    <navigationItem key="navigationItem" title="Invited Events" id="bDX-av-SU2">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="lmY-ir-cDD"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxA-V2-pTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -326,7 +329,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Nearby Events" id="NIL-Rr-Q4V">
-                        <barButtonItem key="rightBarButtonItem" title="Filter" id="ZEg-aj-I3p"/>
+                        <barButtonItem key="leftBarButtonItem" title="Filter" id="P3V-9k-sAC"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="0Iy-KY-Bto"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZY-Da-uHk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -347,6 +351,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="kGt-qh-Ff4"/>
+        <segue reference="LV5-il-pdw"/>
     </inferredMetricsTieBreakers>
 </document>

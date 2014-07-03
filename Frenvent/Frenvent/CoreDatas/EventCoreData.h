@@ -36,7 +36,7 @@
                  :(NSString *)privacy
                  :(int32_t)numInterested
                  :(NSString *)rsvp;
-+ (Event *) addEvent: (NSDictionary *)eventObj;
++ (Event *) addEvent:(NSDictionary *)eventObj :(NSString *)rsvp;
 
 + (void) updateEventRsvp:(NSString *)eid :(NSString *)newRsvp; //Still todo the notification callback
 @end

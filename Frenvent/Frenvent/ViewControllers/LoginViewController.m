@@ -13,13 +13,12 @@
 
 @interface LoginViewController ()
 
+@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, weak) IBOutlet FBLoginView *loginView;
 
 @end
 
 @implementation LoginViewController
-
-@synthesize locationManager = _locationManager;
 
 - (void)viewDidLoad
 {
@@ -85,7 +84,7 @@
     [[self locationManager] stopUpdatingLocation];
 }
 
-#pragma mark - private methods
+#pragma mark - property
 /**
  * Lazily obtain the managed object context
  * @return managed object context

@@ -257,7 +257,7 @@
  * @param EventObj
  * @return Event
  */
-+ (Event *) addEvent:(NSDictionary *)eventObj {
++ (Event *) addEvent:(NSDictionary *)eventObj :(NSString *)rsvpStatus{
     NSNull *nullInstance = [NSNull null];
     
     NSString *eid = [eventObj[@"eid"] stringValue];
@@ -297,12 +297,7 @@
 
     int32_t numInterested = [eventObj[@"attending_count"] intValue] + [eventObj[@"unsure_count"] intValue];
     
-    NSString *rsvp = RSVP_NOT_INVITED;
-    if (eventObj[@"rsvp"] != nil) {
-        rsvp = eventObj[@"rsvp"];
-    }
-    
-    return [self addEvent:eid :name :picture :startTime :endTime :location :longitude :latitude :host :privacy :numInterested :rsvp];
+    return [self addEvent:eid :name :picture :startTime :endTime :location :longitude :latitude :host :privacy :numInterested :rsvpStatus];
 }
 
 #pragma mark - public update methods

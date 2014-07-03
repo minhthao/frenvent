@@ -25,6 +25,11 @@
 		3E57FB641959555400D3293D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB621959555400D3293D /* Bolts.framework */; };
 		3E57FB651959555400D3293D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB631959555400D3293D /* FacebookSDK.framework */; };
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
+		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
+		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
+		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
+		3EAAAC9519649B00004AD322 /* DbUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9419649B00004AD322 /* DbUserRequest.m */; };
+		3EAAAC981964B060004AD322 /* DbNotificationsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC971964B060004AD322 /* DbNotificationsRequest.m */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3C4195C03C80023EF58 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C3195C03C80023EF58 /* Friend.m */; };
 		3EACE3CA195C03C80023EF58 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C9195C03C80023EF58 /* Event.m */; };
@@ -86,6 +91,16 @@
 		3E57FB631959555400D3293D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Frenvent/frameworks/FacebookSDK.framework; sourceTree = "<group>"; };
 		3E57FB661959587400D3293D /* TimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSupport.h; path = Supports/TimeSupport.h; sourceTree = "<group>"; };
 		3E57FB671959587400D3293D /* TimeSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeSupport.m; path = Supports/TimeSupport.m; sourceTree = "<group>"; };
+		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
+		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
+		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
+		3EAAAC8E1964879E004AD322 /* DBConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBConstants.m; path = DBRequests/DBConstants.m; sourceTree = "<group>"; };
+		3EAAAC9019648ED6004AD322 /* DbEventsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbEventsRequest.h; path = DBRequests/DbEventsRequest.h; sourceTree = "<group>"; };
+		3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbEventsRequest.m; path = DBRequests/DbEventsRequest.m; sourceTree = "<group>"; };
+		3EAAAC9319649B00004AD322 /* DbUserRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbUserRequest.h; path = DBRequests/DbUserRequest.h; sourceTree = "<group>"; };
+		3EAAAC9419649B00004AD322 /* DbUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbUserRequest.m; path = DBRequests/DbUserRequest.m; sourceTree = "<group>"; };
+		3EAAAC961964B060004AD322 /* DbNotificationsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbNotificationsRequest.h; path = DBRequests/DbNotificationsRequest.h; sourceTree = "<group>"; };
+		3EAAAC971964B060004AD322 /* DbNotificationsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbNotificationsRequest.m; path = DBRequests/DbNotificationsRequest.m; sourceTree = "<group>"; };
 		3EACE381195A45E90023EF58 /* EventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventCoreData.h; path = CoreDatas/EventCoreData.h; sourceTree = "<group>"; };
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3C2195C03C80023EF58 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
@@ -209,6 +224,7 @@
 		3E57FB321959517200D3293D /* Frenvent */ = {
 			isa = PBXGroup;
 			children = (
+				3EAAAC8C1964876E004AD322 /* DBRequests */,
 				3EACE402195F8DB40023EF58 /* FbRequests */,
 				3EACE3DF195E2CD90023EF58 /* Libs */,
 				3EACE3D3195DFAA50023EF58 /* ViewControllers */,
@@ -276,6 +292,21 @@
 				3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */,
 			);
 			name = CoreDatas;
+			sourceTree = "<group>";
+		};
+		3EAAAC8C1964876E004AD322 /* DBRequests */ = {
+			isa = PBXGroup;
+			children = (
+				3EAAAC8D1964879E004AD322 /* DBConstants.h */,
+				3EAAAC8E1964879E004AD322 /* DBConstants.m */,
+				3EAAAC9019648ED6004AD322 /* DbEventsRequest.h */,
+				3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */,
+				3EAAAC9319649B00004AD322 /* DbUserRequest.h */,
+				3EAAAC9419649B00004AD322 /* DbUserRequest.m */,
+				3EAAAC961964B060004AD322 /* DbNotificationsRequest.h */,
+				3EAAAC971964B060004AD322 /* DbNotificationsRequest.m */,
+			);
+			name = DBRequests;
 			sourceTree = "<group>";
 		};
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
@@ -353,6 +384,8 @@
 				3EACE405195F8E2A0023EF58 /* FriendEventsRequest.m */,
 				3ECBC99819634F5F00BA75DB /* MyEventsRequest.h */,
 				3ECBC99919634F5F00BA75DB /* MyEventsRequest.m */,
+				3EAAAC8919646D83004AD322 /* FriendsRequest.h */,
+				3EAAAC8A19646D83004AD322 /* FriendsRequest.m */,
 			);
 			name = MainRequests;
 			sourceTree = "<group>";
@@ -460,16 +493,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EAAAC9519649B00004AD322 /* DbUserRequest.m in Sources */,
 				3ECBC991196026F700BA75DB /* FirstLoadingViewController.m in Sources */,
 				3EACE3F4195E2CF30023EF58 /* AFHTTPRequestOperation.m in Sources */,
 				3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */,
+				3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */,
 				3E57FB681959587400D3293D /* TimeSupport.m in Sources */,
 				3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */,
 				3EACE3C4195C03C80023EF58 /* Friend.m in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
+				3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
+				3EAAAC981964B060004AD322 /* DbNotificationsRequest.m in Sources */,
 				3EACE3CA195C03C80023EF58 /* Event.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
@@ -478,6 +515,7 @@
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3EACE3F5195E2CF30023EF58 /* AFHTTPRequestOperationManager.m in Sources */,
 				3EACE3CD195C08CA0023EF58 /* FriendToEventCoreData.m in Sources */,
+				3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */,
 				3EACE406195F8E2A0023EF58 /* FriendEventsRequest.m in Sources */,
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
 				3ECBC9941960BAC700BA75DB /* FriendToEvent.m in Sources */,

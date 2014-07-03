@@ -11,9 +11,11 @@
 #import "EventCoreData.h"
 #import "FriendToEventCoreData.h"
 #import "FriendCoreData.h"
-#import "Constants.h"
 
 static NSInteger const QUERY_LIMIT = 5000;
+static NSInteger const QUERY_TYPE_INITIALIZE = 0;
+static NSInteger const QUERY_TYPE_REFRESH = 1;
+static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 
 @interface FriendEventsRequest()
 
@@ -33,13 +35,13 @@ static NSInteger const QUERY_LIMIT = 5000;
 - (NSDictionary *) prepareQueryParams {
     NSString *friendEvents = [NSString stringWithFormat:@"SELECT eid, uid FROM event_member WHERE "
                                "(rsvp_status = \"attending\" OR rsvp_status = \"unsure\") "  //rsvp
-                               "AND uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) " //all of my friends events
+                               "AND uid IN (SELECT uid2 FROM friend WHERE uid1 = me() LIMIT %d) " //all of my friends events
                                "AND start_time >= %lld " //future
                                "ORDER BY start_time ASC LIMIT %d",
-                               [TimeSupport getTodayTimeFrameStartTimeInUnix], QUERY_LIMIT];
+                               QUERY_LIMIT, [TimeSupport getTodayTimeFrameStartTimeInUnix], QUERY_LIMIT];
     
     NSString *friendNames = [NSString stringWithFormat:@"SELECT uid, name FROM user WHERE uid IN "
-                             "(SELECT uid FROM #friendEvents)"];
+                             "(SELECT uid FROM #friendEvents) LIMIT %d", QUERY_LIMIT];
     
     NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, start_time, end_time, "
                            "location, venue, unsure_count, attending_count, privacy, host FROM event "
@@ -92,16 +94,16 @@ static NSInteger const QUERY_LIMIT = 5000;
                                   for (int i = 0; i < [eventInfo count]; i++) {
                                       Event *event = [EventCoreData getEventWithEid:eventInfo[i][@"eid"]];
                                       if (event == nil) {
-                                          event = [EventCoreData addEvent:eventInfo[i]];
+                                          event = [EventCoreData addEvent:eventInfo[i] :RSVP_NOT_INVITED];
                                           [newEventsDictionary setObject:event forKey:event.eid];
                                       }
                                       [eventsDictionary setObject:event forKey:event.eid];
                                   }
                                   
                                   //we then add the friends to the core data
-                                  for (int i = 0; i < [friendNames count]; i++) {
-                                      NSString *uid = friendNames[i][@"uid"];
-                                      NSString *name = friendNames[i][@"name"];
+                                  for (int j = 0; j < [friendNames count]; j++) {
+                                      NSString *uid = [friendNames[j][@"uid"] stringValue];
+                                      NSString *name = friendNames[j][@"name"];
                                       Friend *friend = [FriendCoreData getFriendWithUid:uid];
                                       if (friend == nil)
                                           friend = [FriendCoreData addFriend:uid :name];
@@ -125,9 +127,7 @@ static NSInteger const QUERY_LIMIT = 5000;
                                   }
                               }
                               
-                              if (type == QUERY_TYPE_INITIALIZE)
-                                  [self.delegate notifyFriendEventsQueryCompleted];
-                              else if (type == QUERY_TYPE_REFRESH)
+                              if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
                                   [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
                           }];
 

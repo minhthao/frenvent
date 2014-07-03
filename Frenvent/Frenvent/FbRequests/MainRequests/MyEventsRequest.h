@@ -10,16 +10,15 @@
 
 @protocol MyEventsRequestDelegate <NSObject>
 @optional
-- (void)notifyMyEventsQueryCompleted;   //this should be done during login. Would get all the past and future events
-- (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;  //do during refresh
+- (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;
 @end
 
 @interface MyEventsRequest : NSObject
 
 @property (nonatomic, weak) id <MyEventsRequestDelegate> delegate;
 
-- (void) initFriendEvents;
-- (void) refreshFriendEvents;
-- (void) updateBackgroundFriendEvents;
+- (void) initMyEvents; //all events
+- (void) refreshMyEvents;  //only future events
+- (void) updateBackgroundMyEvents;  //only future events 
 
 @end

@@ -10,7 +10,6 @@
 
 @protocol FriendEventsRequestDelegate <NSObject> 
 @optional
-- (void)notifyFriendEventsQueryCompleted;
 - (void)notifyFriendEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;
 @end
 

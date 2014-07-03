@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "FriendEventsRequest.h"
+#import "MyEventsRequest.h"
+#import "FriendsRequest.h"
+#import "DbEventsRequest.h"
+#import "DbUserRequest.h"
 
-@interface FirstLoadingViewController : UIViewController <FriendEventsRequestDelegate>
+@interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate, DbUserRequestDelegate>
 
 @end
