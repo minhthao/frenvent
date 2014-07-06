@@ -154,6 +154,15 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
 }
 
 /**
+ * Get the current time in unix
+ * @return unix time
+ */
++ (int64_t) getCurrentTimeInUnix {
+    NSDate *date = [[NSDate alloc] init];
+    return (NSInteger) [date timeIntervalSince1970];
+}
+
+/**
  * Get the DateTime in standard format from the unix time
  * @param unix time
  * @return time in standard format

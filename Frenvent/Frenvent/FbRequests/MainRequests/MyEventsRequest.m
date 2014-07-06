@@ -9,6 +9,10 @@
 #import "MyEventsRequest.h"
 #import "TimeSupport.h"
 #import "EventCoreData.h"
+#import "NotificationCoreData.h"
+#import "Notification.h"
+#import "TimeSupport.h"
+#import "Event.h"
 
 static NSInteger const QUERY_LIMIT = 400;
 static NSInteger const QUERY_TYPE_INITIALIZE = 0;
@@ -138,7 +142,7 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewEventInvited:(Event *)event {
-    //TODO HERE
+    [NotificationCoreData addNotification:TYPE_NEW_INVITE :[TimeSupport getCurrentTimeInUnix] :@"" :@"" :event.eid :event.name :event.picture :event.startTime :false];
 }
 
 #pragma mark - public methods

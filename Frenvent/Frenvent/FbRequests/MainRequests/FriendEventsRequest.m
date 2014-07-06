@@ -11,6 +11,7 @@
 #import "EventCoreData.h"
 #import "FriendToEventCoreData.h"
 #import "FriendCoreData.h"
+#import "NotificationCoreData.h"
 
 static NSInteger const QUERY_LIMIT = 5000;
 static NSInteger const QUERY_TYPE_INITIALIZE = 0;
@@ -142,9 +143,8 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewFriendToEventPairAdded:(Event *)event :(Friend *)friend {
-    //TODO HERE
+    [NotificationCoreData addNotification:TYPE_FRIEND_EVENT :[TimeSupport getCurrentTimeInUnix] :friend.uid :friend.name :event.eid :event.name :event.picture :event.startTime :false];
 }
-
 
 #pragma mark - public methods
 /**

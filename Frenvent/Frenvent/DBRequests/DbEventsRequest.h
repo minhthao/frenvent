@@ -18,6 +18,6 @@
 @interface DbEventsRequest : NSObject
 @property (nonatomic, weak) id <DbEventsRequestDelegate> delegate;
 - (void) uploadEvents:(NSArray *)events;
-- (void) getNearbyEvents:(double)currentLocLongitude :(double)currentLocLatitude;
-- (void) getNearbyEvents:(double)lowerLong :(double)lowerLat :(double)upperLong :(double)upperLat;
+- (void) initNearbyEvents:(double)currentLocLongitude :(double)currentLocLatitude;
+- (void) refreshNearbyEvents:(double)lowerLong :(double)lowerLat :(double)upperLong :(double)upperLat;
 @end

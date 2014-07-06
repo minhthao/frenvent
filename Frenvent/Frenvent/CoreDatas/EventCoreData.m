@@ -10,12 +10,14 @@
 #import "AppDelegate.h"
 #import "TimeSupport.h"
 #import "Event.h"
+#import "DBConstants.h"
 
 @interface EventCoreData()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-+ (NSMutableArray *) getEvents: (NSPredicate *)predicates;
++ (NSMutableArray *) getEvents:(NSPredicate *)predicates;
++ (void) prepareNewInvitedNotification:(Event *)event;
 
 @end
 
@@ -52,6 +54,8 @@
     return events;
 }
 
+/**
+ * Prepare new invite notification
 #pragma mark - public get methods
 
 /**
@@ -315,9 +319,6 @@
     if (result.count > 0) {
         Event *event = [result objectAtIndex:0];
         if (![event.rsvp isEqualToString:newRsvp]) {
-            if ([newRsvp isEqualToString: RSVP_NOT_INVITED]) {
-                //TODO make appropriate notification, saying that you got invite to new event
-            }
             event.rsvp = newRsvp;
             NSError *error = nil;
             if (![context save:&error]) NSLog(@"Error updating event's rsvp - error:%@", error);

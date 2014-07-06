@@ -12,6 +12,7 @@
 
 + (NSString *) getDateTimeInStandardFormat: (NSString *)dateTimeInFacebookFormat;
 + (int64_t) getUnixTime: (NSString *)dateTimeInStandardFormat;
++ (int64_t) getCurrentTimeInUnix;
 + (NSString *) getDateTimeFromUnixTimeInStandardFormat: (NSInteger)dateTimeInUnix;
 + (NSString *) getDateTimeOfTodayInStandardFormat;
 + (NSString *) getDateTimeOfIthDateFromTodayInStandardFormat: (NSInteger) ithValue;

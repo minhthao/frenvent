@@ -30,6 +30,8 @@
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
 		3EAAAC9519649B00004AD322 /* DbUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9419649B00004AD322 /* DbUserRequest.m */; };
 		3EAAAC981964B060004AD322 /* DbNotificationsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC971964B060004AD322 /* DbNotificationsRequest.m */; };
+		3EAAAC9E196666CD004AD322 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9D196666CD004AD322 /* Notification.m */; };
+		3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA019666807004AD322 /* NotificationCoreData.m */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3C4195C03C80023EF58 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C3195C03C80023EF58 /* Friend.m */; };
 		3EACE3CA195C03C80023EF58 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3C9195C03C80023EF58 /* Event.m */; };
@@ -101,6 +103,10 @@
 		3EAAAC9419649B00004AD322 /* DbUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbUserRequest.m; path = DBRequests/DbUserRequest.m; sourceTree = "<group>"; };
 		3EAAAC961964B060004AD322 /* DbNotificationsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbNotificationsRequest.h; path = DBRequests/DbNotificationsRequest.h; sourceTree = "<group>"; };
 		3EAAAC971964B060004AD322 /* DbNotificationsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbNotificationsRequest.m; path = DBRequests/DbNotificationsRequest.m; sourceTree = "<group>"; };
+		3EAAAC9C196666CD004AD322 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
+		3EAAAC9D196666CD004AD322 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
+		3EAAAC9F19666807004AD322 /* NotificationCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationCoreData.h; path = CoreDatas/NotificationCoreData.h; sourceTree = "<group>"; };
+		3EAAACA019666807004AD322 /* NotificationCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationCoreData.m; path = CoreDatas/NotificationCoreData.m; sourceTree = "<group>"; };
 		3EACE381195A45E90023EF58 /* EventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventCoreData.h; path = CoreDatas/EventCoreData.h; sourceTree = "<group>"; };
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3C2195C03C80023EF58 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
@@ -290,6 +296,8 @@
 				3EACE3CC195C08CA0023EF58 /* FriendToEventCoreData.m */,
 				3EACE3CE195CA1EE0023EF58 /* FriendCoreData.h */,
 				3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */,
+				3EAAAC9F19666807004AD322 /* NotificationCoreData.h */,
+				3EAAACA019666807004AD322 /* NotificationCoreData.m */,
 			);
 			name = CoreDatas;
 			sourceTree = "<group>";
@@ -312,6 +320,8 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				3EAAAC9C196666CD004AD322 /* Notification.h */,
+				3EAAAC9D196666CD004AD322 /* Notification.m */,
 				3ECBC9921960BAC700BA75DB /* FriendToEvent.h */,
 				3ECBC9931960BAC700BA75DB /* FriendToEvent.m */,
 				3EACE3C8195C03C80023EF58 /* Event.h */,
@@ -505,6 +515,8 @@
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */,
+				3EAAAC9E196666CD004AD322 /* Notification.m in Sources */,
+				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
 				3EAAAC981964B060004AD322 /* DbNotificationsRequest.m in Sources */,
 				3EACE3CA195C03C80023EF58 /* Event.m in Sources */,
