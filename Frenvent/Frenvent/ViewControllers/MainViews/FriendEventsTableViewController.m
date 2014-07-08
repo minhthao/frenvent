@@ -67,7 +67,6 @@
     
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.text = event.name;
-    NSLog(@"%@", event.picture);
     [cell.imageView setImageWithURL:[NSURL URLWithString:event.picture]];
 
     return cell;

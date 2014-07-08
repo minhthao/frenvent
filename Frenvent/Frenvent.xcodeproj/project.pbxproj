@@ -44,7 +44,6 @@
 		3EAAACD7196B7CC3004AD322 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACCD196B7CC3004AD322 /* UIProgressView+AFNetworking.m */; };
 		3EAAACD8196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACCF196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m */; };
 		3EAAACD9196B7CC3004AD322 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACD1196B7CC3004AD322 /* UIWebView+AFNetworking.m */; };
-		3EAAACDC196B80D4004AD322 /* MainViewTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACDB196B80D4004AD322 /* MainViewTabBarViewController.m */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */; };
 		3EACE3D2195D74BC0023EF58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EACE3D1195D74BC0023EF58 /* Main.storyboard */; };
@@ -141,8 +140,6 @@
 		3EAAACCF196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		3EAAACD0196B7CC3004AD322 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		3EAAACD1196B7CC3004AD322 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		3EAAACDA196B80D4004AD322 /* MainViewTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewTabBarViewController.h; path = ViewControllers/MainViews/MainViewTabBarViewController.h; sourceTree = "<group>"; };
-		3EAAACDB196B80D4004AD322 /* MainViewTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewTabBarViewController.m; path = ViewControllers/MainViews/MainViewTabBarViewController.m; sourceTree = "<group>"; };
 		3EACE381195A45E90023EF58 /* EventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventCoreData.h; path = CoreDatas/EventCoreData.h; sourceTree = "<group>"; };
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3CE195CA1EE0023EF58 /* FriendCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendCoreData.h; path = CoreDatas/FriendCoreData.h; sourceTree = "<group>"; };
@@ -457,8 +454,6 @@
 			children = (
 				3EAAACA2196A08FC004AD322 /* FriendEventsTableViewController.h */,
 				3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */,
-				3EAAACDA196B80D4004AD322 /* MainViewTabBarViewController.h */,
-				3EAAACDB196B80D4004AD322 /* MainViewTabBarViewController.m */,
 			);
 			name = MainViews;
 			sourceTree = "<group>";
@@ -579,7 +574,6 @@
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
-				3EAAACDC196B80D4004AD322 /* MainViewTabBarViewController.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
