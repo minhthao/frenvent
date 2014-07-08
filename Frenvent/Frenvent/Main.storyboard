@@ -62,18 +62,18 @@
                     </view>
                     <connections>
                         <outlet property="loginView" destination="Rxt-fb-LvP" id="oec-1M-vUs"/>
-                        <segue destination="xh3-kP-8fO" kind="modal" identifier="initialize" id="rVc-Jt-2Rm"/>
-                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithoutInitialize" id="kGt-qh-Ff4"/>
+                        <segue destination="xh3-kP-8fO" kind="modal" identifier="initialize" customClass="UIStoryboardPopoverSegue" id="rVc-Jt-2Rm"/>
+                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithoutInitialize" customClass="UIStoryboardPopoverSegue" id="kGt-qh-Ff4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdw-0P-bYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-628" y="-135"/>
         </scene>
-        <!--Table View Controller - Recommended Events-->
+        <!--Friend Events Table View Controller - Recommended Events-->
         <scene sceneID="FkG-mq-YQz">
             <objects>
-                <tableViewController title="Recommended Events" id="Vf1-nl-NRu" sceneMemberID="viewController">
+                <tableViewController title="Recommended Events" id="Vf1-nl-NRu" customClass="FriendEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="1pQ-wr-uEX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -222,10 +222,10 @@
             </objects>
             <point key="canvasLocation" x="799" y="1605"/>
         </scene>
-        <!--Tab Bar Controller - Friend-->
+        <!--Main View Tab Bar View Controller - Main View-->
         <scene sceneID="W4S-NU-bEB">
             <objects>
-                <tabBarController definesPresentationContext="YES" id="Vt3-Mt-RmT" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainView" title="Main View" definesPresentationContext="YES" id="Vt3-Mt-RmT" customClass="MainViewTabBarViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Friend" id="elI-8u-VUN"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="dRm-Q4-RQb">
@@ -322,7 +322,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="15P-zh-9vM">
-                                <rect key="frame" x="0.0" y="63" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="456"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -351,6 +351,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LV5-il-pdw"/>
+        <segue reference="kGt-qh-Ff4"/>
     </inferredMetricsTieBreakers>
 </document>

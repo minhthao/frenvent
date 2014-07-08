@@ -38,14 +38,14 @@ static double const DISTANCE_RADIUS = 30;
         [eventDict setObject:event.eid forKey:EVENT_EID];
         [eventDict setObject:event.name forKey:EVENT_NAME];
         [eventDict setObject:event.picture forKey:EVENT_PICTURE];
-        [eventDict setObject:[NSNumber numberWithLongLong:event.startTime] forKey:EVENT_START_TIME];
-        [eventDict setObject:[NSNumber numberWithLongLong:event.endTime] forKey:EVENT_END_TIME];
+        [eventDict setObject:event.startTime forKey:EVENT_START_TIME];
+        [eventDict setObject:event.endTime forKey:EVENT_END_TIME];
         [eventDict setObject:event.location forKey:EVENT_LOCATION];
-        [eventDict setObject:[NSNumber numberWithDouble:event.longitude] forKey:EVENT_LONGITUDE];
-        [eventDict setObject:[NSNumber numberWithDouble:event.latitude] forKey:EVENT_LATITUDE];
+        [eventDict setObject:event.longitude forKey:EVENT_LONGITUDE];
+        [eventDict setObject:event.latitude forKey:EVENT_LATITUDE];
         [eventDict setObject:event.privacy forKey:EVENT_PRIVACY];
         [eventDict setObject:event.host forKey:EVENT_HOST];
-        [eventDict setObject:[NSNumber numberWithLong:event.numInterested] forKey:EVENT_NUM_INTERESTS];
+        [eventDict setObject:event.numInterested forKey:EVENT_NUM_INTERESTS];
         [jsonArray addObject:eventDict];
     }
     
@@ -62,7 +62,7 @@ static double const DISTANCE_RADIUS = 30;
     
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:URL]];
@@ -104,7 +104,7 @@ static double const DISTANCE_RADIUS = 30;
     
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:URL]];
@@ -149,7 +149,7 @@ static double const DISTANCE_RADIUS = 30;
     
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:URL]];
@@ -177,7 +177,7 @@ static double const DISTANCE_RADIUS = 30;
         double latitude = [eventObj[EVENT_LATITUDE] doubleValue];
         NSString *privacy = eventObj[EVENT_PRIVACY];
         NSString *host = eventObj[EVENT_HOST];
-        int32_t numInterested = [eventObj[EVENT_NUM_INTERESTS] longValue];
+        int32_t numInterested = [eventObj[EVENT_NUM_INTERESTS] intValue];
         NSString *rsvp = RSVP_NOT_INVITED;
 
         if ([EventCoreData getEventWithEid:eid] == nil)

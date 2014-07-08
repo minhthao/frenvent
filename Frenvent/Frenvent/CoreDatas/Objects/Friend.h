@@ -2,14 +2,14 @@
 //  Friend.h
 //  Frenvent
 //
-//  Created by minh thao nguyen on 6/26/14.
+//  Created by minh thao nguyen on 7/7/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class FriendToEvent;
+@class Event;
 
 @interface Friend : NSManagedObject
 
@@ -20,8 +20,8 @@
 
 @interface Friend (CoreDataGeneratedAccessors)
 
-- (void)addEventsInterestedObject:(FriendToEvent *)value;
-- (void)removeEventsInterestedObject:(FriendToEvent *)value;
+- (void)addEventsInterestedObject:(Event *)value;
+- (void)removeEventsInterestedObject:(Event *)value;
 - (void)addEventsInterested:(NSSet *)values;
 - (void)removeEventsInterested:(NSSet *)values;
 

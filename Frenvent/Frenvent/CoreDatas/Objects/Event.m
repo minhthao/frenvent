@@ -2,12 +2,12 @@
 //  Event.m
 //  Frenvent
 //
-//  Created by minh thao nguyen on 6/26/14.
+//  Created by minh thao nguyen on 7/7/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import "Event.h"
-#import "FriendToEvent.h"
+#import "Friend.h"
 
 NSString * const RSVP_ATTENDING = @"attending";
 NSString * const RSVP_UNSURE = @"unsure";

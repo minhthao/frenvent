@@ -13,7 +13,6 @@
 #import "DbEventsRequest.h"
 #import "DbUserRequest.h"
 #import "EventCoreData.h"
-#import "FriendToEventCoreData.h"
 #import "FriendCoreData.h"
 #import "Constants.h"
 
@@ -37,7 +36,6 @@ NSInteger numMyEvents;
 {
     [super viewDidLoad];
     [EventCoreData removeAllEvents];
-    [FriendToEventCoreData removeAllFriendToEventPairs];
     [FriendCoreData removeAllFriends];
     
     numQueriesDone = 0;
@@ -107,9 +105,9 @@ NSInteger numMyEvents;
 //delegate for location manager, call back for location update
 - (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (locations != nil && [locations count] > 0) {
-        NSLog(@"location updated");
         CLLocation *currentLocation = [locations objectAtIndex:0];
         DbEventsRequest *dbEventsRequest = [[DbEventsRequest alloc] init];
+        [dbEventsRequest setDelegate:self];
         [dbEventsRequest initNearbyEvents:(double)[currentLocation coordinate].longitude :(double)[currentLocation coordinate].latitude];
         [[self locationManager] stopUpdatingLocation];
     }

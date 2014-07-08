@@ -16,9 +16,6 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-+ (NSMutableArray *) getEvents:(NSPredicate *)predicates;
-+ (void) prepareNewInvitedNotification:(Event *)event;
-
 @end
 
 @implementation EventCoreData
@@ -31,6 +28,8 @@
 + (NSManagedObjectContext *) managedObjectContext {
     return [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 }
+
+#pragma mark - public get methods
 
 /**
  * Get fetched event using the set of predicates
@@ -54,9 +53,6 @@
     return events;
 }
 
-/**
- * Prepare new invite notification
-#pragma mark - public get methods
 
 /**
  * Get user's past events
@@ -240,14 +236,14 @@
     event.eid = eid;
     event.name = name;
     event.picture =  picture;
-    event.startTime = startTime;
-    event.endTime = endTime;
+    event.startTime = [NSNumber numberWithLongLong:startTime];
+    event.endTime = [NSNumber numberWithLongLong:endTime];
     event.location = location;
-    event.longitude = longitude;
-    event.latitude = latitude;
+    event.longitude = [NSNumber numberWithDouble:longitude];
+    event.latitude = [NSNumber numberWithDouble:latitude];
     event.host = host;
     event.privacy = privacy;
-    event.numInterested = numInterested;
+    event.numInterested = [NSNumber numberWithInt:numInterested];;
     event.rsvp = rsvp;
 
     NSError *error = nil;

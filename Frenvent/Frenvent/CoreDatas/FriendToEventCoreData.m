@@ -2,21 +2,19 @@
 //  FriendToEventCoreData.m
 //  Frenvent
 //
-//  Created by minh thao nguyen on 6/26/14.
+//  Created by minh thao nguyen on 7/7/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import "FriendToEventCoreData.h"
-#import "FriendToEvent.h"
 #import "AppDelegate.h"
+#import "Friend.h"
+#import "Event.h"
+#import "EventCoreData.h"
 #import "TimeSupport.h"
 
 @interface FriendToEventCoreData()
-
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-+ (NSArray *) getFriendToEventPairs:(NSPredicate *)predicates;
-
 @end
 
 @implementation FriendToEventCoreData
@@ -30,35 +28,6 @@
     return [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
 }
 
-/**
- * Get all the friend to event pair stored in the core data using the given set of predicates
- * @param predicates
- * @return Array of Event
- */
-+ (NSArray *) getFriendToEventPairs:(NSPredicate *)predicates {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FriendToEvent"
-                                              inManagedObjectContext:context];
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:entity];
-    [fetchRequest setReturnsObjectsAsFaults:NO];
-    if (predicates != nil)[fetchRequest setPredicate:predicates];
-    
-    NSError *error = nil;
-    NSArray *friendToEventPairs = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if (friendToEventPairs == nil) NSLog(@"Error getting friend-to-event pairs - %@", error);
-    
-    NSMutableArray *events = [[NSMutableArray alloc] init];
-    for (FriendToEvent *friendToEvent in friendToEventPairs) {
-    	[events addObject:friendToEvent.event];
-    }
-    
-    return events;
-
-}
-
 
 #pragma mark - public methods
 /**
@@ -69,25 +38,13 @@
  */
 + (void) addFriendToEventPair:(Event *)event :(Friend *)friend {
     NSManagedObjectContext *context = [self managedObjectContext];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FriendToEvent"
-                                              inManagedObjectContext:context];
-
-    FriendToEvent *friendToEvent = [[FriendToEvent alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-    
-    friendToEvent.friend = friend;
-    friendToEvent.event = event;
-    friendToEvent.eid = event.eid;
-    friendToEvent.startTime = event.startTime;
-    friendToEvent.uid = friend.uid;
-    friendToEvent.name = friend.name;
-    
     //here, we all the friend to event pair to both the friend and event managed objects
-    [friend addEventsInterestedObject:friendToEvent];
-    [event addFriendsInterestedObject:friendToEvent];
+    [friend addEventsInterestedObject:event];
+    [event addFriendsInterestedObject:friend];
+    
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend to event pair - error:%@", error);
-
 }
 
 /**
@@ -98,10 +55,10 @@
  */
 + (BOOL) isFriendToEventPairExist:(NSString *)eid :(NSString *)uid {
     NSPredicate *eidPredicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
-    NSPredicate *uidPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
+    NSPredicate *uidPredicate = [NSPredicate predicateWithFormat:@"ANY friendsInterested.uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[eidPredicate, uidPredicate]];
     
-    NSArray *events = [self getFriendToEventPairs:predicates];
+    NSArray *events = [EventCoreData getEvents:predicates];
     if (events.count > 0) return TRUE;
     return FALSE;
 }
@@ -112,18 +69,11 @@
  * @return Array of Event
  */
 + (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid {
-    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"ANY eventsInterested.startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
     NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
     
-    NSArray *friendToEventPairs = [self getFriendToEventPairs:predicates];
-    
-    NSMutableArray *events = [[NSMutableArray alloc] init];
-    for (FriendToEvent *friendToEvent in friendToEventPairs) {
-    	[events addObject:friendToEvent.event];
-    }
-    
-    return events;
+    return [EventCoreData getEvents:predicates];
 }
 
 /**
@@ -132,53 +82,11 @@
  * @return Array of Event
  */
 + (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid {
-    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"ANY eventsInterested.startTime < %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
     NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
-    NSArray *friendToEventPairs = [self getFriendToEventPairs:predicates];
     
-    NSMutableArray *events = [[NSMutableArray alloc] init];
-    for (FriendToEvent *friendToEvent in friendToEventPairs) {
-    	[events addObject:friendToEvent.event];
-    }
-    
-    return events;
+    return [EventCoreData getEvents:predicates];
 }
-
-/**
- * Remove all the friend to event pairs stored in the core data.
- * This should only be use during logout
- */
-+ (void) removeAllFriendToEventPairs {
-    NSArray *items = [self getFriendToEventPairs:nil];
-    NSManagedObjectContext *context = [self managedObjectContext];
-    
-    for (NSManagedObject *managedObject in items) {
-    	[context deleteObject:managedObject];
-    }
-    
-    NSError *error = nil;
-    if (![context save:&error]) NSLog(@"Error deleting friend-to-event pairs - error:%@", error);
-}
-
-/**
- * Remove all the friend to event pairs that is associating with a given event.
- * This should only be use during the removal of specific event
- * @param eid
- */
-+ (void) removeAllFriendToEventPairsAssociateWithEvent:(NSString *)eid {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
-    NSArray *items = [self getFriendToEventPairs:predicate];
-    NSManagedObjectContext *context = [self managedObjectContext];
-    
-    for (NSManagedObject *managedObject in items) {
-    	[context deleteObject:managedObject];
-    }
-    
-    NSError *error = nil;
-    if (![context save:&error]) NSLog(@"Error deleting friend-to-event pairs - error:%@", error);
-}
-
-
 
 @end

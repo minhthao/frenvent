@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "Constants.h"
 
 @implementation AppDelegate
 
@@ -17,10 +18,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    NSSet *set = [NSSet setWithObjects:FBLoggingBehaviorFBRequests, nil];
-//    [FBSettings setLoggingBehavior:set];
     [FBLoginView class];
     [FBSettings enablePlatformCompatibility:true];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
+        UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+        UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"mainView"];
+        self.window.rootViewController = rootViewController;
+        [self.window makeKeyAndVisible];
+    }
+    
     return YES;
 }
 

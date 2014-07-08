@@ -76,7 +76,7 @@
  * @param whether the notification has been viewed
  * @return notification
  */
-+ (Notification *) addNotification:(int16_t)type :(int64_t)time :(NSString *)friendId :(NSString *)friendName :(NSString *)eid :(NSString *)eventName :(NSString *)eventPicture :(int64_t)eventStartTime :(BOOL)viewed {
++ (Notification *) addNotification:(NSNumber *)type :(NSNumber *)time :(NSString *)friendId :(NSString *)friendName :(NSString *)eid :(NSString *)eventName :(NSString *)eventPicture :(NSNumber *)eventStartTime {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
                                               inManagedObjectContext:context];
@@ -90,7 +90,6 @@
     notification.eventName = eventName;
     notification.eventPicture = eventPicture;
     notification.eventStartTime = eventStartTime;
-    notification.viewed = viewed;
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding notification - error:%@", error);
@@ -98,16 +97,4 @@
     return notification;
 }
 
-/**
- * Update the notification to make it as viewed
- * @param notification
- */
-+(void)updateNotificationView:(Notification *)notification {
-    if (!notification.viewed) {
-        NSManagedObjectContext *context = [self managedObjectContext];
-        notification.viewed = true;
-        NSError *error = nil;
-        if (![context save:&error]) NSLog(@"Error mark notification as viewed - error:%@", error);
-    }
-}
 @end

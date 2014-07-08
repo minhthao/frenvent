@@ -14,10 +14,10 @@
 #import "TimeSupport.h"
 #import "Event.h"
 
-static NSInteger const QUERY_LIMIT = 400;
-static NSInteger const QUERY_TYPE_INITIALIZE = 0;
-static NSInteger const QUERY_TYPE_REFRESH = 1;
-static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
+static int16_t const QUERY_LIMIT = 400;
+static int16_t const QUERY_TYPE_INITIALIZE = 0;
+static int16_t const QUERY_TYPE_REFRESH = 1;
+static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 
 @interface MyEventsRequest()
 - (NSDictionary *) prepareAllEventsQueryParams;
@@ -142,7 +142,7 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewEventInvited:(Event *)event {
-    [NotificationCoreData addNotification:TYPE_NEW_INVITE :[TimeSupport getCurrentTimeInUnix] :@"" :@"" :event.eid :event.name :event.picture :event.startTime :false];
+    [NotificationCoreData addNotification:[NSNumber numberWithLong:TYPE_NEW_INVITE] :[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]] :@"" :@"" :event.eid :event.name :event.picture :event.startTime];
 }
 
 #pragma mark - public methods

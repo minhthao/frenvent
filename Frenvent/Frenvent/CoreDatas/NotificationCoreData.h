@@ -12,16 +12,13 @@
 @interface NotificationCoreData : NSObject
 + (NSArray *) getNotifications;
 + (void) removeAllNotifications;
-+ (Notification *) addNotification:(int16_t)type
-                                  :(int64_t)time
++ (Notification *) addNotification:(NSNumber *)type
+                                  :(NSNumber *)time
                                   :(NSString *)friendId
                                   :(NSString *)friendName
                                   :(NSString *)eid
                                   :(NSString *)eventName
                                   :(NSString *)eventPicture
-                                  :(int64_t)eventStartTime
-                                  :(BOOL)viewed;
-
-+ (void) updateNotificationView:(Notification *)notification; //Still todo the notification callback
+                                  :(NSNumber *)eventStartTime;
 
 @end

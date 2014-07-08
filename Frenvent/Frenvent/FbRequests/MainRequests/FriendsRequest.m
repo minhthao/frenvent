@@ -9,7 +9,7 @@
 #import "FriendsRequest.h"
 #import "FriendCoreData.h"
 
-static NSInteger const QUERY_LIMIT = 5000;
+static int16_t const QUERY_LIMIT = 5000;
 
 @interface FriendsRequest()
 

@@ -12,6 +12,7 @@
 
 @interface EventCoreData : NSObject
 
++ (NSArray *) getEvents:(NSPredicate *)predicates;
 + (NSArray *) getUserPastEvents;
 + (NSArray *) getUserOngoingEvents;
 + (NSArray *) getNearbyEvents:(double)lowerLongitude :(double)lowerLatitude

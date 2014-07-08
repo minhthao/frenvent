@@ -9,14 +9,14 @@
 #import "FriendEventsRequest.h"
 #import "TimeSupport.h"
 #import "EventCoreData.h"
-#import "FriendToEventCoreData.h"
 #import "FriendCoreData.h"
 #import "NotificationCoreData.h"
+#import "FriendToEventCoreData.h"
 
-static NSInteger const QUERY_LIMIT = 5000;
-static NSInteger const QUERY_TYPE_INITIALIZE = 0;
-static NSInteger const QUERY_TYPE_REFRESH = 1;
-static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
+static int16_t const QUERY_LIMIT = 5000;
+static int16_t const QUERY_TYPE_INITIALIZE = 0;
+static int16_t const QUERY_TYPE_REFRESH = 1;
+static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 
 @interface FriendEventsRequest()
 
@@ -93,12 +93,13 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                   
                                   //we first add in the events to the core data
                                   for (int i = 0; i < [eventInfo count]; i++) {
-                                      Event *event = [EventCoreData getEventWithEid:eventInfo[i][@"eid"]];
+                                      NSString *eid = [eventInfo[i][@"eid"] stringValue];
+                                      Event *event = [EventCoreData getEventWithEid:eid];
                                       if (event == nil) {
                                           event = [EventCoreData addEvent:eventInfo[i] :RSVP_NOT_INVITED];
-                                          [newEventsDictionary setObject:event forKey:event.eid];
+                                          [newEventsDictionary setObject:event forKey:eid];
                                       }
-                                      [eventsDictionary setObject:event forKey:event.eid];
+                                      [eventsDictionary setObject:event forKey:eid];
                                   }
                                   
                                   //we then add the friends to the core data
@@ -114,11 +115,11 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                   
                                   //Finally, we add in the friend to events pairs
                                   for (int i = 0; i < [friendEvents count]; i++) {
-                                      NSString *uid = friendEvents[i][@"uid"];
-                                      NSString *eid = friendEvents[i][@"eid"];
+                                      NSString *uid = [friendEvents[i][@"uid"] stringValue];
+                                      NSString *eid = [friendEvents[i][@"eid"] stringValue];
                                       if (![FriendToEventCoreData isFriendToEventPairExist:eid :uid]) {
-                                          Event *event = [EventCoreData getEventWithEid:eid];
-                                          Friend *friend = [FriendCoreData getFriendWithUid:uid];
+                                          Event *event = eventsDictionary[eid];
+                                          Friend *friend = friendsDictionary[uid];
                                           if (event != nil && friend != nil) {
                                               [FriendToEventCoreData addFriendToEventPair:event :friend];
                                               if (type == QUERY_TYPE_BACKGROUND_SERVICE)
@@ -143,7 +144,7 @@ static NSInteger const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewFriendToEventPairAdded:(Event *)event :(Friend *)friend {
-    [NotificationCoreData addNotification:TYPE_FRIEND_EVENT :[TimeSupport getCurrentTimeInUnix] :friend.uid :friend.name :event.eid :event.name :event.picture :event.startTime :false];
+    [NotificationCoreData addNotification:[NSNumber numberWithLong:TYPE_FRIEND_EVENT] :[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]] :friend.uid :friend.name :event.eid :event.name :event.picture :event.startTime];
 }
 
 #pragma mark - public methods
