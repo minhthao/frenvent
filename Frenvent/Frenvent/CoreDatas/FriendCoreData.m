@@ -39,9 +39,13 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Friend"
                                               inManagedObjectContext:context];
     
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:nil];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sort, nil];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entity];
     [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setSortDescriptors:sortDescriptors];
     if (predicates != nil)[fetchRequest setPredicate:predicates];
     
     NSError *error = nil;
@@ -83,7 +87,7 @@
 + (Friend *) getFriendWithUid:(NSString *)uid {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
     NSArray *friends = [self getFriend:predicate];
-    if (friends.count > 0) [friends objectAtIndex:0];
+    if (friends.count > 0) return [friends objectAtIndex:0];
     return nil;
 }
 

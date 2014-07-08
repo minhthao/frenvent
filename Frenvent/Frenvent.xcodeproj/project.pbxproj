@@ -44,9 +44,11 @@
 		3EAAACD7196B7CC3004AD322 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACCD196B7CC3004AD322 /* UIProgressView+AFNetworking.m */; };
 		3EAAACD8196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACCF196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m */; };
 		3EAAACD9196B7CC3004AD322 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACD1196B7CC3004AD322 /* UIWebView+AFNetworking.m */; };
+		3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */; };
+		3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACE1196C4FFD004AD322 /* FriendManager.m */; };
+		3EAAACE3196C63C5004AD322 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EAAACE5196C63C5004AD322 /* Main.storyboard */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */; };
-		3EACE3D2195D74BC0023EF58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EACE3D1195D74BC0023EF58 /* Main.storyboard */; };
 		3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3D5195DFB2D0023EF58 /* LoginViewController.m */; };
 		3EACE3D8195E0E0F0023EF58 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EACE3D7195E0E0F0023EF58 /* MapKit.framework */; };
 		3EACE3DA195E0E170023EF58 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EACE3D9195E0E170023EF58 /* ImageIO.framework */; };
@@ -140,11 +142,15 @@
 		3EAAACCF196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		3EAAACD0196B7CC3004AD322 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		3EAAACD1196B7CC3004AD322 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsTableViewController.h; path = ViewControllers/MainViews/FriendsTableViewController.h; sourceTree = "<group>"; };
+		3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsTableViewController.m; path = ViewControllers/MainViews/FriendsTableViewController.m; sourceTree = "<group>"; };
+		3EAAACE0196C4FFD004AD322 /* FriendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendManager.h; path = Supports/FriendManager.h; sourceTree = "<group>"; };
+		3EAAACE1196C4FFD004AD322 /* FriendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendManager.m; path = Supports/FriendManager.m; sourceTree = "<group>"; };
+		3EAAACE4196C63C5004AD322 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3EACE381195A45E90023EF58 /* EventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventCoreData.h; path = CoreDatas/EventCoreData.h; sourceTree = "<group>"; };
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3CE195CA1EE0023EF58 /* FriendCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendCoreData.h; path = CoreDatas/FriendCoreData.h; sourceTree = "<group>"; };
 		3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendCoreData.m; path = CoreDatas/FriendCoreData.m; sourceTree = "<group>"; };
-		3EACE3D1195D74BC0023EF58 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3EACE3D4195DFB2D0023EF58 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = ViewControllers/LoginViewController.h; sourceTree = "<group>"; };
 		3EACE3D5195DFB2D0023EF58 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = ViewControllers/LoginViewController.m; sourceTree = "<group>"; };
 		3EACE3D7195E0E0F0023EF58 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -261,7 +267,7 @@
 				3EACE3D3195DFAA50023EF58 /* ViewControllers */,
 				3E57FB61195952FD00D3293D /* CoreDatas */,
 				3E57FB5F195952CC00D3293D /* Supports */,
-				3EACE3D1195D74BC0023EF58 /* Main.storyboard */,
+				3EAAACE5196C63C5004AD322 /* Main.storyboard */,
 				3E57FB331959517200D3293D /* Supporting Files */,
 			);
 			path = Frenvent;
@@ -309,6 +315,8 @@
 				3EACE400195E37FB0023EF58 /* Constants.m */,
 				3EAAACA5196A186D004AD322 /* EventManager.h */,
 				3EAAACA6196A186D004AD322 /* EventManager.m */,
+				3EAAACE0196C4FFD004AD322 /* FriendManager.h */,
+				3EAAACE1196C4FFD004AD322 /* FriendManager.m */,
 			);
 			name = Supports;
 			sourceTree = "<group>";
@@ -454,6 +462,8 @@
 			children = (
 				3EAAACA2196A08FC004AD322 /* FriendEventsTableViewController.h */,
 				3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */,
+				3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */,
+				3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */,
 			);
 			name = MainViews;
 			sourceTree = "<group>";
@@ -533,7 +543,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EACE3D2195D74BC0023EF58 /* Main.storyboard in Resources */,
+				3EAAACE3196C63C5004AD322 /* Main.storyboard in Resources */,
 				3E57FB371959517200D3293D /* InfoPlist.strings in Resources */,
 				3E57FB421959517200D3293D /* Images.xcassets in Resources */,
 			);
@@ -571,6 +581,7 @@
 				3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */,
 				3EAAACBC196B59A5004AD322 /* Notification.m in Sources */,
 				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
+				3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
@@ -593,6 +604,7 @@
 				3E57FB391959517200D3293D /* main.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
 				3EAAACB6196B5838004AD322 /* Event.m in Sources */,
+				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +641,14 @@
 				3E57FB531959517200D3293D /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		3EAAACE5196C63C5004AD322 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3EAAACE4196C63C5004AD322 /* en */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
