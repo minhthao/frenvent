@@ -13,6 +13,8 @@
 #import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
+#import "EventButton.h"
+#import "MyColor.h"
 
 @interface FriendEventsTableViewController ()
 
@@ -76,7 +78,7 @@
     [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
     
     UIView *selectionView = (UIView *)[cell viewWithTag:206];
-    [selectionView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    [selectionView.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
     [selectionView.layer setBorderWidth:0.5f];
     
     UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:201];
@@ -90,10 +92,53 @@
     eventLocation.text = event.location;
     eventFriendsInterested.attributedText = [event getFriendsInterestedAttributedString];
     eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
+    
+    UIView *buttonsBar = (UIView *)[cell viewWithTag:206];
+    EventButton *detailButton = [self cellDetailButton:indexPath];
+    [buttonsBar addSubview:detailButton];
 
     return cell;
 }
 
+#pragma mark - cell buttons
+/**
+ * Create and return the detail button for a cell at a given index path
+ * @param index path
+ */
+- (EventButton *)cellDetailButton:(NSIndexPath *)indexPath {
+    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+    
+    EventButton *detailButton = [[EventButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 35.0)];
+    [detailButton setButtonTitle:@"Detail"];
+    detailButton.indexPath = indexPath;
+
+    [self formatEventCellButton:detailButton];
+    [detailButton addTarget:self action:@selector(detailActionPressed:) forControlEvents:UIControlEventTouchUpInside];
+    return detailButton;
+}
+
+#pragma mark - format event cell button
+/**
+ * Format the event cell buttons. This include the behavior when highlight and font
+ * @param Event button
+ */
+- (void)formatEventCellButton:(EventButton *)button {
+    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonNormalBackgroundColor]] forState:UIControlStateNormal];
+    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonHighlightBackgroundColor]] forState:UIControlStateHighlighted];
+    
+    [button setTitleColor:[MyColor eventCellButtonNormalTextColor] forState:UIControlStateNormal];
+    [button setTitleColor:[MyColor eventCellButtonHighlightTextColor] forState:UIControlStateHighlighted];
+    
+    [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16]];
+
+}
+
+#pragma mark - cell button actions
+//Handle the event when the the detail button for a given event is pressed
+- (void)detailActionPressed:(EventButton *)sender{
+    Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
+    NSLog(@"detail pressed for event: %@", event.name);
+}
 
 
 

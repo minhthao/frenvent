@@ -17,6 +17,10 @@ extern NSString * const RSVP_DECLINED;
 extern NSString * const RSVP_NOT_REPLIED;
 extern NSString * const RSVP_NOT_INVITED;
 
+extern NSString * const PRIVACY_OPEN;
+extern NSString * const PRIVACY_FRIENDS;
+extern NSString * const PRIVACY_SECRET;
+
 @interface Event : NSManagedObject
 
 @property (nonatomic, retain) NSString * eid;
@@ -33,9 +37,13 @@ extern NSString * const RSVP_NOT_INVITED;
 @property (nonatomic, retain) NSNumber * startTime;
 @property (nonatomic, retain) NSSet *friendsInterested;
 
-- (NSAttributedString *) getFriendsInterestedAttributedString;
-- (NSAttributedString *) getRsvpAttributedString;
-- (NSAttributedString *) getHostAttributedString;
+- (BOOL)canRsvp;
+- (BOOL)canShare;
+
+// get the display attributed string
+- (NSAttributedString *)getFriendsInterestedAttributedString;
+- (NSAttributedString *)getRsvpAttributedString;
+- (NSAttributedString *)getHostAttributedString;
 @end
 
 @interface Event (CoreDataGeneratedAccessors)

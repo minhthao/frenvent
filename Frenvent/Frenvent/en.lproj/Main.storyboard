@@ -74,7 +74,7 @@
         <scene sceneID="FkG-mq-YQz">
             <objects>
                 <tableViewController title="Recommended Events" id="Vf1-nl-NRu" customClass="FriendEventsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="155" sectionHeaderHeight="25" sectionFooterHeight="22" id="1pQ-wr-uEX">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="155" sectionHeaderHeight="25" sectionFooterHeight="22" id="1pQ-wr-uEX">
                         <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.84260120059999999" green="0.84134539139999998" blue="0.86328125" alpha="1" colorSpace="calibratedRGB"/>
@@ -129,7 +129,7 @@
                                                 <view tag="206" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D3Z-5i-0U4">
                                                     <rect key="frame" x="0.0" y="110" width="310" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" red="0.91703204719999998" green="0.91703204719999998" blue="0.91703204719999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.94706632653061229" green="0.94706632653061229" blue="0.94706632653061229" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="35" id="fa0-bu-5zC"/>
                                                     </constraints>
@@ -158,7 +158,7 @@
                                             </constraints>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.9446149553571429" green="0.9446149553571429" blue="0.9446149553571429" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.84260120059999999" green="0.84134539139999998" blue="0.86328125" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="l2w-ju-GuX" secondAttribute="bottom" constant="5" id="2br-kh-2CH"/>
                                         <constraint firstItem="l2w-ju-GuX" firstAttribute="leading" secondItem="gTa-G6-o8s" secondAttribute="leading" constant="5" id="A0y-Qd-4C3"/>
@@ -301,15 +301,15 @@
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendItem" id="EYz-ue-9FT">
                                         <rect key="frame" x="0.0" y="25" width="320" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EYz-ue-9FT" id="rMv-VM-Lf9">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="center" tableViewCell="EYz-ue-9FT" id="rMv-VM-Lf9">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dy7-op-czW">
+                                                <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dy7-op-czW">
                                                     <rect key="frame" x="5" y="2" width="44" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNo-xs-IVC">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNo-xs-IVC">
                                                     <rect key="frame" x="61" y="2" width="251" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>

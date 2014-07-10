@@ -8,12 +8,17 @@
 
 #import "Event.h"
 #import "Friend.h"
+#import "TimeSupport.h"
 
 NSString * const RSVP_ATTENDING = @"attending";
 NSString * const RSVP_UNSURE = @"unsure";
 NSString * const RSVP_DECLINED = @"declined";
 NSString * const RSVP_NOT_REPLIED = @"not_replied";
 NSString * const RSVP_NOT_INVITED = @"not_invited";
+
+NSString * const PRIVACY_OPEN = @"OPEN";
+NSString * const PRIVACY_FRIENDS = @"FRIENDS";
+NSString * const PRIVACY_SECRET = @"SECRET";
 
 @interface Event()
 
@@ -72,6 +77,25 @@ NSString * const RSVP_NOT_INVITED = @"not_invited";
     return [words objectAtIndex:0];
 }
 
+#pragma mark - check whether you can rsvp and/or share
+/**
+ * Check whether you can make a rsvp to the event
+ * These events that allow rsvp typically have the display predefined rsvp above
+ * @return boolean
+ */
+- (BOOL)canRsvp {
+    return ([self canShare] || [self.privacy isEqualToString:PRIVACY_SECRET]);
+}
+
+/**
+ * Check whether you can share the event
+ * There events that allow sharing must be either 'friends of guests' event or 'public' event
+ * @return boolean
+ */
+- (BOOL)canShare {
+    return ([self.privacy isEqualToString:PRIVACY_FRIENDS] || [self.privacy isEqualToString:PRIVACY_OPEN]);
+}
+
 #pragma mark - public methods
 
 /**
@@ -128,15 +152,44 @@ NSString * const RSVP_NOT_INVITED = @"not_invited";
     }
 }
 
+/**
+ * Get rsvp attributed string
+ * @return attributed string
+ */
 - (NSAttributedString *) getRsvpAttributedString {
-    return nil;
-}
-- (NSAttributedString *) getHostAttributedString {
+    NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:13];
+    
+    if ([self.rsvp isEqualToString:RSVP_ATTENDING]) {
+        if ([self.startTime longLongValue] < [TimeSupport getTodayTimeFrameStartTimeInUnix])
+            return [[NSAttributedString alloc] initWithString:@"ATTENDED" attributes:normalStringAttributes];
+        else return [[NSAttributedString alloc] initWithString:@"ATTENDING" attributes:normalStringAttributes];
+    } else if ([self.rsvp isEqualToString:RSVP_UNSURE]) {
+        
+    } else if ([self.rsvp isEqualToString:RSVP_DECLINED]) {
+        
+    }
+    
     return nil;
 }
 
-- (NSAttributedString *) getStartTimeAttributedString {
-    return nil;
+/**
+ * Get the host attributed string
+ * @return attributed string
+ */
+- (NSAttributedString *) getHostAttributedString {
+    if (self.host == nil || [self.host length] ==0) {
+        return nil;
+    } else {
+        //create attributes for the string that we are going to use
+        NSDictionary *italicStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-Italic" andSize:13];
+        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:13];
+        
+        NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
+        [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Host: " attributes:normalStringAttributes]];
+        [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:self.host attributes:italicStringAttributes]];
+        return finalString;
+    }
 }
+
 
 @end

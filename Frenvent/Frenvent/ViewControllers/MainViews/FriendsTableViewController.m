@@ -80,12 +80,17 @@ NSArray *allFriends;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendItem"];
     }
     
+    UIView *bgColorView = [[UIView alloc] init];
+    bgColorView.backgroundColor = [UIColor orangeColor];
+    
+    [cell setSelectedBackgroundView:bgColorView];
+    
     NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
     NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
     Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
     
-    UIImageView *profilePicture = (UIImageView *)[cell viewWithTag:100];
-    UILabel *username = (UILabel *)[cell viewWithTag:101];
+    UIImageView *profilePicture = (UIImageView *)[cell viewWithTag:101];
+    UILabel *username = (UILabel *)[cell viewWithTag:102];
     
     NSString *url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", friend.uid];
     [profilePicture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
