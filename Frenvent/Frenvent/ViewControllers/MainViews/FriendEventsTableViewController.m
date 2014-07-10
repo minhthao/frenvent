@@ -11,6 +11,8 @@
 #import "Event.h"
 #import "EventManager.h"
 #import "UIImageView+AFNetworking.h"
+#import <QuartzCore/QuartzCore.h>
+#import "TimeSupport.h"
 
 @interface FriendEventsTableViewController ()
 
@@ -30,6 +32,7 @@
     return _eventManager;
 }
 
+#pragma mark - view delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -58,19 +61,40 @@
 
 
 // Get the cell in the table
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventItem"];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventItem" forIndexPath:indexPath];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventItem"];
     }
     
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    cell.textLabel.text = event.name;
-    [cell.imageView setImageWithURL:[NSURL URLWithString:event.picture]];
+    
+    UIView *containerView = (UIView *)[cell viewWithTag:200];
+    [containerView.layer setCornerRadius:3.0f];
+    [containerView.layer setMasksToBounds:YES];
+    [containerView.layer setBorderWidth:0.5f];
+    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    
+    UIView *selectionView = (UIView *)[cell viewWithTag:206];
+    [selectionView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    [selectionView.layer setBorderWidth:0.5f];
+    
+    UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:201];
+    UILabel *eventName = (UILabel *)[cell viewWithTag:202];
+    UILabel *eventLocation = (UILabel *)[cell viewWithTag:203];
+    UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:204];
+    UILabel *eventStartTime = (UILabel *)[cell viewWithTag:205];
+
+    [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+    eventName.text = event.name;
+    eventLocation.text = event.location;
+    eventFriendsInterested.attributedText = [event getFriendsInterestedAttributedString];
+    eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
 
     return cell;
 }
+
+
 
 
 /*

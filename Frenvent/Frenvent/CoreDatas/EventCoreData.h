@@ -15,8 +15,12 @@
 + (NSArray *) getEvents:(NSPredicate *)predicates;
 + (NSArray *) getUserPastEvents;
 + (NSArray *) getUserOngoingEvents;
-+ (NSArray *) getNearbyEvents:(double)lowerLongitude :(double)lowerLatitude
-                             :(double)upperLongitude :(double)upperLatitude;
++ (NSArray *) getUserRsvpOngoingEvents;
++ (NSArray *) getUserUnrepliedOngoingEvents;
++ (NSArray *) getNearbyEventsBoundedByLowerLongitude:(double)lowerLongitude
+                                       lowerLatitude:(double)lowerLatitude
+                                      upperLongitude:(double)upperLongitude
+                                       upperLatitude:(double)upperLatitude;
 + (NSArray *) getFriendsEvents;
 + (NSArray *) getEventsWithMatchingName:(NSString *)name;
 + (Event *) getEventWithEid:(NSString *)eid;
@@ -25,19 +29,19 @@
 + (void) removeUserAssociatedEvents;
 + (void) removeEventWithEid:(NSString *)eid;
 
-+ (Event *) addEvent:(NSString *)eid
-                 :(NSString *)name
-                 :(NSString *)picture
-                 :(int64_t)startTime
-                 :(int64_t)endTime
-                 :(NSString *)location
-                 :(double)longitude
-                 :(double)latitude
-                 :(NSString *)host
-                 :(NSString *)privacy
-                 :(int32_t)numInterested
-                 :(NSString *)rsvp;
-+ (Event *) addEvent:(NSDictionary *)eventObj :(NSString *)rsvp;
++ (Event *) addEventUsingEid:(NSString *)eid
+                        name:(NSString *)name
+                     picture:(NSString *)picture
+                   startTime:(int64_t)startTime
+                     endTime:(int64_t)endTime
+                    location:(NSString *)location
+                   longitude:(double)longitude
+                    latitude:(double)latitude
+                        host:(NSString *)host
+                     privacy:(NSString *)privacy
+               numInterested:(int32_t)numInterested
+                        rsvp:(NSString *)rsvp;
++ (Event *) addEvent:(NSDictionary *)eventObj usingRsvp:(NSString *)rsvp;
 
-+ (void) updateEventRsvp:(NSString *)eid :(NSString *)newRsvp; //Still todo the notification callback
++ (void) updateEventWithEid:(NSString *)eid usingRsvp:(NSString *)newRsvp; //Still todo the notification callback
 @end

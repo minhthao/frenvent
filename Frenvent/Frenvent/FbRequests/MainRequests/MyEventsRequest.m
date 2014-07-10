@@ -114,7 +114,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                       NSString *eid = [eventInfo[i][@"eid"] stringValue];
                                       Event *event = [EventCoreData getEventWithEid:eid];
                                       if (event == nil) {
-                                          event = [EventCoreData addEvent:eventInfo[i] :rsvpDictionary[eid]];
+                                          event = [EventCoreData addEvent:eventInfo[i] usingRsvp:rsvpDictionary[eid]];
                                           [newEventsDictionary setObject:event forKey:event.eid];
                                           if (type == QUERY_TYPE_BACKGROUND_SERVICE)
                                               [self handleNewEventInvited:event];
@@ -123,7 +123,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                               if ([event.rsvp isEqualToString:RSVP_NOT_INVITED] && type == QUERY_TYPE_BACKGROUND_SERVICE)
                                                   [self handleNewEventInvited:event];
                                               event.rsvp = rsvpDictionary[eid];
-                                              [EventCoreData updateEventRsvp:eid :rsvpDictionary[eid]];
+                                              [EventCoreData updateEventWithEid:eid usingRsvp:rsvpDictionary[eid]];
                                           }
                                       }
                                       [eventsDictionary setObject:event forKey:event.eid];
@@ -142,7 +142,14 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewEventInvited:(Event *)event {
-    [NotificationCoreData addNotification:[NSNumber numberWithLong:TYPE_NEW_INVITE] :[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]] :@"" :@"" :event.eid :event.name :event.picture :event.startTime];
+    [NotificationCoreData addNotificationWithType:[NSNumber numberWithLong:TYPE_NEW_INVITE]
+                                 notificationTime:[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]]
+                                         friendId:@""
+                                       friendName:@""
+                                              eid:event.eid
+                                        eventName:event.name
+                                     eventPicture:event.picture
+                                   eventStartTime:event.startTime];
 }
 
 #pragma mark - public methods

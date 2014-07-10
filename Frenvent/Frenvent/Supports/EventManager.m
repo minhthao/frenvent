@@ -32,7 +32,7 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
 - (NSMutableArray *)getSectionTitlesArray {
     NSMutableArray *sectionTitles = [[NSMutableArray alloc] init];
     if ([_todayEvents count] > 0) [sectionTitles addObject:TODAY_EVENTS_HEADER];
-    if ([_thisWeekEvents count] > 0) [sectionTitles addObject:THIS_WEEKEND_EVENTS_HEADER];
+    if ([_thisWeekEvents count] > 0) [sectionTitles addObject:THIS_WEEK_EVENTS_HEADER];
     if ([_thisWeekendEvents count] > 0) [sectionTitles addObject:THIS_WEEKEND_EVENTS_HEADER];
     if ([_nextWeekEvents count] > 0) [sectionTitles addObject:NEXT_WEEK_EVENTS_HEADER];
     if ([_otherEvents count] > 0) [sectionTitles addObject:OTHER_EVENTS_HEADER];

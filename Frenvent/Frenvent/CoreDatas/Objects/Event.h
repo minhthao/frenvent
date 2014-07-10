@@ -32,6 +32,10 @@ extern NSString * const RSVP_NOT_INVITED;
 @property (nonatomic, retain) NSString * rsvp;
 @property (nonatomic, retain) NSNumber * startTime;
 @property (nonatomic, retain) NSSet *friendsInterested;
+
+- (NSAttributedString *) getFriendsInterestedAttributedString;
+- (NSAttributedString *) getRsvpAttributedString;
+- (NSAttributedString *) getHostAttributedString;
 @end
 
 @interface Event (CoreDataGeneratedAccessors)

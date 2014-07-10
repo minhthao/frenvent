@@ -181,7 +181,7 @@ static double const DISTANCE_RADIUS = 30;
         NSString *rsvp = RSVP_NOT_INVITED;
 
         if ([EventCoreData getEventWithEid:eid] == nil)
-            [EventCoreData addEvent:eid :name :picture :startTime :endTime :location :longitude :latitude :privacy :host :numInterested :rsvp];
+            [EventCoreData addEventUsingEid:eid name:name picture:picture startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
     }
 }
 
@@ -235,7 +235,7 @@ static double const DISTANCE_RADIUS = 30;
         NSDictionary *dict = [[NSDictionary alloc] initWithDictionary:responseObject];
         NSArray *queriedEvents = [dict objectForKey:RESPONSE_DATA];
         [self processEvents:queriedEvents];
-        [self.delegate notifyNearbyEventsRefreshedWithResults:[EventCoreData getNearbyEvents:lowerLong :lowerLat :upperLong :upperLat]];
+        [self.delegate notifyNearbyEventsRefreshedWithResults:[EventCoreData getNearbyEventsBoundedByLowerLongitude:lowerLong lowerLatitude:lowerLat upperLongitude:upperLong upperLatitude:upperLat]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error getting public events: %@", [error localizedDescription]);
     }];

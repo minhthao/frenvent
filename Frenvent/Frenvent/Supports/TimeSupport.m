@@ -17,7 +17,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
 
 + (NSDateFormatter *) getStandardDateFormat;
 + (BOOL) isDateTimeSpecifiedTheHour: (NSString *)dateTimeInStandardFormat;
-+ (NSString *) getDisplayHour: (NSInteger)dateTimeInUnix;
++ (NSString *) getDisplayHour: (int64_t)dateTimeInUnix;
 + (BOOL) isOfTheSameDay: (NSString *)dateTimeInStandardFormat1
                        : (NSString *)dateTimeInStandardFormat2;
 + (BOOL) isOfTheSameYear: (NSString *)dateTimeInStandardFormat1
@@ -55,7 +55,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param unix time
  * @return time in format "h:mm a"
  */
-+ (NSString *) getDisplayHour:(NSInteger)dateTimeInUnix {
++ (NSString *) getDisplayHour:(int64_t)dateTimeInUnix {
     NSDateFormatter *targetFormat = [[NSDateFormatter alloc] init];
     [targetFormat setDateFormat:@"h:mm a"];
     
@@ -147,7 +147,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param time in standard format
  * @return unix time
  */
-+ (int64_t) getUnixTime: (NSString *)dateTimeInStandardFormat {
++ (int64_t) getUnixTime:(NSString *)dateTimeInStandardFormat {
     NSDateFormatter *standardFormat = [self getStandardDateFormat];
     NSDate *date = [standardFormat dateFromString:dateTimeInStandardFormat];
     return (NSInteger) [date timeIntervalSince1970];
@@ -167,7 +167,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param unix time
  * @return time in standard format
  */
-+ (NSString *) getDateTimeFromUnixTimeInStandardFormat: (NSInteger)dateTimeInUnix {
++ (NSString *) getDateTimeFromUnixTimeInStandardFormat:(int64_t)dateTimeInUnix {
     NSDateFormatter *standardFormat = [self getStandardDateFormat];
     NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval) dateTimeInUnix];
     return [standardFormat stringFromDate:date];
@@ -201,7 +201,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param unix time
  * @return time in display format
  */
-+ (NSString *) getDisplayDateTime: (NSInteger)dateTimeInUnix {
++ (NSString *) getDisplayDateTime:(int64_t)dateTimeInUnix {
     NSString *dateTimeInStandardFormat = [self getDateTimeFromUnixTimeInStandardFormat:dateTimeInUnix];
     NSString *todayInStandardFormat = [self getDateTimeOfTodayInStandardFormat];
     NSString *tomorrowInStandardFormat = [self getDateTimeOfIthDateFromTodayInStandardFormat:1];
@@ -209,9 +209,9 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
     NSDateFormatter *targetFormat = [[NSDateFormatter alloc] init];
     if ([self isDateTimeSpecifiedTheHour:dateTimeInStandardFormat]) {
         if ([self isOfTheSameDay:dateTimeInStandardFormat :todayInStandardFormat]) {
-            [targetFormat setDateFormat:@"'TODAY @' h:mm a"];
+            [targetFormat setDateFormat:@"'Today @' h:mm a"];
         } else if ([self isOfTheSameDay:dateTimeInStandardFormat :tomorrowInStandardFormat]) {
-            [targetFormat setDateFormat:@"'TOMORROW @' h:mm a"];
+            [targetFormat setDateFormat:@"'Tomorrow @' h:mm a"];
         } else if ([self isOfTheSameYear:dateTimeInStandardFormat :todayInStandardFormat]) {
             [targetFormat setDateFormat:@"EEE, MMM d '@' h:mm a"];
         } else {
@@ -219,9 +219,9 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
         }
     } else { //the date did not specified the hours
         if ([self isOfTheSameDay:dateTimeInStandardFormat :todayInStandardFormat]) {
-            return @"TODAY";
+            return @"Today";
         } else if ([self isOfTheSameDay:dateTimeInStandardFormat :tomorrowInStandardFormat]) {
-            return @"TOMORROW";
+            return @"Tomorrow";
         } else if ([self isOfTheSameYear:dateTimeInStandardFormat :todayInStandardFormat]) {
             [targetFormat setDateFormat:@"EEE, MMM d"];
         } else {
@@ -240,8 +240,8 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @param unix time 2 (end time)
  * @return time frame in display format
  */
-+ (NSString *) getFullDisplayDateTime: (NSInteger)startTimeInUnix
-                                     : (NSInteger)endTimeInUnix {
++ (NSString *) getFullDisplayDateTime:(int64_t)startTimeInUnix
+                                     :(int64_t)endTimeInUnix {
     if (endTimeInUnix == 0) {
         return [self getDisplayDateTime:startTimeInUnix];
     } else {

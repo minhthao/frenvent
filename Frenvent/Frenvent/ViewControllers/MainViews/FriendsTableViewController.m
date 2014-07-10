@@ -18,10 +18,14 @@
 @end
 
 @implementation FriendsTableViewController
+
+NSArray *allFriends;
+
 #pragma mark - private class
 - (FriendManager *) friendManager {
     if (_friendManager == nil) {
         _friendManager = [[FriendManager alloc] init];
+        allFriends = [FriendCoreData getAllFriends];
         [self.friendManager setFriends:[FriendCoreData getAllFriends]];
     }
     
@@ -31,7 +35,6 @@
 #pragma mark - view controller methods
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,7 +80,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendItem"];
     }
     
-    // Configure the cell...
     NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
     NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
     Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
@@ -90,6 +92,18 @@
     username.text = friend.name;
     
     return cell;
+}
+
+#pragma mark - search bar delegate
+//handle the case where the new item is typed in the search
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if ([searchText length] > 0) {
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"name contains[c] %@", searchText];
+        NSArray *searchResults = [allFriends filteredArrayUsingPredicate:resultPredicate];
+        [[self friendManager] setFriends:searchResults];
+    } else [[self friendManager] setFriends:allFriends];
+    
+    [self.tableView reloadData];
 }
 
 /*

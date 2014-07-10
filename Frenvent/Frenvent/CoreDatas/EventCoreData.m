@@ -96,8 +96,10 @@
  * Get all the nearby events
  * @return Array of Event
  */
-+ (NSArray *) getNearbyEvents:(double)lowerLongitude :(double)lowerLatitude
-                             :(double)upperLongitude :(double)upperLatitude {
++ (NSArray *) getNearbyEventsBoundedByLowerLongitude:(double)lowerLongitude
+                                       lowerLatitude:(double)lowerLatitude
+                                      upperLongitude:(double)upperLongitude
+                                       upperLatitude:(double)upperLatitude {
     NSPredicate *longitudeExistPredicate = [NSPredicate predicateWithFormat:@"longitude != %f", 0];
     NSPredicate *latitudeExistPredicate =[NSPredicate predicateWithFormat:@"latitude != %f", 0];
     
@@ -132,7 +134,7 @@
  * @param name(partial) of event
  * @return Array of Event
  */
-+ (NSArray *) getEventsWithMatchingName: (NSString *)name {
++ (NSArray *) getEventsWithMatchingName:(NSString *)name {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name LIKE[cd] %@", name];
     return [self getEvents:predicate];
 }
@@ -142,7 +144,7 @@
  * @param eid
  * @return event
  */
-+ (Event *) getEventWithEid: (NSString *)eid {
++ (Event *) getEventWithEid:(NSString *)eid {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
     NSArray *result = [self getEvents:predicate];
     if (result.count > 0) return [result objectAtIndex:0];
@@ -222,11 +224,18 @@
  * @param All event fields
  * @return Event
  */
-+ (Event *) addEvent:(NSString *)eid :(NSString *)name :(NSString *)picture
-                    :(int64_t)startTime :(int64_t)endTime
-                    :(NSString *)location :(double)longitude :(double)latitude
-                    :(NSString *)host :(NSString *)privacy
-                    :(int32_t)numInterested :(NSString *)rsvp {
++ (Event *) addEventUsingEid:(NSString *)eid
+                        name:(NSString *)name
+                     picture:(NSString *)picture
+                   startTime:(int64_t)startTime
+                     endTime:(int64_t)endTime
+                    location:(NSString *)location
+                   longitude:(double)longitude
+                    latitude:(double)latitude
+                        host:(NSString *)host
+                     privacy:(NSString *)privacy
+               numInterested:(int32_t)numInterested
+                        rsvp:(NSString *)rsvp {
     
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event"
@@ -257,7 +266,7 @@
  * @param EventObj
  * @return Event
  */
-+ (Event *) addEvent:(NSDictionary *)eventObj :(NSString *)rsvpStatus{
++ (Event *) addEvent:(NSDictionary *)eventObj usingRsvp:(NSString *)rsvp {
     NSNull *nullInstance = [NSNull null];
     
     NSString *eid = [eventObj[@"eid"] stringValue];
@@ -297,7 +306,7 @@
 
     int32_t numInterested = [eventObj[@"attending_count"] intValue] + [eventObj[@"unsure_count"] intValue];
     
-    return [self addEvent:eid :name :picture :startTime :endTime :location :longitude :latitude :host :privacy :numInterested :rsvpStatus];
+    return [self addEventUsingEid:eid name:name picture:picture startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
 }
 
 #pragma mark - public update methods
@@ -308,7 +317,7 @@
  * @param eid
  * @param rsvp
  */
-+ (void) updateEventRsvp:(NSString *)eid :(NSString *)newRsvp {
++ (void) updateEventWithEid:(NSString *)eid usingRsvp:(NSString *)newRsvp {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
     NSArray *result = [self getEvents:predicate];

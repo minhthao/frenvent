@@ -47,6 +47,7 @@
 		3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */; };
 		3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACE1196C4FFD004AD322 /* FriendManager.m */; };
 		3EAAACE3196C63C5004AD322 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EAAACE5196C63C5004AD322 /* Main.storyboard */; };
+		3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */; };
 		3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE382195A45E90023EF58 /* EventCoreData.m */; };
 		3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3CF195CA1EE0023EF58 /* FriendCoreData.m */; };
 		3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EACE3D5195DFB2D0023EF58 /* LoginViewController.m */; };
@@ -147,6 +148,8 @@
 		3EAAACE0196C4FFD004AD322 /* FriendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendManager.h; path = Supports/FriendManager.h; sourceTree = "<group>"; };
 		3EAAACE1196C4FFD004AD322 /* FriendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendManager.m; path = Supports/FriendManager.m; sourceTree = "<group>"; };
 		3EAAACE4196C63C5004AD322 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3EAAACE6196CB2EC004AD322 /* InvitedEventsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InvitedEventsTableViewController.h; path = ViewControllers/MainViews/InvitedEventsTableViewController.h; sourceTree = "<group>"; };
+		3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InvitedEventsTableViewController.m; path = ViewControllers/MainViews/InvitedEventsTableViewController.m; sourceTree = "<group>"; };
 		3EACE381195A45E90023EF58 /* EventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventCoreData.h; path = CoreDatas/EventCoreData.h; sourceTree = "<group>"; };
 		3EACE382195A45E90023EF58 /* EventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventCoreData.m; path = CoreDatas/EventCoreData.m; sourceTree = "<group>"; };
 		3EACE3CE195CA1EE0023EF58 /* FriendCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendCoreData.h; path = CoreDatas/FriendCoreData.h; sourceTree = "<group>"; };
@@ -464,6 +467,8 @@
 				3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */,
 				3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */,
 				3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */,
+				3EAAACE6196CB2EC004AD322 /* InvitedEventsTableViewController.h */,
+				3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */,
 			);
 			name = MainViews;
 			sourceTree = "<group>";
@@ -602,6 +607,7 @@
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,
+				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
 				3EAAACB6196B5838004AD322 /* Event.m in Sources */,
 				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,

@@ -96,7 +96,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                       NSString *eid = [eventInfo[i][@"eid"] stringValue];
                                       Event *event = [EventCoreData getEventWithEid:eid];
                                       if (event == nil) {
-                                          event = [EventCoreData addEvent:eventInfo[i] :RSVP_NOT_INVITED];
+                                          event = [EventCoreData addEvent:eventInfo[i] usingRsvp:RSVP_NOT_INVITED];
                                           [newEventsDictionary setObject:event forKey:eid];
                                       }
                                       [eventsDictionary setObject:event forKey:eid];
@@ -144,7 +144,14 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param Friend
  */
 - (void) handleNewFriendToEventPairAdded:(Event *)event :(Friend *)friend {
-    [NotificationCoreData addNotification:[NSNumber numberWithLong:TYPE_FRIEND_EVENT] :[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]] :friend.uid :friend.name :event.eid :event.name :event.picture :event.startTime];
+    [NotificationCoreData addNotificationWithType:[NSNumber numberWithLong:TYPE_FRIEND_EVENT]
+                                 notificationTime:[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]]
+                                         friendId:friend.uid
+                                       friendName:friend.name
+                                              eid:event.eid
+                                        eventName:event.name
+                                     eventPicture:event.picture
+                                   eventStartTime:event.startTime];
 }
 
 #pragma mark - public methods

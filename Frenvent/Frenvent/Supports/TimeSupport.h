@@ -10,15 +10,15 @@
 
 @interface TimeSupport : NSObject
 
-+ (NSString *) getDateTimeInStandardFormat: (NSString *)dateTimeInFacebookFormat;
-+ (int64_t) getUnixTime: (NSString *)dateTimeInStandardFormat;
++ (NSString *) getDateTimeInStandardFormat:(NSString *)dateTimeInFacebookFormat;
++ (int64_t) getUnixTime:(NSString *)dateTimeInStandardFormat;
 + (int64_t) getCurrentTimeInUnix;
-+ (NSString *) getDateTimeFromUnixTimeInStandardFormat: (NSInteger)dateTimeInUnix;
++ (NSString *) getDateTimeFromUnixTimeInStandardFormat:(int64_t)dateTimeInUnix;
 + (NSString *) getDateTimeOfTodayInStandardFormat;
-+ (NSString *) getDateTimeOfIthDateFromTodayInStandardFormat: (NSInteger) ithValue;
-+ (NSString *) getDisplayDateTime: (NSInteger)dateTimeInUnix;
-+ (NSString *) getFullDisplayDateTime: (NSInteger)startTimeInUnix
-                                     : (NSInteger)endTimeInUnix;
++ (NSString *) getDateTimeOfIthDateFromTodayInStandardFormat:(NSInteger) ithValue;
++ (NSString *) getDisplayDateTime:(int64_t)dateTimeInUnix;
++ (NSString *) getFullDisplayDateTime:(int64_t)startTimeInUnix
+                                     :(int64_t)endTimeInUnix;
 
 + (int64_t) getTodayTimeFrameStartTimeInUnix;
 + (int64_t) getTodayTimeFrameEndTimeInUnix;

@@ -76,7 +76,14 @@
  * @param whether the notification has been viewed
  * @return notification
  */
-+ (Notification *) addNotification:(NSNumber *)type :(NSNumber *)time :(NSString *)friendId :(NSString *)friendName :(NSString *)eid :(NSString *)eventName :(NSString *)eventPicture :(NSNumber *)eventStartTime {
++ (Notification *) addNotificationWithType:(NSNumber *)type
+                          notificationTime:(NSNumber *)time
+                                  friendId:(NSString *)friendId
+                                friendName:(NSString *)friendName
+                                       eid:(NSString *)eid
+                                 eventName:(NSString *)eventName
+                              eventPicture:(NSString *)eventPicture
+                            eventStartTime:(NSNumber *)eventStartTime {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
                                               inManagedObjectContext:context];
