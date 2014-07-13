@@ -35,6 +35,7 @@ NSArray *allFriends;
 #pragma mark - view controller methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:NO animated:true];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,14 +76,10 @@ NSArray *allFriends;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"friendItem" forIndexPath:indexPath];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendItem"];
-    }
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"friendItem"];
     
     UIView *bgColorView = [[UIView alloc] init];
     bgColorView.backgroundColor = [UIColor orangeColor];
-    
     [cell setSelectedBackgroundView:bgColorView];
     
     NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];

@@ -37,13 +37,17 @@ extern NSString * const PRIVACY_SECRET;
 @property (nonatomic, retain) NSNumber * startTime;
 @property (nonatomic, retain) NSSet *friendsInterested;
 
+@property (nonatomic, strong) NSNumber * distance;
+
 - (BOOL)canRsvp;
 - (BOOL)canShare;
+- (void)computeDistanceToCurrentLocation:(CLLocation *)currentLocation;
 
 // get the display attributed string
 - (NSAttributedString *)getFriendsInterestedAttributedString;
 - (NSAttributedString *)getRsvpAttributedString;
 - (NSAttributedString *)getHostAttributedString;
+- (NSString *)getDistanceString;
 @end
 
 @interface Event (CoreDataGeneratedAccessors)

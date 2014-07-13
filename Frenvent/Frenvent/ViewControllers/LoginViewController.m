@@ -63,7 +63,7 @@
 
         [defaults synchronize];
 
-        if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
+        if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
             [self performSegueWithIdentifier:@"initialize" sender:Nil];
         else [[self locationManager] startUpdatingLocation];
     }
@@ -87,7 +87,7 @@
 #pragma mark - property
 /**
  * Lazily obtain the managed object context
- * @return managed object context
+ * @return location manager
  */
 - (CLLocationManager *)locationManager {
     if (_locationManager == nil) {

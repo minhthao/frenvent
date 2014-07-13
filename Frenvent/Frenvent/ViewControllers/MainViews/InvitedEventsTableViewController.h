@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InvitedEventsTableViewController : UITableViewController
+@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate>
 
 @end

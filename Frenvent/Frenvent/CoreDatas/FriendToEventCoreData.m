@@ -58,7 +58,7 @@
     NSPredicate *uidPredicate = [NSPredicate predicateWithFormat:@"ANY friendsInterested.uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[eidPredicate, uidPredicate]];
     
-    NSArray *events = [EventCoreData getEvents:predicates];
+    NSArray *events = [EventCoreData getEvents:predicates sortByDateAsc:true];
     if (events.count > 0) return TRUE;
     return FALSE;
 }
@@ -73,7 +73,7 @@
     NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
     
-    return [EventCoreData getEvents:predicates];
+    return [EventCoreData getEvents:predicates sortByDateAsc:true];
 }
 
 /**
@@ -86,7 +86,7 @@
     NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
     
-    return [EventCoreData getEvents:predicates];
+    return [EventCoreData getEvents:predicates sortByDateAsc:true];
 }
 
 @end

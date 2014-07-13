@@ -40,7 +40,7 @@ NSInteger numMyEvents;
     
     numQueriesDone = 0;
     
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
     else numQueriesDone++;
     
@@ -116,7 +116,7 @@ NSInteger numMyEvents;
 #pragma mark - private methods
 /**
  * Lazily obtain the managed object context
- * @return managed object context
+ * @return location manager
  */
 - (CLLocationManager *)locationManager {
     if (_locationManager == nil) {

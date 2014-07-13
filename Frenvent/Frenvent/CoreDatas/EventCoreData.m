@@ -35,14 +35,19 @@
  * Get fetched event using the set of predicates
  * @return Array of Event
  */
-+ (NSArray *) getEvents:(NSPredicate *)predicates {
++ (NSArray *) getEvents:(NSPredicate *)predicates sortByDateAsc:(BOOL)isAsc{
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event"
                                               inManagedObjectContext:context];
     
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"startTime" ascending:isAsc selector:nil];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sort, nil];
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entity];
     [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
     if (predicates != nil) [fetchRequest setPredicate:predicates];
     
     NSError *error = nil;
@@ -52,7 +57,6 @@
     
     return events;
 }
-
 
 /**
  * Get user's past events
@@ -70,7 +74,7 @@
     
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
     
-    return [self getEvents:predicates];
+    return [self getEvents:predicates sortByDateAsc:false];
 }
 
 /**
@@ -89,7 +93,40 @@
     
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
     
-    return [self getEvents:predicates];
+    return [self getEvents:predicates sortByDateAsc:true];
+}
+
+/**
+ * Get the user's ongoing events - the one which they rsvped
+ * @return Array of Event
+ */
++ (NSArray *) getUserRepliedOngoingEvents {
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    
+    NSPredicate *attendingRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_ATTENDING];
+    NSPredicate *unsureRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_UNSURE];
+    NSPredicate *declinedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_DECLINED];
+    
+    NSPredicate *rsvpPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[attendingRsvpPredicate, unsureRsvpPredicate, declinedRsvpPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    
+    return [self getEvents:predicates sortByDateAsc:true];
+
+}
+
+/**
+ * Get the user's ongoing events - the one which they had not replied
+ * @return Array of Event
+ */
++ (NSArray *) getUserUnrepliedOngoingEvents {
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *rsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_NOT_REPLIED];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    
+    return [self getEvents:predicates sortByDateAsc:true];
+
 }
 
 /**
@@ -112,7 +149,7 @@
     
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[longitudeExistPredicate, latitudeExistPredicate, lowerLngPredicate, lowerLatPredicate, upperLngPredicate, upperLatPredicate, timePredicate]];
     
-    return [self getEvents:predicates];
+    return [self getEvents:predicates sortByDateAsc:true];
 }
 
 /**
@@ -126,7 +163,7 @@
     
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, friendsPredicate]];
     
-    return [self getEvents:predicates];
+    return [self getEvents:predicates sortByDateAsc:true];
 }
 
 /**
@@ -136,7 +173,7 @@
  */
 + (NSArray *) getEventsWithMatchingName:(NSString *)name {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name LIKE[cd] %@", name];
-    return [self getEvents:predicate];
+    return [self getEvents:predicate sortByDateAsc:true];
 }
 
 /**
@@ -146,7 +183,7 @@
  */
 + (Event *) getEventWithEid:(NSString *)eid {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
-    NSArray *result = [self getEvents:predicate];
+    NSArray *result = [self getEvents:predicate sortByDateAsc:true];
     if (result.count > 0) return [result objectAtIndex:0];
     return nil;
 }
@@ -158,7 +195,7 @@
  * Typically, we should only use this on login out
  */
 + (void) removeAllEvents {
-    NSArray *items = [self getEvents:nil];
+    NSArray *items = [self getEvents:nil sortByDateAsc:true];
     NSManagedObjectContext *context = [self managedObjectContext];
     
     for (NSManagedObject *managedObject in items) {
@@ -187,7 +224,7 @@
     
     NSPredicate *predicates = [NSCompoundPredicate orPredicateWithSubpredicates:@[rsvpPredicate, friendsPredicate]];
     
-    NSArray *items = [self getEvents:predicates];
+    NSArray *items = [self getEvents:predicates sortByDateAsc:true];
     NSManagedObjectContext *context = [self managedObjectContext];
     
     for (NSManagedObject *managedObject in items) {
@@ -196,8 +233,6 @@
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error deleting events - error:%@", error);
-
-    //TODO provide the call back to say that the process of removal has finished
 }
 
 /**
@@ -206,7 +241,7 @@
  */
 + (void) removeEventWithEid:(NSString *)eid {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
-    NSArray *items = [self getEvents:predicate];
+    NSArray *items = [self getEvents:predicate sortByDateAsc:true];
     NSManagedObjectContext *context = [self managedObjectContext];
     
     for (NSManagedObject *managedObject in items) {
@@ -320,7 +355,7 @@
 + (void) updateEventWithEid:(NSString *)eid usingRsvp:(NSString *)newRsvp {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eid = %@", eid];
-    NSArray *result = [self getEvents:predicate];
+    NSArray *result = [self getEvents:predicate sortByDateAsc:true];
     if (result.count > 0) {
         Event *event = [result objectAtIndex:0];
         if (![event.rsvp isEqualToString:newRsvp]) {

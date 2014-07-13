@@ -71,8 +71,8 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  */
 + (BOOL) isOfTheSameDay:(NSString *)dateTimeInStandardFormat1
                        :(NSString *)dateTimeInStandardFormat2 {
-    NSString *date1Day = [dateTimeInStandardFormat1 substringFromIndex:10];
-    NSString *date2Day = [dateTimeInStandardFormat2 substringFromIndex:10];
+    NSString *date1Day = [dateTimeInStandardFormat1 substringToIndex:10];
+    NSString *date2Day = [dateTimeInStandardFormat2 substringToIndex:10];
     return [date1Day isEqualToString:date2Day];
 }
 
@@ -84,8 +84,8 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  */
 + (BOOL) isOfTheSameYear:(NSString *)dateTimeInStandardFormat1
                         :(NSString *)dateTimeInStandardFormat2 {
-    NSString *date1Day = [dateTimeInStandardFormat1 substringFromIndex:4];
-    NSString *date2Day = [dateTimeInStandardFormat2 substringFromIndex:4];
+    NSString *date1Day = [dateTimeInStandardFormat1 substringToIndex:4];
+    NSString *date2Day = [dateTimeInStandardFormat2 substringToIndex:4];
     return [date1Day isEqualToString:date2Day];
 }
 

@@ -23,6 +23,15 @@
     return image;
 }
 
+//get the ui image using the provided image name. The image should have png extension
++ (UIImage *) imageWithName:(NSString *)name {
+    NSMutableString *fullImageName = [[NSMutableString alloc] init];
+    [fullImageName appendString:name];
+    if ([UIScreen mainScreen].scale == 2) [fullImageName appendString:@"@2x"];
+    
+    return [UIImage imageNamed:fullImageName];
+}
+
 #pragma mark - Color for event cell button background and text
 //buttons container border color
 + (UIColor *) eventCellButtonsContainerBorderColor {
@@ -41,7 +50,7 @@
 
 //normal text
 + (UIColor *) eventCellButtonNormalTextColor {
-    return [UIColor lightGrayColor];
+    return [UIColor colorWithRed:67/255.0 green:74/255.0 blue:135/255.0 alpha:1.0];
 }
 
 //highlight text

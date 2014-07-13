@@ -20,6 +20,8 @@ NSString * const PRIVACY_OPEN = @"OPEN";
 NSString * const PRIVACY_FRIENDS = @"FRIENDS";
 NSString * const PRIVACY_SECRET = @"SECRET";
 
+static double const METER_IN_MILE = 1609.344;
+
 @interface Event()
 
 - (NSDictionary *) getAttributesForStringWithFont:(NSString *)fontName andSize:(NSInteger)fontSize;
@@ -42,6 +44,8 @@ NSString * const PRIVACY_SECRET = @"SECRET";
 @dynamic rsvp;
 @dynamic startTime;
 @dynamic friendsInterested;
+
+@synthesize distance;
 
 #pragma mark - private methods
 /**
@@ -96,7 +100,22 @@ NSString * const PRIVACY_SECRET = @"SECRET";
     return ([self.privacy isEqualToString:PRIVACY_FRIENDS] || [self.privacy isEqualToString:PRIVACY_OPEN]);
 }
 
-#pragma mark - public methods
+#pragma mark - distance
+/**
+ * Given a location, compute the distance between the event and this location
+ * @param CLLocation
+ */
+- (void)computeDistanceToCurrentLocation:(CLLocation *)currentLocation {
+    if (self.longitude != nil && [self.longitude doubleValue] != 0 &&
+        self.latitude != nil && [self.latitude doubleValue] != 0) {
+        CLLocation *eventLocation = [[CLLocation alloc] initWithLatitude:[self.latitude doubleValue] longitude:[self.longitude doubleValue]];
+        CLLocationDistance distanceInMeters = [eventLocation distanceFromLocation:currentLocation];
+        
+        self.distance = [NSNumber numberWithDouble:distanceInMeters/METER_IN_MILE];
+    }
+}
+
+#pragma mark - attributed string methods
 
 /**
  * Get the displayable attributed string for the friends that are interested in event
@@ -110,8 +129,8 @@ NSString * const PRIVACY_SECRET = @"SECRET";
         NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
         
         //create attributes for the string that we are going to use
-        NSDictionary *italicStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-Italic" andSize:13];
-        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:13];
+        NSDictionary *italicStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-BoldItalic" andSize:14];
+        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:14];
         
         //we get the first name of your friend
         NSString *firstFriendName = [self getTheShortenNameOfFriend:[interestedFriends objectAtIndex:0]];
@@ -157,17 +176,16 @@ NSString * const PRIVACY_SECRET = @"SECRET";
  * @return attributed string
  */
 - (NSAttributedString *) getRsvpAttributedString {
-    NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:13];
+    NSDictionary *rsvpStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-BoldItalic" andSize:13];
     
-    if ([self.rsvp isEqualToString:RSVP_ATTENDING]) {
-        if ([self.startTime longLongValue] < [TimeSupport getTodayTimeFrameStartTimeInUnix])
-            return [[NSAttributedString alloc] initWithString:@"ATTENDED" attributes:normalStringAttributes];
-        else return [[NSAttributedString alloc] initWithString:@"ATTENDING" attributes:normalStringAttributes];
-    } else if ([self.rsvp isEqualToString:RSVP_UNSURE]) {
+    if ([self.rsvp isEqualToString:RSVP_ATTENDING])
+       return [[NSAttributedString alloc] initWithString:@"JOINED" attributes:rsvpStringAttributes];
+    
+    if ([self.rsvp isEqualToString:RSVP_UNSURE])
+        return [[NSAttributedString alloc] initWithString:@"MAYBE" attributes:rsvpStringAttributes];
         
-    } else if ([self.rsvp isEqualToString:RSVP_DECLINED]) {
-        
-    }
+    if ([self.rsvp isEqualToString:RSVP_DECLINED])
+        return [[NSAttributedString alloc] initWithString:@"DECLINED" attributes:rsvpStringAttributes];
     
     return nil;
 }
@@ -188,6 +206,21 @@ NSString * const PRIVACY_SECRET = @"SECRET";
         [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Host: " attributes:normalStringAttributes]];
         [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:self.host attributes:italicStringAttributes]];
         return finalString;
+    }
+}
+
+/**
+ * Get the distance string
+ * @return string
+ */
+- (NSString *)getDistanceString {
+    if (self.distance == nil || [self.distance doubleValue] == 0) {
+        return @"N/A";
+    } else {
+        double eDistance = [self.distance doubleValue];
+        if (eDistance >= 10 && eDistance < 1000) return [NSString stringWithFormat:@"%d mi.", (int)eDistance];
+        else if (eDistance >= 1000) return @"1k+ mi.";
+        else return [NSString stringWithFormat:@"%.1g mi.", eDistance];
     }
 }
 

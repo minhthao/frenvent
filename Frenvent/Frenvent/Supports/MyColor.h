@@ -10,7 +10,9 @@
 
 @interface MyColor : UIColor
 
+//create a ui image from either a color or a string
 + (UIImage *) imageWithColor:(UIColor *)color;
++ (UIImage *) imageWithName:(NSString *)name;
 
 //for event cells button
 + (UIColor *) eventCellButtonsContainerBorderColor;

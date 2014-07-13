@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FriendEventsTableViewController : UITableViewController
+@interface FriendEventsTableViewController : UITableViewController <CLLocationManagerDelegate>
 
 @end

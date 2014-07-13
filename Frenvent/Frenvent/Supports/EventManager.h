@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSMutableArray *otherEvents;
 
 - (void)setEvents:(NSArray *)eventsArray;
+- (void)setEvents:(NSArray *)eventsArray withCurrentLocation:(CLLocation *)currentLocation;
+- (void)setCurrentLocation:(CLLocation *)currentLocation;
 - (NSInteger) getNumberOfSections;
 - (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
 - (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;

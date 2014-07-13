@@ -16,12 +16,6 @@ static NSString * const THIS_WEEKEND_EVENTS_HEADER = @"THIS WEEKEND";
 static NSString * const NEXT_WEEK_EVENTS_HEADER = @"NEXT WEEK";
 static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
 
-@interface EventManager()
-
-- (NSMutableArray *)getSectionTitlesArray;
-
-@end
-
 @implementation EventManager
 
 #pragma mark - private method
@@ -40,13 +34,10 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
     return sectionTitles;
 }
 
-#pragma mark - public methods
 /**
- * Set the events
- * This will classified the events into 5 separate category by time
- * @param Array of Event
+ * Reset all the event arrays to empty state
  */
-- (void)setEvents:(NSArray *)eventsArray {
+- (void)resetEventArrays {
     if (_todayEvents == nil) _todayEvents = [[NSMutableArray alloc] init];
     else [_todayEvents removeAllObjects];
     
@@ -61,21 +52,79 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
     
     if (_otherEvents == nil) _otherEvents = [[NSMutableArray alloc] init];
     else [_otherEvents removeAllObjects];
-    
-    for (Event *event in eventsArray) {
-        if ([event.startTime longLongValue] >= [TimeSupport getTodayTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getTodayTimeFrameStartTimeInUnix]) {
-            [_todayEvents addObject:event];
-        } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekendTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekendTimeFrameEndTimeInUnix]) {
-            [_thisWeekendEvents addObject:event];
-        } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekTimeFrameEndTimeInUnix]) {
-            [_thisWeekEvents addObject:event];
-        } else if ([event.startTime longLongValue] >= [TimeSupport getNextWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getNextWeekTimeFrameEndTimeInUnix]) {
-            [_nextWeekEvents addObject:event];
-        } else {
-            [_otherEvents addObject:event];
-        }
+}
+
+/**
+ * Set the date category of the event
+ * @param Event
+ */
+- (void)setEventCategory:(Event *)event {
+    if ([event.startTime longLongValue] >= [TimeSupport getTodayTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getTodayTimeFrameEndTimeInUnix]) {
+        [_todayEvents addObject:event];
+    } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekendTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekendTimeFrameEndTimeInUnix]) {
+        [_thisWeekendEvents addObject:event];
+    } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekTimeFrameEndTimeInUnix]) {
+        [_thisWeekEvents addObject:event];
+    } else if ([event.startTime longLongValue] >= [TimeSupport getNextWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getNextWeekTimeFrameEndTimeInUnix]) {
+        [_nextWeekEvents addObject:event];
+    } else {
+        [_otherEvents addObject:event];
     }
 }
+
+#pragma mark - public methods
+/**
+ * Set the events
+ * This will classified the events into 5 separate category by time
+ * @param Array of Event
+ */
+- (void)setEvents:(NSArray *)eventsArray {
+    [self resetEventArrays];
+    for (Event *event in eventsArray) {
+        [self setEventCategory:event];
+    }
+}
+
+/**
+ * Set the events and compute the distance using the current location
+ * This will classified the events into 5 separate category by time
+ * @param Array of Event
+ * @param CLLocation
+ */
+- (void)setEvents:(NSArray *)eventsArray withCurrentLocation:(CLLocation *)currentLocation {
+    [self resetEventArrays];
+    for (Event *event in eventsArray) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+        [self setEventCategory:event];
+    }
+}
+
+/**
+ * Set the current location to compute the distance of each event
+ * @param CLLocation
+ */
+- (void)setCurrentLocation:(CLLocation *)currentLocation {
+    for (Event *event in _todayEvents) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+    }
+    
+    for (Event *event in _thisWeekendEvents) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+    }
+    
+    for (Event *event in _thisWeekEvents) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+    }
+    
+    for (Event *event in _nextWeekEvents) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+    }
+    
+    for (Event *event in _otherEvents) {
+        [event computeDistanceToCurrentLocation:currentLocation];
+    }
+}
+
 
 /**
  * Get the number of session to be display in the table view. 
