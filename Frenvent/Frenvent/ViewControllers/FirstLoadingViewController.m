@@ -99,6 +99,7 @@ NSInteger numMyEvents;
 
 //delegate for DbUserRequest
 - (void) notifyLoginUserRegistered {
+    [super viewDidDisappear:true];
     [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
 }
 

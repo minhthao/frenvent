@@ -32,7 +32,6 @@
 		3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA019666807004AD322 /* NotificationCoreData.m */; };
 		3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */; };
 		3EAAACA7196A186D004AD322 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA6196A186D004AD322 /* EventManager.m */; };
-		3EAAACB6196B5838004AD322 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACB5196B5838004AD322 /* Event.m */; };
 		3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACBE196B5C00004AD322 /* FriendToEventCoreData.m */; };
 		3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACC2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m */; };
 		3EAAACD3196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACC4196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m */; };
@@ -77,9 +76,16 @@
 		3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106119721D4700963155 /* TrashEventsTableViewController.m */; };
 		3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106419721D6400963155 /* SettingsTableViewController.m */; };
 		3ECF10681972246000963155 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10671972246000963155 /* LogoutViewController.m */; };
-		3ECF106B19732DF700963155 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106A19732DF700963155 /* Notification.m */; };
-		3ECF106E19732DF800963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106D19732DF800963155 /* Friend.m */; };
 		3ECF10711974AECF00963155 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10701974AECF00963155 /* NotificationManager.m */; };
+		3ECF10741974B77D00963155 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10731974B77D00963155 /* Notification.m */; };
+		3ECF10771974B77E00963155 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10761974B77E00963155 /* Event.m */; };
+		3ECF107A1974B77E00963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10791974B77E00963155 /* Friend.m */; };
+		3ECF10881974D88900963155 /* NSMutableArray+SWUtilityButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF107D1974D88900963155 /* NSMutableArray+SWUtilityButtons.m */; };
+		3ECF10891974D88900963155 /* SWCellScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF107F1974D88900963155 /* SWCellScrollView.m */; };
+		3ECF108A1974D88900963155 /* SWLongPressGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10811974D88900963155 /* SWLongPressGestureRecognizer.m */; };
+		3ECF108B1974D88900963155 /* SWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10831974D88900963155 /* SWTableViewCell.m */; };
+		3ECF108C1974D88900963155 /* SWUtilityButtonTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10851974D88900963155 /* SWUtilityButtonTapGestureRecognizer.m */; };
+		3ECF108D1974D88900963155 /* SWUtilityButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10871974D88900963155 /* SWUtilityButtonView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,8 +135,6 @@
 		3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendEventsTableViewController.m; path = ViewControllers/MainViews/FriendEventsTableViewController.m; sourceTree = "<group>"; };
 		3EAAACA5196A186D004AD322 /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventManager.h; path = Supports/EventManager.h; sourceTree = "<group>"; };
 		3EAAACA6196A186D004AD322 /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventManager.m; path = Supports/EventManager.m; sourceTree = "<group>"; };
-		3EAAACB4196B5838004AD322 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
-		3EAAACB5196B5838004AD322 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
 		3EAAACBD196B5C00004AD322 /* FriendToEventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendToEventCoreData.h; path = CoreDatas/FriendToEventCoreData.h; sourceTree = "<group>"; };
 		3EAAACBE196B5C00004AD322 /* FriendToEventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendToEventCoreData.m; path = CoreDatas/FriendToEventCoreData.m; sourceTree = "<group>"; };
 		3EAAACC1196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
@@ -215,12 +219,26 @@
 		3ECF106419721D6400963155 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = ViewControllers/SubViews/SettingsTableViewController.m; sourceTree = "<group>"; };
 		3ECF10661972246000963155 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoutViewController.h; path = ViewControllers/LogoutViewController.h; sourceTree = "<group>"; };
 		3ECF10671972246000963155 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutViewController.m; path = ViewControllers/LogoutViewController.m; sourceTree = "<group>"; };
-		3ECF106919732DF700963155 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
-		3ECF106A19732DF700963155 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
-		3ECF106C19732DF800963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
-		3ECF106D19732DF800963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
 		3ECF106F1974AECF00963155 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationManager.h; path = Supports/NotificationManager.h; sourceTree = "<group>"; };
 		3ECF10701974AECF00963155 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationManager.m; path = Supports/NotificationManager.m; sourceTree = "<group>"; };
+		3ECF10721974B77D00963155 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
+		3ECF10731974B77D00963155 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
+		3ECF10751974B77E00963155 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
+		3ECF10761974B77E00963155 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
+		3ECF10781974B77E00963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
+		3ECF10791974B77E00963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
+		3ECF107C1974D88900963155 /* NSMutableArray+SWUtilityButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+SWUtilityButtons.h"; path = "Libs/SWTableViewCell/NSMutableArray+SWUtilityButtons.h"; sourceTree = "<group>"; };
+		3ECF107D1974D88900963155 /* NSMutableArray+SWUtilityButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableArray+SWUtilityButtons.m"; path = "Libs/SWTableViewCell/NSMutableArray+SWUtilityButtons.m"; sourceTree = "<group>"; };
+		3ECF107E1974D88900963155 /* SWCellScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWCellScrollView.h; path = Libs/SWTableViewCell/SWCellScrollView.h; sourceTree = "<group>"; };
+		3ECF107F1974D88900963155 /* SWCellScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWCellScrollView.m; path = Libs/SWTableViewCell/SWCellScrollView.m; sourceTree = "<group>"; };
+		3ECF10801974D88900963155 /* SWLongPressGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWLongPressGestureRecognizer.h; path = Libs/SWTableViewCell/SWLongPressGestureRecognizer.h; sourceTree = "<group>"; };
+		3ECF10811974D88900963155 /* SWLongPressGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWLongPressGestureRecognizer.m; path = Libs/SWTableViewCell/SWLongPressGestureRecognizer.m; sourceTree = "<group>"; };
+		3ECF10821974D88900963155 /* SWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWTableViewCell.h; path = Libs/SWTableViewCell/SWTableViewCell.h; sourceTree = "<group>"; };
+		3ECF10831974D88900963155 /* SWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWTableViewCell.m; path = Libs/SWTableViewCell/SWTableViewCell.m; sourceTree = "<group>"; };
+		3ECF10841974D88900963155 /* SWUtilityButtonTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWUtilityButtonTapGestureRecognizer.h; path = Libs/SWTableViewCell/SWUtilityButtonTapGestureRecognizer.h; sourceTree = "<group>"; };
+		3ECF10851974D88900963155 /* SWUtilityButtonTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWUtilityButtonTapGestureRecognizer.m; path = Libs/SWTableViewCell/SWUtilityButtonTapGestureRecognizer.m; sourceTree = "<group>"; };
+		3ECF10861974D88900963155 /* SWUtilityButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWUtilityButtonView.h; path = Libs/SWTableViewCell/SWUtilityButtonView.h; sourceTree = "<group>"; };
+		3ECF10871974D88900963155 /* SWUtilityButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWUtilityButtonView.m; path = Libs/SWTableViewCell/SWUtilityButtonView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,12 +441,12 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				3ECF106C19732DF800963155 /* Friend.h */,
-				3ECF106D19732DF800963155 /* Friend.m */,
-				3ECF106919732DF700963155 /* Notification.h */,
-				3ECF106A19732DF700963155 /* Notification.m */,
-				3EAAACB4196B5838004AD322 /* Event.h */,
-				3EAAACB5196B5838004AD322 /* Event.m */,
+				3ECF10781974B77E00963155 /* Friend.h */,
+				3ECF10791974B77E00963155 /* Friend.m */,
+				3ECF10751974B77E00963155 /* Event.h */,
+				3ECF10761974B77E00963155 /* Event.m */,
+				3ECF10721974B77D00963155 /* Notification.h */,
+				3ECF10731974B77D00963155 /* Notification.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -451,6 +469,7 @@
 		3EACE3DF195E2CD90023EF58 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3ECF107B1974D85200963155 /* SWTableViewCell */,
 				3EAAACC0196B7CC3004AD322 /* UIKit+AFNetworking */,
 				3EACE3E0195E2CF20023EF58 /* AFNetworking */,
 			);
@@ -550,6 +569,25 @@
 				3ECF106419721D6400963155 /* SettingsTableViewController.m */,
 			);
 			name = SubViews;
+			sourceTree = "<group>";
+		};
+		3ECF107B1974D85200963155 /* SWTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				3ECF107C1974D88900963155 /* NSMutableArray+SWUtilityButtons.h */,
+				3ECF107D1974D88900963155 /* NSMutableArray+SWUtilityButtons.m */,
+				3ECF107E1974D88900963155 /* SWCellScrollView.h */,
+				3ECF107F1974D88900963155 /* SWCellScrollView.m */,
+				3ECF10801974D88900963155 /* SWLongPressGestureRecognizer.h */,
+				3ECF10811974D88900963155 /* SWLongPressGestureRecognizer.m */,
+				3ECF10821974D88900963155 /* SWTableViewCell.h */,
+				3ECF10831974D88900963155 /* SWTableViewCell.m */,
+				3ECF10841974D88900963155 /* SWUtilityButtonTapGestureRecognizer.h */,
+				3ECF10851974D88900963155 /* SWUtilityButtonTapGestureRecognizer.m */,
+				3ECF10861974D88900963155 /* SWUtilityButtonView.h */,
+				3ECF10871974D88900963155 /* SWUtilityButtonView.m */,
+			);
+			name = SWTableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -656,28 +694,35 @@
 				3ECF10591971FBD500963155 /* PastEventsTableViewController.m in Sources */,
 				3ECF10681972246000963155 /* LogoutViewController.m in Sources */,
 				3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */,
+				3ECF10881974D88900963155 /* NSMutableArray+SWUtilityButtons.m in Sources */,
 				3E57FB681959587400D3293D /* TimeSupport.m in Sources */,
 				3ECF105F19721D0A00963155 /* FavoriteEventsTableViewController.m in Sources */,
 				3EAAACD6196B7CC3004AD322 /* UIImageView+AFNetworking.m in Sources */,
 				3EAAACD9196B7CC3004AD322 /* UIWebView+AFNetworking.m in Sources */,
 				3ECF10521970C45A00963155 /* MyEventManager.m in Sources */,
 				3EAAACA7196A186D004AD322 /* EventManager.m in Sources */,
+				3ECF108A1974D88900963155 /* SWLongPressGestureRecognizer.m in Sources */,
 				3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
+				3ECF10771974B77E00963155 /* Event.m in Sources */,
+				3ECF108D1974D88900963155 /* SWUtilityButtonView.m in Sources */,
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */,
 				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
+				3ECF10891974D88900963155 /* SWCellScrollView.m in Sources */,
 				3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
+				3ECF108B1974D88900963155 /* SWTableViewCell.m in Sources */,
 				3ECF10551970DC6000963155 /* MoreTableViewController.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
-				3ECF106E19732DF800963155 /* Friend.m in Sources */,
+				3ECF108C1974D88900963155 /* SWUtilityButtonTapGestureRecognizer.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
+				3ECF107A1974B77E00963155 /* Friend.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -694,12 +739,11 @@
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
+				3ECF10741974B77D00963155 /* Notification.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,
-				3ECF106B19732DF700963155 /* Notification.m in Sources */,
 				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
-				3EAAACB6196B5838004AD322 /* Event.m in Sources */,
 				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -833,9 +877,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
+				IBSC_WARNINGS = YES;
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -853,9 +898,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
+				IBSC_WARNINGS = YES;
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

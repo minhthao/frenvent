@@ -63,12 +63,12 @@
                     <connections>
                         <outlet property="loginView" destination="Rxt-fb-LvP" id="oec-1M-vUs"/>
                         <segue destination="xh3-kP-8fO" kind="modal" identifier="initialize" customClass="UIStoryboardPopoverSegue" id="rVc-Jt-2Rm"/>
-                        <segue destination="Rfq-JU-Qjd" kind="modal" identifier="mainViewWithoutInitialize" id="aI2-9d-3se"/>
+                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithoutInitialize" id="4vS-c0-i6m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdw-0P-bYu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1304" y="-59"/>
+            <point key="canvasLocation" x="-886" y="-69"/>
         </scene>
         <!--Friend Events Table View Controller - Recommended Events-->
         <scene sceneID="FkG-mq-YQz">
@@ -235,12 +235,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="u6n-a3-HC1"/>
                     <connections>
-                        <segue destination="Rfq-JU-Qjd" kind="modal" identifier="mainViewWithInitialize" id="jvg-dd-oxN"/>
+                        <segue destination="Vt3-Mt-RmT" kind="modal" identifier="mainViewWithInitialize" id="tPR-ZG-VdO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MsM-nn-jTy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-759" y="-497"/>
+            <point key="canvasLocation" x="-341" y="-507"/>
         </scene>
         <!--Navigation Controller - Friends-->
         <scene sceneID="gZq-0O-zgr">
@@ -295,7 +295,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E9h-v3-5dX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-563" y="1963"/>
+            <point key="canvasLocation" x="-371" y="1931"/>
         </scene>
         <!--More Table View Controller - More-->
         <scene sceneID="MM4-JB-5IW">
@@ -688,22 +688,6 @@
             </objects>
             <point key="canvasLocation" x="1303" y="921"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="aWz-fq-iHA">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="Rfq-JU-Qjd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Kwj-jv-CFf">
-                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Vt3-Mt-RmT" kind="relationship" relationship="rootViewController" id="5rL-G6-b4v"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Dn-ey-1D6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-321" y="249"/>
-        </scene>
         <!--Tab Bar Controller - Main View-->
         <scene sceneID="W4S-NU-bEB">
             <objects>
@@ -927,6 +911,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="jvg-dd-oxN"/>
+        <segue reference="tPR-ZG-VdO"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -336,7 +336,7 @@
                                               inManagedObjectContext:context];
     
     Event *event = [[Event alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-    event.markType = 0;
+    event.markType = [NSNumber numberWithInt:MARK_TYPE_NORMAL];
     event.eid = eid;
     event.name = name;
     event.picture =  picture;

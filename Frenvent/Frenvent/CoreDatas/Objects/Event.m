@@ -2,12 +2,13 @@
 //  Event.m
 //  Frenvent
 //
-//  Created by minh thao nguyen on 7/7/14.
+//  Created by minh thao nguyen on 7/14/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import "Event.h"
 #import "Friend.h"
+#import "Notification.h"
 #import "TimeSupport.h"
 
 NSString * const RSVP_ATTENDING = @"attending";
@@ -26,16 +27,8 @@ int32_t const MARK_TYPE_HIDDEN = 2;
 
 static double const METER_IN_MILE = 1609.344;
 
-@interface Event()
-
-- (NSDictionary *) getAttributesForStringWithFont:(NSString *)fontName andSize:(NSInteger)fontSize;
-- (NSString *) getTheShortenNameOfFriend:(Friend *)friend;
-
-@end
-
 @implementation Event
 
-@dynamic markType;
 @dynamic eid;
 @dynamic endTime;
 @dynamic host;
@@ -48,9 +41,12 @@ static double const METER_IN_MILE = 1609.344;
 @dynamic privacy;
 @dynamic rsvp;
 @dynamic startTime;
+@dynamic markType;
 @dynamic friendsInterested;
+@dynamic notifications;
 
 @synthesize distance;
+
 
 #pragma mark - private methods
 /**
@@ -151,7 +147,7 @@ static double const METER_IN_MILE = 1609.344;
             //now we add in the word ' and ' to separate the two indicators
             NSAttributedString *andConjunction = [[NSAttributedString alloc] initWithString:@" and " attributes:normalStringAttributes];
             [finalString appendAttributedString:andConjunction];
-
+            
             if ([interestedFriends count] == 2) {
                 //if two of your friends are interested in this event
                 NSString *secondFriendName = [self getTheShortenNameOfFriend:[interestedFriends objectAtIndex:1]];
@@ -184,11 +180,11 @@ static double const METER_IN_MILE = 1609.344;
     NSDictionary *rsvpStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-BoldItalic" andSize:13];
     
     if ([self.rsvp isEqualToString:RSVP_ATTENDING])
-       return [[NSAttributedString alloc] initWithString:@"JOINED" attributes:rsvpStringAttributes];
+        return [[NSAttributedString alloc] initWithString:@"JOINED" attributes:rsvpStringAttributes];
     
     if ([self.rsvp isEqualToString:RSVP_UNSURE])
         return [[NSAttributedString alloc] initWithString:@"MAYBE" attributes:rsvpStringAttributes];
-        
+    
     if ([self.rsvp isEqualToString:RSVP_DECLINED])
         return [[NSAttributedString alloc] initWithString:@"DECLINED" attributes:rsvpStringAttributes];
     

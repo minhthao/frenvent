@@ -2,17 +2,17 @@
 //  Notification.h
 //  Frenvent
 //
-//  Created by minh thao nguyen on 7/13/14.
+//  Created by minh thao nguyen on 7/14/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class Event, Friend;
+
 extern NSInteger const TYPE_NEW_INVITE;
 extern NSInteger const TYPE_FRIEND_EVENT;
-
-@class Event, Friend;
 
 @interface Notification : NSManagedObject
 

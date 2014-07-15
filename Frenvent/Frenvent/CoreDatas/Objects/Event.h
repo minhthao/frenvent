@@ -2,14 +2,14 @@
 //  Event.h
 //  Frenvent
 //
-//  Created by minh thao nguyen on 7/7/14.
+//  Created by minh thao nguyen on 7/14/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Friend;
+@class Friend, Notification;
 
 extern NSString * const RSVP_ATTENDING;
 extern NSString * const RSVP_UNSURE;
@@ -27,7 +27,6 @@ extern int32_t const MARK_TYPE_HIDDEN;
 
 @interface Event : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * markType;
 @property (nonatomic, retain) NSString * eid;
 @property (nonatomic, retain) NSNumber * endTime;
 @property (nonatomic, retain) NSString * host;
@@ -40,7 +39,9 @@ extern int32_t const MARK_TYPE_HIDDEN;
 @property (nonatomic, retain) NSString * privacy;
 @property (nonatomic, retain) NSString * rsvp;
 @property (nonatomic, retain) NSNumber * startTime;
+@property (nonatomic, retain) NSNumber * markType;
 @property (nonatomic, retain) NSSet *friendsInterested;
+@property (nonatomic, retain) NSSet *notifications;
 
 @property (nonatomic, strong) NSNumber * distance;
 
@@ -61,5 +62,10 @@ extern int32_t const MARK_TYPE_HIDDEN;
 - (void)removeFriendsInterestedObject:(Friend *)value;
 - (void)addFriendsInterested:(NSSet *)values;
 - (void)removeFriendsInterested:(NSSet *)values;
+
+- (void)addNotificationsObject:(Notification *)value;
+- (void)removeNotificationsObject:(Notification *)value;
+- (void)addNotifications:(NSSet *)values;
+- (void)removeNotifications:(NSSet *)values;
 
 @end
