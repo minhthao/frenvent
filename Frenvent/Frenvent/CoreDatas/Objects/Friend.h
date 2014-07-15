@@ -2,7 +2,7 @@
 //  Friend.h
 //  Frenvent
 //
-//  Created by minh thao nguyen on 7/7/14.
+//  Created by minh thao nguyen on 7/13/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * uid;
+@property (nonatomic, retain) NSNumber * mark;
 @property (nonatomic, retain) NSSet *eventsInterested;
 @end
 

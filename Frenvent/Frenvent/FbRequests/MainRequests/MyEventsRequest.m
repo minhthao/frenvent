@@ -11,6 +11,7 @@
 #import "EventCoreData.h"
 #import "NotificationCoreData.h"
 #import "Notification.h"
+#import "NotificationManager.h"
 #import "TimeSupport.h"
 #import "Event.h"
 
@@ -18,13 +19,6 @@ static int16_t const QUERY_LIMIT = 400;
 static int16_t const QUERY_TYPE_INITIALIZE = 0;
 static int16_t const QUERY_TYPE_REFRESH = 1;
 static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
-
-@interface MyEventsRequest()
-- (NSDictionary *) prepareAllEventsQueryParams;
-- (NSDictionary *) prepareFutureEventsQueryParams;
-- (void) executeQueryWithType: (NSInteger)type;
-- (void) handleNewEventInvited:(Event *)event;
-@end
 
 @implementation MyEventsRequest
 
@@ -75,6 +69,8 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param type
  */
 - (void) executeQueryWithType:(NSInteger)type {
+    int64_t currentTime = [TimeSupport getCurrentTimeInUnix];
+
     NSDictionary *queryParams = [self prepareFutureEventsQueryParams];
     if (type == QUERY_TYPE_INITIALIZE) queryParams = [self prepareAllEventsQueryParams];
     
@@ -83,73 +79,59 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                  HTTPMethod:@"GET"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               
-                              NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
-                              NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
-                              
-                              if (error) {
-                                  NSLog(@"Error: %@", [error localizedDescription]);
-                              } else {
-                                  NSArray *data = (NSArray *)result[@"data"];
-                                  NSArray *myEvents = nil;
-                                  NSArray *eventInfo = nil;
-                                  NSMutableDictionary *rsvpDictionary = [[NSMutableDictionary alloc] init];
-                                  
-                                  //get approprivate info arrays
-                                  for (int i = 0; i < [data count]; i++) {
-                                      if ([data[i][@"name"] isEqualToString:@"myEvents"])
-                                          myEvents = data[i][@"fql_result_set"];
-                                      if ([data[i][@"name"] isEqualToString:@"eventInfo"])
-                                          eventInfo = data[i][@"fql_result_set"];
-                                  }
-                                  
-                                  //get the rsvp for each event
-                                  for (int i = 0; i < [myEvents count]; i++) {
-                                      NSString *eid = [myEvents[i][@"eid"] stringValue];
-                                      NSString *rsvp = myEvents[i][@"rsvp_status"];
-                                      [rsvpDictionary setObject:rsvp forKey:eid];
-                                  }
-                                  
-                                  //add events to the core data, or change the rsvp if necessary
-                                  for (int i = 0; i < [eventInfo count]; i++) {
-                                      NSString *eid = [eventInfo[i][@"eid"] stringValue];
-                                      Event *event = [EventCoreData getEventWithEid:eid];
-                                      if (event == nil) {
-                                          event = [EventCoreData addEvent:eventInfo[i] usingRsvp:rsvpDictionary[eid]];
-                                          [newEventsDictionary setObject:event forKey:event.eid];
-                                          if (type == QUERY_TYPE_BACKGROUND_SERVICE)
-                                              [self handleNewEventInvited:event];
-                                      } else {
-                                          if (![event.rsvp isEqualToString:rsvpDictionary[eid]]) {
-                                              if ([event.rsvp isEqualToString:RSVP_NOT_INVITED] && type == QUERY_TYPE_BACKGROUND_SERVICE)
-                                                  [self handleNewEventInvited:event];
-                                              event.rsvp = rsvpDictionary[eid];
-                                              [EventCoreData updateEventWithEid:eid usingRsvp:rsvpDictionary[eid]];
-                                          }
-                                      }
-                                      [eventsDictionary setObject:event forKey:event.eid];
-                                  }
-                              }
-                              
-                              if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
-                                  [self.delegate notifyMyEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
-                          }];
-}
-
-#pragma mark -TODO taken away when done
-/**
- * Handle when the new you get invited to the new event
- * @param Event
- * @param Friend
- */
-- (void) handleNewEventInvited:(Event *)event {
-    [NotificationCoreData addNotificationWithType:[NSNumber numberWithLong:TYPE_NEW_INVITE]
-                                 notificationTime:[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]]
-                                         friendId:@""
-                                       friendName:@""
-                                              eid:event.eid
-                                        eventName:event.name
-                                     eventPicture:event.picture
-                                   eventStartTime:event.startTime];
+          NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
+          NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
+          
+          if (error) {
+              NSLog(@"Error: %@", [error localizedDescription]);
+          } else {
+              NSArray *data = (NSArray *)result[@"data"];
+              NSArray *myEvents = nil;
+              NSArray *eventInfo = nil;
+              NSMutableDictionary *rsvpDictionary = [[NSMutableDictionary alloc] init];
+              
+              //get approprivate info arrays
+              for (int i = 0; i < [data count]; i++) {
+                  if ([data[i][@"name"] isEqualToString:@"myEvents"])
+                      myEvents = data[i][@"fql_result_set"];
+                  if ([data[i][@"name"] isEqualToString:@"eventInfo"])
+                      eventInfo = data[i][@"fql_result_set"];
+              }
+              
+              //get the rsvp for each event
+              for (int i = 0; i < [myEvents count]; i++) {
+                  NSString *eid = [myEvents[i][@"eid"] stringValue];
+                  NSString *rsvp = myEvents[i][@"rsvp_status"];
+                  [rsvpDictionary setObject:rsvp forKey:eid];
+              }
+              
+              //add events to the core data, or change the rsvp if necessary
+              for (int i = 0; i < [eventInfo count]; i++) {
+                  NSString *eid = [eventInfo[i][@"eid"] stringValue];
+                  Event *event = [EventCoreData getEventWithEid:eid];
+                  if (event == nil) {
+                      event = [EventCoreData addEvent:eventInfo[i] usingRsvp:rsvpDictionary[eid]];
+                      [newEventsDictionary setObject:event forKey:event.eid];
+                      if (type != QUERY_TYPE_INITIALIZE)
+                          [NotificationCoreData addNewInvitedNotification:event];
+                  } else if (![event.rsvp isEqualToString:rsvpDictionary[eid]]) {
+                      NSString *oldRsvp = event.rsvp;
+                      event.rsvp = rsvpDictionary[eid];
+                      [EventCoreData updateEventWithEid:eid usingRsvp:rsvpDictionary[eid]];
+                      
+                      if ([oldRsvp isEqualToString:RSVP_NOT_INVITED] && type != QUERY_TYPE_INITIALIZE) {
+                          [newEventsDictionary setObject:event forKey:event.eid];
+                          [NotificationCoreData addNewInvitedNotification:event];
+                      }
+                  }
+                  [eventsDictionary setObject:event forKey:event.eid];
+              }
+          }
+          
+          if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
+              [self.delegate notifyMyEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
+          else [NotificationManager displayInvitedEventNotifications:currentTime];
+      }];
 }
 
 #pragma mark - public methods

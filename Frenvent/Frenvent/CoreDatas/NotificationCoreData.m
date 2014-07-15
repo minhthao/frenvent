@@ -9,6 +9,9 @@
 #import "NotificationCoreData.h"
 #import "AppDelegate.h"
 #import "Notification.h"
+#import "TimeSupport.h"
+#import "Event.h"
+#import "Friend.h"
 
 @interface NotificationCoreData()
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -31,14 +34,18 @@
  * type: daily_notification, friend_event, and new_invite
  * @return Array of Notification
  */
-+ (NSArray *) getNotifications {
++ (NSArray *) getNotifications:(NSPredicate *)predicates {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
                                               inManagedObjectContext:context];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"time" ascending:false selector:nil];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sort, nil];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:entity];
     [fetchRequest setReturnsObjectsAsFaults:NO];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    if (predicates != nil) [fetchRequest setPredicate:predicates];
     
     NSError *error = nil;
     NSArray *notifications = [context executeFetchRequest:fetchRequest error:&error];
@@ -49,10 +56,32 @@
 }
 
 /**
+ * Get all the notifications from the core data since the given start time. 
+ * @param since time
+ * @return Array of Notification
+ */
++ (NSArray *) getNotificationsSince:(int64_t)sinceTime {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"time = %d", sinceTime];
+    return [self getNotifications:predicate];
+}
+
+/**
+ * Get all the notifications of a type from the core data since the given start time.
+ * @param since time
+ * @return Array of Notification
+ */
++ (NSArray *) getNotificationsSince:(int64_t)sinceTime ofType:(NSInteger)type{
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"time = %d", sinceTime];
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"type = %d", type];
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, typePredicate]];
+    return [self getNotifications:predicates];
+}
+
+/**
  * Remove all notifications from the core data
  */
 + (void) removeAllNotifications {
-    NSArray *items = [self getNotifications];
+    NSArray *items = [self getNotifications:nil];
     NSManagedObjectContext *context = [self managedObjectContext];
     
     for (NSManagedObject *managedObject in items) {
@@ -64,44 +93,75 @@
 }
 
 /**
- * Add a notification to the core data
- * @param notification type
- * @param the timestamp at which the notification is being created
- * @param if of type friend_event, uid of friend in which the action is initiated
- * @param if of type friend_event or new_invite, event id
- * @param if of type friend_event or new_invite, event name
- * @param if of type friend_event or new_invite, event picture
- * @param if of type friend_event or new_invite, event start_time
- * @param if of type daily_notification, list of uid of the people going out today
- * @param whether the notification has been viewed
+ * Add a new invited notification to the core data
+ * @param event
  * @return notification
  */
-+ (Notification *) addNotificationWithType:(NSNumber *)type
-                          notificationTime:(NSNumber *)time
-                                  friendId:(NSString *)friendId
-                                friendName:(NSString *)friendName
-                                       eid:(NSString *)eid
-                                 eventName:(NSString *)eventName
-                              eventPicture:(NSString *)eventPicture
-                            eventStartTime:(NSNumber *)eventStartTime {
++ (Notification *) addNewInvitedNotification:(Event *)event  {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
                                               inManagedObjectContext:context];
     
     Notification *notification = [[Notification alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-    notification.type = type;
-    notification.time = time;
-    notification.friendId = friendId;
-    notification.friendName = friendName;
-    notification.eid = eid;
-    notification.eventName = eventName;
-    notification.eventPicture = eventPicture;
-    notification.eventStartTime = eventStartTime;
+    
+    notification.type = [NSNumber numberWithInteger:TYPE_NEW_INVITE];
+    notification.time = [NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]];
+    notification.event = event;
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding notification - error:%@", error);
-    
+
     return notification;
 }
+
+/**
+ * Add a new friend events notification to the core data
+ * @param event
+ * @param friend
+ * @return notification
+ */
++ (Notification *) addNewNotificationForEvent:(Event *)event andFriend:(Friend *)friend {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
+                                              inManagedObjectContext:context];
+    
+    //we first check if the notification for such event exist, if so just update the list of friends
+    NSPredicate *eidPredicate = [NSPredicate predicateWithFormat:@"event.eid = %@", event.eid];
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"type = %d", TYPE_FRIEND_EVENT];
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[eidPredicate, typePredicate]];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicates];
+    [fetchRequest setReturnsObjectsAsFaults:NO];
+    
+    NSError *error = nil;
+    NSArray *notifications = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if (notifications != nil && [notifications count] > 0) {
+        //we simply add the friend into the set of notification
+        Notification *notification = [notifications objectAtIndex:0];
+        notification.time = [NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]];
+        [notification insertObject:friend inFriendsAtIndex:0];
+        
+        NSError *updateError = nil;
+        if (![context save:&updateError]) NSLog(@"Error updating event's rsvp - error:%@", updateError);
+        return notification;
+    } else {
+        if (notifications == nil) NSLog(@"Error fetching friend notification - error:%@", error);
+        
+        Notification *notification = [[Notification alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+        
+        notification.type = [NSNumber numberWithInteger:TYPE_FRIEND_EVENT];
+        notification.time = [NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]];
+        notification.event = event;
+        [notification addFriendsObject:friend];
+        
+        NSError *addingError = nil;
+        if (![context save:&addingError]) NSLog(@"Error adding notification - error:%@", addingError);
+        return notification;
+    }
+}
+
 
 @end

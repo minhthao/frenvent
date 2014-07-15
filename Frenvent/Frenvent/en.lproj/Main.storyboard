@@ -315,7 +315,7 @@
                                 <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="yEb-Cu-p2Y">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="yEb-Cu-p2Y">
                                 <rect key="frame" x="0.0" y="63" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.97564572704081631" green="0.97564572704081631" blue="0.97564572704081631" alpha="1" colorSpace="calibratedRGB"/>
@@ -404,16 +404,16 @@
             </objects>
             <point key="canvasLocation" x="1315" y="3015"/>
         </scene>
-        <!--Table View Controller - Favorites-->
+        <!--Favorite Events Table View Controller - Favorites-->
         <scene sceneID="P1d-gy-TMB">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="eXG-Tk-V4h" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="eXG-Tk-V4h" customClass="FavoriteEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="GGg-4e-1tT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="7Gg-cb-4pi">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoriteItem" id="7Gg-cb-4pi">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Gg-cb-4pi" id="blg-Qj-dio">
@@ -434,16 +434,16 @@
             </objects>
             <point key="canvasLocation" x="1845" y="3015"/>
         </scene>
-        <!--Table View Controller - Trash-->
+        <!--Trash Events Table View Controller - Trash-->
         <scene sceneID="Mzs-ie-6n6">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="bk8-r4-OFb" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="bk8-r4-OFb" customClass="TrashEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="iKW-Gg-yIm">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="dAa-7r-DFB">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="trashItem" id="dAa-7r-DFB">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dAa-7r-DFB" id="olx-Tf-zZr">
@@ -464,16 +464,16 @@
             </objects>
             <point key="canvasLocation" x="1845" y="3691"/>
         </scene>
-        <!--Table View Controller - Settings-->
+        <!--Settings Table View Controller - Settings-->
         <scene sceneID="t3I-LY-m6d">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="efi-MM-0rs" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="efi-MM-0rs" customClass="SettingsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-Lx-zMb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rXZ-Fi-l3c">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="settingItem" id="rXZ-Fi-l3c">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rXZ-Fi-l3c" id="UJN-XQ-SUE">
@@ -494,16 +494,16 @@
             </objects>
             <point key="canvasLocation" x="1845" y="4365"/>
         </scene>
-        <!--Table View Controller - Notifications-->
+        <!--Notifications Table View Controller - Notifications-->
         <scene sceneID="ukI-fp-HqN">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="qSv-WD-F1W" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="qSv-WD-F1W" customClass="NotificationsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QAI-Yf-kVG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="FBa-X2-0TD">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="notificationItem" id="FBa-X2-0TD">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FBa-X2-0TD" id="GGe-wh-aL8">

@@ -12,19 +12,12 @@
 #import "FriendCoreData.h"
 #import "NotificationCoreData.h"
 #import "FriendToEventCoreData.h"
+#import "NotificationManager.h"
 
 static int16_t const QUERY_LIMIT = 5000;
 static int16_t const QUERY_TYPE_INITIALIZE = 0;
 static int16_t const QUERY_TYPE_REFRESH = 1;
 static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
-
-@interface FriendEventsRequest()
-
-- (NSDictionary *) prepareQueryParams;
-- (void) executeQueryWithType: (NSInteger)type;
-- (void) handleNewFriendToEventPairAdded:(Event *)event :(Friend *)friend;
-
-@end
 
 @implementation FriendEventsRequest
 
@@ -62,6 +55,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param type
  */
 - (void) executeQueryWithType:(NSInteger)type {
+    int64_t currentTime = [TimeSupport getCurrentTimeInUnix];
     NSDictionary *queryParams = [self prepareQueryParams];
     
     [FBRequestConnection startWithGraphPath:@"/fql"
@@ -69,89 +63,71 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                  HTTPMethod:@"GET"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               
-                              NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
-                              NSMutableDictionary *friendsDictionary = [[NSMutableDictionary alloc] init];
-                              NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
-                              
-                              if (error) {
-                                  NSLog(@"Error: %@", [error localizedDescription]);
-                              } else {
-                                  NSArray *data = (NSArray *)result[@"data"];
-                                  NSArray *friendEvents = nil;
-                                  NSArray *friendNames = nil;
-                                  NSArray *eventInfo = nil;
-                                  
-                                  //get approprivate info arrays
-                                  for (int i = 0; i < [data count]; i++) {
-                                      if ([data[i][@"name"] isEqualToString:@"friendEvents"])
-                                          friendEvents = data[i][@"fql_result_set"];
-                                      if ([data[i][@"name"] isEqualToString:@"friendNames"])
-                                          friendNames = data[i][@"fql_result_set"];
-                                      if ([data[i][@"name"] isEqualToString:@"eventInfo"])
-                                          eventInfo = data[i][@"fql_result_set"];
-                                  }
-                                  
-                                  //we first add in the events to the core data
-                                  for (int i = 0; i < [eventInfo count]; i++) {
-                                      NSString *eid = [eventInfo[i][@"eid"] stringValue];
-                                      Event *event = [EventCoreData getEventWithEid:eid];
-                                      if (event == nil) {
-                                          event = [EventCoreData addEvent:eventInfo[i] usingRsvp:RSVP_NOT_INVITED];
-                                          [newEventsDictionary setObject:event forKey:eid];
-                                      }
-                                      [eventsDictionary setObject:event forKey:eid];
-                                  }
-                                  
-                                  //we then add the friends to the core data
-                                  for (int j = 0; j < [friendNames count]; j++) {
-                                      NSString *uid = [friendNames[j][@"uid"] stringValue];
-                                      NSString *name = friendNames[j][@"name"];
-                                      Friend *friend = [FriendCoreData getFriendWithUid:uid];
-                                      if (friend == nil)
-                                          friend = [FriendCoreData addFriend:uid :name];
-                                      
-                                      [friendsDictionary setObject:friend forKey:friend.uid];
-                                  }
-                                  
-                                  //Finally, we add in the friend to events pairs
-                                  for (int i = 0; i < [friendEvents count]; i++) {
-                                      NSString *uid = [friendEvents[i][@"uid"] stringValue];
-                                      NSString *eid = [friendEvents[i][@"eid"] stringValue];
-                                      if (![FriendToEventCoreData isFriendToEventPairExist:eid :uid]) {
-                                          Event *event = eventsDictionary[eid];
-                                          Friend *friend = friendsDictionary[uid];
-                                          if (event != nil && friend != nil) {
-                                              [FriendToEventCoreData addFriendToEventPair:event :friend];
-                                              if (type == QUERY_TYPE_BACKGROUND_SERVICE)
-                                                  [self handleNewFriendToEventPairAdded:event :friend];
-                                          }
-                                      }
-                                  }
-                              }
-                              
-                              if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
-                                  [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
-                          }];
+          NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
+          NSMutableDictionary *friendsDictionary = [[NSMutableDictionary alloc] init];
+          NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
+          
+          if (error) {
+              NSLog(@"Error: %@", [error localizedDescription]);
+          } else {
+              NSArray *data = (NSArray *)result[@"data"];
+              NSArray *friendEvents = nil;
+              NSArray *friendNames = nil;
+              NSArray *eventInfo = nil;
+              
+              //get approprivate info arrays
+              for (int i = 0; i < [data count]; i++) {
+                  if ([data[i][@"name"] isEqualToString:@"friendEvents"])
+                      friendEvents = data[i][@"fql_result_set"];
+                  if ([data[i][@"name"] isEqualToString:@"friendNames"])
+                      friendNames = data[i][@"fql_result_set"];
+                  if ([data[i][@"name"] isEqualToString:@"eventInfo"])
+                      eventInfo = data[i][@"fql_result_set"];
+              }
+              
+              //we first add in the events to the core data
+              for (int i = 0; i < [eventInfo count]; i++) {
+                  NSString *eid = [eventInfo[i][@"eid"] stringValue];
+                  Event *event = [EventCoreData getEventWithEid:eid];
+                  if (event == nil) {
+                      event = [EventCoreData addEvent:eventInfo[i] usingRsvp:RSVP_NOT_INVITED];
+                      [newEventsDictionary setObject:event forKey:eid];
+                  }
+                  [eventsDictionary setObject:event forKey:eid];
+              }
+              
+              //we then add the friends to the core data
+              for (int j = 0; j < [friendNames count]; j++) {
+                  NSString *uid = [friendNames[j][@"uid"] stringValue];
+                  NSString *name = friendNames[j][@"name"];
+                  Friend *friend = [FriendCoreData getFriendWithUid:uid];
+                  if (friend == nil)
+                      friend = [FriendCoreData addFriend:uid :name];
+                  
+                  [friendsDictionary setObject:friend forKey:friend.uid];
+              }
+              
+              //Finally, we add in the friend to events pairs
+              for (int i = 0; i < [friendEvents count]; i++) {
+                  NSString *uid = [friendEvents[i][@"uid"] stringValue];
+                  NSString *eid = [friendEvents[i][@"eid"] stringValue];
+                  if (![FriendToEventCoreData isFriendToEventPairExist:eid :uid]) {
+                      Event *event = eventsDictionary[eid];
+                      Friend *friend = friendsDictionary[uid];
+                      if (event != nil && friend != nil) {
+                          [FriendToEventCoreData addFriendToEventPair:event :friend];
+                          if (type != QUERY_TYPE_INITIALIZE)
+                              [NotificationCoreData addNewNotificationForEvent:event andFriend:friend];
+                      }
+                  }
+              }
+          }
+          
+          if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
+              [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
+          else [NotificationManager displayFriendEventNotifications:currentTime];
+      }];
 
-}
-
-#pragma mark -TODO taken away when done
-/**
- * Handle when the new friend to event pair is added to the core data
- * The basic handling involve creating new notification with this type.
- * Then adding it to both core data and our database
- * @param Event
- * @param Friend
- */
-- (void) handleNewFriendToEventPairAdded:(Event *)event :(Friend *)friend {
-    [NotificationCoreData addNotificationWithType:[NSNumber numberWithLong:TYPE_FRIEND_EVENT]
-                                 notificationTime:[NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]]
-                                         friendId:friend.uid
-                                       friendName:friend.name
-                                              eid:event.eid
-                                        eventName:event.name
-                                     eventPicture:event.picture
-                                   eventStartTime:event.startTime];
 }
 
 #pragma mark - public methods

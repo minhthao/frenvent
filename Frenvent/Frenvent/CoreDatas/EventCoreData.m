@@ -69,10 +69,13 @@
     NSPredicate *unsureRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_UNSURE];
     NSPredicate *declinedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_DECLINED];
     NSPredicate *notRepliedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_NOT_REPLIED];
-    
     NSPredicate *rsvpPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[attendingRsvpPredicate, unsureRsvpPredicate, declinedRsvpPredicate, notRepliedRsvpPredicate]];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:false];
 }
@@ -88,10 +91,13 @@
     NSPredicate *unsureRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_UNSURE];
     NSPredicate *declinedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_DECLINED];
     NSPredicate *notRepliedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_NOT_REPLIED];
-    
     NSPredicate *rsvpPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[attendingRsvpPredicate, unsureRsvpPredicate, declinedRsvpPredicate, notRepliedRsvpPredicate]];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:true];
 }
@@ -106,10 +112,13 @@
     NSPredicate *attendingRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_ATTENDING];
     NSPredicate *unsureRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_UNSURE];
     NSPredicate *declinedRsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_DECLINED];
-    
     NSPredicate *rsvpPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[attendingRsvpPredicate, unsureRsvpPredicate, declinedRsvpPredicate]];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:true];
 
@@ -123,7 +132,11 @@
     NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
     NSPredicate *rsvpPredicate = [NSPredicate predicateWithFormat:@"rsvp = %@", RSVP_NOT_REPLIED];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, rsvpPredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:true];
 
@@ -137,17 +150,22 @@
                                        lowerLatitude:(double)lowerLatitude
                                       upperLongitude:(double)upperLongitude
                                        upperLatitude:(double)upperLatitude {
+    
     NSPredicate *longitudeExistPredicate = [NSPredicate predicateWithFormat:@"longitude != %f", 0];
     NSPredicate *latitudeExistPredicate =[NSPredicate predicateWithFormat:@"latitude != %f", 0];
-    
     NSPredicate *lowerLngPredicate = [NSPredicate predicateWithFormat:@"longitude >= %f", lowerLongitude];
     NSPredicate *lowerLatPredicate = [NSPredicate predicateWithFormat:@"latitude >= %f", lowerLatitude];
     NSPredicate *upperLngPredicate = [NSPredicate predicateWithFormat:@"longtidue <= %f", upperLongitude];
     NSPredicate *upperLatPredicate = [NSPredicate predicateWithFormat:@"latitude <= %f", upperLatitude];
+    NSPredicate *coordinatePredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[longitudeExistPredicate, latitudeExistPredicate, lowerLngPredicate, lowerLatPredicate, upperLngPredicate, upperLatPredicate]];
     
     NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[longitudeExistPredicate, latitudeExistPredicate, lowerLngPredicate, lowerLatPredicate, upperLngPredicate, upperLatPredicate, timePredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[coordinatePredicate, timePredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:true];
 }
@@ -158,14 +176,18 @@
  */
 + (NSArray *) getFriendsEvents {
     NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
-    
     NSPredicate *friendsPredicate = [NSPredicate predicateWithFormat:@"friendsInterested.@count > 0"];
     
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, friendsPredicate]];
+    NSPredicate *markTypeNormalPredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_NORMAL];
+    NSPredicate *markTypeFavoritePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    NSPredicate *markType = [NSCompoundPredicate orPredicateWithSubpredicates:@[markTypeFavoritePredicate, markTypeNormalPredicate]];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, friendsPredicate, markType]];
     
     return [self getEvents:predicates sortByDateAsc:true];
 }
 
+#pragma mark - filter by either name or eid
 /**
  * Get all the events that match the given text
  * @param name(partial) of event
@@ -186,6 +208,43 @@
     NSArray *result = [self getEvents:predicate sortByDateAsc:true];
     if (result.count > 0) return [result objectAtIndex:0];
     return nil;
+}
+
+#pragma mark - getting the hidden or favorite only events
+/**
+ * Get the ongoing hidden events
+ * @return Array of event
+ */
++ (NSArray *) getOngoingHiddenEvents {
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *markTypePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_HIDDEN];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, markTypePredicate]];
+    return [self getEvents:predicates sortByDateAsc:true];
+}
+
+/**
+ * Get the ongoing favorite events
+ * @return Array of Events
+ */
++ (NSArray *) getOngoingFavoriteEvents {
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *markTypePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, markTypePredicate]];
+    return [self getEvents:predicates sortByDateAsc:true];
+}
+
+/**
+ * Get the past favorite events
+ * @return Array of Events
+ */
++ (NSArray *) getPastFavoriteEvents {
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"startTime < %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *markTypePredicate = [NSPredicate predicateWithFormat:@"markType = %d", MARK_TYPE_FAVORITE];
+    
+    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, markTypePredicate]];
+    return [self getEvents:predicates sortByDateAsc:true];
 }
 
 #pragma mark - public remove methods
@@ -277,6 +336,7 @@
                                               inManagedObjectContext:context];
     
     Event *event = [[Event alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    event.markType = 0;
     event.eid = eid;
     event.name = name;
     event.picture =  picture;

@@ -72,6 +72,7 @@
     Friend *friend = [[Friend alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     friend.uid = uid;
     friend.name = name;
+    friend.mark = [NSNumber numberWithBool:false];
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);

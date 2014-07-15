@@ -21,8 +21,13 @@ extern NSString * const PRIVACY_OPEN;
 extern NSString * const PRIVACY_FRIENDS;
 extern NSString * const PRIVACY_SECRET;
 
+extern int32_t const MARK_TYPE_NORMAL;
+extern int32_t const MARK_TYPE_FAVORITE;
+extern int32_t const MARK_TYPE_HIDDEN;
+
 @interface Event : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * markType;
 @property (nonatomic, retain) NSString * eid;
 @property (nonatomic, retain) NSNumber * endTime;
 @property (nonatomic, retain) NSString * host;

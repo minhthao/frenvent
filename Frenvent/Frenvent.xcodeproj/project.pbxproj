@@ -33,8 +33,6 @@
 		3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */; };
 		3EAAACA7196A186D004AD322 /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACA6196A186D004AD322 /* EventManager.m */; };
 		3EAAACB6196B5838004AD322 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACB5196B5838004AD322 /* Event.m */; };
-		3EAAACB9196B5839004AD322 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACB8196B5839004AD322 /* Friend.m */; };
-		3EAAACBC196B59A5004AD322 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACBB196B59A5004AD322 /* Notification.m */; };
 		3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACBE196B5C00004AD322 /* FriendToEventCoreData.m */; };
 		3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACC2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m */; };
 		3EAAACD3196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAACC4196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m */; };
@@ -78,6 +76,10 @@
 		3ECF105F19721D0A00963155 /* FavoriteEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF105E19721D0A00963155 /* FavoriteEventsTableViewController.m */; };
 		3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106119721D4700963155 /* TrashEventsTableViewController.m */; };
 		3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106419721D6400963155 /* SettingsTableViewController.m */; };
+		3ECF10681972246000963155 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10671972246000963155 /* LogoutViewController.m */; };
+		3ECF106B19732DF700963155 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106A19732DF700963155 /* Notification.m */; };
+		3ECF106E19732DF800963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106D19732DF800963155 /* Friend.m */; };
+		3ECF10711974AECF00963155 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10701974AECF00963155 /* NotificationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,10 +131,6 @@
 		3EAAACA6196A186D004AD322 /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventManager.m; path = Supports/EventManager.m; sourceTree = "<group>"; };
 		3EAAACB4196B5838004AD322 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
 		3EAAACB5196B5838004AD322 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
-		3EAAACB7196B5839004AD322 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
-		3EAAACB8196B5839004AD322 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
-		3EAAACBA196B59A5004AD322 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Notification.h; sourceTree = "<group>"; };
-		3EAAACBB196B59A5004AD322 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Notification.m; sourceTree = "<group>"; };
 		3EAAACBD196B5C00004AD322 /* FriendToEventCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendToEventCoreData.h; path = CoreDatas/FriendToEventCoreData.h; sourceTree = "<group>"; };
 		3EAAACBE196B5C00004AD322 /* FriendToEventCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendToEventCoreData.m; path = CoreDatas/FriendToEventCoreData.m; sourceTree = "<group>"; };
 		3EAAACC1196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
@@ -215,6 +213,14 @@
 		3ECF106119721D4700963155 /* TrashEventsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TrashEventsTableViewController.m; path = ViewControllers/SubViews/TrashEventsTableViewController.m; sourceTree = "<group>"; };
 		3ECF106319721D6400963155 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewController.h; path = ViewControllers/SubViews/SettingsTableViewController.h; sourceTree = "<group>"; };
 		3ECF106419721D6400963155 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = ViewControllers/SubViews/SettingsTableViewController.m; sourceTree = "<group>"; };
+		3ECF10661972246000963155 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoutViewController.h; path = ViewControllers/LogoutViewController.h; sourceTree = "<group>"; };
+		3ECF10671972246000963155 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutViewController.m; path = ViewControllers/LogoutViewController.m; sourceTree = "<group>"; };
+		3ECF106919732DF700963155 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
+		3ECF106A19732DF700963155 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
+		3ECF106C19732DF800963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
+		3ECF106D19732DF800963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
+		3ECF106F1974AECF00963155 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationManager.h; path = Supports/NotificationManager.h; sourceTree = "<group>"; };
+		3ECF10701974AECF00963155 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationManager.m; path = Supports/NotificationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,10 +423,10 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				3EAAACBA196B59A5004AD322 /* Notification.h */,
-				3EAAACBB196B59A5004AD322 /* Notification.m */,
-				3EAAACB7196B5839004AD322 /* Friend.h */,
-				3EAAACB8196B5839004AD322 /* Friend.m */,
+				3ECF106C19732DF800963155 /* Friend.h */,
+				3ECF106D19732DF800963155 /* Friend.m */,
+				3ECF106919732DF700963155 /* Notification.h */,
+				3ECF106A19732DF700963155 /* Notification.m */,
 				3EAAACB4196B5838004AD322 /* Event.h */,
 				3EAAACB5196B5838004AD322 /* Event.m */,
 			);
@@ -436,6 +442,8 @@
 				3EACE3D5195DFB2D0023EF58 /* LoginViewController.m */,
 				3ECBC98F196026F700BA75DB /* FirstLoadingViewController.h */,
 				3ECBC990196026F700BA75DB /* FirstLoadingViewController.m */,
+				3ECF10661972246000963155 /* LogoutViewController.h */,
+				3ECF10671972246000963155 /* LogoutViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -521,6 +529,8 @@
 				3EAAACE1196C4FFD004AD322 /* FriendManager.m */,
 				3ECF10501970C45A00963155 /* MyEventManager.h */,
 				3ECF10511970C45A00963155 /* MyEventManager.m */,
+				3ECF106F1974AECF00963155 /* NotificationManager.h */,
+				3ECF10701974AECF00963155 /* NotificationManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -644,6 +654,7 @@
 				3EAAACD3196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */,
 				3ECF10591971FBD500963155 /* PastEventsTableViewController.m in Sources */,
+				3ECF10681972246000963155 /* LogoutViewController.m in Sources */,
 				3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */,
 				3E57FB681959587400D3293D /* TimeSupport.m in Sources */,
 				3ECF105F19721D0A00963155 /* FavoriteEventsTableViewController.m in Sources */,
@@ -656,7 +667,6 @@
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */,
-				3EAAACBC196B59A5004AD322 /* Notification.m in Sources */,
 				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
 				3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
@@ -665,6 +675,7 @@
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
+				3ECF106E19732DF800963155 /* Friend.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
@@ -672,7 +683,6 @@
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3EAAACEF196E7B89004AD322 /* EventButton.m in Sources */,
 				3EACE3F5195E2CF30023EF58 /* AFHTTPRequestOperationManager.m in Sources */,
-				3EAAACB9196B5839004AD322 /* Friend.m in Sources */,
 				3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */,
 				3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */,
 				3EAAACD4196B7CC3004AD322 /* UIAlertView+AFNetworking.m in Sources */,
@@ -680,10 +690,12 @@
 				3EAAACD8196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m in Sources */,
 				3ECF105C19721C9C00963155 /* NotificationsTableViewController.m in Sources */,
 				3EAAACD7196B7CC3004AD322 /* UIProgressView+AFNetworking.m in Sources */,
+				3ECF10711974AECF00963155 /* NotificationManager.m in Sources */,
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,
+				3ECF106B19732DF700963155 /* Notification.m in Sources */,
 				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
@@ -823,6 +835,7 @@
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -842,6 +855,7 @@
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

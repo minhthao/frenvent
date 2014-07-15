@@ -78,15 +78,15 @@
             [separator setHidden:false];
         } else if (indexPath.row == 1) {
             [cellIcon setImage:[UIImage imageNamed:@"SubMenuPastEventsIcon"]];
-            cellLabel.text = @"History";
+            cellLabel.text = @"Past Events";
             [separator setHidden:false];
         } else if (indexPath.row == 2) {
             [cellIcon setImage:[UIImage imageNamed:@"SubMenuFavoriteIcon"]];
-            cellLabel.text = @"Favorites";
+            cellLabel.text = @"Favorite Events";
             [separator setHidden:false];
         } else if (indexPath.row == 3) {
             [cellIcon setImage:[UIImage imageNamed:@"SubMenuTrashIcon"]];
-            cellLabel.text = @"Trash";
+            cellLabel.text = @"Hidden Events";
             [separator setHidden:true];
         }
     } else if (indexPath.section == 1) {
@@ -106,8 +106,14 @@
 //handle the selected action
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:true];
-    if (indexPath.section == 0 && indexPath.row == 1)
-        [self performSegueWithIdentifier:@"pastEventView" sender:Nil];
+    if (indexPath.section == 0) {
+        if (indexPath.row ==0) [self performSegueWithIdentifier:@"notificationView" sender:Nil];
+        else if (indexPath.row == 1) [self performSegueWithIdentifier:@"pastEventView" sender:Nil];
+        else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
+        else if (indexPath.row == 3) [self performSegueWithIdentifier:@"trashView" sender:Nil];
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
+    }
 }
 
 #pragma mark - Navigation

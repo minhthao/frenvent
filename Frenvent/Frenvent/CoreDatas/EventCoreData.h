@@ -12,6 +12,7 @@
 
 @interface EventCoreData : NSObject
 
+//here we get the events that are not hidden
 + (NSArray *) getEvents:(NSPredicate *)predicates sortByDateAsc:(BOOL)isAsc;
 + (NSArray *) getUserPastEvents;
 + (NSArray *) getUserOngoingEvents;
@@ -22,8 +23,15 @@
                                       upperLongitude:(double)upperLongitude
                                        upperLatitude:(double)upperLatitude;
 + (NSArray *) getFriendsEvents;
+
+//for these two, we don't need to hide the hidden one
 + (NSArray *) getEventsWithMatchingName:(NSString *)name;
 + (Event *) getEventWithEid:(NSString *)eid;
+
+//and finally we get either of type hidden or type favorite
++ (NSArray *) getOngoingHiddenEvents;
++ (NSArray *) getOngoingFavoriteEvents;
++ (NSArray *) getPastFavoriteEvents;
 
 + (void) removeAllEvents;
 + (void) removeUserAssociatedEvents;

@@ -20,6 +20,10 @@ NSString * const PRIVACY_OPEN = @"OPEN";
 NSString * const PRIVACY_FRIENDS = @"FRIENDS";
 NSString * const PRIVACY_SECRET = @"SECRET";
 
+int32_t const MARK_TYPE_NORMAL = 0;
+int32_t const MARK_TYPE_FAVORITE = 1;
+int32_t const MARK_TYPE_HIDDEN = 2;
+
 static double const METER_IN_MILE = 1609.344;
 
 @interface Event()
@@ -31,6 +35,7 @@ static double const METER_IN_MILE = 1609.344;
 
 @implementation Event
 
+@dynamic markType;
 @dynamic eid;
 @dynamic endTime;
 @dynamic host;
@@ -158,7 +163,7 @@ static double const METER_IN_MILE = 1609.344;
                 [finalString appendAttributedString:statement];
             } else {
                 //add the number of other friends also interested
-                NSString *numOtherFriends = [NSString stringWithFormat:@"%lu", [interestedFriends count] - 1];
+                NSString *numOtherFriends = [NSString stringWithFormat:@"%ld", (long)([interestedFriends count] - 1)];
                 NSAttributedString *numOtherFriendsString = [[NSAttributedString alloc] initWithString:numOtherFriends attributes:italicStringAttributes];
                 [finalString appendAttributedString:numOtherFriendsString];
                 

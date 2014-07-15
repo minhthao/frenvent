@@ -10,15 +10,13 @@
 #import "Notification.h"
 
 @interface NotificationCoreData : NSObject
-+ (NSArray *) getNotifications;
++ (NSArray *) getNotifications:(NSPredicate *)predicates;
++ (NSArray *) getNotificationsSince:(int64_t)sinceTime;
++ (NSArray *) getNotificationsSince:(int64_t)sinceTime ofType:(NSInteger)type;
+
 + (void) removeAllNotifications;
-+ (Notification *) addNotificationWithType:(NSNumber *)type
-                          notificationTime:(NSNumber *)time
-                                  friendId:(NSString *)friendId
-                                friendName:(NSString *)friendName
-                                       eid:(NSString *)eid
-                                 eventName:(NSString *)eventName
-                              eventPicture:(NSString *)eventPicture
-                            eventStartTime:(NSNumber *)eventStartTime;
++ (Notification *) addNewInvitedNotification:(Event *)event;
++ (Notification *) addNewNotificationForEvent:(Event *)event andFriend:(Friend *)friend;
+
 
 @end
