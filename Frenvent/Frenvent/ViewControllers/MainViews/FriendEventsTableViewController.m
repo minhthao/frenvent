@@ -116,7 +116,14 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Deleted row.");
+    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+    [EventCoreData setEventMarkType:event withType:MARK_TYPE_HIDDEN];
+    [[self eventManager] hideEventAtIndexPath:indexPath];
+    [self.tableView reloadData];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return @"Hide";
 }
 
 

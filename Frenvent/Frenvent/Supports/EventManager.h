@@ -22,5 +22,6 @@
 - (NSInteger) getNumberOfSections;
 - (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
 - (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;
+- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

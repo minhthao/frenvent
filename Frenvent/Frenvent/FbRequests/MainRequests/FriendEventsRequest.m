@@ -12,7 +12,6 @@
 #import "FriendCoreData.h"
 #import "NotificationCoreData.h"
 #import "FriendToEventCoreData.h"
-#import "NotificationManager.h"
 
 static int16_t const QUERY_LIMIT = 5000;
 static int16_t const QUERY_TYPE_INITIALIZE = 0;
@@ -54,7 +53,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * Execute the query with one of the 3 types: initialize, update, background
  * @param type
  */
-- (void) executeQueryWithType:(NSInteger)type {
+- (void) executeQueryWithType:(NSInteger)type withCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     int64_t currentTime = [TimeSupport getCurrentTimeInUnix];
     NSDictionary *queryParams = [self prepareQueryParams];
     
@@ -125,7 +124,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
           
           if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
               [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
-          else [NotificationManager displayFriendEventNotifications:currentTime];
+          else [self.delegate notifyFriendEventsUpdateCompletedWithNewEvents:[newEventsDictionary allValues] usingCompletionHandler:completionHandler];
       }];
 
 }
@@ -136,20 +135,20 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * Do this when the user first login.
  */
 - (void) initFriendEvents {
-    [self executeQueryWithType:QUERY_TYPE_INITIALIZE];
+    [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
 }
 
 /**
  * Call when the user request to refresh the friend events
  */
 - (void) refreshFriendEvents {
-    [self executeQueryWithType:QUERY_TYPE_REFRESH];
+    [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
 }
 
 /**
  * Call when prepare for push notification (for friend events) in the background
  */
-- (void) updateBackgroundFriendEvents {
-    [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE];
+- (void) updateBackgroundFriendEventsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
 }
 @end

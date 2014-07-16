@@ -15,14 +15,6 @@
 
 static double const DISTANCE_RADIUS = 30;
 
-@interface DbEventsRequest()
-- (NSMutableURLRequest *) prepareEventsUploadRequest:(NSArray *)events;
-- (NSMutableURLRequest *) prepareNearbyEventsQueryRequest:(double)currentLocLongitude :(double)currentLocLatitude;
-- (NSMutableURLRequest *) prepareNearbyEventsQueryRequest:(double)lowerLong :(double)lowerLat :(double)upperLong :(double)upperLat;
-- (void) processEvents:(NSArray *)queriedEvents;
-
-@end
-
 @implementation DbEventsRequest
 #pragma mark - private methods
 /**

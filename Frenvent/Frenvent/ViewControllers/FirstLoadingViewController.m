@@ -24,7 +24,6 @@ NSInteger numMyEvents;
 @interface FirstLoadingViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
-- (void) checkIfAllQueryCompleted;
 
 @end
 

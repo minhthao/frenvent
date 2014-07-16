@@ -24,7 +24,8 @@
                                        upperLatitude:(double)upperLatitude;
 + (NSArray *) getFriendsEvents;
 
-//for these two, we don't need to hide the hidden one
+//for these three, we don't need to hide the hidden one
++ (NSArray *) getAllOngoingEvents;
 + (NSArray *) getEventsWithMatchingName:(NSString *)name;
 + (Event *) getEventWithEid:(NSString *)eid;
 
@@ -32,6 +33,7 @@
 + (NSArray *) getOngoingHiddenEvents;
 + (NSArray *) getOngoingFavoriteEvents;
 + (NSArray *) getPastFavoriteEvents;
++ (void) setEventMarkType:(Event *)event withType:(int32_t)markType;
 
 + (void) removeAllEvents;
 + (void) removeUserAssociatedEvents;

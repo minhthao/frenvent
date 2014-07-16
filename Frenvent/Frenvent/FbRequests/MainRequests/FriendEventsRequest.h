@@ -11,6 +11,7 @@
 @protocol FriendEventsRequestDelegate <NSObject> 
 @optional
 - (void)notifyFriendEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;
+- (void)notifyFriendEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 @end
 
 @interface FriendEventsRequest : NSObject
@@ -19,7 +20,7 @@
 
 - (void) initFriendEvents;
 - (void) refreshFriendEvents;
-- (void) updateBackgroundFriendEvents;
+- (void) updateBackgroundFriendEventsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 @end
 

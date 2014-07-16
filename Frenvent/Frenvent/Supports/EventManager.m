@@ -161,4 +161,18 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
     return nil;
 }
 
+/**
+ * Hide the event at a given index path
+ * @param index path
+ */
+- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionTitle = [self getTitleAtSection:indexPath.section];
+    
+    if ([sectionTitle isEqualToString:TODAY_EVENTS_HEADER]) [_todayEvents removeObjectAtIndex:indexPath.row];
+    if ([sectionTitle isEqualToString:THIS_WEEKEND_EVENTS_HEADER]) [_thisWeekendEvents removeObjectAtIndex:indexPath.row];
+    if ([sectionTitle isEqualToString:THIS_WEEK_EVENTS_HEADER]) [_thisWeekEvents removeObjectAtIndex:indexPath.row];
+    if ([sectionTitle isEqualToString:NEXT_WEEK_EVENTS_HEADER]) [_nextWeekEvents removeObjectAtIndex:indexPath.row];
+    if ([sectionTitle isEqualToString:OTHER_EVENTS_HEADER]) [_otherEvents removeObjectAtIndex:indexPath.row];
+}
+
 @end

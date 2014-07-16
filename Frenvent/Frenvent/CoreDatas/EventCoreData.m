@@ -188,6 +188,11 @@
 }
 
 #pragma mark - filter by either name or eid
++ (NSArray *) getAllOngoingEvents {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    return [self getEvents:predicate sortByDateAsc:true];
+}
+
 /**
  * Get all the events that match the given text
  * @param name(partial) of event
@@ -245,6 +250,14 @@
     
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, markTypePredicate]];
     return [self getEvents:predicates sortByDateAsc:true];
+}
+
+#pragma mark - set event mark type
++ (void) setEventMarkType:(Event *)event withType:(int32_t)markType{
+    event.markType = [NSNumber numberWithInt:markType];
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSError *error = nil;
+    if (![context save:&error]) NSLog(@"Error updating the mark type of events - error:%@", error);
 }
 
 #pragma mark - public remove methods

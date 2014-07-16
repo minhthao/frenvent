@@ -9,14 +9,6 @@
 #import "DbUserRequest.h"
 #import "DBConstants.h"
 
-@interface DbUserRequest()
-
-- (NSMutableURLRequest *) prepareRegisterUserRequest:(NSString *)uid :(NSString *)name :(NSInteger)numFriendEvents :(NSInteger)numUserEvents;
-- (NSMutableURLRequest *) prepareNumFriendEventsRequestUpdate:(NSString *)uid :(NSInteger)numFriendEvents;
-- (NSMutableURLRequest *) prepareNumMyEventsRequestUpdate:(NSString *)uid :(NSInteger)numMyEvents;
-
-@end
-
 @implementation DbUserRequest
 
 #pragma mark - private methods
