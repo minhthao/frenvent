@@ -186,6 +186,9 @@
                     <navigationItem key="navigationItem" title="Featured Events" id="0HH-Tt-Qtx">
                         <barButtonItem key="leftBarButtonItem" title="Filter" id="AUg-jG-Zzr"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="LjP-Hv-OTa"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="27b-i6-zbM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -483,6 +486,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Favorite Events" id="JKA-pM-O7D"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="JNS-RT-LCL"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Hn-ak-YIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -574,6 +580,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Hidden Events" id="xiy-Uc-AjK"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="c9B-lc-aWY"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kkj-Q6-GAl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -736,6 +745,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Notifications" id="mEK-wr-EUb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="har-Zd-cUR"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KbR-am-IMg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -822,6 +834,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Past Events" id="Jwt-Ir-dvB"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="gyg-Ln-8Zg"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dao-Yo-up9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -991,7 +1006,7 @@
         <!--Tab Bar Controller - Main View-->
         <scene sceneID="W4S-NU-bEB">
             <objects>
-                <tabBarController storyboardIdentifier="mainView" title="Main View" definesPresentationContext="YES" id="Vt3-Mt-RmT" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainView" title="Main View" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Vt3-Mt-RmT" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" title="Friend" id="elI-8u-VUN"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -1011,7 +1026,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uE9-Oa-Gwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="94" y="249"/>
+            <point key="canvasLocation" x="158" y="149"/>
         </scene>
         <!--Invited Events Table View Controller - Invited Events-->
         <scene sceneID="7rG-Y3-H56">
@@ -1127,6 +1142,9 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Invited Events" id="bDX-av-SU2"/>
+                    <connections>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="Y5l-V0-NeQ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxA-V2-pTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1199,29 +1217,31 @@
                     <connections>
                         <outlet property="mapView" destination="15P-zh-9vM" id="N3J-w4-Bj4"/>
                         <outlet property="refreshButton" destination="0Iy-KY-Bto" id="tS7-Gs-RKJ"/>
+                        <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="eYs-uZ-Y7V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZY-Da-uHk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1303" y="-437"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="DRP-n6-nHw">
+        <!--Event Detail View Controller-->
+        <scene sceneID="5Us-8E-QJI">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="j8l-61-FM8" sceneMemberID="viewController">
+                <viewController id="6Qb-z2-KrV" customClass="EventDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pfX-Xu-GxH"/>
-                        <viewControllerLayoutGuide type="bottom" id="SAm-mE-SHs"/>
+                        <viewControllerLayoutGuide type="top" id="5Xe-XZ-O6G"/>
+                        <viewControllerLayoutGuide type="bottom" id="QCv-mY-EhJ"/>
                     </layoutGuides>
-                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="CxU-jw-rIT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <view key="view" contentMode="scaleToFill" id="Dxj-a0-aNK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="aqq-8W-MLT"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZGE-nx-hal" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="avR-bG-WjV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="3239" y="838"/>
         </scene>
     </scenes>
     <resources>
@@ -1239,5 +1259,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4vS-c0-i6m"/>
+        <segue reference="c9B-lc-aWY"/>
     </inferredMetricsTieBreakers>
 </document>
