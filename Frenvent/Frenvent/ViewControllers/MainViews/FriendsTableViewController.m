@@ -96,6 +96,15 @@ NSArray *allFriends;
     return cell;
 }
 
+//handle the selected action
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"friendInfoView" sender:Nil];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
+
 #pragma mark - search bar delegate
 //handle the case where the new item is typed in the search
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

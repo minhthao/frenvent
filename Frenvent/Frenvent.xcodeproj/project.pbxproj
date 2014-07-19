@@ -85,6 +85,8 @@
 		3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */; };
 		3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109E1979E86600963155 /* MyAnnotation.m */; };
 		3ECF10A21979F95400963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A11979F95400963155 /* Friend.m */; };
+		3ECF10A71979FB9F00963155 /* FriendInfoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A61979FB9F00963155 /* FriendInfoRequest.m */; };
+		3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -236,6 +238,10 @@
 		3ECF109E1979E86600963155 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyAnnotation.m; path = Supports/MyAnnotation.m; sourceTree = "<group>"; };
 		3ECF10A01979F95400963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
 		3ECF10A11979F95400963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
+		3ECF10A51979FB9F00963155 /* FriendInfoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendInfoRequest.h; path = FbRequests/Others/FriendInfoRequest.h; sourceTree = "<group>"; };
+		3ECF10A61979FB9F00963155 /* FriendInfoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendInfoRequest.m; path = FbRequests/Others/FriendInfoRequest.m; sourceTree = "<group>"; };
+		3ECF10A8197A0A9600963155 /* FriendInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendInfoViewController.h; path = ViewControllers/FriendInfoViewController.h; sourceTree = "<group>"; };
+		3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendInfoViewController.m; path = ViewControllers/FriendInfoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -465,6 +471,8 @@
 				3ECBC990196026F700BA75DB /* FirstLoadingViewController.m */,
 				3ECF10661972246000963155 /* LogoutViewController.h */,
 				3ECF10671972246000963155 /* LogoutViewController.m */,
+				3ECF10A8197A0A9600963155 /* FriendInfoViewController.h */,
+				3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -508,6 +516,8 @@
 		3EACE402195F8DB40023EF58 /* FbRequests */ = {
 			isa = PBXGroup;
 			children = (
+				3ECF10A41979FB6200963155 /* Others */,
+				3ECF10A31979FB5700963155 /* EventRequests */,
 				3EACE403195F8DD10023EF58 /* MainRequests */,
 			);
 			name = FbRequests;
@@ -575,6 +585,22 @@
 				3ECF106419721D6400963155 /* SettingsTableViewController.m */,
 			);
 			name = SubViews;
+			sourceTree = "<group>";
+		};
+		3ECF10A31979FB5700963155 /* EventRequests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = EventRequests;
+			sourceTree = "<group>";
+		};
+		3ECF10A41979FB6200963155 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				3ECF10A51979FB9F00963155 /* FriendInfoRequest.h */,
+				3ECF10A61979FB9F00963155 /* FriendInfoRequest.m */,
+			);
+			name = Others;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -712,9 +738,11 @@
 				3ECF10A21979F95400963155 /* Friend.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
+				3ECF10A71979FB9F00963155 /* FriendInfoRequest.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
+				3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */,
 				3ECF10901976417E00963155 /* UpdateManager.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,

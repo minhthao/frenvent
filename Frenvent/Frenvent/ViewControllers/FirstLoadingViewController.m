@@ -137,6 +137,11 @@ NSInteger numMyEvents;
     }
 }
 
+- (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    numQueriesDone ++;
+    [self checkIfAllQueryCompleted];
+}
+
 #pragma mark - private methods
 /**
  * Lazily obtain the managed object context
