@@ -45,7 +45,7 @@ static NSString * const REPLIED_EVENTS_HEADER = @"REPLIED";
  */
 - (void)setRepliedEvents:(NSArray *)repliedEvent unrepliedEvents:(NSArray *)unrepliedEvents withCurrentLocation:(CLLocation *)currentLocation {
     [self setRepliedEvents:repliedEvent unrepliedEvents:unrepliedEvents];
-    [self setCurrentLocation:currentLocation];
+    if (currentLocation != nil) [self setCurrentLocation:currentLocation];
 }
 
 /**

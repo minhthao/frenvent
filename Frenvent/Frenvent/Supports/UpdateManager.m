@@ -10,8 +10,12 @@
 #import "FriendEventsRequest.h"
 #import "MyEventsRequest.h"
 #import "DbEventsRequest.h"
+#import "TimeSupport.h"
+#import "NotificationManager.h"
+#import "NotificationCoreData.h"
 
 NSInteger numRequestPending;
+int64_t fetchStartTime;
 
 @interface UpdateManager()
 
@@ -54,27 +58,73 @@ NSInteger numRequestPending;
 #pragma mark - request delegate
 //delegate for friend events query completion
 -(void)notifyFriendEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
+    if (newEvents == nil || [newEvents count] ==0) {
+        numRequestPending--;
+        [self checkUpdateRequestFinish:completionHandler];
+    } else [[self dbEventsRequest] uploadEvents:newEvents withCompletitionHandler:completionHandler];
+}
+
+//delegate for friend events error query
+-(void)notifyFriendEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    numRequestPending--;
+    [self checkUpdateRequestFinish:completionHandler];
 }
 
 //delegate for  my events query completion
--(void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
-    
+-(void)notifyMyEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    if (newEvents == nil || [newEvents count] ==0) {
+        numRequestPending--;
+        [self checkUpdateRequestFinish:completionHandler];
+    } else [[self dbEventsRequest] uploadEvents:newEvents withCompletitionHandler:completionHandler];
+}
+
+//delegate for my events query error
+-(void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    numRequestPending--;
+    [self checkUpdateRequestFinish:completionHandler];
 }
 
 //delegate for event upload completion
--(void)notifyEventsUploaded {
-    numRequestPending--;
-    if (numRequestPending == 0) {
-        //TODO, say that fetch have completed successfully
-    }
+-(void)notifyEventsUploaded:(BOOL)successfullyUploaded WithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    numRequestPending --;
+    [self checkUpdateRequestFinish:completionHandler];
 }
 
+-(void)notifyEventRequestFailure {
+    //do nothing in this case
+}
+
+#pragma mark - public methods
+/**
+ * Call background fetch to do update on events. 
+ * @param completion handler from the background fetch
+ */
 - (void)doUpdateWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    fetchStartTime = [TimeSupport getCurrentTimeInUnix];
     numRequestPending = 2; //we update friend events and my events
-    [[self myEventsRequest] updateBackgroundMyEvents];
+    [[self myEventsRequest] updateBackgroundMyEventsWithCompletionHandler:completionHandler];
     [[self friendEventsRequest] updateBackgroundFriendEventsWithCompletionHandler:completionHandler];
     
+}
+
+#pragma mark - private methods, call to check of the update finished
+-(void)checkUpdateRequestFinish:(void (^)(UIBackgroundFetchResult))completionHandler {
+    if (numRequestPending == 0) {
+        NSArray *invitedNotifications = [NotificationCoreData getNotificationsSince:fetchStartTime ofType:TYPE_NEW_INVITE];
+        NSArray *friendsNotifications = [NotificationCoreData getNotificationsSince:fetchStartTime ofType:TYPE_FRIEND_EVENT];
+        
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [invitedNotifications count] + [friendsNotifications count];
+        
+        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+            for (Notification *invitedNotif in invitedNotifications)
+                [NotificationManager createAndDisplayNewInvitedNotification:invitedNotif];
+            
+            for (Notification *friendNotif in friendsNotifications)
+                [NotificationManager createAndDisplayNewFriendNotification:friendNotif];
+        }
+        
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
 }
 
 @end

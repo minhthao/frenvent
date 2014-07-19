@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Notification.h"
 
 @interface NotificationManager : NSObject
 
-+ (void)displayInvitedEventNotifications:(int64_t)sinceTime;
-+ (void)displayFriendEventNotifications:(int64_t)sinceTime;
++ (void)createAndDisplayNewInvitedNotification:(Notification *)notification;
++ (void)createAndDisplayNewFriendNotification:(Notification *)notification;
 
 @end

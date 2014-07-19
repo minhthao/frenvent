@@ -79,8 +79,12 @@
 		3ECF10711974AECF00963155 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10701974AECF00963155 /* NotificationManager.m */; };
 		3ECF10741974B77D00963155 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10731974B77D00963155 /* Notification.m */; };
 		3ECF10771974B77E00963155 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10761974B77E00963155 /* Event.m */; };
-		3ECF107A1974B77E00963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10791974B77E00963155 /* Friend.m */; };
 		3ECF10901976417E00963155 /* UpdateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF108F1976417E00963155 /* UpdateManager.m */; };
+		3ECF10961977238400963155 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10951977238400963155 /* Reachability.m */; };
+		3ECF10991978A4BB00963155 /* BackwardTimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10981978A4BB00963155 /* BackwardTimeSupport.m */; };
+		3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */; };
+		3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109E1979E86600963155 /* MyAnnotation.m */; };
+		3ECF10A21979F95400963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A11979F95400963155 /* Friend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -220,10 +224,18 @@
 		3ECF10731974B77D00963155 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
 		3ECF10751974B77E00963155 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
 		3ECF10761974B77E00963155 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
-		3ECF10781974B77E00963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
-		3ECF10791974B77E00963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
 		3ECF108E1976417E00963155 /* UpdateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateManager.h; path = Supports/UpdateManager.h; sourceTree = "<group>"; };
 		3ECF108F1976417E00963155 /* UpdateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UpdateManager.m; path = Supports/UpdateManager.m; sourceTree = "<group>"; };
+		3ECF10941977238400963155 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Supports/Reachability.h; sourceTree = "<group>"; };
+		3ECF10951977238400963155 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Supports/Reachability.m; sourceTree = "<group>"; };
+		3ECF10971978A4BB00963155 /* BackwardTimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackwardTimeSupport.h; path = Supports/BackwardTimeSupport.h; sourceTree = "<group>"; };
+		3ECF10981978A4BB00963155 /* BackwardTimeSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackwardTimeSupport.m; path = Supports/BackwardTimeSupport.m; sourceTree = "<group>"; };
+		3ECF109A1978ACA700963155 /* NearbyEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NearbyEventsViewController.h; path = ViewControllers/MainViews/NearbyEventsViewController.h; sourceTree = "<group>"; };
+		3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NearbyEventsViewController.m; path = ViewControllers/MainViews/NearbyEventsViewController.m; sourceTree = "<group>"; };
+		3ECF109D1979E86600963155 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyAnnotation.h; path = Supports/MyAnnotation.h; sourceTree = "<group>"; };
+		3ECF109E1979E86600963155 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyAnnotation.m; path = Supports/MyAnnotation.m; sourceTree = "<group>"; };
+		3ECF10A01979F95400963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
+		3ECF10A11979F95400963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,6 +368,10 @@
 				3EACE400195E37FB0023EF58 /* Constants.m */,
 				3EAAACF4196EFBD0004AD322 /* MyColor.h */,
 				3EAAACF5196EFBD0004AD322 /* MyColor.m */,
+				3ECF10941977238400963155 /* Reachability.h */,
+				3ECF10951977238400963155 /* Reachability.m */,
+				3ECF10971978A4BB00963155 /* BackwardTimeSupport.h */,
+				3ECF10981978A4BB00963155 /* BackwardTimeSupport.m */,
 			);
 			name = Supports;
 			sourceTree = "<group>";
@@ -419,6 +435,8 @@
 			children = (
 				3EAAACED196E7B89004AD322 /* EventButton.h */,
 				3EAAACEE196E7B89004AD322 /* EventButton.m */,
+				3ECF109D1979E86600963155 /* MyAnnotation.h */,
+				3ECF109E1979E86600963155 /* MyAnnotation.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -426,8 +444,8 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				3ECF10781974B77E00963155 /* Friend.h */,
-				3ECF10791974B77E00963155 /* Friend.m */,
+				3ECF10A01979F95400963155 /* Friend.h */,
+				3ECF10A11979F95400963155 /* Friend.m */,
 				3ECF10751974B77E00963155 /* Event.h */,
 				3ECF10761974B77E00963155 /* Event.m */,
 				3ECF10721974B77D00963155 /* Notification.h */,
@@ -519,6 +537,8 @@
 				3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */,
 				3ECF10531970DC6000963155 /* MoreTableViewController.h */,
 				3ECF10541970DC6000963155 /* MoreTableViewController.m */,
+				3ECF109A1978ACA700963155 /* NearbyEventsViewController.h */,
+				3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */,
 			);
 			name = MainViews;
 			sourceTree = "<group>";
@@ -664,6 +684,7 @@
 				3ECBC991196026F700BA75DB /* FirstLoadingViewController.m in Sources */,
 				3EACE3F4195E2CF30023EF58 /* AFHTTPRequestOperation.m in Sources */,
 				3EAAACD3196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */,
 				3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */,
 				3ECF10591971FBD500963155 /* PastEventsTableViewController.m in Sources */,
 				3ECF10681972246000963155 /* LogoutViewController.m in Sources */,
@@ -674,6 +695,8 @@
 				3EAAACD9196B7CC3004AD322 /* UIWebView+AFNetworking.m in Sources */,
 				3ECF10521970C45A00963155 /* MyEventManager.m in Sources */,
 				3EAAACA7196A186D004AD322 /* EventManager.m in Sources */,
+				3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */,
+				3ECF10961977238400963155 /* Reachability.m in Sources */,
 				3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
 				3ECF10771974B77E00963155 /* Event.m in Sources */,
@@ -686,11 +709,11 @@
 				3ECF10551970DC6000963155 /* MoreTableViewController.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
+				3ECF10A21979F95400963155 /* Friend.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
-				3ECF107A1974B77E00963155 /* Friend.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3ECF10901976417E00963155 /* UpdateManager.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
@@ -710,6 +733,7 @@
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
 				3ECF10741974B77D00963155 /* Notification.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,
+				3ECF10991978A4BB00963155 /* BackwardTimeSupport.m in Sources */,
 				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,

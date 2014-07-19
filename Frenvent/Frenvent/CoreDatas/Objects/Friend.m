@@ -2,7 +2,7 @@
 //  Friend.m
 //  Frenvent
 //
-//  Created by minh thao nguyen on 7/14/14.
+//  Created by minh thao nguyen on 7/18/14.
 //  Copyright (c) 2014 Frenvent. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @implementation Friend
 
+@dynamic mark;
 @dynamic name;
 @dynamic uid;
-@dynamic mark;
 @dynamic eventsInterested;
 @dynamic notifications;
 

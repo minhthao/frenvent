@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol FriendEventsRequestDelegate <NSObject> 
+@protocol FriendEventsRequestDelegate <NSObject>
+@required
+- (void)notifyFriendEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler;
 @optional
 - (void)notifyFriendEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;
 - (void)notifyFriendEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;

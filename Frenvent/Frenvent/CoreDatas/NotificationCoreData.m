@@ -138,14 +138,14 @@
     NSError *error = nil;
     NSArray *notifications = [context executeFetchRequest:fetchRequest error:&error];
     
-    if (notifications != nil && [notifications count] > 0) {
+    if ([notifications count] > 0) {
         //we simply add the friend into the set of notification
         Notification *notification = [notifications objectAtIndex:0];
         notification.time = [NSNumber numberWithLongLong:[TimeSupport getCurrentTimeInUnix]];
         [notification insertObject:friend inFriendsAtIndex:0];
         
         NSError *updateError = nil;
-        if (![context save:&updateError]) NSLog(@"Error updating event's rsvp - error:%@", updateError);
+        if (![context save:&updateError]) NSLog(@"Error updating notification - error:%@", updateError);
         return notification;
     } else {
         if (notifications == nil) NSLog(@"Error fetching friend notification - error:%@", error);

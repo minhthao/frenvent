@@ -45,6 +45,8 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     NSString *query = [NSString stringWithFormat:@"{'friendEvents':'%@', 'friendNames':'%@', 'eventInfo':'%@'}",
                        friendEvents, friendNames, eventInfo];
     
+    NSLog(@"Query intialized");
+    
     NSDictionary *queryParams = @{@"q": query};
     return queryParams;
 }
@@ -52,9 +54,9 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 /**
  * Execute the query with one of the 3 types: initialize, update, background
  * @param type
+ * @param completion handler for the background fetch
  */
 - (void) executeQueryWithType:(NSInteger)type withCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    int64_t currentTime = [TimeSupport getCurrentTimeInUnix];
     NSDictionary *queryParams = [self prepareQueryParams];
     
     [FBRequestConnection startWithGraphPath:@"/fql"
@@ -65,11 +67,13 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
           NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
           NSMutableDictionary *friendsDictionary = [[NSMutableDictionary alloc] init];
           NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
-          
+                              
           if (error) {
               NSLog(@"Error: %@", [error localizedDescription]);
+              [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
           } else {
               NSArray *data = (NSArray *)result[@"data"];
+              
               NSArray *friendEvents = nil;
               NSArray *friendNames = nil;
               NSArray *eventInfo = nil;
@@ -120,14 +124,16 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                       }
                   }
               }
+              
+              if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
+                  [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
+              else [self.delegate notifyFriendEventsUpdateCompletedWithNewEvents:[newEventsDictionary allValues] usingCompletionHandler:completionHandler];
           }
-          
-          if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
-              [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
-          else [self.delegate notifyFriendEventsUpdateCompletedWithNewEvents:[newEventsDictionary allValues] usingCompletionHandler:completionHandler];
       }];
 
 }
+
+
 
 #pragma mark - public methods
 /**
@@ -135,20 +141,68 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * Do this when the user first login.
  */
 - (void) initFriendEvents {
-    [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"friends_events"])
+        [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                            allowLoginUI:NO
+                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                            // if login fails for any reason, we alert
+                                            if (error) {
+                                                NSLog(@"error open session");
+                                                [self.delegate notifyFriendEventsQueryEncounterError:nil];
+                                            } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                                [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
+                                            } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
+                                       }
+         ];
+    } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
 }
 
 /**
  * Call when the user request to refresh the friend events
  */
 - (void) refreshFriendEvents {
-    [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"friends_events"]) {
+        [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+        //NSLog(@"active session opened");
+    }else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        //NSLog(@"session closed but has token");
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyFriendEventsQueryEncounterError:nil];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+                                          } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
+                                      }
+         ];
+    } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
 }
 
 /**
  * Call when prepare for push notification (for friend events) in the background
+ * @param completion handler for the background fetch
  */
 - (void) updateBackgroundFriendEventsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"friends_events"])
+        [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
+                                          } else [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
+                                      }
+         ];
+    } else [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
 }
 @end

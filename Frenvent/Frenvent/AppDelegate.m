@@ -10,6 +10,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "Constants.h"
 #import "FriendEventsRequest.h"
+#import "UpdateManager.h"
+#import "Reachability.h"
 
 @implementation AppDelegate
 
@@ -21,7 +23,7 @@
     [FBLoginView class];
     [FBSettings enablePlatformCompatibility:true];
     
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval: UIApplicationBackgroundFetchIntervalMinimum];
     
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];
     
@@ -34,32 +36,50 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
-        UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-        UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"mainView"];
-        self.window.rootViewController = rootViewController;
-        [self.window makeKeyAndVisible];
+        UILocalNotification *localNotif =
+        [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+        if (localNotif) {
+            //launch from the notification, so go to notification view
+            UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+            UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"notificationViewController"];
+            self.window.rootViewController = rootViewController;
+            [self.window makeKeyAndVisible];
+        } else {
+            //launch from click the icon
+            UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+            UIViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"mainView"];
+            self.window.rootViewController = rootViewController;
+            [self.window makeKeyAndVisible];
+        }
     }
     
     return YES;
 }
 
+- (void)application:(UIApplication *)app didReceiveLocalNotification:(UILocalNotification *)notif {
+    // Handle the notificaton when the app is running. do nothing right now
+}
+
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    NSLog(@"call update");
     
-    
-    // Call or write any code necessary to get new data, process it and update the UI.
-    
-    // The logic for informing iOS about the fetch results in plain language:
-//    if (/** NEW DATA EXISTS AND WAS SUCCESSFULLY PROCESSED **/) {
-//        completionHandler(UIBackgroundFetchResultNewData);
-//    }
-//    
-//    if (/** NO NEW DATA EXISTS **/) {
-//        completionHandler(UIBackgroundFetchResultNoData);
-//    }
-//    
-//    if (/** ANY ERROR OCCURS **/) {
-//        completionHandler(UIBackgroundFetchResultFailed);
-//    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
+        Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+        
+        // Internet is reachable
+        internetReachable.reachableBlock = ^(Reachability*reach) {
+            UpdateManager *updateManager = [[UpdateManager alloc] init];
+            [updateManager doUpdateWithCompletionHandler:completionHandler];
+        };
+        
+        // Internet is not reachable
+        internetReachable.unreachableBlock = ^(Reachability*reach) {
+            completionHandler(UIBackgroundFetchResultFailed);
+        };
+        
+        [internetReachable startNotifier];
+    } else completionHandler(UIBackgroundFetchResultNoData); //user did not login
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -78,6 +98,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBAppCall handleDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -20,6 +20,8 @@ extern NSInteger const TYPE_FRIEND_EVENT;
 @property (nonatomic, retain) NSNumber * type;
 @property (nonatomic, retain) Event *event;
 @property (nonatomic, retain) NSOrderedSet *friends;
+
+- (NSAttributedString *)getFriendsRepliedInterestedAttributedString;
 @end
 
 @interface Notification (CoreDataGeneratedAccessors)

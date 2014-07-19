@@ -155,7 +155,7 @@
     NSPredicate *latitudeExistPredicate =[NSPredicate predicateWithFormat:@"latitude != %f", 0];
     NSPredicate *lowerLngPredicate = [NSPredicate predicateWithFormat:@"longitude >= %f", lowerLongitude];
     NSPredicate *lowerLatPredicate = [NSPredicate predicateWithFormat:@"latitude >= %f", lowerLatitude];
-    NSPredicate *upperLngPredicate = [NSPredicate predicateWithFormat:@"longtidue <= %f", upperLongitude];
+    NSPredicate *upperLngPredicate = [NSPredicate predicateWithFormat:@"longitude <= %f", upperLongitude];
     NSPredicate *upperLatPredicate = [NSPredicate predicateWithFormat:@"latitude <= %f", upperLatitude];
     NSPredicate *coordinatePredicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[longitudeExistPredicate, latitudeExistPredicate, lowerLngPredicate, lowerLatPredicate, upperLngPredicate, upperLatPredicate]];
     

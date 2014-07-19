@@ -22,7 +22,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="eventsInterested" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="friendsInterested" inverseEntity="Event" syncable="YES"/>
-        <relationship name="notifications" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" inverseName="friends" inverseEntity="Notification" syncable="YES"/>
+        <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="friends" inverseEntity="Notification" syncable="YES"/>
     </entity>
     <entity name="Notification" representedClassName="Notification" syncable="YES">
         <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FriendEventsRequest.h"
 
-@interface FriendEventsTableViewController : UITableViewController <CLLocationManagerDelegate>
+@interface FriendEventsTableViewController : UITableViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate>
+
 
 @end

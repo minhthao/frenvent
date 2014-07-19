@@ -36,6 +36,25 @@ static int16_t const QUERY_LIMIT = 5000;
  * Init the friends list at login
  */
 - (void) initFriends {
+    if ([FBSession activeSession].isOpen) [self doInit];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyFriendsQueryError];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self doInit];
+                                          } else [self.delegate notifyFriendsQueryError];
+                                      }
+         ];
+    } else [self.delegate notifyFriendsQueryError];
+}
+
+//the actual work for initialization
+- (void) doInit {
     NSDictionary *queryParams = [self prepareFriendsQueryParams];
     
     [FBRequestConnection startWithGraphPath:@"/fql"
@@ -45,6 +64,7 @@ static int16_t const QUERY_LIMIT = 5000;
                               
                               if (error) {
                                   NSLog(@"Error: %@", [error localizedDescription]);
+                                  [self.delegate notifyFriendsQueryError];
                               } else {
                                   NSArray *data = (NSArray *)result[@"data"];
                                   
@@ -55,12 +75,9 @@ static int16_t const QUERY_LIMIT = 5000;
                                       if ([FriendCoreData getFriendWithUid:uid] == nil)
                                           [FriendCoreData addFriend:uid :name];
                                   }
+                                  [self.delegate notifyFriendsQueryCompleted];
                               }
-                              
-                              [self.delegate notifyFriendsQueryCompleted];
                           }];
-
 }
-
 
 @end

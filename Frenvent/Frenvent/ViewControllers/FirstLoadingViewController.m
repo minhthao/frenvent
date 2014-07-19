@@ -71,6 +71,13 @@ NSInteger numMyEvents;
     [dbEventsRequest uploadEvents:allEvents];
 }
 
+//delegate for friend events request error
+- (void) notifyFriendEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    numQueriesDone ++;
+    [self checkIfAllQueryCompleted];
+
+}
+
 //delegate for MyEventsRequest
 - (void) notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
     numMyEvents = [allEvents count];
@@ -79,8 +86,20 @@ NSInteger numMyEvents;
     [dbEventsRequest uploadEvents:allEvents];
 }
 
+//delegate for my events request error
+-(void) notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    numQueriesDone ++;
+    [self checkIfAllQueryCompleted];
+}
+
 //delegate for FriendsRequest
 - (void) notifyFriendsQueryCompleted {
+    numQueriesDone ++;
+    [self checkIfAllQueryCompleted];
+}
+
+//delegate for friends request error
+- (void) notifyFriendsQueryError {
     numQueriesDone ++;
     [self checkIfAllQueryCompleted];
 }
@@ -92,6 +111,11 @@ NSInteger numMyEvents;
 }
 
 - (void) notifyNearbyEventsInitialized {
+    numQueriesDone++;
+    [self checkIfAllQueryCompleted];
+}
+
+- (void) notifyEventRequestFailure {
     numQueriesDone++;
     [self checkIfAllQueryCompleted];
 }

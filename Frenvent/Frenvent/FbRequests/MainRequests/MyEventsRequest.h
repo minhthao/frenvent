@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @protocol MyEventsRequestDelegate <NSObject>
+@required
+- (void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler;
 @optional
 - (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents;
+- (void)notifyMyEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 @end
 
 @interface MyEventsRequest : NSObject
@@ -19,6 +22,7 @@
 
 - (void) initMyEvents; //all events
 - (void) refreshMyEvents;  //only future events
-- (void) updateBackgroundMyEvents;  //only future events 
+- (void) updateBackgroundMyEventsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
+
 
 @end

@@ -11,7 +11,6 @@
 #import "EventCoreData.h"
 #import "NotificationCoreData.h"
 #import "Notification.h"
-#import "NotificationManager.h"
 #import "TimeSupport.h"
 #import "Event.h"
 
@@ -67,9 +66,9 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 /**
  * Execute the query with one of the 3 types: initialize, update, background
  * @param type
+ * @param completion handler for the background fetch
  */
-- (void) executeQueryWithType:(NSInteger)type {
-    int64_t currentTime = [TimeSupport getCurrentTimeInUnix];
+- (void) executeQueryWithType:(NSInteger)type withCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
 
     NSDictionary *queryParams = [self prepareFutureEventsQueryParams];
     if (type == QUERY_TYPE_INITIALIZE) queryParams = [self prepareAllEventsQueryParams];
@@ -84,6 +83,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
           
           if (error) {
               NSLog(@"Error: %@", [error localizedDescription]);
+              [self.delegate notifyMyEventsQueryEncounterError:completionHandler];
           } else {
               NSArray *data = (NSArray *)result[@"data"];
               NSArray *myEvents = nil;
@@ -126,12 +126,12 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                   }
                   [eventsDictionary setObject:event forKey:event.eid];
               }
+              
+              if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
+                  [self.delegate notifyMyEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
+              else [self.delegate notifyMyEventsUpdateCompletedWithNewEvents:[newEventsDictionary allValues] usingCompletionHandler:completionHandler];
           }
-          
-          if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
-              [self.delegate notifyMyEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
-          else [NotificationManager displayInvitedEventNotifications:currentTime];
-      }];
+    }];
 }
 
 #pragma mark - public methods
@@ -140,21 +140,67 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * Do this when the user first login.
  */
 - (void) initMyEvents {
-    [self executeQueryWithType:QUERY_TYPE_INITIALIZE];
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
+        [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyMyEventsQueryEncounterError:nil];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
+                                          } else [self.delegate notifyMyEventsQueryEncounterError:nil];
+                                      }
+         ];
+    } else [self.delegate notifyMyEventsQueryEncounterError:nil];
 }
 
 /**
  * Call when the user request to refresh my events
  */
 - (void) refreshMyEvents {
-    [self executeQueryWithType:QUERY_TYPE_REFRESH];
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
+        [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyMyEventsQueryEncounterError:nil];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+                                          } else [self.delegate notifyMyEventsQueryEncounterError:nil];
+                                      }
+         ];
+    } else [self.delegate notifyMyEventsQueryEncounterError:nil];
 }
 
 /**
  * Call when prepare for push notifications in the background
+ * @param completion handler for the background fetch
  */
-- (void) updateBackgroundMyEvents {
-    [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE];
+- (void) updateBackgroundMyEventsWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
+        [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:nil];
+    else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          // if login fails for any reason, we alert
+                                          if (error) {
+                                              NSLog(@"error open session");
+                                              [self.delegate notifyMyEventsQueryEncounterError:completionHandler];
+                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:nil];
+                                          } else [self.delegate notifyMyEventsQueryEncounterError:completionHandler];
+                                      }
+         ];
+    } else [self.delegate notifyMyEventsQueryEncounterError:completionHandler];
 }
 
 

@@ -186,7 +186,21 @@ static double const DISTANCE_RADIUS = 30;
     NSMutableURLRequest *request = [self prepareEventsUploadRequest:events];
     NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:request delegate:self];
     if(connection) [self.delegate notifyEventsUploaded];
-    else NSLog(@"Error -Connection could not be made");
+    else {
+        [self.delegate notifyEventRequestFailure];
+        NSLog(@"Error -Connection could not be made");
+    }
+}
+
+/**
+ * Upload the events during the background fetch task
+ * @param Array of Events
+ * @param Completion handler
+ */
+- (void) uploadEvents:(NSArray *)events withCompletitionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSMutableURLRequest *request = [self prepareEventsUploadRequest:events];
+    NSURLConnection *connection = [[NSURLConnection alloc]initWithRequest:request delegate:self];
+    [self.delegate notifyEventsUploaded:(connection != nil) WithCompletionHandler:completionHandler];
 }
 
 /**
@@ -206,6 +220,7 @@ static double const DISTANCE_RADIUS = 30;
         [self.delegate notifyNearbyEventsInitialized];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error getting public events: %@", [error localizedDescription]);
+        [self.delegate notifyEventRequestFailure];
     }];
     
     [operation start];
@@ -230,6 +245,7 @@ static double const DISTANCE_RADIUS = 30;
         [self.delegate notifyNearbyEventsRefreshedWithResults:[EventCoreData getNearbyEventsBoundedByLowerLongitude:lowerLong lowerLatitude:lowerLat upperLongitude:upperLong upperLatitude:upperLat]];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error getting public events: %@", [error localizedDescription]);
+        [self.delegate notifyEventRequestFailure];
     }];
     [operation start];
 }

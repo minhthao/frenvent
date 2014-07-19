@@ -14,11 +14,17 @@
 #import "TimeSupport.h"
 #import "EventButton.h"
 #import "MyColor.h"
+#import "MyEventsRequest.h"
+#import "Reachability.h"
+
+CLLocation *lastKnown;
 
 @interface InvitedEventsTableViewController ()
 
 @property (nonatomic, strong) MyEventManager *eventManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
+@property (nonatomic, strong) MyEventsRequest *myEventsRequest;
 
 @end
 
@@ -63,17 +69,96 @@
     return _locationManager;
 }
 
+/**
+ * Lazily create and obtain refresh control
+ * @return UI refresh control
+ */
+- (UIRefreshControl *)uiRefreshControl {
+    if (_uiRefreshControl == nil) {
+        _uiRefreshControl = [[UIRefreshControl alloc] init];
+        // Configure Refresh Control
+        [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+        
+        // Configure View Controller
+        [self setRefreshControl:_uiRefreshControl];
+    }
+    return _uiRefreshControl;
+}
+
+/**
+ * Lazily create and obtain my event request
+ * @return friend event request
+ */
+- (MyEventsRequest *)myEventsRequest {
+    if (_myEventsRequest ==  nil) {
+        _myEventsRequest = [[MyEventsRequest alloc] init];
+        _myEventsRequest.delegate = self;
+    }
+    return _myEventsRequest;
+}
+
+#pragma mark - refresh control methods
+- (void)refresh:(id)sender {
+    //we check if there is a internet connection, if no then stop refreshing and alert
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    
+    // Internet is reachable
+    internetReachable.reachableBlock = ^(Reachability*reach) {
+        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+            [[self locationManager] startUpdatingLocation];
+        else [[self myEventsRequest] refreshMyEvents];
+    };
+    
+    // Internet is not reachable
+    internetReachable.unreachableBlock = ^(Reachability*reach) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        [[self uiRefreshControl] endRefreshing];
+    };
+    
+    [internetReachable startNotifier];
+}
+
+#pragma mark - delegate for my events request
+- (void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [[self uiRefreshControl] endRefreshing];
+}
+
+- (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
+    [[self eventManager]  setRepliedEvents:[EventCoreData getUserRepliedOngoingEvents] unrepliedEvents:[EventCoreData getUserUnrepliedOngoingEvents] withCurrentLocation:lastKnown];
+    
+    [self.tableView reloadData];
+    
+    [[self uiRefreshControl] endRefreshing];
+
+}
+
 #pragma mark - location manager delegates
 //delegate for location manager, call back for location update
 - (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    [[self locationManager] stopUpdatingLocation];
+    
     if (locations != nil && [locations count] > 0) {
-        if (_eventManager == nil) [self eventManager:[locations objectAtIndex:0]];
+        lastKnown = [locations objectAtIndex:0];
+        
+        if (_eventManager == nil) [self eventManager:lastKnown];
+        else if ([[self uiRefreshControl] isRefreshing]) [[self myEventsRequest] refreshMyEvents];
         else {
             [self.eventManager setCurrentLocation:[locations objectAtIndex:0]];
             [self.tableView reloadData];
         }
+
     }
-    [[self locationManager] stopUpdatingLocation];
+}
+
+- (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    NSLog(@"location error - %@", error);
+    if ([[self uiRefreshControl] isRefreshing]) [[self myEventsRequest] refreshMyEvents];
 }
 
 #pragma mark - view delegate

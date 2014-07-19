@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MyEventsRequest.h"
 
-@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate>
+@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate, MyEventsRequestDelegate>
 
 @end

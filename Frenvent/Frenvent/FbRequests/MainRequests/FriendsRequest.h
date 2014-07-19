@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol FriendsRequestDelegate <NSObject>
-@optional
+- (void)notifyFriendsQueryError;
 - (void)notifyFriendsQueryCompleted;
 @end
 
