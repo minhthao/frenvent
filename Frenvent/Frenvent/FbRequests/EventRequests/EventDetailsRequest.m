@@ -91,7 +91,13 @@ static int16_t const QUERY_LIMIT = 5000;
                                                   picture = eventObj[@"pic_big"];
                                               eventDetail.picture = picture;
                                               
-                                              //TODO pic cover
+                                              NSString *cover = @"";
+                                              if ([eventObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
+                                                  NSDictionary *coverDic = eventObj[@"pic_cover"];
+                                                  if (coverDic[@"source"] != nullInstance)
+                                                      cover = coverDic[@"source"];
+                                              }
+                                              eventDetail.cover = cover;
                                               
                                               uint64_t startTime = [TimeSupport getUnixTime: [TimeSupport getDateTimeInStandardFormat:eventObj[@"start_time"]]];
                                               eventDetail.startTime = startTime;
@@ -160,9 +166,7 @@ static int16_t const QUERY_LIMIT = 5000;
                                               
                                               eventDetail.attendingCount = [eventObj[@"attending_count"] intValue];
                                               eventDetail.unsureCount = [eventObj[@"unsure_count"] intValue];
-                                              eventDetail.unrepliedCountl = [eventObj[@"not_replied_count"] intValue]
-                                    
-                                              
+                                              eventDetail.unrepliedCountl = [eventObj[@"not_replied_count"] intValue];
                                             
                                               [self.delegate notifyEventDetailsQueryCompletedWithResult:eventDetail];
                                           } else [self.delegate notifyEventDidNotExist];
