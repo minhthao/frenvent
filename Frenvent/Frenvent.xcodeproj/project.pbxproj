@@ -88,6 +88,9 @@
 		3ECF10A71979FB9F00963155 /* FriendInfoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A61979FB9F00963155 /* FriendInfoRequest.m */; };
 		3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */; };
 		3ECF10AE197A75D800963155 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10AD197A75D800963155 /* EventDetailViewController.m */; };
+		3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */; };
+		3ECF10B4197B3BF600963155 /* EventDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10B3197B3BF600963155 /* EventDetail.m */; };
+		3ECF10B7197B4F7D00963155 /* EventParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10B6197B4F7D00963155 /* EventParticipant.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -245,6 +248,12 @@
 		3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendInfoViewController.m; path = ViewControllers/FriendInfoViewController.m; sourceTree = "<group>"; };
 		3ECF10AC197A75D800963155 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailViewController.h; path = ViewControllers/EventViews/EventDetailViewController.h; sourceTree = "<group>"; };
 		3ECF10AD197A75D800963155 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetailViewController.m; path = ViewControllers/EventViews/EventDetailViewController.m; sourceTree = "<group>"; };
+		3ECF10AF197AFD7400963155 /* EventDetailsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailsRequest.h; path = FbRequests/EventRequests/EventDetailsRequest.h; sourceTree = "<group>"; };
+		3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetailsRequest.m; path = FbRequests/EventRequests/EventDetailsRequest.m; sourceTree = "<group>"; };
+		3ECF10B2197B3BF600963155 /* EventDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetail.h; path = FbRequests/EventRequests/EventDetail.h; sourceTree = "<group>"; };
+		3ECF10B3197B3BF600963155 /* EventDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetail.m; path = FbRequests/EventRequests/EventDetail.m; sourceTree = "<group>"; };
+		3ECF10B5197B4F7D00963155 /* EventParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventParticipant.h; path = FbRequests/EventRequests/EventParticipant.h; sourceTree = "<group>"; };
+		3ECF10B6197B4F7D00963155 /* EventParticipant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventParticipant.m; path = FbRequests/EventRequests/EventParticipant.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -594,6 +603,12 @@
 		3ECF10A31979FB5700963155 /* EventRequests */ = {
 			isa = PBXGroup;
 			children = (
+				3ECF10AF197AFD7400963155 /* EventDetailsRequest.h */,
+				3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */,
+				3ECF10B2197B3BF600963155 /* EventDetail.h */,
+				3ECF10B3197B3BF600963155 /* EventDetail.m */,
+				3ECF10B5197B4F7D00963155 /* EventParticipant.h */,
+				3ECF10B6197B4F7D00963155 /* EventParticipant.m */,
 			);
 			name = EventRequests;
 			sourceTree = "<group>";
@@ -748,12 +763,14 @@
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
 				3ECF10551970DC6000963155 /* MoreTableViewController.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
+				3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
 				3ECF10A21979F95400963155 /* Friend.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
 				3ECF10A71979FB9F00963155 /* FriendInfoRequest.m in Sources */,
 				3EACE3FB195E2CF30023EF58 /* AFURLResponseSerialization.m in Sources */,
+				3ECF10B4197B3BF600963155 /* EventDetail.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */,
@@ -763,6 +780,7 @@
 				3EAAACEF196E7B89004AD322 /* EventButton.m in Sources */,
 				3EACE3F5195E2CF30023EF58 /* AFHTTPRequestOperationManager.m in Sources */,
 				3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */,
+				3ECF10B7197B4F7D00963155 /* EventParticipant.m in Sources */,
 				3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */,
 				3EAAACD4196B7CC3004AD322 /* UIAlertView+AFNetworking.m in Sources */,
 				3EACE406195F8E2A0023EF58 /* FriendEventsRequest.m in Sources */,
