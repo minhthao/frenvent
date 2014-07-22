@@ -7,9 +7,10 @@
 //
 
 #import "EventDetail.h"
+#import "TimeSupport.h"
 
 @implementation EventDetail
 - (NSString *)getEventDisplayTime {
-    return nil;
+    return [TimeSupport getFullDisplayDateTime:self.startTime :self.endTime];
 }
 @end

@@ -10,6 +10,8 @@
 #import "FriendManager.h"
 #import "FriendCoreData.h"
 #import "UIImageView+AFNetworking.h"
+#import "Reachability.h"
+#import "FriendInfoViewController.h"
 
 @interface FriendsTableViewController ()
 
@@ -98,10 +100,21 @@ NSArray *allFriends;
 
 //handle the selected action
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"friendInfoView" sender:Nil];
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    internetReachable.reachableBlock = ^(Reachability*reach) {
+        [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+    };
+    internetReachable.unreachableBlock = ^(Reachability*reach) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    };
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    [internetReachable startNotifier];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -117,15 +130,21 @@ NSArray *allFriends;
     [self.tableView reloadData];
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        
+        NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
+        NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
+        Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
+
+        FriendInfoViewController *viewController = segue.destinationViewController;
+        [segue.destinationViewController setDetail:item];
+    }
 }
-*/
 
 @end

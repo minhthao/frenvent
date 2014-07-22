@@ -16,6 +16,7 @@
 + (NSArray *) getAllFriends;
 + (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid;
 + (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid;
++ (void) markFriend:(Friend *)friend;
 + (void) removeAllFriends;
 
 @end

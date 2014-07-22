@@ -22,8 +22,8 @@ static int16_t const QUERY_LIMIT = 5000;
  * @return dictionary
  */
 - (NSDictionary *) prepareQueryParams:(NSString *)eid {
-    NSString *myRsvp = [NSString stringWithFormat:@"SELECT rsvp_status FROM event_member where eid = %@ AND uid = me()", eid];
-    NSString *eventParticipants = [NSString stringWithFormat:@"SELECT uid, rsvp_status FROM event_member where eid = %@ AND "
+    NSString *myRsvp = [NSString stringWithFormat:@"SELECT rsvp_status FROM event_member WHERE eid = %@ AND uid = me()", eid];
+    NSString *eventParticipants = [NSString stringWithFormat:@"SELECT uid, rsvp_status FROM event_member WHERE eid = %@ AND "
                                    "uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) LIMIT %d", eid, QUERY_LIMIT];
     NSString *eventInfo = [NSString stringWithFormat:@"SELECT name, pic_big, pic_cover, start_time, end_time, "
                            "location, venue, description, attending_count, unsure_count, not_replied_count, host, privacy "

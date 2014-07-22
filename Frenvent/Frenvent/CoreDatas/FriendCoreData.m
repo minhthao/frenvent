@@ -118,7 +118,21 @@
     return [FriendToEventCoreData getAllPastEventsPertainingToUser:uid];
 }
 
+/**
+ * Mark a friend so it will not need to be resuplied in event query
+ * @param Friend
+ */
++ (void) markFriend:(Friend *)friend {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    friend.mark = [NSNumber numberWithBool:true];
+    NSError *error = nil;
+    if (![context save:&error]) NSLog(@"Error mark friend - error:%@", error);
+}
 
+
+/**
+ * Remove all friends from the database. Do this when user logged out
+ **/
 + (void) removeAllFriends {
     NSArray *items = [self getAllFriends];
     NSManagedObjectContext *context = [self managedObjectContext];
