@@ -9,9 +9,10 @@
 #import "FriendsTableViewController.h"
 #import "FriendManager.h"
 #import "FriendCoreData.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "FriendInfoViewController.h"
+#import "TimeSupport.h"
 
 @interface FriendsTableViewController ()
 
@@ -37,7 +38,11 @@ NSArray *allFriends;
 #pragma mark - view controller methods
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:NO animated:true];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,15 +107,19 @@ NSArray *allFriends;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     internetReachable.reachableBlock = ^(Reachability*reach) {
-        [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+        });
     };
     internetReachable.unreachableBlock = ^(Reachability*reach) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        [message show];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            [message show];
+        });
     };
     
     [internetReachable startNotifier];
@@ -132,7 +141,6 @@ NSArray *allFriends;
 
 
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
@@ -143,7 +151,7 @@ NSArray *allFriends;
         Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
 
         FriendInfoViewController *viewController = segue.destinationViewController;
-        [segue.destinationViewController setDetail:item];
+        viewController.friend = friend;
     }
 }
 

@@ -8,14 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol DbUserRequestDelegate <NSObject>
-@optional
-- (void)notifyLoginUserRegistered;
-@end
-
 @interface DbUserRequest : NSObject
-@property (nonatomic, weak) id <DbUserRequestDelegate> delegate;
-- (void) registerUser:(NSString *)uid :(NSString *)username :(NSInteger)numFriendEvents :(NSInteger)numUserEvents;
+- (BOOL) registerUser:(NSString *)uid :(NSString *)username :(NSInteger)numFriendEvents :(NSInteger)numUserEvents;
 - (void) updateUserNumFriendEvents:(NSString *)uid :(NSInteger)numFriendEvents;
 - (void) updateUserNumMyEvents:(NSString *)uid :(NSInteger)numMyEvents;
 @end

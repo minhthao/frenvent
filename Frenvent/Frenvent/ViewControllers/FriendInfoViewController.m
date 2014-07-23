@@ -8,9 +8,9 @@
 
 #import "FriendInfoViewController.h"
 #import "FbUserInfoRequest.h"
-#import "FbUserInfo.h"
 #import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Friend.h"
 
 @interface FriendInfoViewController ()
 
@@ -28,46 +28,71 @@
     return _fbUserInfoRequest;
 }
 
+#pragma mark - alert view delegate
+-(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+     [self.navigationController popViewControllerAnimated:true];
+}
+
 #pragma mark - Fb user info request delegate
 -(void) notifyFbUserInfoRequestFail {
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                      message:@"User did not exist or you don't have permission to access this user."
+                                                     delegate:self
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
     
+    [message show];
 }
 
-/**
- * Notify if the user info request has completed.
- * @return FbUserInfo
- */
--(void) notifyFbUserInfoRequestCompletedWithResult:(FbUserInfo *)fbUserInfo {
-    self.username.text = fbUserInfo.name;
-    self.numMutualFriends.text = [NSString stringWithFormat:@"%d mutual friends", (int32_t)[fbUserInfo.mutualFriends count]];
-    
-    NSString *profilePictureUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", fbUserInfo.uid];
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profilePictureUrl] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
-    
-    [self.coverImage setImageWithURL:[NSURL URLWithString:fbUserInfo.cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+-(void) fbUserInfoRequestMutualFriends:(NSArray *)mutualFriends {
+    NSLog(@"%d mutual friends", (int16_t)[mutualFriends count]);
+    self.numMutualFriends.text = [NSString stringWithFormat:@"%d mutual friends", (int16_t)[mutualFriends count]];
 }
 
+-(void) fbUserInfoRequestName:(NSString *)name {
+    self.username.text = name;
+}
 
-#pragma mark - public class to set the friend before the segue
-/**
- * Set the friend and start the query to display
- * @param friend
- */
--(void) setFriend:(Friend *)friend {
-    [[self fbUserInfoRequest] queryFriendInfo:friend];
+-(void) fbUserInfoRequestOngoingEvents:(NSArray *)onGoingEvents {
+    NSLog(@"%d ongoing events", (int16_t)[onGoingEvents count]);
+}
+
+-(void) fbUserInfoRequestPastEvents:(NSArray *)pastEvents {
+     NSLog(@"%d past events", (int16_t)[pastEvents count]);
+}
+
+-(void) fbUserInfoRequestProfileCover:(NSString *)cover {
+    [self.coverImage setImageWithURL:[NSURL URLWithString:cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
 }
 
 #pragma mark - view delegate
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [self.userInfoTable setHidden:false];
     [self.recommendFriendTable setHidden:true];
-    // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.profileImage.layer setMasksToBounds:YES];
+    [self.profileImage.layer setBorderWidth:3];
+    [self.profileImage.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+
+    
+    if (self.friend != nil) {
+        NSString *profilePictureUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", self.friend.uid];
+        [self.profileImage setImageWithURL:[NSURL URLWithString:profilePictureUrl] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+        
+        [[self fbUserInfoRequest] queryFbUserInfo:self.friend.uid];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

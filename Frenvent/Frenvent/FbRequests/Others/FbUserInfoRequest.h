@@ -7,19 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "FbUserInfo.h"
 #import "Friend.h"
 
 @protocol FbUserInfoRequestDelegate <NSObject>
 @required
 - (void)notifyFbUserInfoRequestFail;
-- (void)notifyFbUserInfoRequestCompletedWithResult:(FbUserInfo *)FbUserInfo;
+@optional
+- (void)fbUserInfoRequestName:(NSString *)name;
+- (void)fbUserInfoRequestProfileCover:(NSString *)cover;
+- (void)fbUserInfoRequestOngoingEvents:(NSArray *)onGoingEvents;
+- (void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents;
+- (void)fbUserInfoRequestMutualFriends:(NSArray *)mutualFriends;
 @end
 
 @interface FbUserInfoRequest : NSObject
 
 @property (nonatomic, weak) id <FbUserInfoRequestDelegate> delegate;
 
-- (void)queryFriendInfo:(Friend *)friend;
+- (void)queryFbUserInfo:(NSString *)uid;
 
 @end

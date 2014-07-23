@@ -9,7 +9,7 @@
 #import "InvitedEventsTableViewController.h"
 #import "MyEventManager.h"
 #import "EventCoreData.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
 #import "EventButton.h"
@@ -101,26 +101,26 @@ CLLocation *lastKnown;
 - (void)refresh:(id)sender {
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
-    // Internet is reachable
     internetReachable.reachableBlock = ^(Reachability*reach) {
-        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-            [[self locationManager] startUpdatingLocation];
-        else [[self myEventsRequest] refreshMyEvents];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+                [[self locationManager] startUpdatingLocation];
+            else [[self myEventsRequest] refreshMyEvents];
+        });
     };
     
-    // Internet is not reachable
     internetReachable.unreachableBlock = ^(Reachability*reach) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-        [[self uiRefreshControl] endRefreshing];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            
+            [message show];
+            [[self uiRefreshControl] endRefreshing];
+        });
     };
-    
     [internetReachable startNotifier];
 }
 
@@ -156,8 +156,8 @@ CLLocation *lastKnown;
     }
 }
 
+// End refreshing if the cl location manager encounter error
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    NSLog(@"location error - %@", error);
     if ([[self uiRefreshControl] isRefreshing]) [[self myEventsRequest] refreshMyEvents];
 }
 
@@ -165,10 +165,13 @@ CLLocation *lastKnown;
 //handle event when view first load
 -(void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:NO animated:true];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
-    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
 }
 
 //handle when it receive the memory warning

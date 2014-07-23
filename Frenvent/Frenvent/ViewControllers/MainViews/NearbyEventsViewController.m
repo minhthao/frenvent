@@ -11,7 +11,7 @@
 #import "DbEventsRequest.h"
 #import "MyAnnotation.h"
 #import "TimeSupport.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 
 static double const DEFAULT_LATITUDE = 37.43;
@@ -43,7 +43,11 @@ BOOL isUpdating;
     [super viewDidLoad];
     [self.mapView setShowsUserLocation:YES];
     [self.refreshButton setEnabled:false];
-    // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
 }
 
 - (void)didReceiveMemoryWarning {

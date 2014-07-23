@@ -27,7 +27,9 @@
     self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:false];
     if ([FBSession activeSession].isOpen) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         if ([defaults boolForKey:LOGIN_DATA_INITIALIZED])

@@ -14,7 +14,5 @@
 
 + (void) addFriendToEventPair:(Event *)event :(Friend *)friend;
 + (BOOL) isFriendToEventPairExist:(NSString *)eid :(NSString *)uid;
-+ (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid;
-+ (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid;
 
 @end

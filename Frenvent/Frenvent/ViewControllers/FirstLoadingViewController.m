@@ -55,6 +55,11 @@ NSInteger numMyEvents;
     [friendsRequest initFriends];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:false];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -120,12 +125,6 @@ NSInteger numMyEvents;
     [self checkIfAllQueryCompleted];
 }
 
-//delegate for DbUserRequest
-- (void) notifyLoginUserRegistered {
-    [super viewDidDisappear:true];
-    [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
-}
-
 //delegate for location manager, call back for location update
 - (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (locations != nil && [locations count] > 0) {
@@ -169,8 +168,8 @@ NSInteger numMyEvents;
         [defaults synchronize];
         
         DbUserRequest *userRequest = [[DbUserRequest alloc] init];
-        [userRequest setDelegate:self];
         [userRequest registerUser:uid :name :numFriendsEvents :numMyEvents];
+        [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
     }
 }
 

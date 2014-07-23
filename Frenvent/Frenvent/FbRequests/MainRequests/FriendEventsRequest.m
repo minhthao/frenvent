@@ -35,7 +35,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     
     NSString *friendNames = [NSString stringWithFormat:@"SELECT uid, name FROM user WHERE uid IN "
                              "(SELECT uid FROM #friendEvents) LIMIT %d", QUERY_LIMIT];
-    
+
     NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, start_time, end_time, "
                            "location, venue, unsure_count, attending_count, privacy, host FROM event "
                            "WHERE eid IN (SELECT eid from #friendEvents) "
@@ -44,8 +44,6 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     
     NSString *query = [NSString stringWithFormat:@"{'friendEvents':'%@', 'friendNames':'%@', 'eventInfo':'%@'}",
                        friendEvents, friendNames, eventInfo];
-    
-    NSLog(@"Query intialized");
     
     NSDictionary *queryParams = @{@"q": query};
     return queryParams;
@@ -69,8 +67,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
           NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
                               
           if (error) {
-              NSLog(@"Error: %@", [error localizedDescription]);
-              [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
+               [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
           } else {
               NSArray *data = (NSArray *)result[@"data"];
               
@@ -100,9 +97,12 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               }
               
               //we then add the friends to the core data
-              for (int j = 0; j < [friendNames count]; j++) {
-                  NSString *uid = [friendNames[j][@"uid"] stringValue];
-                  NSString *name = friendNames[j][@"name"];
+              for (NSDictionary *friendName in friendNames) {
+                  NSString *uid;
+                  if ([friendName[@"uid"] isKindOfClass:[NSString class]])
+                      uid = friendName[@"uid"];
+                  else uid = [friendName[@"uid"] stringValue];
+                  NSString *name = friendName[@"name"];
                   Friend *friend = [FriendCoreData getFriendWithUid:uid];
                   if (friend == nil)
                       friend = [FriendCoreData addFriend:uid :name];
@@ -111,9 +111,17 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               }
               
               //Finally, we add in the friend to events pairs
-              for (int i = 0; i < [friendEvents count]; i++) {
-                  NSString *uid = [friendEvents[i][@"uid"] stringValue];
-                  NSString *eid = [friendEvents[i][@"eid"] stringValue];
+              for (NSDictionary *friendEvent in friendEvents) {
+                  NSString *uid;
+                  if ([friendEvent[@"uid"] isKindOfClass:[NSString class]])
+                      uid = friendEvent[@"uid"];
+                  else uid = [friendEvent[@"uid"] stringValue];
+                  
+                  NSString *eid;
+                  if ([friendEvent[@"eid"] isKindOfClass:[NSString class]])
+                      eid = friendEvent[@"eid"];
+                  else eid = [friendEvent[@"eid"] stringValue];
+                  
                   if (![FriendToEventCoreData isFriendToEventPairExist:eid :uid]) {
                       Event *event = eventsDictionary[eid];
                       Friend *friend = friendsDictionary[uid];

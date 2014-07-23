@@ -11,8 +11,6 @@
 #import "MyEventsRequest.h"
 #import "FriendsRequest.h"
 #import "DbEventsRequest.h"
-#import "DbUserRequest.h"
-
-@interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate, DbUserRequestDelegate>
+@interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate>
 
 @end

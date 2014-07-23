@@ -107,12 +107,13 @@
  * @param name
  * @param num friend events
  * @param num my events
+ * @return whether the user has been successfully registered
  */
-- (void) registerUser:(NSString *)uid :(NSString *)name :(NSInteger)numFriendEvents :(NSInteger)numUserEvents {
+- (BOOL) registerUser:(NSString *)uid :(NSString *)name :(NSInteger)numFriendEvents :(NSInteger)numUserEvents {
     NSMutableURLRequest *request = [self prepareRegisterUserRequest:uid :name :numFriendEvents :numUserEvents];
     NSURLConnection *conn = [[NSURLConnection alloc]initWithRequest:request delegate:self];
-    if(conn) [self.delegate notifyLoginUserRegistered];
-    else NSLog(@"Connection could not be made");
+    return (conn != nil);
+    
 }
 
 /**

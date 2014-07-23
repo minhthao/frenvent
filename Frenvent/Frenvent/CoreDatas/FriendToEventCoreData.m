@@ -63,30 +63,4 @@
     return FALSE;
 }
 
-/**
- * Get all the ongoing event pertaining to a given user
- * @param uid
- * @return Array of Event
- */
-+ (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid {
-    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"ANY eventsInterested.startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
-    NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
-    
-    return [EventCoreData getEvents:predicates sortByDateAsc:true];
-}
-
-/**
- * Get all the ongoing event pertaining to a given user
- * @param uid
- * @return Array of Event
- */
-+ (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid {
-    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"ANY eventsInterested.startTime < %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
-    NSPredicate *userPredicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
-    NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, userPredicate]];
-    
-    return [EventCoreData getEvents:predicates sortByDateAsc:true];
-}
-
 @end

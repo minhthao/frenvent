@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Friend.h"
 #import "FriendToEventCoreData.h"
+#import "TimeSupport.h"
 
 @interface FriendCoreData()
 
@@ -105,8 +106,15 @@
  * @param uid
  * @return Array of Event
  */
-+ (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid {
-    return [FriendToEventCoreData getAllFutureEventsPertainingToUser:uid];
++ (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid{
+    Friend *friend = [self getFriendWithUid:uid];
+    if (friend != nil) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"startTime >= %lld", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+        NSArray *unsortedEvents = [[friend.eventsInterested filteredSetUsingPredicate:predicate] allObjects];
+        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:NO];
+        return [unsortedEvents sortedArrayUsingDescriptors:@[sort]];
+    }
+    return nil;
 }
 
 /**
@@ -115,7 +123,14 @@
  * @return Array of Event
  */
 + (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid {
-    return [FriendToEventCoreData getAllPastEventsPertainingToUser:uid];
+    Friend *friend = [self getFriendWithUid:uid];
+    if (friend != nil) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"startTime < %lld", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+        NSArray *unsortedEvents = [[friend.eventsInterested filteredSetUsingPredicate:predicate] allObjects];
+        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES];
+        return [unsortedEvents sortedArrayUsingDescriptors:@[sort]];
+    }
+    return nil;
 }
 
 /**

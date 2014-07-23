@@ -11,7 +11,7 @@
 #import "Event.h"
 #import "FriendEventsRequest.h"
 #import "EventManager.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
 #import "EventButton.h"
@@ -105,21 +105,25 @@ CLLocation *lastKnown;
     
     // Internet is reachable
     internetReachable.reachableBlock = ^(Reachability*reach) {
-        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-            [[self locationManager] startUpdatingLocation];
-        else [[self friendEventsRequest] refreshFriendEvents];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+                [[self locationManager] startUpdatingLocation];
+            else [[self friendEventsRequest] refreshFriendEvents];
+        });
     };
     
     // Internet is not reachable
     internetReachable.unreachableBlock = ^(Reachability*reach) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-        [[self uiRefreshControl] endRefreshing];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            
+            [message show];
+            [[self uiRefreshControl] endRefreshing];
+        });
     };
     
     [internetReachable startNotifier];
@@ -164,15 +168,16 @@ CLLocation *lastKnown;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.refreshControl = [self uiRefreshControl];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:true];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
-    }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
+}
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

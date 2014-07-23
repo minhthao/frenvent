@@ -107,7 +107,11 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               
               //add events to the core data, or change the rsvp if necessary
               for (int i = 0; i < [eventInfo count]; i++) {
-                  NSString *eid = [eventInfo[i][@"eid"] stringValue];
+                  NSString *eid;
+                  if ([eventInfo[i][@"eid"] isKindOfClass:[NSString class]])
+                      eid = eventInfo[i][@"eid"];
+                  else eid = [eventInfo[i][@"eid"] stringValue];
+
                   Event *event = [EventCoreData getEventWithEid:eid];
                   if (event == nil) {
                       event = [EventCoreData addEvent:eventInfo[i] usingRsvp:rsvpDictionary[eid]];
