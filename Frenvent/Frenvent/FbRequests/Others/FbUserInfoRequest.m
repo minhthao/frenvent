@@ -123,13 +123,14 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
             } else {
                 NSDictionary *infoObj = resultSet[0];
                 [self.delegate fbUserInfoRequestName:infoObj[@"name"]];
-                
+                NSString *cover = @"";
                 if ([infoObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *coverDic = infoObj[@"pic_cover"];
                     if (coverDic[@"source"] != nullInstance) {
-                        [self.delegate fbUserInfoRequestProfileCover:coverDic[@"source"]];
+                        cover = coverDic[@"source"];
                     }
                 }
+                [self.delegate fbUserInfoRequestProfileCover:cover];
             }
         } else if ([data[i][@"name"] isEqualToString:@"mutualFriends"]) {
             NSMutableArray *mutualFriends = [[NSMutableArray alloc] init];

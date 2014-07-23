@@ -15,7 +15,6 @@
 		3E57FB391959517200D3293D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB381959517200D3293D /* main.m */; };
 		3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB3C1959517200D3293D /* AppDelegate.m */; };
 		3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB3E1959517200D3293D /* Frenvent.xcdatamodeld */; };
-		3E57FB421959517200D3293D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E57FB411959517200D3293D /* Images.xcassets */; };
 		3E57FB491959517200D3293D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB481959517200D3293D /* XCTest.framework */; };
 		3E57FB4A1959517200D3293D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2A1959517200D3293D /* Foundation.framework */; };
 		3E57FB4B1959517200D3293D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2E1959517200D3293D /* UIKit.framework */; };
@@ -25,6 +24,7 @@
 		3E57FB641959555400D3293D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB621959555400D3293D /* Bolts.framework */; };
 		3E57FB651959555400D3293D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB631959555400D3293D /* FacebookSDK.framework */; };
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
+		3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC319807AD4003C932A /* Images.xcassets */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -132,7 +132,6 @@
 		3E57FB3B1959517200D3293D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3E57FB3C1959517200D3293D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3E57FB3F1959517200D3293D /* Frenvent.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Frenvent.xcdatamodel; sourceTree = "<group>"; };
-		3E57FB411959517200D3293D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E57FB471959517200D3293D /* FrenventTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FrenventTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E57FB481959517200D3293D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3E57FB511959517200D3293D /* FrenventTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FrenventTests-Info.plist"; sourceTree = "<group>"; };
@@ -142,6 +141,7 @@
 		3E57FB631959555400D3293D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Frenvent/frameworks/FacebookSDK.framework; sourceTree = "<group>"; };
 		3E57FB661959587400D3293D /* TimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSupport.h; path = Supports/TimeSupport.h; sourceTree = "<group>"; };
 		3E57FB671959587400D3293D /* TimeSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeSupport.m; path = Supports/TimeSupport.m; sourceTree = "<group>"; };
+		3E8A3DC319807AD4003C932A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -394,7 +394,7 @@
 		3E57FB331959517200D3293D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3E57FB411959517200D3293D /* Images.xcassets */,
+				3E8A3DC319807AD4003C932A /* Images.xcassets */,
 				3E57FB3E1959517200D3293D /* Frenvent.xcdatamodeld */,
 				3E57FB3B1959517200D3293D /* AppDelegate.h */,
 				3E57FB3C1959517200D3293D /* AppDelegate.m */,
@@ -811,9 +811,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */,
 				3EAAACE3196C63C5004AD322 /* Main.storyboard in Resources */,
 				3E57FB371959517200D3293D /* InfoPlist.strings in Resources */,
-				3E57FB421959517200D3293D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

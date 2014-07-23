@@ -10,6 +10,7 @@
 #import "EventDetailsRequest.h"
 #import "UIImageView+AFNetworking.h"
 #import "EventDetail.h"
+#import "MyColor.h"
 
 @interface EventDetailViewController ()
 
@@ -39,10 +40,12 @@ EventDetail *completeEventDetail;
 }
 
 - (void)notifyEventDetailsQueryCompletedWithResult:(EventDetail *)eventDetail {
+    NSLog(@"got result %@", eventDetail.cover);
     completeEventDetail = eventDetail;
     self.eventTitle.text = completeEventDetail.name;
     if ([completeEventDetail.cover length] > 0)
         [self.cover setImageWithURL:[NSURL URLWithString:completeEventDetail.cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    else [self.cover setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
     
 }
 

@@ -11,6 +11,7 @@
 #import "UIImageView+AFNetworking.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Friend.h"
+#import "MyColor.h"
 
 @interface FriendInfoViewController ()
 
@@ -62,7 +63,10 @@
 }
 
 -(void) fbUserInfoRequestProfileCover:(NSString *)cover {
-    [self.coverImage setImageWithURL:[NSURL URLWithString:cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    if ([cover length] > 0)
+        [self.coverImage setImageWithURL:[NSURL URLWithString:cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];   
+    
 }
 
 #pragma mark - view delegate
