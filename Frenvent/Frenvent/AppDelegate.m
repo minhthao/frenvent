@@ -66,19 +66,10 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
         Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-        
-        // Internet is reachable
-        internetReachable.reachableBlock = ^(Reachability*reach) {
+        if ([internetReachable isReachable]) {
             UpdateManager *updateManager = [[UpdateManager alloc] init];
             [updateManager doUpdateWithCompletionHandler:completionHandler];
-        };
-        
-        // Internet is not reachable
-        internetReachable.unreachableBlock = ^(Reachability*reach) {
-            completionHandler(UIBackgroundFetchResultFailed);
-        };
-        
-        [internetReachable startNotifier];
+        } else completionHandler(UIBackgroundFetchResultFailed);
     } else completionHandler(UIBackgroundFetchResultNoData); //user did not login
 }
 

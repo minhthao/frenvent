@@ -106,23 +106,16 @@ NSArray *allFriends;
 //handle the selected action
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    internetReachable.reachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-        });
-    };
-    internetReachable.unreachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                              message:@"Connect to internet and try again."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-            [message show];
-        });
-    };
-    
-    [internetReachable startNotifier];
+    if ([internetReachable isReachable])
+        [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
+    else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

@@ -13,6 +13,7 @@
 #import "TimeSupport.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
+#import "Reachability.h"
 
 static double const DEFAULT_LATITUDE = 37.43;
 static double const DEFAULT_LONGITUDE = -122.17;
@@ -196,6 +197,17 @@ BOOL isUpdating;
 */
 
 - (IBAction)refresh:(id)sender {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if (![internetReachable isReachable]) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet to get more accurate results."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+
+    
     [self.refreshButton setEnabled:false];
     
     MKCoordinateRegion region = [self.mapView region];

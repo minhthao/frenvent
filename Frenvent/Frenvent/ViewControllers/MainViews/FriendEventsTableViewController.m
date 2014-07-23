@@ -103,8 +103,6 @@ CLLocation *lastKnown;
 - (void)refresh:(id)sender {
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    
-    // Internet is reachable
     internetReachable.reachableBlock = ^(Reachability*reach) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
@@ -112,8 +110,6 @@ CLLocation *lastKnown;
             else [[self friendEventsRequest] refreshFriendEvents];
         });
     };
-    
-    // Internet is not reachable
     internetReachable.unreachableBlock = ^(Reachability*reach) {
         dispatch_async(dispatch_get_main_queue(), ^{
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
@@ -272,8 +268,21 @@ CLLocation *lastKnown;
     [containerView setBackgroundColor:[UIColor orangeColor]];
     [self.tableView deselectRowAtIndexPath:indexPath animated:true];
     
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    //we check if there is a internet connection, if no then stop refreshing and alert
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        [[self uiRefreshControl] endRefreshing];
+    }
 }
 
 

@@ -101,27 +101,20 @@ CLLocation *lastKnown;
 - (void)refresh:(id)sender {
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    internetReachable.reachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-                [[self locationManager] startUpdatingLocation];
-            else [[self myEventsRequest] refreshMyEvents];
-        });
-    };
-    
-    internetReachable.unreachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                              message:@"Connect to internet and try again."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-            
-            [message show];
-            [[self uiRefreshControl] endRefreshing];
-        });
-    };
-    [internetReachable startNotifier];
+    if ([internetReachable isReachable]) {
+        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+            [[self locationManager] startUpdatingLocation];
+        else [[self myEventsRequest] refreshMyEvents];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        [[self uiRefreshControl] endRefreshing];
+    }
 }
 
 #pragma mark - delegate for my events request
