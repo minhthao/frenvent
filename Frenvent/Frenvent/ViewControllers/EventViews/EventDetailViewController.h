@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EventDetailsRequest.h"
 
-@interface EventDetailViewController : UIViewController
+@interface EventDetailViewController : UIViewController <EventDetailsRequestDelegate>
+
+@property (nonatomic, strong) NSString *eid;
+
+@property (weak, nonatomic) IBOutlet UIImageView *cover;
+@property (weak, nonatomic) IBOutlet UILabel *eventTitle;
 
 @end

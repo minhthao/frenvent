@@ -7,26 +7,51 @@
 //
 
 #import "EventDetailViewController.h"
+#import "EventDetailsRequest.h"
+#import "UIImageView+AFNetworking.h"
+#import "EventDetail.h"
 
 @interface EventDetailViewController ()
+
+@property (nonatomic, strong) EventDetailsRequest *eventDetailsRequest;
 
 @end
 
 @implementation EventDetailViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+EventDetail *completeEventDetail;
+
+#pragma mark - initiate with delegates
+- (EventDetailsRequest *)eventDetailsRequest {
+    if (_eventDetailsRequest == nil) {
+        _eventDetailsRequest = [[EventDetailsRequest alloc] init];
+        _eventDetailsRequest.delegate = self;
     }
-    return self;
+    return _eventDetailsRequest;
+}
+
+- (void)notifyEventDidNotExist {
+    
+}
+
+- (void)notifyEventDetailsQueryFail {
+    
+}
+
+- (void)notifyEventDetailsQueryCompletedWithResult:(EventDetail *)eventDetail {
+    completeEventDetail = eventDetail;
+    self.eventTitle.text = completeEventDetail.name;
+    if ([completeEventDetail.cover length] > 0)
+        [self.cover setImageWithURL:[NSURL URLWithString:completeEventDetail.cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    if (self.eid != nil) {
+        [[self eventDetailsRequest] queryEventDetail:self.eid];
+    }
 }
 
 - (void)didReceiveMemoryWarning

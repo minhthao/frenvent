@@ -17,6 +17,7 @@
 #import "EventButton.h"
 #import "MyColor.h"
 #import "Reachability.h"
+#import "EventDetailViewController.h"
 
 CLLocation *lastKnown;
 
@@ -220,13 +221,13 @@ CLLocation *lastKnown;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventItem" forIndexPath:indexPath];
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventItem"];
     
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    
     UIView *containerView = (UIView *)[cell viewWithTag:200];
     [containerView.layer setCornerRadius:3.0f];
     [containerView.layer setMasksToBounds:YES];
     [containerView.layer setBorderWidth:0.5f];
     [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    
+    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     
     UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:201];
     UILabel *eventName = (UILabel *)[cell viewWithTag:202];
@@ -257,10 +258,29 @@ CLLocation *lastKnown;
     EventButton *rsvpButton = [self cellRsvpButton:indexPath];
     if (rsvpButton != nil) [buttonsBar addSubview:rsvpButton];
     
-    EventButton *detailButton = [self cellDetailButton:indexPath];
-    [buttonsBar addSubview:detailButton];
+    if (rsvpButton == nil && shareButton == nil) {
+        EventButton *detailButton = [self cellDetailButton:indexPath];
+        [buttonsBar addSubview:detailButton];
+    }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UIView *containerView = (UIView *)[cell viewWithTag:200];
+    [containerView setBackgroundColor:[UIColor orangeColor]];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:true];
+    
+    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+    [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+}
+
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UIView *containerView = (UIView *)[cell viewWithTag:200];
+    [containerView setBackgroundColor:[UIColor whiteColor]];
 }
 
 #pragma mark - cell buttons
@@ -274,7 +294,7 @@ CLLocation *lastKnown;
     if (![event canShare]) return nil;
     
     //otherwise we create that button
-    CGRect buttonFrame = CGRectMake(207.0, 0.0, 103.0, 35.0); //all 3 buttons presents
+    CGRect buttonFrame = CGRectMake(155.0, 0.0, 155.0, 35.0); //all 3 buttons presents
     EventButton *shareButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
     //set title and format button
@@ -299,9 +319,9 @@ CLLocation *lastKnown;
     
     CGRect buttonFrame;
     if ([event canShare])  //can share implies can rsvp
-        buttonFrame = CGRectMake(103.0, 0.0, 104.0, 35.0); //all 3 buttons presents
+        buttonFrame = CGRectMake(0.0, 0.0, 155.0, 35.0);
     else if ([event canRsvp])
-        buttonFrame = CGRectMake(155.0, 0.0, 155.0, 35.0); //only 2 buttons presents
+        buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0);
     else return nil; //no need to create this button
     
     EventButton *rsvpButton = [[EventButton alloc] initWithFrame:buttonFrame];
@@ -324,14 +344,7 @@ CLLocation *lastKnown;
  * @param index path
  */
 - (EventButton *)cellDetailButton:(NSIndexPath *)indexPath {
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    
-    CGRect buttonFrame;
-    if ([event canShare])  //can share implies can rsvp
-        buttonFrame = CGRectMake(0.0, 0.0, 103.0, 35.0); //all 3 buttons presents
-    else if ([event canRsvp])
-        buttonFrame = CGRectMake(0.0, 0.0, 155.0, 35.0); //only 2 buttons presents
-    else buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0); //only this button present
+    CGRect buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0); //only this button present
     
     EventButton *detailButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
@@ -362,7 +375,8 @@ CLLocation *lastKnown;
     [button setTitleColor:[MyColor eventCellButtonHighlightTextColor] forState:UIControlStateHighlighted];
     
     [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.5]];
-
+    
+    [button setUserInteractionEnabled:true];
 }
 
 #pragma mark - cell button actions selector
@@ -385,15 +399,16 @@ CLLocation *lastKnown;
 }
 
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        NSString *eid = (NSString *)sender;
+        EventDetailViewController *viewController = segue.destinationViewController;
+        viewController.eid = eid;
+    }
+    
 }
-*/
 
 @end
