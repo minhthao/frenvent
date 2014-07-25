@@ -25,6 +25,7 @@
 		3E57FB651959555400D3293D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB631959555400D3293D /* FacebookSDK.framework */; };
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
 		3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC319807AD4003C932A /* Images.xcassets */; };
+		3E8A3DC9198231EA003C932A /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC8198231EA003C932A /* WebViewController.m */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -86,7 +87,7 @@
 		3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109E1979E86600963155 /* MyAnnotation.m */; };
 		3ECF10A21979F95400963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A11979F95400963155 /* Friend.m */; };
 		3ECF10A71979FB9F00963155 /* FbUserInfoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */; };
-		3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */; };
+		3ECF10AA197A0A9600963155 /* FbUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A9197A0A9600963155 /* FbUserInfoViewController.m */; };
 		3ECF10AE197A75D800963155 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10AD197A75D800963155 /* EventDetailViewController.m */; };
 		3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */; };
 		3ECF10B4197B3BF600963155 /* EventDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10B3197B3BF600963155 /* EventDetail.m */; };
@@ -142,6 +143,8 @@
 		3E57FB661959587400D3293D /* TimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSupport.h; path = Supports/TimeSupport.h; sourceTree = "<group>"; };
 		3E57FB671959587400D3293D /* TimeSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeSupport.m; path = Supports/TimeSupport.m; sourceTree = "<group>"; };
 		3E8A3DC319807AD4003C932A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3E8A3DC7198231EA003C932A /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewController.h; path = ViewControllers/WebViewController.h; sourceTree = "<group>"; };
+		3E8A3DC8198231EA003C932A /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewController.m; path = ViewControllers/WebViewController.m; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -260,8 +263,8 @@
 		3ECF10A11979F95400963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
 		3ECF10A51979FB9F00963155 /* FbUserInfoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoRequest.h; path = FbRequests/Others/FbUserInfoRequest.h; sourceTree = "<group>"; };
 		3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoRequest.m; path = FbRequests/Others/FbUserInfoRequest.m; sourceTree = "<group>"; };
-		3ECF10A8197A0A9600963155 /* FriendInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendInfoViewController.h; path = ViewControllers/FriendInfoViewController.h; sourceTree = "<group>"; };
-		3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendInfoViewController.m; path = ViewControllers/FriendInfoViewController.m; sourceTree = "<group>"; };
+		3ECF10A8197A0A9600963155 /* FbUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoViewController.h; path = ViewControllers/FbUserInfoViewController.h; sourceTree = "<group>"; };
+		3ECF10A9197A0A9600963155 /* FbUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoViewController.m; path = ViewControllers/FbUserInfoViewController.m; sourceTree = "<group>"; };
 		3ECF10AC197A75D800963155 /* EventDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailViewController.h; path = ViewControllers/EventViews/EventDetailViewController.h; sourceTree = "<group>"; };
 		3ECF10AD197A75D800963155 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetailViewController.m; path = ViewControllers/EventViews/EventDetailViewController.m; sourceTree = "<group>"; };
 		3ECF10AF197AFD7400963155 /* EventDetailsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailsRequest.h; path = FbRequests/EventRequests/EventDetailsRequest.h; sourceTree = "<group>"; };
@@ -683,8 +686,10 @@
 		3ECF10BB197EEA7900963155 /* FbUserViews */ = {
 			isa = PBXGroup;
 			children = (
-				3ECF10A8197A0A9600963155 /* FriendInfoViewController.h */,
-				3ECF10A9197A0A9600963155 /* FriendInfoViewController.m */,
+				3ECF10A8197A0A9600963155 /* FbUserInfoViewController.h */,
+				3ECF10A9197A0A9600963155 /* FbUserInfoViewController.m */,
+				3E8A3DC7198231EA003C932A /* WebViewController.h */,
+				3E8A3DC8198231EA003C932A /* WebViewController.m */,
 			);
 			name = FbUserViews;
 			sourceTree = "<group>";
@@ -881,9 +886,10 @@
 				3ECF10E5197F229100963155 /* SDWebImageManager.m in Sources */,
 				3EACE3FA195E2CF30023EF58 /* AFURLRequestSerialization.m in Sources */,
 				3ECF10E4197F229100963155 /* SDWebImageDownloaderOperation.m in Sources */,
+				3E8A3DC9198231EA003C932A /* WebViewController.m in Sources */,
 				3EACE3F9195E2CF30023EF58 /* AFURLConnectionOperation.m in Sources */,
 				3ECF10E2197F229100963155 /* SDWebImageDecoder.m in Sources */,
-				3ECF10AA197A0A9600963155 /* FriendInfoViewController.m in Sources */,
+				3ECF10AA197A0A9600963155 /* FbUserInfoViewController.m in Sources */,
 				3ECF10901976417E00963155 /* UpdateManager.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,

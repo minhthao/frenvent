@@ -11,7 +11,7 @@
 #import "FriendCoreData.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
-#import "FriendInfoViewController.h"
+#import "FbUserInfoViewController.h"
 #import "TimeSupport.h"
 
 @interface FriendsTableViewController ()
@@ -106,9 +106,13 @@ NSArray *allFriends;
 //handle the selected action
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    if ([internetReachable isReachable])
-        [self performSegueWithIdentifier:@"friendInfoView" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
-    else {
+    if ([internetReachable isReachable]) {
+        NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
+        NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
+        Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
+
+        [self performSegueWithIdentifier:@"friendInfoView" sender:friend.uid];
+    } else {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
                                                           message:@"Connect to internet and try again."
                                                          delegate:nil
@@ -137,14 +141,9 @@ NSArray *allFriends;
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        
-        NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
-        NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
-        Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
-
-        FriendInfoViewController *viewController = segue.destinationViewController;
-        viewController.friend = friend;
+        NSString *uid = (NSString *)sender;
+        FbUserInfoViewController *viewController = segue.destinationViewController;
+        viewController.targetUid = uid;
     }
 }
 

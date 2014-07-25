@@ -23,6 +23,7 @@
     [FBLoginView class];
     [FBSettings enablePlatformCompatibility:true];
     
+    [application setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval: UIApplicationBackgroundFetchIntervalMinimum];
     
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];

@@ -10,18 +10,21 @@
 #import "FbUserInfoRequest.h"
 #import "Friend.h"
 
-@interface FriendInfoViewController : UIViewController <FbUserInfoRequestDelegate, UIAlertViewDelegate>
+@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate>
 - (IBAction)viewSegments:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableView *userInfoTable;
-@property (weak, nonatomic) IBOutlet UITableView *recommendFriendTable;
+@property (weak, nonatomic) IBOutlet UITableView *mutualFriendsTable;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *numMutualFriends;
 
-@property (nonatomic, strong) Friend *friend;
+@property (weak, nonatomic) IBOutlet UIView *profileButton;
+@property (weak, nonatomic) IBOutlet UIView *messageButton;
+@property (weak, nonatomic) IBOutlet UIView *photoButton;
+@property (weak, nonatomic) IBOutlet UIView *eventButton;
 
-- (void) setFriend:(Friend *)friend;
+@property (nonatomic, strong) NSString *targetUid;
 
 @end

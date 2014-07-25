@@ -45,7 +45,7 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
  * @return dictionary
  */
 - (NSDictionary *) prepareAboutFbUserQueryParams:(NSString *)uid {
-    NSString *userInfo = [NSString stringWithFormat:@"SELECT name, pic_cover FROM user WHERE uid = %@", uid];
+    NSString *userInfo = [NSString stringWithFormat:@"SELECT name, pic_cover, mutual_friend_count FROM user WHERE uid = %@", uid];
     NSString *mutualFriends = [NSString stringWithFormat:@"SELECT uid, name FROM user WHERE uid IN "
                                "(SELECT uid2 FROM friend where uid2 IN (SELECT uid2 FROM friend WHERE uid1 = me()) "
                                "and uid1 = %@)", uid];
@@ -67,11 +67,10 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          if (error) [self.delegate notifyFbUserInfoRequestFail];
-                                          else if (FB_ISSESSIONOPENWITHSTATE(status)) [self doQueryFbUserInfo:uid];
-                                          else [self.delegate notifyFbUserInfoRequestFail];
-                                      }
-         ];
+            if (error) [self.delegate notifyFbUserInfoRequestFail];
+            else if (FB_ISSESSIONOPENWITHSTATE(status)) [self doQueryFbUserInfo:uid];
+            else [self.delegate notifyFbUserInfoRequestFail];
+        }];
     } else [self.delegate notifyFbUserInfoRequestFail];
 }
 
@@ -97,10 +96,10 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
         [FBRequestConnection startWithGraphPath:@"/fql"
                                      parameters:userEvent
                                      HTTPMethod:@"GET"
-                              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                  if (error) [self.delegate notifyFbUserInfoRequestFail];
-                                  else [self processEventsResult:result forFriend:friend];
-                              }];
+              completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (error) [self.delegate notifyFbUserInfoRequestFail];
+            else [self processEventsResult:result forFriend:friend];
+        }];
     }
     
    

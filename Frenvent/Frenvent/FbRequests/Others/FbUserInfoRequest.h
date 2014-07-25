@@ -17,7 +17,6 @@
 - (void)fbUserInfoRequestProfileCover:(NSString *)cover;
 - (void)fbUserInfoRequestOngoingEvents:(NSArray *)onGoingEvents;
 - (void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents;
-- (void)fbUserInfoRequestMutualFriends:(NSArray *)mutualFriends;
 @end
 
 @interface FbUserInfoRequest : NSObject

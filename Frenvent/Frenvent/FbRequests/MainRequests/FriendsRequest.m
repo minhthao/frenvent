@@ -62,25 +62,24 @@ static int16_t const QUERY_LIMIT = 5000;
                                  HTTPMethod:@"GET"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               
-                              if (error) {
-                                  [self.delegate notifyFriendsQueryError];
-                              } else {
-                                  NSArray *data = (NSArray *)result[@"data"];
-                                  
-                                  //get approprivate info arrays
-                                  for (int i = 0; i < [data count]; i++) {
-                                      NSString *uid;
-                                      if ([data[i][@"uid"] isKindOfClass:[NSString class]])
-                                          uid = data[i][@"uid"];
-                                      else uid = [data[i][@"uid"] stringValue];
-                                      
-                                      NSString *name = data[i][@"name"];
-                                      if ([FriendCoreData getFriendWithUid:uid] == nil)
-                                          [FriendCoreData addFriend:uid :name];
-                                  }
-                                  [self.delegate notifyFriendsQueryCompleted];
-                              }
-                          }];
+        if (error) [self.delegate notifyFriendsQueryError];
+        else {
+            NSArray *data = (NSArray *)result[@"data"];
+              
+            //get approprivate info arrays
+            for (int i = 0; i < [data count]; i++) {
+                NSString *uid;
+                if ([data[i][@"uid"] isKindOfClass:[NSString class]])
+                    uid = data[i][@"uid"];
+                else uid = [data[i][@"uid"] stringValue];
+                  
+                NSString *name = data[i][@"name"];
+                if ([FriendCoreData getFriendWithUid:uid] == nil)
+                    [FriendCoreData addFriend:uid :name];
+            }
+            [self.delegate notifyFriendsQueryCompleted];
+        }
+    }];
 }
 
 @end

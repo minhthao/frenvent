@@ -51,11 +51,10 @@ static int16_t const QUERY_LIMIT = 5000;
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          if (error) [self.delegate notifyEventDetailsQueryFail];
-                                          else if (FB_ISSESSIONOPENWITHSTATE(status)) [self doQueryForEventDetailWithEid:eid];
-                                          else [self.delegate notifyEventDetailsQueryFail];
-                                      }
-         ];
+            if (error) [self.delegate notifyEventDetailsQueryFail];
+            else if (FB_ISSESSIONOPENWITHSTATE(status)) [self doQueryForEventDetailWithEid:eid];
+            else [self.delegate notifyEventDetailsQueryFail];
+        }];
     } else [self.delegate notifyEventDetailsQueryFail];
 }
 

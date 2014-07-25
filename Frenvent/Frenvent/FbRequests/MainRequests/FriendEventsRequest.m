@@ -155,15 +155,11 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
                                             allowLoginUI:NO
                                        completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                            // if login fails for any reason, we alert
-                                            if (error) {
-                                                NSLog(@"error open session");
-                                                [self.delegate notifyFriendEventsQueryEncounterError:nil];
-                                            } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
-                                                [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
-                                            } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
-                                       }
-         ];
+                                           
+            if (error) [self.delegate notifyFriendEventsQueryEncounterError:nil];
+            else if (FB_ISSESSIONOPENWITHSTATE(status)) [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+            else [self.delegate notifyFriendEventsQueryEncounterError:nil];
+        }];
     } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
 }
 
@@ -179,15 +175,10 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          // if login fails for any reason, we alert
-                                          if (error) {
-                                              NSLog(@"error open session");
-                                              [self.delegate notifyFriendEventsQueryEncounterError:nil];
-                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
-                                              [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
-                                          } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
-                                      }
-         ];
+            if (error) [self.delegate notifyFriendEventsQueryEncounterError:nil];
+            else if (FB_ISSESSIONOPENWITHSTATE(status)) [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
+            else [self.delegate notifyFriendEventsQueryEncounterError:nil];
+        }];
     } else [self.delegate notifyFriendEventsQueryEncounterError:nil];
 }
 
@@ -202,15 +193,10 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          // if login fails for any reason, we alert
-                                          if (error) {
-                                              NSLog(@"error open session");
-                                              [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
-                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
-                                              [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
-                                          } else [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
-                                      }
-         ];
+            if (error) [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
+            else if (FB_ISSESSIONOPENWITHSTATE(status)) [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:completionHandler];
+            else [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
+        }];
     } else [self.delegate notifyFriendEventsQueryEncounterError:completionHandler];
 }
 @end

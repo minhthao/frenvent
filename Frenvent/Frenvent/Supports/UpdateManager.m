@@ -72,6 +72,8 @@ int64_t fetchStartTime;
 
 //delegate for  my events query completion
 -(void)notifyMyEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSLog(@"My Events update done");
     if (newEvents == nil || [newEvents count] ==0) {
         numRequestPending--;
         [self checkUpdateRequestFinish:completionHandler];
@@ -100,6 +102,7 @@ int64_t fetchStartTime;
  * @param completion handler from the background fetch
  */
 - (void)doUpdateWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"do update with the complete handler");
     fetchStartTime = [TimeSupport getCurrentTimeInUnix];
     numRequestPending = 2; //we update friend events and my events
     [[self myEventsRequest] updateBackgroundMyEventsWithCompletionHandler:completionHandler];
