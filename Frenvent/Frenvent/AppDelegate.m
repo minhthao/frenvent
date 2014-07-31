@@ -18,6 +18,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize updateManager = _updateManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBLoginView class];
@@ -68,8 +69,7 @@
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
         Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
         if ([internetReachable isReachable]) {
-            UpdateManager *updateManager = [[UpdateManager alloc] init];
-            [updateManager doUpdateWithCompletionHandler:completionHandler];
+            [[self updateManager] doUpdateWithCompletionHandler:completionHandler];
         } else completionHandler(UIBackgroundFetchResultFailed);
     } else completionHandler(UIBackgroundFetchResultNoData); //user did not login
 }
@@ -109,6 +109,12 @@
             abort();
         } 
     }
+}
+
+#pragma mark - update manager
+- (UpdateManager *)updateManager {
+    if (_updateManager == nil) _updateManager = [[UpdateManager alloc] init];
+    return _updateManager;
 }
 
 #pragma mark - Core Data stack

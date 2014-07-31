@@ -42,6 +42,7 @@
 + (Event *) addEventUsingEid:(NSString *)eid
                         name:(NSString *)name
                      picture:(NSString *)picture
+                       cover:(NSString *)cover
                    startTime:(int64_t)startTime
                      endTime:(int64_t)endTime
                     location:(NSString *)location

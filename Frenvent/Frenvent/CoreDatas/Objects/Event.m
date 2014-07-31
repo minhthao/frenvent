@@ -29,6 +29,7 @@ static double const METER_IN_MILE = 1609.344;
 
 @implementation Event
 
+@dynamic cover;
 @dynamic eid;
 @dynamic endTime;
 @dynamic host;

@@ -9,11 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "FbUserInfoRequest.h"
 #import "Friend.h"
+#import "PagedPhotoScrollView.h"
+#import "PagedEventScrollView.h"
 
-@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate>
+@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, UIGestureRecognizerDelegate>
 - (IBAction)viewSegments:(id)sender;
-@property (weak, nonatomic) IBOutlet UITableView *userInfoTable;
-@property (weak, nonatomic) IBOutlet UITableView *mutualFriendsTable;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *mainContentView;
+@property (weak, nonatomic) IBOutlet UITableView *eventTable;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *viewSegmentControl;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
+- (IBAction)shareClicked:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
@@ -22,8 +31,16 @@
 
 @property (weak, nonatomic) IBOutlet UIView *profileButton;
 @property (weak, nonatomic) IBOutlet UIView *messageButton;
-@property (weak, nonatomic) IBOutlet UIView *photoButton;
-@property (weak, nonatomic) IBOutlet UIView *eventButton;
+
+@property (weak, nonatomic) IBOutlet UIView *photosButton;
+@property (weak, nonatomic) IBOutlet UIView *friendsButton;
+
+
+
+@property (weak, nonatomic) IBOutlet UIView *eventsView;
+@property (weak, nonatomic) IBOutlet UIView *photosView;
+@property (weak, nonatomic) IBOutlet UIView *suggestedFriendView;
+
 
 @property (nonatomic, strong) NSString *targetUid;
 

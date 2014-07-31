@@ -10,7 +10,7 @@
 #import "Notification.h"
 #import "NotificationCoreData.h"
 #import "Constants.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
 #import "Event.h"

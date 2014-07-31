@@ -111,7 +111,7 @@
     if (friend != nil) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"startTime >= %lld", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
         NSArray *unsortedEvents = [[friend.eventsInterested filteredSetUsingPredicate:predicate] allObjects];
-        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:NO];
+        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES];
         return [unsortedEvents sortedArrayUsingDescriptors:@[sort]];
     }
     return nil;
@@ -127,7 +127,7 @@
     if (friend != nil) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"startTime < %lld", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
         NSArray *unsortedEvents = [[friend.eventsInterested filteredSetUsingPredicate:predicate] allObjects];
-        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES];
+        NSSortDescriptor *sort=[NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:NO];
         return [unsortedEvents sortedArrayUsingDescriptors:@[sort]];
     }
     return nil;

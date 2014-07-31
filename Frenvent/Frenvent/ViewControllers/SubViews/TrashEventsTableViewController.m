@@ -9,7 +9,7 @@
 #import "TrashEventsTableViewController.h"
 #import "Event.h"
 #import "EventCoreData.h"
-#import "UIImageView+AFNetworking.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
 

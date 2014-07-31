@@ -43,12 +43,12 @@ static int16_t const QUERY_LIMIT = 5000;
 - (void) queryEventDetail:(NSString *)eid{
     if ([FBSession activeSession].isOpen &&
         [[FBSession activeSession] hasGranted:@"friends_events"] &&
-        [[FBSession activeSession] hasGranted:@"user_events"]) {
+        [[FBSession activeSession] hasGranted:@"user_events"] ) {
         
         [self doQueryForEventDetailWithEid:eid];
     } else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
         
-        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             if (error) [self.delegate notifyEventDetailsQueryFail];

@@ -24,7 +24,7 @@
 {
     [super viewDidLoad];
     self.loginView.delegate = self;
-    self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"];
+    self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

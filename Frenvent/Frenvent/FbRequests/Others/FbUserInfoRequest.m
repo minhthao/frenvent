@@ -46,11 +46,9 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
  */
 - (NSDictionary *) prepareAboutFbUserQueryParams:(NSString *)uid {
     NSString *userInfo = [NSString stringWithFormat:@"SELECT name, pic_cover, mutual_friend_count FROM user WHERE uid = %@", uid];
-    NSString *mutualFriends = [NSString stringWithFormat:@"SELECT uid, name FROM user WHERE uid IN "
-                               "(SELECT uid2 FROM friend where uid2 IN (SELECT uid2 FROM friend WHERE uid1 = me()) "
-                               "and uid1 = %@)", uid];
+    NSString *userPhoto = [NSString stringWithFormat:@"SELECT src_big FROM photo WHERE owner = %@ ORDER BY created DESC LIMIT 50", uid];
     
-    NSString *query = [NSString stringWithFormat:@"{'userInfo':'%@', 'mutualFriends':'%@'}", userInfo, mutualFriends];
+    NSString *query = [NSString stringWithFormat:@"{'userInfo':'%@', 'userPhoto':'%@'}", userInfo, userPhoto];
     
     NSDictionary *queryParams = @{@"q": query};
     return queryParams;
@@ -61,10 +59,12 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
  * @param uid
  */
 - (void) queryFbUserInfo:(NSString *)uid{
-    if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"friends_events"])
+    if ([FBSession activeSession].isOpen &&
+        [[FBSession activeSession] hasGranted:@"friends_events"] &&
+        [[FBSession activeSession] hasGranted:@"friends_photos"])
         [self doQueryFbUserInfo:uid];
     else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
-        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             if (error) [self.delegate notifyFbUserInfoRequestFail];
@@ -91,7 +91,7 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
     
     //we then check whether it is necessary to query for events
     Friend *friend = [FriendCoreData getFriendWithUid:uid];
-    if (friend == nil || friend.mark != [NSNumber numberWithBool:true]) {
+    if (friend != nil && friend.mark != [NSNumber numberWithBool:true]) {
         NSDictionary *userEvent = [self prepareFbUserEventQueryParams:uid];
         [FBRequestConnection startWithGraphPath:@"/fql"
                                      parameters:userEvent
@@ -100,9 +100,14 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
             if (error) [self.delegate notifyFbUserInfoRequestFail];
             else [self processEventsResult:result forFriend:friend];
         }];
+    } else if (friend != nil) {
+        NSArray *pastEvents = [FriendCoreData getAllPastEventsPertainingToUser:friend.uid];
+        NSArray *ongoingEvents = [FriendCoreData getAllFutureEventsPertainingToUser:friend.uid];
+        [self.delegate fbUserInfoRequestOngoingEvents:ongoingEvents];
+        [self.delegate fbUserInfoRequestPastEvents:pastEvents];
+    } else  {
+        //if not friend, then we would like to do a separate query to get relevant results
     }
-    
-   
 }
 
 /**
@@ -122,6 +127,8 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
             } else {
                 NSDictionary *infoObj = resultSet[0];
                 [self.delegate fbUserInfoRequestName:infoObj[@"name"]];
+                [self.delegate fbUserInfoRequestMutualFriendsCount:[infoObj[@"mutual_friend_count"] intValue]];
+                
                 NSString *cover = @"";
                 if ([infoObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *coverDic = infoObj[@"pic_cover"];
@@ -131,17 +138,13 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
                 }
                 [self.delegate fbUserInfoRequestProfileCover:cover];
             }
-        } else if ([data[i][@"name"] isEqualToString:@"mutualFriends"]) {
-            NSMutableArray *mutualFriends = [[NSMutableArray alloc] init];
-            if ([resultSet count] > 0) {
-                for (NSDictionary *mutualFriend in resultSet) {
-                    Friend *friend = [FriendCoreData getFriendWithUid:mutualFriend[@"uid"]];
-                    if (friend == nil)
-                        friend = [FriendCoreData addFriend:mutualFriend[@"uid"] :mutualFriend[@"name"]];
-                    [mutualFriends addObject:friend];
-                }
+        } else if ([data[i][@"name"] isEqualToString:@"userPhoto"]) {
+            NSMutableArray *urls = [[NSMutableArray alloc] init];
+            for (NSDictionary *photoDictionary in resultSet) {
+                if ([photoDictionary[@"src_big"] isKindOfClass:[NSString class]])
+                    [urls addObject:photoDictionary[@"src_big"]];
             }
-            [self.delegate fbUserInfoRequestMutualFriends:mutualFriends];
+            [self.delegate fbUserInfoRequestPhotos:urls];
         }
     }
 }
@@ -170,8 +173,8 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
         NSArray *ongoingEvents = [FriendCoreData getAllFutureEventsPertainingToUser:friend.uid];
         [FriendCoreData markFriend:friend];
         
-            [self.delegate fbUserInfoRequestOngoingEvents:ongoingEvents];
-            [self.delegate fbUserInfoRequestPastEvents:pastEvents];
+        [self.delegate fbUserInfoRequestOngoingEvents:ongoingEvents];
+        [self.delegate fbUserInfoRequestPastEvents:pastEvents];
     }
 }
 

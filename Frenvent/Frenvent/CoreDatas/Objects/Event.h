@@ -27,6 +27,7 @@ extern int32_t const MARK_TYPE_HIDDEN;
 
 @interface Event : NSManagedObject
 
+@property (nonatomic, retain) NSString * cover;
 @property (nonatomic, retain) NSString * eid;
 @property (nonatomic, retain) NSNumber * endTime;
 @property (nonatomic, retain) NSString * host;

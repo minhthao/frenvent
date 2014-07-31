@@ -26,6 +26,13 @@
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
 		3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC319807AD4003C932A /* Images.xcassets */; };
 		3E8A3DC9198231EA003C932A /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC8198231EA003C932A /* WebViewController.m */; };
+		3E8A3DD3198333B3003C932A /* ScrollImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DD2198333B3003C932A /* ScrollImage.m */; };
+		3E8A3DD61984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DD51984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
+		3E8A3DD919871C19003C932A /* FbUserPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DD819871C19003C932A /* FbUserPhotoViewController.m */; };
+		3E8A3DDC198786BE003C932A /* PagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DDB198786BE003C932A /* PagedScrollView.m */; };
+		3E8A3DDF19878963003C932A /* PagedPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DDE19878963003C932A /* PagedPhotoScrollView.m */; };
+		3E8A3DE219883EFB003C932A /* ScrollEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE119883EFB003C932A /* ScrollEvent.m */; };
+		3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE41988442B003C932A /* PagedEventScrollView.m */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -145,6 +152,20 @@
 		3E8A3DC319807AD4003C932A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E8A3DC7198231EA003C932A /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewController.h; path = ViewControllers/WebViewController.h; sourceTree = "<group>"; };
 		3E8A3DC8198231EA003C932A /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewController.m; path = ViewControllers/WebViewController.m; sourceTree = "<group>"; };
+		3E8A3DD1198333B3003C932A /* ScrollImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScrollImage.h; path = Libs/PageScrollView/ScrollImage.h; sourceTree = "<group>"; };
+		3E8A3DD2198333B3003C932A /* ScrollImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScrollImage.m; path = Libs/PageScrollView/ScrollImage.m; sourceTree = "<group>"; };
+		3E8A3DD41984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
+		3E8A3DD51984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIActivityIndicatorForSDWebImage.m"; sourceTree = "<group>"; };
+		3E8A3DD719871C19003C932A /* FbUserPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserPhotoViewController.h; path = ViewControllers/FbUserPhotoViewController.h; sourceTree = "<group>"; };
+		3E8A3DD819871C19003C932A /* FbUserPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserPhotoViewController.m; path = ViewControllers/FbUserPhotoViewController.m; sourceTree = "<group>"; };
+		3E8A3DDA198786BE003C932A /* PagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedScrollView.h; path = Libs/PageScrollView/PagedScrollView.h; sourceTree = "<group>"; };
+		3E8A3DDB198786BE003C932A /* PagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedScrollView.m; path = Libs/PageScrollView/PagedScrollView.m; sourceTree = "<group>"; };
+		3E8A3DDD19878963003C932A /* PagedPhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedPhotoScrollView.h; path = Libs/PageScrollView/PagedPhotoScrollView.h; sourceTree = "<group>"; };
+		3E8A3DDE19878963003C932A /* PagedPhotoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedPhotoScrollView.m; path = Libs/PageScrollView/PagedPhotoScrollView.m; sourceTree = "<group>"; };
+		3E8A3DE019883EFB003C932A /* ScrollEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScrollEvent.h; path = Libs/PageScrollView/ScrollEvent.h; sourceTree = "<group>"; };
+		3E8A3DE119883EFB003C932A /* ScrollEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScrollEvent.m; path = Libs/PageScrollView/ScrollEvent.m; sourceTree = "<group>"; };
+		3E8A3DE31988442B003C932A /* PagedEventScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedEventScrollView.h; path = Libs/PageScrollView/PagedEventScrollView.h; sourceTree = "<group>"; };
+		3E8A3DE41988442B003C932A /* PagedEventScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedEventScrollView.m; path = Libs/PageScrollView/PagedEventScrollView.m; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -462,6 +483,23 @@
 			name = CoreDatas;
 			sourceTree = "<group>";
 		};
+		3E8A3DCA1983259F003C932A /* PageScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				3E8A3DDA198786BE003C932A /* PagedScrollView.h */,
+				3E8A3DDB198786BE003C932A /* PagedScrollView.m */,
+				3E8A3DD1198333B3003C932A /* ScrollImage.h */,
+				3E8A3DD2198333B3003C932A /* ScrollImage.m */,
+				3E8A3DDD19878963003C932A /* PagedPhotoScrollView.h */,
+				3E8A3DDE19878963003C932A /* PagedPhotoScrollView.m */,
+				3E8A3DE019883EFB003C932A /* ScrollEvent.h */,
+				3E8A3DE119883EFB003C932A /* ScrollEvent.m */,
+				3E8A3DE31988442B003C932A /* PagedEventScrollView.h */,
+				3E8A3DE41988442B003C932A /* PagedEventScrollView.m */,
+			);
+			name = PageScrollView;
+			sourceTree = "<group>";
+		};
 		3EAAAC8C1964876E004AD322 /* DBRequests */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,6 +582,7 @@
 		3EACE3DF195E2CD90023EF58 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3E8A3DCA1983259F003C932A /* PageScrollView */,
 				3ECF10BC197F227A00963155 /* SDWebImage */,
 				3EAAACC0196B7CC3004AD322 /* UIKit+AFNetworking */,
 				3EACE3E0195E2CF20023EF58 /* AFNetworking */,
@@ -690,6 +729,8 @@
 				3ECF10A9197A0A9600963155 /* FbUserInfoViewController.m */,
 				3E8A3DC7198231EA003C932A /* WebViewController.h */,
 				3E8A3DC8198231EA003C932A /* WebViewController.m */,
+				3E8A3DD719871C19003C932A /* FbUserPhotoViewController.h */,
+				3E8A3DD819871C19003C932A /* FbUserPhotoViewController.m */,
 			);
 			name = FbUserViews;
 			sourceTree = "<group>";
@@ -697,6 +738,8 @@
 		3ECF10BC197F227A00963155 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
+				3E8A3DD41984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.h */,
+				3E8A3DD51984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m */,
 				3ECF10BD197F229100963155 /* MKAnnotationView+WebCache.h */,
 				3ECF10BE197F229100963155 /* MKAnnotationView+WebCache.m */,
 				3ECF10BF197F229100963155 /* NSData+ImageContentType.h */,
@@ -843,6 +886,7 @@
 				3ECF10AE197A75D800963155 /* EventDetailViewController.m in Sources */,
 				3ECBC991196026F700BA75DB /* FirstLoadingViewController.m in Sources */,
 				3EACE3F4195E2CF30023EF58 /* AFHTTPRequestOperation.m in Sources */,
+				3E8A3DD919871C19003C932A /* FbUserPhotoViewController.m in Sources */,
 				3EAAACD3196B7CC3004AD322 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */,
 				3EACE383195A45E90023EF58 /* EventCoreData.m in Sources */,
@@ -857,12 +901,14 @@
 				3EAAACD9196B7CC3004AD322 /* UIWebView+AFNetworking.m in Sources */,
 				3ECF10521970C45A00963155 /* MyEventManager.m in Sources */,
 				3EAAACA7196A186D004AD322 /* EventManager.m in Sources */,
+				3E8A3DDC198786BE003C932A /* PagedScrollView.m in Sources */,
 				3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */,
 				3ECF10961977238400963155 /* Reachability.m in Sources */,
 				3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */,
 				3ECF10E1197F229100963155 /* SDWebImageCompat.m in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
 				3ECF10771974B77E00963155 /* Event.m in Sources */,
+				3E8A3DDF19878963003C932A /* PagedPhotoScrollView.m in Sources */,
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3ECF10DE197F229100963155 /* MKAnnotationView+WebCache.m in Sources */,
@@ -871,6 +917,7 @@
 				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
 				3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
+				3E8A3DD3198333B3003C932A /* ScrollImage.m in Sources */,
 				3ECF10551970DC6000963155 /* MoreTableViewController.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */,
@@ -891,6 +938,7 @@
 				3ECF10E2197F229100963155 /* SDWebImageDecoder.m in Sources */,
 				3ECF10AA197A0A9600963155 /* FbUserInfoViewController.m in Sources */,
 				3ECF10901976417E00963155 /* UpdateManager.m in Sources */,
+				3E8A3DD61984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3EAAACEF196E7B89004AD322 /* EventButton.m in Sources */,
@@ -903,6 +951,7 @@
 				3EAAACD4196B7CC3004AD322 /* UIAlertView+AFNetworking.m in Sources */,
 				3EACE406195F8E2A0023EF58 /* FriendEventsRequest.m in Sources */,
 				3EAAACD8196B7CC3004AD322 /* UIRefreshControl+AFNetworking.m in Sources */,
+				3E8A3DE219883EFB003C932A /* ScrollEvent.m in Sources */,
 				3ECF105C19721C9C00963155 /* NotificationsTableViewController.m in Sources */,
 				3EAAACD7196B7CC3004AD322 /* UIProgressView+AFNetworking.m in Sources */,
 				3ECF10711974AECF00963155 /* NotificationManager.m in Sources */,
@@ -917,6 +966,7 @@
 				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
+				3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */,
 				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

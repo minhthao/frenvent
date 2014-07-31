@@ -31,7 +31,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     NSString *myEvents = [NSString stringWithFormat:@"SELECT eid, rsvp_status FROM event_member WHERE uid = me() "
                           "AND (((rsvp_status = \"attending\" OR rsvp_status = \"unsure\") AND start_time < %lld) OR start_time >= %lld) "
                           "ORDER BY start_time DESC LIMIT %d", todayTime, todayTime, QUERY_LIMIT];
-    NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, start_time, end_time, "
+    NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, pic_cover, start_time, end_time, "
                            "location, venue, unsure_count, attending_count, privacy, host FROM event "
                            "WHERE eid IN (SELECT eid from #myEvents) "
                            "ORDER BY start_time DESC LIMIT %d", QUERY_LIMIT];
@@ -51,7 +51,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     int64_t todayTime = [TimeSupport getTodayTimeFrameStartTimeInUnix];
     NSString *myEvents = [NSString stringWithFormat:@"SELECT eid, rsvp_status FROM event_member WHERE uid = me() "
                           "AND start_time >= %lld ORDER BY start_time DESC LIMIT %d", todayTime, QUERY_LIMIT];
-    NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, start_time, end_time, "
+    NSString *eventInfo = [NSString stringWithFormat:@"SELECT eid, name, pic_big, pic_cover, start_time, end_time, "
                            "location, venue, unsure_count, attending_count, privacy, host FROM event "
                            "WHERE eid IN (SELECT eid from #myEvents) "
                            "ORDER BY start_time DESC LIMIT %d", QUERY_LIMIT];
@@ -153,7 +153,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
         [self executeQueryWithType:QUERY_TYPE_INITIALIZE withCompletionHandler:nil];
     else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
-        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             if (error) [self.delegate notifyMyEventsQueryEncounterError:nil];
@@ -170,7 +170,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
         [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
     else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
-        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             if (error) [self.delegate notifyMyEventsQueryEncounterError:nil];
@@ -188,7 +188,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
     if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"user_events"])
         [self executeQueryWithType:QUERY_TYPE_BACKGROUND_SERVICE withCompletionHandler:nil];
     else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
-        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
             if (error) [self.delegate notifyMyEventsQueryEncounterError:completionHandler];

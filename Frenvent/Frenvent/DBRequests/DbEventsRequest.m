@@ -173,7 +173,7 @@ static double const DISTANCE_RADIUS = 30;
         NSString *rsvp = RSVP_NOT_INVITED;
 
         if ([EventCoreData getEventWithEid:eid] == nil)
-            [EventCoreData addEventUsingEid:eid name:name picture:picture startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
+            [EventCoreData addEventUsingEid:eid name:name picture:picture cover:@"" startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
     }
 }
 

@@ -334,6 +334,7 @@
 + (Event *) addEventUsingEid:(NSString *)eid
                         name:(NSString *)name
                      picture:(NSString *)picture
+                       cover:(NSString *)cover
                    startTime:(int64_t)startTime
                      endTime:(int64_t)endTime
                     location:(NSString *)location
@@ -353,6 +354,7 @@
     event.eid = eid;
     event.name = name;
     event.picture =  picture;
+    event.cover = cover;
     event.startTime = [NSNumber numberWithLongLong:startTime];
     event.endTime = [NSNumber numberWithLongLong:endTime];
     event.location = location;
@@ -388,6 +390,12 @@
     if (eventObj[@"pic_big"] !=  nullInstance)
         picture = eventObj[@"pic_big"];
     
+    NSString *cover = @"";
+    if ([eventObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *coverDic = eventObj[@"pic_cover"];
+        if (coverDic[@"source"] != nullInstance)
+            cover = coverDic[@"source"];
+    }
     
     uint64_t startTime = [TimeSupport getUnixTime: [TimeSupport getDateTimeInStandardFormat:eventObj[@"start_time"]]];
     
@@ -418,7 +426,7 @@
 
     int32_t numInterested = [eventObj[@"attending_count"] intValue] + [eventObj[@"unsure_count"] intValue];
     
-    return [self addEventUsingEid:eid name:name picture:picture startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
+    return [self addEventUsingEid:eid name:name picture:picture cover:cover startTime:startTime endTime:endTime location:location longitude:longitude latitude:latitude host:host privacy:privacy numInterested:numInterested rsvp:rsvp];
 }
 
 #pragma mark - public update methods
