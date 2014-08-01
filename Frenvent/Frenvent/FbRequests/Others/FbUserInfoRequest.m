@@ -10,6 +10,7 @@
 #import "FriendCoreData.h"
 #import "Friend.h"
 #import "EventCoreData.h"
+#import "FriendCoreData.h"
 #import "Event.h"
 #import "FriendToEventCoreData.h"
 #import "TimeSupport.h"
@@ -21,7 +22,7 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
 
 #pragma mark - query params
 /**
- * Prepare the query method parameters
+ * Prepare the query method parameters for user events
  * @return dictionary
  */
 - (NSDictionary *) prepareFbUserEventQueryParams:(NSString *)uid {
@@ -41,17 +42,38 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
 }
 
 /**
- * Prepare partial query method parameters
+ * Prepare about user query method parameters
  * @return dictionary
  */
 - (NSDictionary *) prepareAboutFbUserQueryParams:(NSString *)uid {
     NSString *userInfo = [NSString stringWithFormat:@"SELECT name, pic_cover, mutual_friend_count FROM user WHERE uid = %@", uid];
-    NSString *userPhoto = [NSString stringWithFormat:@"SELECT src_big FROM photo WHERE owner = %@ ORDER BY created DESC LIMIT 50", uid];
+    NSString *userPhoto = [NSString stringWithFormat:@"SELECT src_big, caption_tags FROM photo WHERE owner = %@ ORDER BY created DESC LIMIT 50", uid];
     
     NSString *query = [NSString stringWithFormat:@"{'userInfo':'%@', 'userPhoto':'%@'}", userInfo, userPhoto];
     
     NSDictionary *queryParams = @{@"q": query};
     return queryParams;
+}
+
+/**
+ * Prepare the query for recommended friends info
+ * @param Set of users's id
+ * @return dictionary
+ */
+- (NSDictionary *) prepareSuggestedFriendQueryParams:(NSSet *)uidSet {
+    NSMutableString *uidsString = [[NSMutableString alloc] init];
+    NSArray *uids = [uidSet allObjects];
+    for (int i = 0; i < [uids count]; i++) {
+        if (i != ([uids count] - 1)) [uidsString appendFormat:@"uid = %@ OR ", uids[i]];
+        else [uidsString appendFormat:@"uid = %@", uids[i]];
+    }
+    
+    NSString *userInfo = [NSString stringWithFormat:@"SELECT uid, name, pic_cover, mutual_friend_count FROM user WHERE %@", uidsString];
+    
+    NSString *query = [NSString stringWithFormat:@"{'userInfo':'%@'}", userInfo];
+    NSDictionary *queryParams = @{@"q": query};
+    return queryParams;
+
 }
 
 /**
@@ -111,6 +133,46 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
 }
 
 /**
+ * Do the query for suggested friend info
+ * @param NSSet of uids
+ */
+- (void) doQueryForSuggestedFriends:(NSSet *)uidSet {
+    NSDictionary *params = [self prepareSuggestedFriendQueryParams:uidSet];
+    [FBRequestConnection startWithGraphPath:@"/fql"
+                                 parameters:params
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+              if (error) [self.delegate notifyFbUserInfoRequestFail];
+              else {
+                  NSMutableArray *suggestedFriends = [[NSMutableArray alloc] init];
+                  NSNull *nullInstance = [NSNull null];
+                  NSArray *data = (NSArray *)result[@"data"];
+                  NSArray *resultSet = data[0][@"fql_result_set"];
+                  for (NSDictionary *infoObj in resultSet) {
+                      SuggestFriend *suggestFriend = [[SuggestFriend alloc] init];
+                      suggestFriend.uid = infoObj[@"uid"];
+                      suggestFriend.name = infoObj[@"name"];
+                      suggestFriend.numMutualFriends = [infoObj[@"mutual_friend_count"] intValue];
+                      
+                      NSString *cover = @"";
+                      if ([infoObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
+                          NSDictionary *coverDic = infoObj[@"pic_cover"];
+                          if (coverDic[@"source"] != nullInstance) {
+                              cover = coverDic[@"source"];
+                          }
+                      }
+                      suggestFriend.cover = cover;
+                      
+                      [suggestedFriends addObject:suggestFriend];
+                  }
+                  
+                  [self.delegate fbUserInfoRequestSuggestedFriends:suggestedFriends];
+              }
+          }];
+
+}
+
+/**
  * Process about user info data
  * @param result
  */
@@ -140,11 +202,31 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
             }
         } else if ([data[i][@"name"] isEqualToString:@"userPhoto"]) {
             NSMutableArray *urls = [[NSMutableArray alloc] init];
+            NSMutableSet *suggestedUserUids = [[NSMutableSet alloc] init];
             for (NSDictionary *photoDictionary in resultSet) {
                 if ([photoDictionary[@"src_big"] isKindOfClass:[NSString class]])
                     [urls addObject:photoDictionary[@"src_big"]];
+                if ([photoDictionary[@"caption_tags"] isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *tags = (NSDictionary *)photoDictionary[@"caption_tags"];
+                    NSArray *tagsArray = [tags allValues];
+                    for (NSArray *tagsLocationInText in tagsArray) {
+                        for (NSDictionary *tagsDictionary in tagsLocationInText) {
+                            if ([tagsDictionary[@"type"] isEqualToString:@"user"]) {
+                                NSString *uid = tagsDictionary[@"id"];
+                                if ([FriendCoreData getFriendWithUid:uid] == nil)
+                                    [suggestedUserUids addObject:uid];
+                            }
+                        }
+                    }
+                }
             }
+            
             [self.delegate fbUserInfoRequestPhotos:urls];
+            
+            if ([suggestedUserUids count] == 0) [self.delegate fbUserInfoRequestSuggestedFriends:nil];
+            else {
+                [self doQueryForSuggestedFriends:suggestedUserUids];
+            }
         }
     }
 }

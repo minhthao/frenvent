@@ -18,6 +18,17 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.contentSize = CGSizeMake(self.frame.size.width , self.frame.size.height);
+        self.backgroundColor = [UIColor lightGrayColor];
+        
+        //add a loading spinner (size 20-by-20) at the middle of the view
+        self.loadingSpinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake((self.frame.size.width - 20) / 2, (self.frame.size.height - 20) / 2, 20, 20)];
+        [self.loadingSpinner setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+        [self.loadingSpinner setHidesWhenStopped:true];
+        [self.loadingSpinner startAnimating];
+        [self addSubview:self.loadingSpinner];
+        
+        //enable the paging
         self.pagingEnabled = YES;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;

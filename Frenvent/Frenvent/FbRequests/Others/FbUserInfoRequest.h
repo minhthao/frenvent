@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Friend.h"
+#import "SuggestFriend.h"
 
 @protocol FbUserInfoRequestDelegate <NSObject>
 @required
@@ -17,6 +17,8 @@
 - (void)fbUserInfoRequestProfileCover:(NSString *)cover;
 - (void)fbUserInfoRequestMutualFriendsCount:(int16_t)mutualFriendsCount;
 - (void)fbUserInfoRequestPhotos:(NSArray *)urls;
+- (void)fbUserInfoRequestSuggestedFriends:(NSArray *)users;
+
 - (void)fbUserInfoRequestOngoingEvents:(NSArray *)onGoingEvents;
 - (void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents;
 @end

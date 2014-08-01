@@ -15,7 +15,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }
@@ -25,18 +24,31 @@
         [subview removeFromSuperview];
     }
     
+    [self.loadingSpinner stopAnimating];
+    
     CGSize scrollViewSize = self.frame.size;
-    self.contentSize = CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
-    for (int i = 0; i < [events count]; i++) {
-        Event *event = [events objectAtIndex:i];
-        CGRect eventFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
-        ScrollEvent *eventView = [[ScrollEvent alloc] initWithFrame:eventFrame];
-        eventView.delegate = self;
-        [eventView setPageIndex:i+1 pageCount:(int)[events count]];
-        [eventView setViewEvent:event];
-        [self addSubview:eventView];
+    if ([events count] > 0) {
+        self.contentSize = CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
+        for (int i = 0; i < [events count]; i++) {
+            Event *event = [events objectAtIndex:i];
+            CGRect eventFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
+            ScrollEvent *eventView = [[ScrollEvent alloc] initWithFrame:eventFrame];
+            eventView.delegate = self;
+            [eventView setPageIndex:i+1 pageCount:(int)[events count]];
+            [eventView setViewEvent:event];
+            [self addSubview:eventView];
+        }
+        self.pageControl.numberOfPages = [events count];
+    } else {
+        self.contentSize = scrollViewSize;
+        
+        UIImageView *defaultEmptyImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height)];
+        [defaultEmptyImage setImage:[UIImage imageNamed:@"PagedEventScrollViewNoEvent"]];
+        [defaultEmptyImage setContentMode:UIViewContentModeScaleToFill];
+        [self addSubview:defaultEmptyImage];
+        
+        self.pageControl.numberOfPages = 1;
     }
-    self.pageControl.numberOfPages = [events count];
 }
 
 -(void)eventClicked:(Event *)event {
