@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UILabel *title;
 @property (nonatomic, strong) UILabel *location;
 @property (nonatomic, strong) UILabel *time;
+@property (nonatomic, strong) UIButton *eventRsvpButtonView;
 @property (nonatomic, strong) Event *event;
 @end
 
@@ -47,9 +48,24 @@
         eventDetailContainerView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         [self addSubview:eventDetailContainerView];
         
-        UIButton *eventRsvpButtonView = [[UIButton alloc] initWithFrame:CGRectMake(detailFrame.size.width - 60, 0, 60, 60)];
-        eventRsvpButtonView.backgroundColor = [MyColor eventCellButtonsContainerBorderColor];
-        [eventDetailContainerView addSubview:eventRsvpButtonView];
+        self.eventRsvpButtonView = [[UIButton alloc] initWithFrame:CGRectMake(detailFrame.size.width - 50, 10, 40, 40)];
+        [self.eventRsvpButtonView setUserInteractionEnabled:true];
+        [self.eventRsvpButtonView.layer setMasksToBounds:NO];
+        [self.eventRsvpButtonView.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        [self.eventRsvpButtonView.layer setCornerRadius:3.0f];
+        [self.eventRsvpButtonView.layer setBorderWidth:1];
+        
+        [self.eventRsvpButtonView.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+        [self.eventRsvpButtonView.layer setShadowRadius:2.0f];
+        [self.eventRsvpButtonView.layer setShadowOffset:CGSizeMake(1, 1)];
+        [self.eventRsvpButtonView.layer setShadowOpacity:0.5];
+        
+        [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateNormal"] forState:UIControlStateNormal];
+        [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateDisable"] forState:UIControlStateDisabled];
+        [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateHighlight"] forState:UIControlStateHighlighted];
+        
+        [self.eventRsvpButtonView addTarget:self action:@selector(handleEventRsvp:) forControlEvents:UIControlEventTouchUpInside];
+        [eventDetailContainerView addSubview:self.eventRsvpButtonView];
         
         CGRect infoFrame = CGRectMake(8, 2, detailFrame.size.width - 76, 56);
         UIView *eventInfoContainerView = [[UIView alloc] initWithFrame:infoFrame];
@@ -82,6 +98,9 @@
     self.title.text = event.name;
     self.location.text = event.location;
     self.time.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
+    
+    if ([event.rsvp isEqualToString:RSVP_ATTENDING] || ![event canRsvp])
+        [self.eventRsvpButtonView setEnabled:false];
 }
 
 -(void)setPageIndex:(int)index pageCount:(int)pageCount {
@@ -90,6 +109,11 @@
 
 -(void)handleEventTap:(UITapGestureRecognizer *)recognizer {
     [self.delegate eventClicked:self.event];
+}
+
+-(void)handleEventRsvp:(UIButton *)sender {
+    [self.eventRsvpButtonView setEnabled:false];
+    [self.delegate eventRsvpButtonClicked:self.event];
 }
 
 @end

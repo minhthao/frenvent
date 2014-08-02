@@ -21,10 +21,14 @@
 #import "PagedUserScrollView.h"
 #import "FbUserPhotoViewController.h"
 #import "FbUserInfoButtons.h"
+#import "WebViewUser.h"
+#import "ToastView.h"
+#import "EventRsvpRequest.h"
 
 @interface FbUserInfoViewController ()
 
 @property (nonatomic, strong) FbUserInfoRequest *fbUserInfoRequest;
+@property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
 @property (nonatomic, strong) NSArray *ongoingEvents;
 @property (nonatomic, strong) NSArray *pastEvents;
 @property (nonatomic, strong) NSArray *photoUrls;
@@ -44,6 +48,14 @@
         _fbUserInfoRequest.delegate = self;
     }
     return _fbUserInfoRequest;
+}
+
+- (EventRsvpRequest *)eventRsvpRequest {
+    if (_eventRsvpRequest == nil) {
+        _eventRsvpRequest = [[EventRsvpRequest alloc] init];
+        _eventRsvpRequest.delegate = self;
+    }
+    return _eventRsvpRequest;
 }
 
 - (PagedEventScrollView *)eventScrollView {
@@ -105,29 +117,53 @@
 }
 
 -(void)eventRsvpButtonClicked:(Event *)event {
-    NSLog(@"rsvp clicked");
+    [[self eventRsvpRequest] replyAttendingToEvent:event.eid];
 }
 
--(void)userClicked:(NSString *)uid {
-    //temporarily do nothing
+-(void)notifyEventRsvpSuccess:(BOOL)success {
+    if (success) [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP'ed!" withDuaration:2.0];
+    else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:2.0];
+}
+
+-(void)userClicked:(SuggestFriend *)suggestedUser {
+    WebViewUser *webViewUser = [[WebViewUser alloc] init];
+    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", suggestedUser.uid];
+    webViewUser.uid = suggestedUser.uid;
+    webViewUser.name = suggestedUser.name;
+    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
 #pragma mark - button tap
 - (void)profileButtonTap {
-    [self performSegueWithIdentifier:@"webView" sender:[NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.targetUid]];
+    WebViewUser *webViewUser = [[WebViewUser alloc] init];
+    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.targetUid];
+    webViewUser.uid = self.targetUid;
+    webViewUser.name = self.username.text;
+    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
 - (void)messageButtonTap {
-    [self performSegueWithIdentifier:@"webView" sender:[NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", self.targetUid]];
+    WebViewUser *webViewUser = [[WebViewUser alloc] init];
+    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", self.targetUid];
+    webViewUser.uid = self.targetUid;
+    webViewUser.name = self.username.text;
+    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
 - (void)photoButtonTap {
-    NSLog(@"photo button tap");
-    [self performSegueWithIdentifier:@"webView" sender:[NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=photos&id=%@", self.targetUid]];
+    WebViewUser *webViewUser = [[WebViewUser alloc] init];
+    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=photos&id=%@", self.targetUid];
+    webViewUser.uid = self.targetUid;
+    webViewUser.name = self.username.text;
+    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
 - (void)friendButtonTap {
-    [self performSegueWithIdentifier:@"webView" sender:[NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=friends&id=%@", self.targetUid]];
+    WebViewUser *webViewUser = [[WebViewUser alloc] init];
+    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=friends&id=%@", self.targetUid];
+    webViewUser.uid = self.targetUid;
+    webViewUser.name = self.username.text;
+    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
 #pragma mark - Fb user info request delegate
@@ -380,7 +416,10 @@
         viewController.targetUid = uid;
     } else if ([[segue identifier] isEqualToString:@"webView"]) {
         WebViewController *viewController = segue.destinationViewController;
-        viewController.url = (NSString *)sender;
+        WebViewUser *webViewUser = (WebViewUser *)sender;
+        viewController.url = webViewUser.url;
+        viewController.uid = webViewUser.uid;
+        viewController.name = webViewUser.name;
     } else if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;

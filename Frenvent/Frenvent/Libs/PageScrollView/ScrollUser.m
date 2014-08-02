@@ -84,7 +84,7 @@
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {
-    [self.delegate userClicked:self.user.uid];
+    [self.delegate userClicked:self.user];
 }
 
 @end

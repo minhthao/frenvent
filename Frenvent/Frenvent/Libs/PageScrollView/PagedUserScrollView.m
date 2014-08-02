@@ -52,8 +52,8 @@
     }
 }
 
--(void)userClicked:(NSString *)uid {
-    [self.delegate userClicked:uid];
+-(void)userClicked:(SuggestFriend *)suggestedUser {
+    [self.delegate userClicked:suggestedUser];
 }
 
 @end

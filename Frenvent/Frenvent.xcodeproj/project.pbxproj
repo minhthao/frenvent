@@ -37,7 +37,10 @@
 		3EA9013F198B00440056BE36 /* ScrollUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013E198B00440056BE36 /* ScrollUser.m */; };
 		3EA90142198B00D30056BE36 /* SuggestFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90141198B00D30056BE36 /* SuggestFriend.m */; };
 		3EA90145198B5E980056BE36 /* PagedUserScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90144198B5E980056BE36 /* PagedUserScrollView.m */; };
-		3EA90149198BA30E0056BE36 /* WebViewUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90148198BA30E0056BE36 /* WebViewUser.m */; };
+		3EA9014D198BA6780056BE36 /* WebViewUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9014C198BA6780056BE36 /* WebViewUser.m */; };
+		3EA90150198C489A0056BE36 /* EventRsvpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9014F198C489A0056BE36 /* EventRsvpRequest.m */; };
+		3EA90153198C4BC80056BE36 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90152198C4BC80056BE36 /* ToastView.m */; };
+		3EA90159198C67300056BE36 /* RecommendFbUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90158198C67300056BE36 /* RecommendFbUserRequest.m */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -179,8 +182,14 @@
 		3EA90141198B00D30056BE36 /* SuggestFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestFriend.m; path = FbRequests/Others/SuggestFriend.m; sourceTree = "<group>"; };
 		3EA90143198B5E980056BE36 /* PagedUserScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedUserScrollView.h; path = Libs/PageScrollView/PagedUserScrollView.h; sourceTree = "<group>"; };
 		3EA90144198B5E980056BE36 /* PagedUserScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedUserScrollView.m; path = Libs/PageScrollView/PagedUserScrollView.m; sourceTree = "<group>"; };
-		3EA90147198BA30E0056BE36 /* WebViewUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewUser.h; path = Objects/WebViewUser.h; sourceTree = "<group>"; };
-		3EA90148198BA30E0056BE36 /* WebViewUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewUser.m; path = Objects/WebViewUser.m; sourceTree = "<group>"; };
+		3EA9014B198BA6780056BE36 /* WebViewUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewUser.h; path = Objects/WebViewUser.h; sourceTree = "<group>"; };
+		3EA9014C198BA6780056BE36 /* WebViewUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewUser.m; path = Objects/WebViewUser.m; sourceTree = "<group>"; };
+		3EA9014E198C489A0056BE36 /* EventRsvpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventRsvpRequest.h; path = FbRequests/EventRequests/EventRsvpRequest.h; sourceTree = "<group>"; };
+		3EA9014F198C489A0056BE36 /* EventRsvpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventRsvpRequest.m; path = FbRequests/EventRequests/EventRsvpRequest.m; sourceTree = "<group>"; };
+		3EA90151198C4BC80056BE36 /* ToastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToastView.h; path = Supports/ToastView.h; sourceTree = "<group>"; };
+		3EA90152198C4BC80056BE36 /* ToastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ToastView.m; path = Supports/ToastView.m; sourceTree = "<group>"; };
+		3EA90157198C67300056BE36 /* RecommendFbUserRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecommendFbUserRequest.h; path = FbRequests/Others/RecommendFbUserRequest.h; sourceTree = "<group>"; };
+		3EA90158198C67300056BE36 /* RecommendFbUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecommendFbUserRequest.m; path = FbRequests/Others/RecommendFbUserRequest.m; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -418,7 +427,7 @@
 		3E57FB321959517200D3293D /* Frenvent */ = {
 			isa = PBXGroup;
 			children = (
-				3EA90146198BA2DF0056BE36 /* Objects */,
+				3EA9014A198BA6580056BE36 /* Objects */,
 				3EAAAC8C1964876E004AD322 /* DBRequests */,
 				3EACE402195F8DB40023EF58 /* FbRequests */,
 				3EACE3DF195E2CD90023EF58 /* Libs */,
@@ -522,11 +531,11 @@
 			name = PageScrollView;
 			sourceTree = "<group>";
 		};
-		3EA90146198BA2DF0056BE36 /* Objects */ = {
+		3EA9014A198BA6580056BE36 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				3EA90147198BA30E0056BE36 /* WebViewUser.h */,
-				3EA90148198BA30E0056BE36 /* WebViewUser.m */,
+				3EA9014B198BA6780056BE36 /* WebViewUser.h */,
+				3EA9014C198BA6780056BE36 /* WebViewUser.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -576,6 +585,8 @@
 				3EAAACEE196E7B89004AD322 /* EventButton.m */,
 				3ECF109D1979E86600963155 /* MyAnnotation.h */,
 				3ECF109E1979E86600963155 /* MyAnnotation.m */,
+				3EA90151198C4BC80056BE36 /* ToastView.h */,
+				3EA90152198C4BC80056BE36 /* ToastView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -725,6 +736,8 @@
 		3ECF10A31979FB5700963155 /* EventRequests */ = {
 			isa = PBXGroup;
 			children = (
+				3EA9014E198C489A0056BE36 /* EventRsvpRequest.h */,
+				3EA9014F198C489A0056BE36 /* EventRsvpRequest.m */,
 				3ECF10AF197AFD7400963155 /* EventDetailsRequest.h */,
 				3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */,
 				3ECF10B2197B3BF600963155 /* EventDetail.h */,
@@ -740,6 +753,8 @@
 			children = (
 				3ECF10A51979FB9F00963155 /* FbUserInfoRequest.h */,
 				3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */,
+				3EA90157198C67300056BE36 /* RecommendFbUserRequest.h */,
+				3EA90158198C67300056BE36 /* RecommendFbUserRequest.m */,
 				3EA90140198B00D30056BE36 /* SuggestFriend.h */,
 				3EA90141198B00D30056BE36 /* SuggestFriend.m */,
 			);
@@ -937,6 +952,7 @@
 				3E8A3DDC198786BE003C932A /* PagedScrollView.m in Sources */,
 				3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */,
 				3ECF10961977238400963155 /* Reachability.m in Sources */,
+				3EA90153198C4BC80056BE36 /* ToastView.m in Sources */,
 				3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */,
 				3ECF10E1197F229100963155 /* SDWebImageCompat.m in Sources */,
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
@@ -950,6 +966,7 @@
 				3EAAACA119666807004AD322 /* NotificationCoreData.m in Sources */,
 				3EAAACDF196BCA10004AD322 /* FriendsTableViewController.m in Sources */,
 				3EACE3F6195E2CF30023EF58 /* AFHTTPSessionManager.m in Sources */,
+				3EA90150198C489A0056BE36 /* EventRsvpRequest.m in Sources */,
 				3E8A3DD3198333B3003C932A /* ScrollImage.m in Sources */,
 				3ECF10551970DC6000963155 /* MoreTableViewController.m in Sources */,
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
@@ -982,7 +999,7 @@
 				3ECF10DF197F229100963155 /* NSData+ImageContentType.m in Sources */,
 				3ECF10E8197F229100963155 /* UIImage+GIF.m in Sources */,
 				3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */,
-				3EA90149198BA30E0056BE36 /* WebViewUser.m in Sources */,
+				3EA9014D198BA6780056BE36 /* WebViewUser.m in Sources */,
 				3ECF10B7197B4F7D00963155 /* EventParticipant.m in Sources */,
 				3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */,
 				3EAAACD4196B7CC3004AD322 /* UIAlertView+AFNetworking.m in Sources */,
@@ -1004,6 +1021,7 @@
 				3EAAACE8196CB2EC004AD322 /* InvitedEventsTableViewController.m in Sources */,
 				3ECF106219721D4700963155 /* TrashEventsTableViewController.m in Sources */,
 				3EAAACBF196B5C00004AD322 /* FriendToEventCoreData.m in Sources */,
+				3EA90159198C67300056BE36 /* RecommendFbUserRequest.m in Sources */,
 				3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */,
 				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,
 			);

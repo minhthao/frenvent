@@ -13,5 +13,4 @@
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *name;
-
 @end

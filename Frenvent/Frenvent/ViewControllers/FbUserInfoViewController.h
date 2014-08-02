@@ -13,8 +13,9 @@
 #import "PagedEventScrollView.h"
 #import "PagedUserScrollView.h"
 #import "FbUserInfoButtons.h"
+#import "EventRsvpRequest.h"
 
-@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedUserScrollViewDelegate, FbUserInfoButtonsDelegate>
+@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedUserScrollViewDelegate, FbUserInfoButtonsDelegate, EventRsvpRequestDelegate>
 - (IBAction)viewSegments:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UITableView *eventTable;

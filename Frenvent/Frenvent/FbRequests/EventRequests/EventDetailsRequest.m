@@ -70,7 +70,6 @@ static int16_t const QUERY_LIMIT = 5000;
                                  HTTPMethod:@"GET"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
           if (error) {
-              NSLog(@"Error: %@", [error localizedDescription]);
               [self.delegate notifyEventDetailsQueryFail];
           } else {
               NSNull *nullInstance = [NSNull null];

@@ -8,10 +8,11 @@
 
 #import "PagedScrollView.h"
 #import "ScrollUser.h"
+#import "SuggestFriend.h"
 
 @protocol PagedUserScrollViewDelegate <NSObject>
 @optional
-- (void)userClicked:(NSString *)uid;
+- (void)userClicked:(SuggestFriend *)suggestedUser;
 @end
 
 

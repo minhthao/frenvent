@@ -90,7 +90,7 @@ static double const METER_IN_MILE = 1609.344;
  * @return boolean
  */
 - (BOOL)canRsvp {
-    return ([self canShare] || [self.privacy isEqualToString:PRIVACY_SECRET]);
+    return ([self canShare] || [self.privacy isEqualToString:PRIVACY_SECRET] || ![self.rsvp isEqualToString:RSVP_NOT_INVITED]);
 }
 
 /**
