@@ -32,7 +32,7 @@ EventDetail *completeEventDetail;
 }
 
 - (void)notifyEventDidNotExist {
-    
+    NSLog(@"not exist");
 }
 
 - (void)notifyEventDetailsQueryFail {
@@ -46,15 +46,25 @@ EventDetail *completeEventDetail;
     if ([completeEventDetail.cover length] > 0)
         [self.cover setImageWithURL:[NSURL URLWithString:completeEventDetail.cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
     else [self.cover setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
+    NSLog(@"%@", completeEventDetail.location);
+    NSLog(@"%lld", completeEventDetail.startTime);
+    NSLog(@"Event name: %@", completeEventDetail.name);
+    self.title = completeEventDetail.name;
+    self.eventTitle.text = completeEventDetail.name;
+    NSLog(@"Event eid: %@", eventDetail.eid);
+    NSLog(@"Event uid: %@", eventDetail.attendingFriends);
+    self.rsvpLabel.text = completeEventDetail.rsvp;
     
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"Event eid: %@", self.eid);
     if (self.eid != nil) {
         [[self eventDetailsRequest] queryEventDetail:self.eid];
     }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,6 +72,38 @@ EventDetail *completeEventDetail;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+#pragma mark - table view delegate
+// Get the number of sections in the table view
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+// Get the number of rows in each section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger row = indexPath.row;
+    CGFloat height = 44;
+    if (row == 0 || row == 1) {
+        height = 50;
+    } else if (row == 2) {
+        height = 200;
+    }
+    return height;
+}
+
+// Get the cell in the table
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailCell" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailCell"];
+    
+    return cell;
+}
+
 
 /*
 #pragma mark - Navigation

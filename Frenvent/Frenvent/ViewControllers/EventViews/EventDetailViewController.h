@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "EventDetailsRequest.h"
 
-@interface EventDetailViewController : UIViewController <EventDetailsRequestDelegate>
+@interface EventDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EventDetailsRequestDelegate>
 
 @property (nonatomic, strong) NSString *eid;
 
 @property (weak, nonatomic) IBOutlet UIImageView *cover;
 @property (weak, nonatomic) IBOutlet UILabel *eventTitle;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *rsvpLabel;
 
 @end
