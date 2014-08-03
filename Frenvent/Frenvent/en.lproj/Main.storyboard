@@ -1148,6 +1148,9 @@
                                 <rect key="frame" x="0.0" y="-44" width="320" height="612"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="42w-dc-wM6" id="fhe-Fu-YsZ"/>
+                                </connections>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1181,7 +1184,11 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" title="Share" id="8hb-Qx-xwV"/>
+                        <barButtonItem key="rightBarButtonItem" title="Share" id="8hb-Qx-xwV">
+                            <connections>
+                                <action selector="shareButtonClick:" destination="42w-dc-wM6" id="Fta-IT-Lo8"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="nextButton" destination="vSY-Kv-kjr" id="Bjg-Xk-h9q"/>

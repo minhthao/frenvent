@@ -24,11 +24,14 @@
 #import "WebViewUser.h"
 #import "ToastView.h"
 #import "EventRsvpRequest.h"
+#import "DbFBUserRequest.h"
+#import "RecommendFbUserRequest.h"
 
 @interface FbUserInfoViewController ()
 
 @property (nonatomic, strong) FbUserInfoRequest *fbUserInfoRequest;
 @property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
+@property (nonatomic, strong) RecommendFbUserRequest *recommendFbUserRequest;
 @property (nonatomic, strong) NSArray *ongoingEvents;
 @property (nonatomic, strong) NSArray *pastEvents;
 @property (nonatomic, strong) NSArray *photoUrls;
@@ -56,6 +59,14 @@
         _eventRsvpRequest.delegate = self;
     }
     return _eventRsvpRequest;
+}
+
+- (RecommendFbUserRequest *)recommendFbUserRequest {
+    if (_recommendFbUserRequest == nil) {
+        _recommendFbUserRequest = [[RecommendFbUserRequest alloc] init];
+        _recommendFbUserRequest.delegate = self;
+    }
+    return _recommendFbUserRequest;
 }
 
 - (PagedEventScrollView *)eventScrollView {
@@ -125,6 +136,11 @@
     else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:2.0];
 }
 
+-(void)notifyRecommendFbUserRequestSuccess:(BOOL)success {
+    if (success) [ToastView showToastInParentView:self.view withText:@"User shared successfully" withDuaration:2.0];
+    else [ToastView showToastInParentView:self.view withText:@"Fail to share user" withDuaration:2.0];
+}
+
 -(void)userClicked:(SuggestFriend *)suggestedUser {
     WebViewUser *webViewUser = [[WebViewUser alloc] init];
     webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", suggestedUser.uid];
@@ -183,6 +199,8 @@
 
 -(void) fbUserInfoRequestName:(NSString *)name {
     self.username.text = name;
+    if ([DbFBUserRequest addFbUserWithUid:self.targetUid andName:name])
+        [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
 }
 
 -(void) fbUserInfoRequestOngoingEvents:(NSArray *)ongoingEvents {
@@ -282,6 +300,7 @@
 }
 
 - (IBAction)shareClicked:(id)sender {
+    [[self recommendFbUserRequest] shareUserWithUid:self.targetUid];
 }
 
 #pragma mark - table view delegate

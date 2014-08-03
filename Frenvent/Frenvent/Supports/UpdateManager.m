@@ -58,6 +58,7 @@ int64_t fetchStartTime;
 #pragma mark - request delegate
 //delegate for friend events query completion
 -(void)notifyFriendEventsUpdateCompletedWithNewEvents:(NSArray *)newEvents usingCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    NSLog(@"Friend Events update done");
     if (newEvents == nil || [newEvents count] ==0) {
         numRequestPending--;
         [self checkUpdateRequestFinish:completionHandler];

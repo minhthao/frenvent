@@ -15,6 +15,8 @@
 
 @interface RecommendFbUserRequest : NSObject
 
--(void)shareUserWithUid:(NSString *)uid andName:(NSString *)name;
+@property (nonatomic, weak) id<RecommendFbUserRequestDelegate> delegate;
+
+-(void)shareUserWithUid:(NSString *)uid;
 
 @end

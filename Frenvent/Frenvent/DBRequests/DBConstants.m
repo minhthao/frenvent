@@ -8,6 +8,7 @@
 
 #import "DBConstants.h"
 
+NSString * const APP_LINK_HOST = @"http://FreventServer-6kvbkxqtmm.elasticbeanstalk.com/AppLinkHost";
 NSString * const URL = @"http://FreventServer-6kvbkxqtmm.elasticbeanstalk.com/MainServlet";
 
 NSString * const USER_TABLE_NAME = @"user";
@@ -16,6 +17,11 @@ NSString * const USER_USERNAME = @"username";
 NSString * const USER_NUM_USER_EVENTS = @"numEvents";
 NSString * const USER_NUM_FRIENDS_EVENTS = @"numFriendsEvent";
 NSString * const USER_TIMESTAMP = @"timestamp";
+
+NSString * const FBUSER_TABLE_NAME = @"fbuser";
+NSString * const FBUSER_UID = @"uid";
+NSString * const FBUSER_NAME = @"name";
+NSString * const FBUSER_INFO = @"info";
 
 NSString * const EVENT_TABLE_NAME = @"event";
 NSString * const EVENT_EID = @"eid";
@@ -57,11 +63,11 @@ NSString * const REQUEST_TYPE_DELETE = @"DELETE";
 
 NSString * const REQUEST_DATA_TYPE = @"data_type";
 NSString * const REQUEST_DATA_TYPE_USER = @"user";
+NSString * const REQUEST_DATA_TYPE_FBUSER = @"fbuser";
 NSString * const REQUEST_DATA_TYPE_EVENT = @"event";
 NSString * const REQUEST_DATA_TYPE_NOTIFICATION = @"notification";
 
 NSString * const REQUEST_DATA = @"data";
-
 NSString * const REQUEST_UPDATE_TYPE = @"update_type";
 NSString * const REQUEST_UPDATE_TYPE_USER_MY_EVENT = @"user_event";
 NSString * const REQUEST_UPDATE_TYPE_USER_FRIEND_EVENT = @"friend_event";

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString * const APP_LINK_HOST;
 extern NSString * const URL;
 
 extern NSString * const USER_TABLE_NAME;
@@ -16,6 +17,11 @@ extern NSString * const USER_USERNAME;
 extern NSString * const USER_NUM_USER_EVENTS;
 extern NSString * const USER_NUM_FRIENDS_EVENTS;
 extern NSString * const USER_TIMESTAMP;
+
+extern NSString * const FBUSER_TABLE_NAME;
+extern NSString * const FBUSER_UID;
+extern NSString * const FBUSER_NAME;
+extern NSString * const FBUSER_INFO;
 
 extern NSString * const EVENT_TABLE_NAME;
 extern NSString * const EVENT_EID;
@@ -57,6 +63,7 @@ extern NSString * const REQUEST_TYPE_DELETE;
 
 extern NSString * const REQUEST_DATA_TYPE;
 extern NSString * const REQUEST_DATA_TYPE_USER;
+extern NSString * const REQUEST_DATA_TYPE_FBUSER;
 extern NSString * const REQUEST_DATA_TYPE_EVENT;
 extern NSString * const REQUEST_DATA_TYPE_NOTIFICATION;
 
