@@ -108,7 +108,7 @@
                                         <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l2w-ju-GuX">
                                             <rect key="frame" x="5" y="5" width="310" height="145"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="201" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-mw-GdU">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="201" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-mw-GdU">
                                                     <rect key="frame" x="3" y="3" width="67" height="67"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="67" id="D6Q-2b-4c7"/>
@@ -1246,7 +1246,7 @@
                                         <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZKN-w9-BVX">
                                             <rect key="frame" x="5" y="5" width="310" height="146"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="201" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cWd-EO-DCo">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="201" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cWd-EO-DCo">
                                                     <rect key="frame" x="3" y="3" width="67" height="67"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="67" id="9tg-JV-DIt"/>
@@ -1423,14 +1423,14 @@
                         <viewControllerLayoutGuide type="bottom" id="QCv-mY-EhJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Dxj-a0-aNK">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jyi-CV-fRr">
-                                <rect key="frame" x="0.0" y="-57" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="-25" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="Ylv-qD-cIZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="150"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mhM-Tv-5qb">
@@ -1452,7 +1452,7 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventDetailCell" id="J0N-sc-m5g">
-                                        <rect key="frame" x="0.0" y="172" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="236" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J0N-sc-m5g" id="Cbz-hr-chi">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -1505,6 +1505,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4vS-c0-i6m"/>
-        <segue reference="LjP-Hv-OTa"/>
+        <segue reference="Y5l-V0-NeQ"/>
     </inferredMetricsTieBreakers>
 </document>
