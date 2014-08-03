@@ -18,10 +18,20 @@
 #import "MyColor.h"
 #import "Reachability.h"
 #import "EventDetailViewController.h"
+#import "EventRsvpRequest.h"
+#import "ShareEventRequest.h"
+#import "ToastView.h"
 
 CLLocation *lastKnown;
 
 @interface FriendEventsTableViewController ()
+
+@property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
+@property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
+@property (nonatomic, strong) NSIndexPath *indexPathOfRsvpEvent;
+
+@property (nonatomic, strong) UIActionSheet *shareActionSheet;
+@property (nonatomic, strong) ShareEventRequest *shareEventRequest;
 
 @property (nonatomic, strong) EventManager *eventManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -32,7 +42,55 @@ CLLocation *lastKnown;
 
 @implementation FriendEventsTableViewController
 
-#pragma mark - private class
+#pragma mark - instantiation
+/**
+ * Lazily instantiate the rsvp action sheet
+ * @return rsvp action sheet
+ */
+- (UIActionSheet *)rsvpActionSheet {
+    if (_rsvpActionSheet == nil) {
+        _rsvpActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Going", @"Maybe", nil];
+        _rsvpActionSheet.tag = 1;
+    }
+    return _rsvpActionSheet;
+}
+
+/**
+ * Lazily instantiate the event rsvp request
+ * @return rsvp request
+ */
+-(EventRsvpRequest *)eventRsvpRequest {
+    if (_eventRsvpRequest ==  nil) {
+        _eventRsvpRequest = [[EventRsvpRequest alloc] init];
+        _eventRsvpRequest.delegate = self;
+    }
+    return _eventRsvpRequest;
+}
+
+/**
+ * Lazily instantiate the share action sheet
+ * @return share action sheet
+ */
+-(UIActionSheet *)shareActionSheet {
+    if (_shareActionSheet == nil) {
+        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share with friends", @"Share on wall", nil];
+        _shareActionSheet.tag = 2;
+    }
+    return _shareActionSheet;
+}
+
+/**
+ * Lazily instantiate the share event request
+ * @return Share event request
+ */
+-(ShareEventRequest *)shareEventRequest {
+    if (_shareEventRequest == nil) {
+        _shareEventRequest = [[ShareEventRequest alloc] init];
+        _shareEventRequest.delegate = self;
+    }
+    return _shareEventRequest;
+}
+
 /**
  * Lazily instantiate and get the event manager object
  * @return Event Manager
@@ -100,30 +158,85 @@ CLLocation *lastKnown;
 }
 
 #pragma mark - refresh control methods
-- (void)refresh:(id)sender {
+-(void)refresh:(id)sender {
+    [self.refreshButton setEnabled:false];
+    
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    internetReachable.reachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-                [[self locationManager] startUpdatingLocation];
-            else [[self friendEventsRequest] refreshFriendEvents];
-        });
-    };
-    internetReachable.unreachableBlock = ^(Reachability*reach) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                              message:@"Connect to internet and try again."
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-            
-            [message show];
-            [[self uiRefreshControl] endRefreshing];
-        });
-    };
+    if ([internetReachable isReachable]) {
+        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+            [[self locationManager] startUpdatingLocation];
+        else [[self friendEventsRequest] refreshFriendEvents];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        [[self uiRefreshControl] endRefreshing];
+        [self.refreshButton setEnabled:true];
+    }
+}
+
+
+- (IBAction)doRefresh:(id)sender {
+    [[self uiRefreshControl] beginRefreshing];
+    [self refresh:[self uiRefreshControl]];
+    [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentOffset.y - [self uiRefreshControl].frame.size.height) animated:YES];
+}
+
+#pragma mark - UIActionSheet and rsvp delegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
     
-    [internetReachable startNotifier];
+    if (actionSheet.tag == 1) {
+        switch (buttonIndex) {
+            case 0:
+                if (![event.rsvp isEqualToString:RSVP_ATTENDING])
+                    [[self eventRsvpRequest] replyAttendingToEvent:event.eid];
+                break;
+            case 1:
+                if (![event.rsvp isEqualToString:RSVP_UNSURE])
+                    [[self eventRsvpRequest] replyUnsureToEvent:event.eid];
+                break;
+            default:
+                break;
+        }
+    } else {
+        switch (buttonIndex) {
+            case 0:
+                [[self shareEventRequest] shareToFriendTheEventWithEid:event.eid];
+                break;
+                
+            case 1:
+                [[self shareEventRequest] shareToWallTheEvent:event.eid];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+-(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp {
+    if (success) {
+        Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
+        [[self eventManager] changeRsvpOfEventAtIndexPath:self.indexPathOfRsvpEvent withRsvp:rsvp];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.indexPathOfRsvpEvent];
+        UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:204];
+        if ([event getRsvpAttributedString] != nil)
+            eventFriendsInterested.attributedText = [event getRsvpAttributedString];
+        else eventFriendsInterested.attributedText = [event getFriendsInterestedAttributedString];
+        
+        [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP" withDuaration:3.0];
+    } else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
+}
+
+-(void)notifyShareEventRequestSuccess:(BOOL)success {
+    if (success) [ToastView showToastInParentView:self.view withText:@"Event shared successfully" withDuaration:3.0];
+    else [ToastView showToastInParentView:self.view withText:@"Fail to share event" withDuaration:3.0];
 }
 
 #pragma mark - delegate for friend events request
@@ -133,10 +246,12 @@ CLLocation *lastKnown;
     [self.tableView reloadData];
     
     [[self uiRefreshControl] endRefreshing];
+    [self.refreshButton setEnabled:true];
 }
 
 - (void)notifyFriendEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
     [[self uiRefreshControl] endRefreshing];
+    [self.refreshButton setEnabled:true];
 }
 
 #pragma mark - location manager delegates
@@ -156,7 +271,6 @@ CLLocation *lastKnown;
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    NSLog(@"location error - %@", error);
     if ([[self uiRefreshControl] isRefreshing]) [[self friendEventsRequest] refreshFriendEvents];
 }
 
@@ -165,6 +279,8 @@ CLLocation *lastKnown;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.refreshControl = [self uiRefreshControl];
+    
+    [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
 }
@@ -210,7 +326,6 @@ CLLocation *lastKnown;
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"Hide";
 }
-
 
 // Get the cell in the table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -391,20 +506,61 @@ CLLocation *lastKnown;
 #pragma mark - cell button actions selector
 //Handle the event when the the share button for a given event is pressed
 - (void)shareActionPressed:(EventButton *)sender{
+    self.indexPathOfRsvpEvent = sender.indexPath;
     Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-    NSLog(@"share pressed for event: %@", event.name);
+    
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        if ([FBDialogs canPresentMessageDialog])
+            [[self shareActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
+        else [[self shareEventRequest] shareToWallTheEvent:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
+
 }
 
 //Handle the event when the the rsvp button for a given event is pressed
 - (void)rsvpActionPressed:(EventButton *)sender{
-    Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-    NSLog(@"rsvp pressed for event: %@", event.name);
+    self.indexPathOfRsvpEvent = sender.indexPath;
+    
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        [[self rsvpActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
+
 }
 
 //Handle the event when the the detail button for a given event is pressed
 - (void)detailActionPressed:(EventButton *)sender{
     Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-    NSLog(@"detail pressed for event: %@", event.name);
+    
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
 }
 
 

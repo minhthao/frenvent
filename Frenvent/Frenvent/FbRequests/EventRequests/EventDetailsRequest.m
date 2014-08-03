@@ -79,6 +79,8 @@ static int16_t const QUERY_LIMIT = 5000;
               
               NSArray *data = (NSArray *)result[@"data"];
               
+              BOOL eventExist = true;
+              
               for (int i = 0; i < [data count]; i++) {
                   NSArray *resultSet = data[i][@"fql_result_set"];
                   if ([data[i][@"name"] isEqualToString:@"myRsvp"]) {
@@ -188,10 +190,12 @@ static int16_t const QUERY_LIMIT = 5000;
                           eventDetail.attendingCount = [eventObj[@"attending_count"] intValue];
                           eventDetail.unsureCount = [eventObj[@"unsure_count"] intValue];
                           eventDetail.unrepliedCountl = [eventObj[@"not_replied_count"] intValue];
-                        
-                          [self.delegate notifyEventDetailsQueryCompletedWithResult:eventDetail];
-                      } else [self.delegate notifyEventDidNotExist];
+                      } else {
+                          [self.delegate notifyEventDidNotExist];
+                          eventExist = false;
+                      }
                   }
+                  if (eventExist) [self.delegate notifyEventDetailsQueryCompletedWithResult:eventDetail];
               }
           }
       }];

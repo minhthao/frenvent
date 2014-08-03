@@ -10,7 +10,7 @@
 
 @protocol EventRsvpRequestDelegate <NSObject>
 @required
--(void)notifyEventRsvpSuccess:(BOOL)success;
+-(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp;
 @end
 
 @interface EventRsvpRequest : NSObject

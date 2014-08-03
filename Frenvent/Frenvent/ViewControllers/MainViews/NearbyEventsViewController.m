@@ -14,6 +14,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "Reachability.h"
+#import "EventDetailViewController.h"
 
 static double const DEFAULT_LATITUDE = 37.43;
 static double const DEFAULT_LONGITUDE = -122.17;
@@ -80,7 +81,8 @@ BOOL isUpdating;
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     id <MKAnnotation> annotation = [view annotation];
     if ([annotation isKindOfClass:[MyAnnotation class]]) {
-        NSLog(@"%@", ((MyAnnotation *)annotation).event.name);
+        [self performSegueWithIdentifier:@"eventDetailView" sender:((MyAnnotation *)annotation).event.eid];
+        //NSLog(@"%@", ((MyAnnotation *)annotation).event.name);
     }
 }
 
@@ -185,17 +187,6 @@ BOOL isUpdating;
    return [EventCoreData getNearbyEventsBoundedByLowerLongitude:lowerLong lowerLatitude:lowerLat upperLongitude:upperLong upperLatitude:upperLat];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (IBAction)refresh:(id)sender {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if (![internetReachable isReachable]) {
@@ -222,6 +213,18 @@ BOOL isUpdating;
     double upperLat = center.latitude + latitudeDelta;
     [[self dbEventRequest] refreshNearbyEvents:lowerLong :lowerLat :upperLong :upperLat];
     [self createAndDisplayPin];
+}
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        NSString *eid = (NSString *)sender;
+        EventDetailViewController *viewController = segue.destinationViewController;
+        viewController.eid = eid;
+    }
 }
 
 

@@ -33,8 +33,8 @@ static NSString * const REPLIED_EVENTS_HEADER = @"REPLIED";
  * @param unreplied events
  */
 - (void)setRepliedEvents:(NSArray *)myRepliedEvents unrepliedEvents:(NSArray *)myUnrepliedEvents {
-    _repliedEvents = myRepliedEvents;
-    _unrepliedEvents = myUnrepliedEvents;
+    _repliedEvents = [NSMutableArray arrayWithArray:myRepliedEvents];
+    _unrepliedEvents = [NSMutableArray arrayWithArray:myUnrepliedEvents];
 }
 
 /**
@@ -93,6 +93,17 @@ static NSString * const REPLIED_EVENTS_HEADER = @"REPLIED";
     if ([sectionTitle isEqualToString:REPLIED_EVENTS_HEADER]) return _repliedEvents;
     
     return nil;
+}
+
+/**
+ * Hide the event at a given index path
+ * @param index path
+ */
+- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionTitle = [self getTitleAtSection:indexPath.section];
+    
+    if ([sectionTitle isEqualToString:UNREPLIED_EVENTS_HEADER]) [_unrepliedEvents removeObjectAtIndex:indexPath.row];
+    if ([sectionTitle isEqualToString:REPLIED_EVENTS_HEADER]) [_repliedEvents removeObjectAtIndex:indexPath.row];
 }
 
 @end

@@ -10,8 +10,8 @@
 
 @interface MyEventManager : NSObject
 
-@property (nonatomic, strong) NSArray *repliedEvents;
-@property (nonatomic, strong) NSArray *unrepliedEvents;
+@property (nonatomic, strong) NSMutableArray *repliedEvents;
+@property (nonatomic, strong) NSMutableArray *unrepliedEvents;
 
 
 - (void)setRepliedEvents:(NSArray *)repliedEvent unrepliedEvents:(NSArray *)unrepliedEvents;
@@ -20,5 +20,7 @@
 - (NSInteger) getNumberOfSections;
 - (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
 - (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;
+
+- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

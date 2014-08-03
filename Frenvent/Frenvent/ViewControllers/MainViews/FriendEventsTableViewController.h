@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "FriendEventsRequest.h"
+#import "EventRsvpRequest.h"
+#import "ShareEventRequest.h"
 
-@interface FriendEventsTableViewController : UITableViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate>
+@interface FriendEventsTableViewController : UITableViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, ShareEventRequestDelegate>
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+- (IBAction)doRefresh:(id)sender;
+
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *filter;
 
 
 @end

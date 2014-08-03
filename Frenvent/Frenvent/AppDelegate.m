@@ -30,11 +30,15 @@
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0]];
-    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
-           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], UITextAttributeTextColor,
-           [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8],UITextAttributeTextShadowColor,
-           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-           UITextAttributeTextShadowOffset, nil]];
+    
+    
+    
+    NSShadow *shadow = [NSShadow new];
+    [shadow setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
+    [shadow setShadowOffset: CGSizeMake(0.0f, 1.0f)];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+            @{ NSForegroundColorAttributeName:[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0],
+               NSShadowAttributeName:shadow}];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {

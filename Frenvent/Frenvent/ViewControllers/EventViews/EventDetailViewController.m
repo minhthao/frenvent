@@ -41,6 +41,7 @@ EventDetail *completeEventDetail;
 
 - (void)notifyEventDetailsQueryCompletedWithResult:(EventDetail *)eventDetail {
     NSLog(@"got result %@", eventDetail.cover);
+    NSLog(@"rsvp is: %@", eventDetail.rsvp);
     completeEventDetail = eventDetail;
     self.eventTitle.text = completeEventDetail.name;
     if ([completeEventDetail.cover length] > 0)
@@ -49,9 +50,9 @@ EventDetail *completeEventDetail;
     
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:NO animated:true];
     if (self.eid != nil) {
         [[self eventDetailsRequest] queryEventDetail:self.eid];
     }

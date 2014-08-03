@@ -131,14 +131,14 @@
     [[self eventRsvpRequest] replyAttendingToEvent:event.eid];
 }
 
--(void)notifyEventRsvpSuccess:(BOOL)success {
-    if (success) [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP'ed!" withDuaration:2.0];
-    else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:2.0];
+-(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvpb{
+    if (success) [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP!" withDuaration:3.0];
+    else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
 }
 
 -(void)notifyRecommendFbUserRequestSuccess:(BOOL)success {
-    if (success) [ToastView showToastInParentView:self.view withText:@"User shared successfully" withDuaration:2.0];
-    else [ToastView showToastInParentView:self.view withText:@"Fail to share user" withDuaration:2.0];
+    if (success) [ToastView showToastInParentView:self.view withText:@"User shared successfully" withDuaration:3.0];
+    else [ToastView showToastInParentView:self.view withText:@"Fail to share user" withDuaration:3.0];
 }
 
 -(void)userClicked:(SuggestFriend *)suggestedUser {

@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "MyEventsRequest.h"
+#import "EventRsvpRequest.h"
+#import "ShareEventRequest.h"
 
-@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate, MyEventsRequestDelegate>
+@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate, MyEventsRequestDelegate, EventRsvpRequestDelegate, ShareEventRequestDelegate, UIActionSheetDelegate>
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+- (IBAction)doRefresh:(id)sender;
 
 @end

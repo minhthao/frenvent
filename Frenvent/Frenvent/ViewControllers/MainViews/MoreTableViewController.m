@@ -13,6 +13,7 @@
 #import "EventCoreData.h"
 #import "Event.h"
 #import "TimeSupport.h"
+#import "EventDetailViewController.h"
 
 @interface MoreTableViewController ()
 
@@ -247,7 +248,7 @@
 - (void)handleSeachItemSelection:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     Event *event = [[self searchEvents] objectAtIndex:indexPath.row];
-    NSLog(@"Select event : %@", event.name);
+    [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
 }
 
 #pragma mark - search bar delegate
@@ -265,11 +266,13 @@
 
 
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        NSString *eid = (NSString *)sender;
+        EventDetailViewController *viewController = segue.destinationViewController;
+        viewController.eid = eid;
+    }
 }
 
 @end

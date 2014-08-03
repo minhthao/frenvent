@@ -175,4 +175,19 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
     if ([sectionTitle isEqualToString:OTHER_EVENTS_HEADER]) [_otherEvents removeObjectAtIndex:indexPath.row];
 }
 
+/**
+ * Change the rsvp of the event at a given index path
+ * @param index path
+ */
+- (void)changeRsvpOfEventAtIndexPath:(NSIndexPath *)indexPath withRsvp:(NSString *)rsvp{
+    NSString *sectionTitle = [self getTitleAtSection:indexPath.section];
+    
+    if ([sectionTitle isEqualToString:TODAY_EVENTS_HEADER]) ((Event *)[_todayEvents objectAtIndex:indexPath.row]).rsvp = rsvp;
+    if ([sectionTitle isEqualToString:THIS_WEEKEND_EVENTS_HEADER]) ((Event *)[_thisWeekendEvents objectAtIndex:indexPath.row]).rsvp = rsvp;
+    if ([sectionTitle isEqualToString:THIS_WEEK_EVENTS_HEADER]) ((Event *)[_thisWeekEvents objectAtIndex:indexPath.row]).rsvp = rsvp;
+    if ([sectionTitle isEqualToString:NEXT_WEEK_EVENTS_HEADER]) ((Event *)[_nextWeekEvents objectAtIndex:indexPath.row]).rsvp = rsvp;
+    if ([sectionTitle isEqualToString:OTHER_EVENTS_HEADER]) ((Event *)[_otherEvents objectAtIndex:indexPath.row]).rsvp = rsvp;
+
+}
+
 @end

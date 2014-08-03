@@ -34,7 +34,7 @@
         [self doRsvpForEvent:eid usingRsvp:rsvp];
     } else if ([FBSession activeSession].isOpen) {
         [[FBSession activeSession] requestNewPublishPermissions:@[@"rsvp_event"] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
-            if (error || ![session hasGranted:@"rsvp_event"]) [self.delegate notifyEventRsvpSuccess:false];
+            if (error || ![session hasGranted:@"rsvp_event"]) [self.delegate notifyEventRsvpSuccess:false withRsvp:rsvp];
             else [self doRsvpForEvent:eid usingRsvp:rsvp];
         }];
     } else if ([FBSession activeSession].state == FBSessionStateCreatedTokenLoaded) {
@@ -42,15 +42,15 @@
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          if (error || !FB_ISSESSIONOPENWITHSTATE(status)) [self.delegate notifyEventRsvpSuccess:false];
+                                          if (error || !FB_ISSESSIONOPENWITHSTATE(status)) [self.delegate notifyEventRsvpSuccess:false withRsvp:rsvp];
                                           else if (![session hasGranted:@"rsvp_event"]) {
                                               [[FBSession activeSession] requestNewPublishPermissions:@[@"rsvp_event"] defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error) {
-                                                  if (error || ![session hasGranted:@"rsvp_event"]) [self.delegate notifyEventRsvpSuccess:false];
+                                                  if (error || ![session hasGranted:@"rsvp_event"]) [self.delegate notifyEventRsvpSuccess:false withRsvp:rsvp];
                                                   else [self doRsvpForEvent:eid usingRsvp:rsvp];
                                               }];
                                           } else [self doRsvpForEvent:eid usingRsvp:rsvp];
                                       }];
-    } else [self.delegate notifyEventRsvpSuccess:false];
+    } else [self.delegate notifyEventRsvpSuccess:false withRsvp:rsvp];
 }
 
 /**
@@ -68,10 +68,10 @@
                                  parameters:nil
                                  HTTPMethod:@"POST"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-      if (error) [self.delegate notifyEventRsvpSuccess:false];
+      if (error) [self.delegate notifyEventRsvpSuccess:false withRsvp:rsvp];
       else {
           [EventCoreData updateEventWithEid:eid usingRsvp:rsvp];
-          [self.delegate notifyEventRsvpSuccess:true];
+          [self.delegate notifyEventRsvpSuccess:true withRsvp:rsvp];
       }
     }];
 

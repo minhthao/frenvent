@@ -42,6 +42,7 @@
 		3EA9015C198CABBA0056BE36 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015A198CABBA0056BE36 /* Bolts.framework */; };
 		3EA9015D198CABBA0056BE36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */; };
 		3EA90160198CAED40056BE36 /* DbFBUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */; };
+		3EA90163198E49560056BE36 /* ShareEventRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90162198E49560056BE36 /* ShareEventRequest.m */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -193,6 +194,8 @@
 		3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Frenvent/frameworks/FacebookSDK.framework; sourceTree = "<group>"; };
 		3EA9015E198CAED40056BE36 /* DbFBUserRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DbFBUserRequest.h; path = DBRequests/DbFBUserRequest.h; sourceTree = "<group>"; };
 		3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbFBUserRequest.m; path = DBRequests/DbFBUserRequest.m; sourceTree = "<group>"; };
+		3EA90161198E49560056BE36 /* ShareEventRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShareEventRequest.h; path = FbRequests/EventRequests/ShareEventRequest.h; sourceTree = "<group>"; };
+		3EA90162198E49560056BE36 /* ShareEventRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareEventRequest.m; path = FbRequests/EventRequests/ShareEventRequest.m; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -692,10 +695,10 @@
 			children = (
 				3EAAACA2196A08FC004AD322 /* FriendEventsTableViewController.h */,
 				3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */,
-				3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */,
-				3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */,
 				3EAAACE6196CB2EC004AD322 /* InvitedEventsTableViewController.h */,
 				3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */,
+				3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */,
+				3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */,
 				3ECF10531970DC6000963155 /* MoreTableViewController.h */,
 				3ECF10541970DC6000963155 /* MoreTableViewController.m */,
 				3ECF109A1978ACA700963155 /* NearbyEventsViewController.h */,
@@ -760,6 +763,8 @@
 				3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */,
 				3EA90157198C67300056BE36 /* RecommendFbUserRequest.h */,
 				3EA90158198C67300056BE36 /* RecommendFbUserRequest.m */,
+				3EA90161198E49560056BE36 /* ShareEventRequest.h */,
+				3EA90162198E49560056BE36 /* ShareEventRequest.m */,
 				3EA90140198B00D30056BE36 /* SuggestFriend.h */,
 				3EA90141198B00D30056BE36 /* SuggestFriend.m */,
 			);
@@ -933,6 +938,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EA90163198E49560056BE36 /* ShareEventRequest.m in Sources */,
 				3ECF10E3197F229100963155 /* SDWebImageDownloader.m in Sources */,
 				3ECF10EA197F229100963155 /* UIImage+WebP.m in Sources */,
 				3EAAAC9519649B00004AD322 /* DbUserRequest.m in Sources */,
@@ -1114,6 +1120,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1146,6 +1153,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1156,6 +1164,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minh Thao Nguyen (P8QMLR5W8P)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frenvent/frameworks",
@@ -1164,7 +1173,7 @@
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
 				IBSC_WARNINGS = YES;
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1185,7 +1194,7 @@
 				GCC_PREFIX_HEADER = "Frenvent/Frenvent-Prefix.pch";
 				IBSC_WARNINGS = YES;
 				INFOPLIST_FILE = "Frenvent/Frenvent-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

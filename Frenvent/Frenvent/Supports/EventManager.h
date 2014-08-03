@@ -23,5 +23,5 @@
 - (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
 - (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;
 - (void)hideEventAtIndexPath:(NSIndexPath *)indexPath;
-
+- (void)changeRsvpOfEventAtIndexPath:(NSIndexPath *)indexPath withRsvp:(NSString *)rsvp;
 @end
