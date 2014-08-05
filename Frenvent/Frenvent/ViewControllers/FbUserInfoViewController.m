@@ -475,21 +475,20 @@
 
 #pragma mark - segue preparation
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"segueToSelf"]) {
-        NSString *uid = (NSString *)sender;
-        FbUserInfoViewController *viewController = segue.destinationViewController;
-        viewController.targetUid = uid;
-    } else if ([[segue identifier] isEqualToString:@"webView"]) {
+    if ([[segue identifier] isEqualToString:@"webView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         WebViewController *viewController = segue.destinationViewController;
         WebViewUser *webViewUser = (WebViewUser *)sender;
         viewController.url = webViewUser.url;
         viewController.uid = webViewUser.uid;
         viewController.name = webViewUser.name;
     } else if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;
     } else if ([[segue identifier] isEqualToString:@"photoView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         int photoIndex = [(NSNumber *)sender intValue];
         FbUserPhotoViewController *viewController = segue.destinationViewController;
         viewController.photoUrls = self.photoUrls;

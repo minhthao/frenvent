@@ -221,6 +221,7 @@ BOOL isUpdating;
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;

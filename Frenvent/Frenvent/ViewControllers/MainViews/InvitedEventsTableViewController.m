@@ -500,22 +500,10 @@ CLLocation *lastKnown;
 - (void)shareActionPressed:(EventButton *)sender{
     self.indexPathOfRsvpEvent = sender.indexPath;
     Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-    
-    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    if ([internetReachable isReachable]) {
-        if ([FBDialogs canPresentMessageDialog])
-            [[self shareActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
-        else [[self shareEventRequest] shareToWallTheEvent:event.eid];
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-    }
-    
+
+    if ([FBDialogs canPresentMessageDialog])
+        [[self shareActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
+    else [[self shareEventRequest] shareToWallTheEvent:event.eid];
 }
 
 //Handle the event when the the rsvp button for a given event is pressed
@@ -561,6 +549,7 @@ CLLocation *lastKnown;
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;

@@ -33,6 +33,12 @@
 @property (nonatomic, strong) NSString * privacy;
 @property (nonatomic, strong) NSArray * attendingFriends;
 
-- (NSString *) getEventDisplayTime;
+-(void) addToCoreData;
+
+-(NSString *) getEventDisplayTime;
+-(NSString *) getDisplayRsvp;
+-(NSString *) getEventPrivacy;
+-(NSString *) getDisplayPrivacyAndRsvp;
+
 
 @end
