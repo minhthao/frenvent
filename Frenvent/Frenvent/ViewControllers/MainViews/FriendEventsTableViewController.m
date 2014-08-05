@@ -396,7 +396,6 @@ CLLocation *lastKnown;
                                                 otherButtonTitles:nil];
         
         [message show];
-        [[self uiRefreshControl] endRefreshing];
     }
 }
 

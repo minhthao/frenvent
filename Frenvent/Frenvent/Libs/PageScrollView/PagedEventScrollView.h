@@ -13,7 +13,7 @@
 @protocol PagedEventScrollViewDelegate <NSObject>
 @optional
 - (void)eventClicked:(Event *)event;
-- (void)eventRsvpButtonClicked:(Event *)event;
+- (void)eventRsvpButtonClicked:(Event *)event withButton:(UIButton *)rsvpButton;
 @end
 
 @interface PagedEventScrollView : PagedScrollView <ScrollEventDelegate>

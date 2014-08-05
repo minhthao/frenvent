@@ -470,17 +470,68 @@
         <scene sceneID="P1d-gy-TMB">
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="eXG-Tk-V4h" customClass="FavoriteEventsTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="GGg-4e-1tT">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="105" sectionHeaderHeight="22" sectionFooterHeight="22" id="GGg-4e-1tT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoriteItem" id="7Gg-cb-4pi">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favoriteItem" rowHeight="105" id="FFg-I0-EcR">
+                                <rect key="frame" x="0.0" y="86" width="320" height="105"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Gg-cb-4pi" id="blg-Qj-dio">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FFg-I0-EcR" id="ND6-G4-R6c">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="105"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="400" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QBf-TO-pu6">
+                                            <rect key="frame" x="5" y="5" width="65" height="65"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="65" id="vy9-5D-ok6"/>
+                                                <constraint firstAttribute="height" constant="65" id="yhe-by-DWv"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="401" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="zcw-yq-tzZ">
+                                            <rect key="frame" x="78" y="5" width="232" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="402" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Location" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="67F-Bq-wlP">
+                                            <rect key="frame" x="78" y="26" width="232" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.54432397960000001" green="0.54432397960000001" blue="0.54432397960000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="403" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Host" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="232" translatesAutoresizingMaskIntoConstraints="NO" id="Hp7-Dg-dux">
+                                            <rect key="frame" x="78" y="56" width="232" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="404" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Pt-br-QZO">
+                                            <rect key="frame" x="78" y="77" width="232" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="3Pt-br-QZO" firstAttribute="top" secondItem="Hp7-Dg-dux" secondAttribute="bottom" id="5bL-lK-Smp"/>
+                                        <constraint firstItem="Hp7-Dg-dux" firstAttribute="leading" secondItem="QBf-TO-pu6" secondAttribute="trailing" constant="8" id="9mp-x2-cvL"/>
+                                        <constraint firstAttribute="trailing" secondItem="3Pt-br-QZO" secondAttribute="trailing" constant="10" id="Bgi-Aj-ivm"/>
+                                        <constraint firstItem="67F-Bq-wlP" firstAttribute="top" secondItem="zcw-yq-tzZ" secondAttribute="bottom" id="DOl-Jm-CDk"/>
+                                        <constraint firstAttribute="trailing" secondItem="QBf-TO-pu6" secondAttribute="trailing" constant="250" id="DOu-5C-UR2"/>
+                                        <constraint firstItem="QBf-TO-pu6" firstAttribute="top" secondItem="ND6-G4-R6c" secondAttribute="top" constant="5" id="Kbz-q8-qEm"/>
+                                        <constraint firstItem="67F-Bq-wlP" firstAttribute="leading" secondItem="QBf-TO-pu6" secondAttribute="trailing" constant="8" id="MXw-N0-ox7"/>
+                                        <constraint firstAttribute="trailing" secondItem="zcw-yq-tzZ" secondAttribute="trailing" constant="10" id="UWE-i9-SMP"/>
+                                        <constraint firstItem="QBf-TO-pu6" firstAttribute="leading" secondItem="ND6-G4-R6c" secondAttribute="leading" constant="5" id="V27-KI-193"/>
+                                        <constraint firstAttribute="trailing" secondItem="67F-Bq-wlP" secondAttribute="trailing" constant="10" id="VAb-f2-cMF"/>
+                                        <constraint firstItem="Hp7-Dg-dux" firstAttribute="top" secondItem="67F-Bq-wlP" secondAttribute="bottom" constant="8" id="aMn-RJ-TUo"/>
+                                        <constraint firstItem="zcw-yq-tzZ" firstAttribute="leading" secondItem="QBf-TO-pu6" secondAttribute="trailing" constant="8" id="cNh-hG-ewE"/>
+                                        <constraint firstAttribute="bottom" secondItem="3Pt-br-QZO" secondAttribute="bottom" constant="4" id="ffs-pK-baP"/>
+                                        <constraint firstItem="3Pt-br-QZO" firstAttribute="leading" secondItem="QBf-TO-pu6" secondAttribute="trailing" constant="8" id="pnw-Se-RxV"/>
+                                        <constraint firstAttribute="trailing" secondItem="Hp7-Dg-dux" secondAttribute="trailing" constant="10" id="zGJ-RC-2Bi"/>
+                                        <constraint firstItem="zcw-yq-tzZ" firstAttribute="top" secondItem="ND6-G4-R6c" secondAttribute="top" constant="5" id="zT3-gD-3Ux"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -1507,6 +1558,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4vS-c0-i6m"/>
-        <segue reference="Y5l-V0-NeQ"/>
+        <segue reference="JNS-RT-LCL"/>
     </inferredMetricsTieBreakers>
 </document>

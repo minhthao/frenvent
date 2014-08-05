@@ -12,6 +12,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TimeSupport.h"
+#import "Reachability.h"
+#import "EventDetailViewController.h"
 
 @interface TrashEventsTableViewController ()
 
@@ -74,11 +76,34 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:true];
+    
+    //we check if there is a internet connection, if no then stop refreshing and alert
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        Event *event = [[self trashEvents] objectAtIndex:indexPath.row];
+        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
+}
+
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        NSString *eid = (NSString *)sender;
+        EventDetailViewController *viewController = segue.destinationViewController;
+        viewController.eid = eid;
+    }
 }
+
 
 @end

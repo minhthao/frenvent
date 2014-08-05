@@ -7,37 +7,119 @@
 //
 
 #import "FavoriteEventsTableViewController.h"
+#import "Event.h"
+#import "EventCoreData.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
+#import "TimeSupport.h"
+#import "Reachability.h"
+#import "EventDetailViewController.h"
 
 @interface FavoriteEventsTableViewController ()
+
+@property (nonatomic, strong) NSArray *ongoingFavoriteEvents;
+@property (nonatomic, strong) NSArray *pastFavoriteEvents;
 
 @end
 
 @implementation FavoriteEventsTableViewController
 
+#pragma mark - initiation
+-(NSArray *)ongoingFavoriteEvents {
+    if (_ongoingFavoriteEvents == nil) _ongoingFavoriteEvents = [EventCoreData getOngoingFavoriteEvents];
+    return _ongoingFavoriteEvents;
+}
+
+-(NSArray *)pastFavoriteEvents {
+    if (_pastFavoriteEvents == nil) _pastFavoriteEvents = [EventCoreData getPastFavoriteEvents];
+    return _pastFavoriteEvents;
+}
+
 #pragma mark - view delegates
-- (void)viewDidLoad {
+- (void)viewDidLoad{
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:NO animated:true];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    NSInteger numSection = 0;
+    if ([[self ongoingFavoriteEvents] count] > 0) numSection++;
+    if ([[self pastFavoriteEvents] count] > 0) numSection++;
+    return numSection;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0 && [[self ongoingFavoriteEvents] count] > 0) return @"ONGOING EVENTS";
+    return @"PAST EVENTS";
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0 && [[self ongoingFavoriteEvents] count] > 0) return [[self ongoingFavoriteEvents] count];
+    return [[self pastFavoriteEvents] count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"favoriteItem" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"favoriteItem"];
+    
+    UIView *bgColorView = [[UIView alloc] init];
+    bgColorView.backgroundColor = [UIColor orangeColor];
+    [cell setSelectedBackgroundView:bgColorView];
+    
+    Event *event = [[self pastFavoriteEvents] objectAtIndex:indexPath.row];
+    if (indexPath.section == 0 && [[self ongoingFavoriteEvents] count] > 0)
+        event = [[self ongoingFavoriteEvents] objectAtIndex:indexPath.row];
+    
+    UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:400];
+    UILabel *eventName = (UILabel *)[cell viewWithTag:401];
+    UILabel *eventLocation = (UILabel *)[cell viewWithTag:402];
+    UILabel *eventHost = (UILabel *)[cell viewWithTag:403];
+    UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
+    
+    [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+    eventName.text = event.name;
+    eventLocation.text = event.location;
+    eventHost.attributedText = [event getHostAttributedString];
+    
+    eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:true];
+    
+    //we check if there is a internet connection, if no then stop refreshing and alert
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        Event *event = nil;
+        if (indexPath.section == 0 && [[self ongoingFavoriteEvents] count] > 0) event = [[self ongoingFavoriteEvents] objectAtIndex:indexPath.row];
+        else event = [[self pastFavoriteEvents] objectAtIndex:indexPath.row];
+        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
 }
 
 #pragma mark - Navigation
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
+        NSString *eid = (NSString *)sender;
+        EventDetailViewController *viewController = segue.destinationViewController;
+        viewController.eid = eid;
+    }
 }
 
 @end

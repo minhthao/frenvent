@@ -55,7 +55,7 @@
     [self.delegate eventClicked:event];
 }
 
--(void)eventRsvpButtonClicked:(Event *)event {
-    [self.delegate eventRsvpButtonClicked:event];
+-(void)eventRsvpButtonClicked:(Event *)event withButton:(UIButton *)rsvpButton{
+    [self.delegate eventRsvpButtonClicked:event withButton:rsvpButton];
 }
 @end

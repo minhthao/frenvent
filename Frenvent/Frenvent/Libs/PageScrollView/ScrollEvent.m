@@ -99,7 +99,7 @@
     self.location.text = event.location;
     self.time.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
     
-    if ([event.rsvp isEqualToString:RSVP_ATTENDING] || ![event canRsvp])
+    if ([event.rsvp isEqualToString:RSVP_ATTENDING] || [event.rsvp isEqualToString:RSVP_UNSURE] || ![event canRsvp])
         [self.eventRsvpButtonView setEnabled:false];
 }
 
@@ -112,8 +112,7 @@
 }
 
 -(void)handleEventRsvp:(UIButton *)sender {
-    [self.eventRsvpButtonView setEnabled:false];
-    [self.delegate eventRsvpButtonClicked:self.event];
+    [self.delegate eventRsvpButtonClicked:self.event withButton:self.eventRsvpButtonView];
 }
 
 @end

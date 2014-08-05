@@ -26,8 +26,11 @@
 #import "EventRsvpRequest.h"
 #import "DbFBUserRequest.h"
 #import "RecommendFbUserRequest.h"
+#import "Reachability.h"
 
 @interface FbUserInfoViewController ()
+
+@property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
 
 @property (nonatomic, strong) FbUserInfoRequest *fbUserInfoRequest;
 @property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
@@ -41,10 +44,21 @@
 @property (nonatomic, strong) PagedUserScrollView *userScrollView;
 @property (nonatomic, strong) FbUserInfoButtons *userInfoButtons;
 
+@property (nonatomic, strong) Event *eventToBeRsvp;
+@property (nonatomic, strong) UIButton *rsvpButton;
+
 @end
 
 @implementation FbUserInfoViewController
 #pragma mark - initiation and private methods
+- (UIActionSheet *)rsvpActionSheet {
+    if (_rsvpActionSheet == nil) {
+        _rsvpActionSheet =  [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Going", @"Maybe", nil];
+        _rsvpActionSheet.delegate = self;
+    }
+    return _rsvpActionSheet;
+}
+
 - (FbUserInfoRequest *)fbUserInfoRequest {
     if (_fbUserInfoRequest == nil) {
         _fbUserInfoRequest = [[FbUserInfoRequest alloc] init];
@@ -110,13 +124,30 @@
     [view.layer setShadowRadius:3.5f];
     [view.layer setShadowOffset:CGSizeMake(1, 1)];
     [view.layer setShadowOpacity:0.5];
-
 }
 
-#pragma mark - alert view delegate
+#pragma mark - alert view and actionsheet delegates
 -(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
      [self.navigationController popViewControllerAnimated:true];
 }
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            if (self.eventToBeRsvp != nil && self.rsvpButton != nil) {
+                [[self eventRsvpRequest] replyAttendingToEvent:self.eventToBeRsvp.eid];
+            }
+            break;
+        case 1:
+            if (self.eventToBeRsvp != nil && self.rsvpButton != nil) {
+                [[self eventRsvpRequest] replyUnsureToEvent:self.eventToBeRsvp.eid];
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 
 #pragma mark - paged scroll view delegate
 -(void)imageIndexClicked:(int)index {
@@ -127,13 +158,28 @@
     [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
 }
 
--(void)eventRsvpButtonClicked:(Event *)event {
-    [[self eventRsvpRequest] replyAttendingToEvent:event.eid];
+-(void)eventRsvpButtonClicked:(Event *)event withButton:(UIButton *)rsvpButton{
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        self.eventToBeRsvp = event;
+        self.rsvpButton = rsvpButton;
+        [[self rsvpActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
 }
 
 -(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvpb{
-    if (success) [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP!" withDuaration:3.0];
-    else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
+    if (success) {
+        [self.rsvpButton setEnabled:false];
+        [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP!" withDuaration:3.0];
+    } else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
 }
 
 -(void)notifyRecommendFbUserRequestSuccess:(BOOL)success {
@@ -183,7 +229,7 @@
 }
 
 #pragma mark - Fb user info request delegate
--(void) notifyFbUserInfoRequestFail {
+-(void)notifyFbUserInfoRequestFail {
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
                                                       message:@"User did not exist or you don't have permission to access this user."
                                                      delegate:self
@@ -193,17 +239,17 @@
     [message show];
 }
 
--(void) fbUserInfoRequestMutualFriendsCount:(int16_t)mutualFriendsCount {
+-(void)fbUserInfoRequestMutualFriendsCount:(int16_t)mutualFriendsCount {
     self.numMutualFriends.text = [NSString stringWithFormat:@"%d mutual friends", mutualFriendsCount];
 }
 
--(void) fbUserInfoRequestName:(NSString *)name {
+-(void)fbUserInfoRequestName:(NSString *)name {
     self.username.text = name;
     if ([DbFBUserRequest addFbUserWithUid:self.targetUid andName:name])
         [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
 }
 
--(void) fbUserInfoRequestOngoingEvents:(NSArray *)ongoingEvents {
+-(void)fbUserInfoRequestOngoingEvents:(NSArray *)ongoingEvents {
     self.ongoingEvents = ongoingEvents;
     if ([self.ongoingEvents count] > 0) {
         [self.eventTable reloadData];
@@ -212,23 +258,23 @@
     [self.mainTable reloadData];
 }
 
--(void) fbUserInfoRequestSuggestedFriends:(NSArray *)users {
+-(void)fbUserInfoRequestSuggestedFriends:(NSArray *)users {
     [[self userScrollView] setSuggestedUsers:users];
     [self.mainTable reloadData];
 }
 
--(void) fbUserInfoRequestPhotos:(NSArray *)urls {
+-(void)fbUserInfoRequestPhotos:(NSArray *)urls {
     self.photoUrls = urls;
     [[self photoScrollView] setScrollViewPhotoUrls:urls withContentModeFit:NO];
     [self.mainTable reloadData];
 }
 
--(void) fbUserInfoRequestPastEvents:(NSArray *)pastEvents {
+-(void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents {
     self.pastEvents = pastEvents;
     if ([self.pastEvents count] > 0) [self.eventTable reloadData];
 }
 
--(void) fbUserInfoRequestProfileCover:(NSString *)cover {
+-(void)fbUserInfoRequestProfileCover:(NSString *)cover {
     //we first setup the view
     [self.mainTable setHidden:false];
     [self.loadingSpinner stopAnimating];

@@ -16,7 +16,7 @@
 #import "EventRsvpRequest.h"
 #import "RecommendFbUserRequest.h"
 
-@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedUserScrollViewDelegate, FbUserInfoButtonsDelegate, EventRsvpRequestDelegate, RecommendFbUserRequestDelegate>
+@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedUserScrollViewDelegate, FbUserInfoButtonsDelegate, EventRsvpRequestDelegate, RecommendFbUserRequestDelegate, UIActionSheetDelegate>
 - (IBAction)viewSegments:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UITableView *eventTable;
