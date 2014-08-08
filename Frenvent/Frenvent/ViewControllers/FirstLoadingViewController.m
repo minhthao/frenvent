@@ -31,14 +31,19 @@ NSInteger numMyEvents;
 
 #pragma mark - view controller inheritance
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    [EventCoreData removeAllEvents];
-    [FriendCoreData removeAllFriends];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:false];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     numQueriesDone = 0;
-    
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
     else numQueriesDone++;
@@ -53,11 +58,6 @@ NSInteger numMyEvents;
     [friendEventsRequest initFriendEvents];
     [myEventsRequest initMyEvents];
     [friendsRequest initFriends];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:false];
 }
 
 - (void)didReceiveMemoryWarning

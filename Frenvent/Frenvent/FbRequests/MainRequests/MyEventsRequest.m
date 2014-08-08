@@ -82,7 +82,6 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
           NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];
           
           if (error) {
-              NSLog(@"Error: %@", [error localizedDescription]);
               [self.delegate notifyMyEventsQueryEncounterError:completionHandler];
           } else {
               NSArray *data = (NSArray *)result[@"data"];
@@ -131,11 +130,9 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                   [eventsDictionary setObject:event forKey:event.eid];
               }
               
-              NSLog(@"result with %d event wiht %d new", (int16_t)[eventsDictionary count], (int16_t)[newEventsDictionary count]);
               if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
                   [self.delegate notifyMyEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];
               else {
-                  NSLog(@"Do delegate");
                   dispatch_async(dispatch_get_main_queue(), ^(void) {
                       [self.delegate notifyMyEventsUpdateCompletedWithNewEvents:[newEventsDictionary allValues] usingCompletionHandler:completionHandler];
                   });

@@ -325,6 +325,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 #pragma mark - delegate for request
 - (void)notifyEventDidNotExist {
     [self.loadingSpinner stopAnimating];
+    [EventCoreData removeEventWithEid:self.eid];
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
                                                       message:@"Event no longer exist."
                                                      delegate:self

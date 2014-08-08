@@ -25,7 +25,7 @@
     [FBSettings enablePlatformCompatibility:true];
     
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval: UIApplicationBackgroundFetchIntervalMinimum];
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:300.0]; //call update every 5 mins, change this before release
     
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];
     
@@ -67,8 +67,6 @@
 }
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    NSLog(@"call update");
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
         Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];

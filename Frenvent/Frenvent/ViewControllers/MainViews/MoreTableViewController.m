@@ -17,6 +17,8 @@
 
 @interface MoreTableViewController ()
 
+@property (nonatomic, strong) UIActionSheet *logoutActionSheet;
+
 @property (nonatomic, strong) NSArray *allEvents;
 @property (nonatomic, strong) NSArray *searchEvents;
 
@@ -27,6 +29,14 @@
 @implementation MoreTableViewController
 
 #pragma mark - instantiation
+//lazily instantiate logout action sheet
+-(UIActionSheet *)logoutActionSheet {
+    if (_logoutActionSheet == nil) {
+        _logoutActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Logout", nil];
+    }
+    return _logoutActionSheet;
+}
+
 //lazily instantiate all events
 - (NSArray *)allEvents {
     if (_allEvents == nil) _allEvents = [EventCoreData getAllOngoingEvents];
@@ -209,10 +219,13 @@
         else if (indexPath.row == 3) [self performSegueWithIdentifier:@"trashView" sender:Nil];
     } else if (indexPath.section == 2) {
         if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
-        else if (indexPath.row == 1) {
-            //todo handle logout
-        }
+        else if (indexPath.row == 1) [[self logoutActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
     }
+}
+
+#pragma mark - action sheet delegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) [self performSegueWithIdentifier:@"logoutView" sender:nil];
 }
 
 #pragma mark - search table function

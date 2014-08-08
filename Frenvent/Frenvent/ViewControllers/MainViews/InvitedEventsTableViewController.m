@@ -243,7 +243,6 @@ CLLocation *lastKnown;
     [self.tableView reloadData];
     [[self uiRefreshControl] endRefreshing];
     [self.refreshButton setEnabled:true];
-
 }
 
 #pragma mark - location manager delegates

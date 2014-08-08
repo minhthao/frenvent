@@ -71,7 +71,7 @@
  * @return Array of Notification
  */
 + (NSArray *) getNotificationsSince:(int64_t)sinceTime ofType:(NSInteger)type{
-    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"time = %d", sinceTime];
+    NSPredicate *timePredicate = [NSPredicate predicateWithFormat:@"time >= %d", sinceTime];
     NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"type = %d", type];
     NSPredicate *predicates = [NSCompoundPredicate andPredicateWithSubpredicates:@[timePredicate, typePredicate]];
     return [self getNotifications:predicates];

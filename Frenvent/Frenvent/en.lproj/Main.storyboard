@@ -17,29 +17,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rxt-fb-LvP" customClass="FBLoginView">
-                                <rect key="frame" x="30" y="259" width="260" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPg-Ko-cLW">
-                                <rect key="frame" x="55" y="176" width="211" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="51" id="2uC-wj-SCh"/>
-                                    <constraint firstAttribute="width" constant="211" id="3gY-DU-De0"/>
-                                </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="frenvent">
-                                        <attributes>
-                                            <color key="NSColor" red="0.23137254901960785" green="0.34901960784313724" blue="0.59607843137254901" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="42" name="HelveticaNeue-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frenvent honors your privacy and will not post without your permissions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="fTu-g4-AZc">
-                                <rect key="frame" x="20" y="503" width="270" height="45"/>
+                            <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="GCQ-x1-6z0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frenvent honors your privacy and will not post without your permissions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="fTu-g4-AZc">
+                                <rect key="frame" x="20" y="503" width="280" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="hNA-pB-J04"/>
                                 </constraints>
@@ -47,18 +30,19 @@
                                 <color key="textColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rxt-fb-LvP" customClass="FBLoginView">
+                                <rect key="frame" x="15" y="421" width="290" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.95756502676767907" green="0.95613787598100031" blue="0.98106664540816324" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Rxt-fb-LvP" firstAttribute="top" secondItem="LPg-Ko-cLW" secondAttribute="bottom" constant="32" id="Al6-a6-PWd"/>
-                            <constraint firstItem="LPg-Ko-cLW" firstAttribute="leading" secondItem="uis-n8-Hup" secondAttribute="leading" constant="55" id="BmZ-Lc-VdB"/>
-                            <constraint firstItem="Rxt-fb-LvP" firstAttribute="centerY" secondItem="uis-n8-Hup" secondAttribute="centerY" id="OUM-w1-e8x"/>
-                            <constraint firstItem="fTu-g4-AZc" firstAttribute="leading" secondItem="uis-n8-Hup" secondAttribute="leading" constant="20" symbolic="YES" id="Q50-N7-G6I"/>
-                            <constraint firstItem="Rxt-fb-LvP" firstAttribute="centerX" secondItem="LPg-Ko-cLW" secondAttribute="centerX" id="YzR-VH-hGg"/>
-                            <constraint firstItem="fTu-g4-AZc" firstAttribute="trailing" secondItem="Rxt-fb-LvP" secondAttribute="trailing" id="ZjP-Va-TZO"/>
-                            <constraint firstItem="Rxt-fb-LvP" firstAttribute="leading" secondItem="uis-n8-Hup" secondAttribute="leading" constant="30" id="aYd-En-yQm"/>
-                            <constraint firstAttribute="bottom" secondItem="fTu-g4-AZc" secondAttribute="bottom" constant="20" symbolic="YES" id="kzZ-PE-Gqn"/>
-                            <constraint firstItem="Rxt-fb-LvP" firstAttribute="centerX" secondItem="uis-n8-Hup" secondAttribute="centerX" id="lEG-nt-8Ib"/>
+                            <constraint firstAttribute="trailing" secondItem="fTu-g4-AZc" secondAttribute="trailing" constant="20" id="1qg-DR-GMM"/>
+                            <constraint firstItem="GCQ-x1-6z0" firstAttribute="leading" secondItem="uis-n8-Hup" secondAttribute="leading" id="PB3-qs-7L4"/>
+                            <constraint firstItem="fTu-g4-AZc" firstAttribute="leading" secondItem="uis-n8-Hup" secondAttribute="leading" constant="20" id="QQB-rs-mxL"/>
+                            <constraint firstItem="isP-7H-gpZ" firstAttribute="top" secondItem="fTu-g4-AZc" secondAttribute="bottom" constant="20" id="UPr-eg-3zC"/>
+                            <constraint firstItem="fTu-g4-AZc" firstAttribute="top" secondItem="Rxt-fb-LvP" secondAttribute="bottom" constant="22" id="bgA-Lj-heS"/>
+                            <constraint firstAttribute="trailing" secondItem="GCQ-x1-6z0" secondAttribute="trailing" id="lcM-vj-UlA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="b1f-8z-IFd"/>
@@ -242,14 +226,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Kzr-7M-XEN">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Kzr-7M-XEN">
                                 <rect key="frame" x="150" y="274" width="20" height="20"/>
                             </activityIndicatorView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Gbn-1J-0Gu">
-                                <rect key="frame" x="20" y="546" width="280" height="2"/>
-                            </progressView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FRENVENT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwT-7h-WP2">
+                                <rect key="frame" x="20" y="40" width="280" height="76"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="44"/>
+                                <color key="textColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Initializing ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGo-77-Uv8">
+                                <rect key="frame" x="20" y="302" width="280" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.91703204719999998" green="0.91703204719999998" blue="0.91703204719999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="Kzr-7M-XEN" secondAttribute="centerY" id="5ci-hh-zVO"/>
+                            <constraint firstItem="SGo-77-Uv8" firstAttribute="top" secondItem="Kzr-7M-XEN" secondAttribute="bottom" constant="8" id="Kwd-fk-Ece"/>
+                            <constraint firstAttribute="centerX" secondItem="Kzr-7M-XEN" secondAttribute="centerX" id="hrX-9z-zpj"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="u6n-a3-HC1"/>
                     <connections>
@@ -293,10 +295,10 @@
             </objects>
             <point key="canvasLocation" x="811" y="3015"/>
         </scene>
-        <!--View Controller - Logout-->
+        <!--Logout View Controller - Logout-->
         <scene sceneID="Nky-cF-3EV">
             <objects>
-                <viewController title="Logout" hidesBottomBarWhenPushed="YES" id="5jZ-Ir-2i4" sceneMemberID="viewController">
+                <viewController title="Logout" hidesBottomBarWhenPushed="YES" id="5jZ-Ir-2i4" customClass="LogoutViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8IB-Qh-SiF"/>
                         <viewControllerLayoutGuide type="bottom" id="cP5-cR-NVe"/>
@@ -304,11 +306,36 @@
                     <view key="view" contentMode="scaleToFill" id="e9Y-uX-1jO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="deviceRGB"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9yJ-l5-evS">
+                                <rect key="frame" x="150" y="250" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="wait ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKD-b4-gYm">
+                                <rect key="frame" x="20" y="278" width="280" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FRENVENT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DzZ-jF-Djq">
+                                <rect key="frame" x="20" y="20" width="280" height="76"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="44"/>
+                                <color key="textColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                <size key="shadowOffset" width="1" height="1"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.91703204719999998" green="0.91703204719999998" blue="0.91703204719999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="dKD-b4-gYm" firstAttribute="top" secondItem="9yJ-l5-evS" secondAttribute="bottom" constant="8" id="cSf-wB-FzZ"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="7et-uG-gcK"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <segue destination="ie8-GB-5gB" kind="push" identifier="loginView" id="mVr-Yo-E9f"/>
+                        <segue destination="4D8-Zx-nKW" kind="push" identifier="loginView" id="Zud-b6-34Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E9h-v3-5dX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2050,6 +2077,7 @@
         <image name="EventDetailTimeIcon" width="35" height="35"/>
         <image name="FbUserSegmentControlDetailIcon" width="13" height="13"/>
         <image name="FbUserSegmentControlEventIcon" width="18" height="18"/>
+        <image name="LoginBackground" width="320" height="568"/>
         <image name="MenuFriendsEventsIcon" width="25" height="25"/>
         <image name="MenuFriendsIcon" width="25" height="25"/>
         <image name="MenuInvitedEventsIcon" width="25" height="25"/>
@@ -2063,9 +2091,10 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4vS-c0-i6m"/>
-        <segue reference="Ksn-hQ-die"/>
-        <segue reference="00f-Jx-dsl"/>
+        <segue reference="tPR-ZG-VdO"/>
+        <segue reference="Zud-b6-34Z"/>
+        <segue reference="QCA-Qm-aE2"/>
         <segue reference="brm-gx-zPw"/>
+        <segue reference="Ksn-hQ-die"/>
     </inferredMetricsTieBreakers>
 </document>

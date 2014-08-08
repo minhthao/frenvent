@@ -169,9 +169,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
 - (void) refreshFriendEvents {
     if ([FBSession activeSession].isOpen && [[FBSession activeSession] hasGranted:@"friends_events"]) {
         [self executeQueryWithType:QUERY_TYPE_REFRESH withCompletionHandler:nil];
-        //NSLog(@"active session opened");
     }else if ([FBSession activeSession].state== FBSessionStateCreatedTokenLoaded) {
-        //NSLog(@"session closed but has token");
         [FBSession openActiveSessionWithReadPermissions:@[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
