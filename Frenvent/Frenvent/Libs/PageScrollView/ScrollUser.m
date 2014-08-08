@@ -9,6 +9,7 @@
 #import "ScrollUser.h"
 #import "SuggestFriend.h"
 #import "MyColor.h"
+#import "Event.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface ScrollUser()
@@ -35,11 +36,13 @@
         self.cover.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:self.cover];
         
-        self.userIndexLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20)];
+        self.userIndexLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, frame.size.width - 40, 20)];
         self.userIndexLabel.backgroundColor = [UIColor clearColor];
         self.userIndexLabel.textColor =[UIColor whiteColor];
-        self.userIndexLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];
+        self.userIndexLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:15];
         self.userIndexLabel.textAlignment = NSTextAlignmentCenter;
+        self.userIndexLabel.shadowColor = [UIColor blackColor];
+        self.userIndexLabel.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.userIndexLabel];
         
         self.profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(8, frame.size.height - 70, 65, 65)];
@@ -54,6 +57,8 @@
         [self.name setTextColor:[UIColor whiteColor]];
         [self.name setBackgroundColor:[UIColor clearColor]];
         [self.name setTextAlignment:NSTextAlignmentLeft];
+        self.name.shadowColor = [UIColor blackColor];
+        self.name.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.name];
         
         self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(80, frame.size.height - 25, frame.size.width - 90, 20)];
@@ -61,6 +66,8 @@
         [self.mutualFriend setTextColor:[UIColor whiteColor]];
         [self.mutualFriend setBackgroundColor:[UIColor clearColor]];
         [self.mutualFriend setTextAlignment:NSTextAlignmentLeft];
+        self.mutualFriend.shadowColor = [UIColor blackColor];
+        self.mutualFriend.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.mutualFriend];
     }
     return self;
@@ -76,7 +83,19 @@
     [self.profilePicture sd_setImageWithURL:[NSURL URLWithString:profileUrl]];
     
     self.name.text = user.name;
-    self.mutualFriend.text = [NSString stringWithFormat:@"%d mutual friends", user.numMutualFriends];
+    
+    NSLog(@"%@", user.rsvpStatus);
+    if (user.numMutualFriends != 0) {
+        if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = [NSString stringWithFormat:@"Attending ∙ %d mutual friends", user.numMutualFriends];
+        else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = [NSString stringWithFormat:@"Maybe ∙ %d mutual friends", user.numMutualFriends];
+        else self.mutualFriend.text = [NSString stringWithFormat:@"%d mutual friends", user.numMutualFriends];
+    } else {
+        if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = @"Attending";
+        else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = @"Maybe";
+    }
+    
+    if ([user.rsvpStatus length] > 0) self.userIndexLabel.textAlignment = NSTextAlignmentRight;
+    
 }
 
 -(void)setPageIndex:(int)index pageCount:(int)pageCount {

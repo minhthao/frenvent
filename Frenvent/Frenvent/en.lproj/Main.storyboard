@@ -1155,6 +1155,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="coverImage" destination="EtS-4U-abe" id="icX-9D-4Yy"/>
@@ -1189,6 +1190,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Photo" id="aY2-dS-lmg"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="twH-xz-Qcm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1249,6 +1251,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="nextButton" destination="vSY-Kv-kjr" id="Bjg-Xk-h9q"/>
                         <outlet property="prevButton" destination="50p-Jf-T5H" id="f6g-at-6nK"/>
@@ -1492,7 +1495,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" canCancelContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="jyi-CV-fRr">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" canCancelContentTouches="NO" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="jyi-CV-fRr">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -1628,8 +1631,17 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventDescriptionCell" rowHeight="165" id="fSj-t6-f2K">
+                                        <rect key="frame" x="0.0" y="364" width="320" height="165"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fSj-t6-f2K" id="OUI-Gb-SQn">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventDetailLocationCell" rowHeight="45" id="J0N-sc-m5g">
-                                        <rect key="frame" x="0.0" y="364" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="529" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J0N-sc-m5g" id="Cbz-hr-chi">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -1662,7 +1674,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recommendUserCell" rowHeight="165" id="clW-lz-btT">
-                                        <rect key="frame" x="0.0" y="409" width="320" height="165"/>
+                                        <rect key="frame" x="0.0" y="574" width="320" height="165"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="clW-lz-btT" id="wYg-AR-AlQ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
@@ -1674,10 +1686,10 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Suggest Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m8i-O0-DQk">
-                                                    <rect key="frame" x="10" y="12" width="136" height="21"/>
+                                                    <rect key="frame" x="10" y="10" width="178" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
-                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <size key="shadowOffset" width="1" height="1"/>
@@ -1687,7 +1699,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventDetailMemberWithoutFriendCell" rowHeight="70" id="0It-9B-IN1">
-                                        <rect key="frame" x="0.0" y="574" width="320" height="70"/>
+                                        <rect key="frame" x="0.0" y="739" width="320" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0It-9B-IN1" id="N96-4I-3kq">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
@@ -1790,7 +1802,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="eventDetailMemberCell" rowHeight="155" id="0kq-kJ-z4W">
-                                        <rect key="frame" x="0.0" y="644" width="320" height="155"/>
+                                        <rect key="frame" x="0.0" y="809" width="320" height="155"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0kq-kJ-z4W" id="K2C-wJ-7b6">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="155"/>
@@ -1936,7 +1948,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="buttonViewsContainer" destination="89X-xo-VKI" id="8xm-jX-wYc"/>
@@ -2017,6 +2029,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="shareButton" destination="PdQ-fJ-I9T" id="hS1-ip-Qin"/>
                         <outlet property="webView" destination="OCj-6Y-ixd" id="4D0-Ah-JYi"/>
@@ -2050,9 +2063,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="4vS-c0-i6m"/>
         <segue reference="Ksn-hQ-die"/>
         <segue reference="00f-Jx-dsl"/>
         <segue reference="brm-gx-zPw"/>
-        <segue reference="4vS-c0-i6m"/>
     </inferredMetricsTieBreakers>
 </document>

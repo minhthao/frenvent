@@ -54,18 +54,18 @@
 }
 
 #pragma mark - web view delegate
-//- (void)webViewDidStartLoad:(UIWebView *)webView {
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//    [self updateButtons];
-//}
-//- (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//    [self updateButtons];
-//}
-//- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//    [self updateButtons];
-//}
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [self updateButtons];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self updateButtons];
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [self updateButtons];
+}
 
 //- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 //    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

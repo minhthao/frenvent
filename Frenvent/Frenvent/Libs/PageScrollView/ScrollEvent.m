@@ -39,8 +39,10 @@
         self.eventIndexLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20)];
         self.eventIndexLabel.backgroundColor = [UIColor clearColor];
         self.eventIndexLabel.textColor =[UIColor whiteColor];
-        self.eventIndexLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];
+        self.eventIndexLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
         self.eventIndexLabel.textAlignment = NSTextAlignmentCenter;
+        self.eventIndexLabel.shadowColor = [UIColor blackColor];
+        self.eventIndexLabel.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.eventIndexLabel];
         
         CGRect detailFrame = CGRectMake(0, frame.size.height - 60, frame.size.width, 60);

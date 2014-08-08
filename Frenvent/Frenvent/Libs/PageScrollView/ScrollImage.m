@@ -32,8 +32,10 @@
         self.label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20)];
         self.label.backgroundColor = [UIColor clearColor];
         self.label.textColor =[UIColor whiteColor];
-        self.label.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];
+        self.label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
         self.label.textAlignment = NSTextAlignmentCenter;
+        self.label.shadowColor = [UIColor blackColor];
+        self.label.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.label];
 
     }

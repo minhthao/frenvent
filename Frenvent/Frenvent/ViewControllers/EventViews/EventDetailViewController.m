@@ -562,65 +562,68 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 
 #pragma mark - table view delegates
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.eventDetail != nil) return 1;
+    if (self.eventDetail != nil) {
+        if ([self.eventDetail.description length] > 0) return 2;
+        else return 1;
+    }
     else return 0;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.eventDetail != nil) {
-        NSInteger numRow = 1;
-        if ([self.eventDetail.location length] > 0) numRow++;
-        if ([self.recommendFriends count] > 0) numRow++;
-        return numRow;
+        if (section == 0) {
+            NSInteger numRow = 1;
+            if ([self.eventDetail.location length] > 0) numRow++;
+            if ([self.recommendFriends count] > 0) numRow++;
+            return numRow;
+        } else return 1;
     } else return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.eventDetail.location length] > 0) {
-        if (indexPath.row == 0) {
-            return [self getLocationTableViewCell:tableView withIndexPath:indexPath];
-        } else if (indexPath.row == 1) {
-            if ([self.eventDetail.attendingFriends count] > 0)
-                return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
-            else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
-        } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
-    } else {
-        if (indexPath.row == 0) {
-            if ([self.eventDetail.attendingFriends count] > 0)
-                return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
-            else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
-        } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
-    }
+   if (indexPath.section == 0) {
+        if ([self.eventDetail.location length] > 0) {
+            if (indexPath.row == 0) {
+                return [self getLocationTableViewCell:tableView withIndexPath:indexPath];
+            } else if (indexPath.row == 1) {
+                if ([self.eventDetail.attendingFriends count] > 0)
+                    return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
+                else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
+            } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
+        } else {
+            if (indexPath.row == 0) {
+                if ([self.eventDetail.attendingFriends count] > 0)
+                    return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
+                else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
+            } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
+        }
+    } else return [self getEventDescriptionTableViewCell:tableView withIndexPath:indexPath];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.eventDetail.location length] > 0) {
-        if (indexPath.row == 0) return 45;
-        else if (indexPath.row == 1) {
-            if ([self.eventDetail.attendingFriends count] > 0) return 155;
-            else return 70;
-        } else return 165;
-    } else {
-        if (indexPath.row == 0) {
-            if ([self.eventDetail.attendingFriends count] > 0) return 155;
-            else return 70;
-        } else return 165;
-    }
+    if (indexPath.section == 0) {
+        if ([self.eventDetail.location length] > 0) {
+            if (indexPath.row == 0) return 45;
+            else if (indexPath.row == 1) {
+                if ([self.eventDetail.attendingFriends count] > 0) return 155;
+                else return 70;
+            } else return 165;
+        } else {
+            if (indexPath.row == 0) {
+                if ([self.eventDetail.attendingFriends count] > 0) return 155;
+                else return 70;
+            } else return 165;
+        }
+    } else return [self calculateDescriptionViewHeight];
 }
 
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.eventDetail.location length] > 0) {
-        if (indexPath.row == 0) return 45;
-        else if (indexPath.row == 1) {
-            if ([self.eventDetail.attendingFriends count] > 0) return 175;
-            else return 70;
-        } else return 165;
-    } else {
-        if (indexPath.row == 0) {
-            if ([self.eventDetail.attendingFriends count] > 0) return 175;
-            else return 70;
-        } else return 165;
-    }
+-(CGFloat)calculateDescriptionViewHeight {
+    UITextView *tempView = [[UITextView alloc] init];
+    tempView.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
+    tempView.text = self.eventDetail.description;
+    
+    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake(284, FLT_MAX)];
+    return textViewSize.height + 15 + 5 + 15 + 5; //for padding, detail label pad, detail label, detail label bottom pad, and textview bottom pad
 }
 
 #pragma mark - get the table view cells
@@ -766,6 +769,47 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     
     [containerView addSubview:[self userScrollView]];
     
+    return cell;
+}
+
+/**
+ * Get and format the event description table view cell
+ * @param tableview
+ * @param indexPath
+ * @return UITableViewCell
+ */
+-(UITableViewCell *)getEventDescriptionTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDescriptionCell" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDescriptionCell"];
+    
+    for (UIView *subview in [cell.contentView subviews])
+        [subview removeFromSuperview];
+    
+    CGFloat viewHeight = [self calculateDescriptionViewHeight];
+    [cell.contentView setFrame:CGRectMake(0, 0, 320, viewHeight)];
+    
+    UIView *containerView  = [[UIView alloc] initWithFrame:CGRectMake(8, 10, 304, viewHeight - 15)];
+    [containerView.layer setCornerRadius:3.0f];
+    [containerView.layer setMasksToBounds:YES];
+    [containerView.layer setBorderWidth:0.5f];
+    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    containerView.backgroundColor = [UIColor whiteColor];
+    [cell.contentView addSubview:containerView];
+    
+    UILabel *aboutLabel =  [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 284, 15)];
+    aboutLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+    aboutLabel.text = @"About";
+    [containerView addSubview:aboutLabel];
+    
+    UITextView *description = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, 284, viewHeight - 40)];
+    description.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
+    description.scrollEnabled = NO;
+    description.editable = NO;
+    description.text = self.eventDetail.description;
+    description.dataDetectorTypes = UIDataDetectorTypeLink;
+    description.backgroundColor = [UIColor clearColor];
+    [containerView addSubview:description];
+
     return cell;
 }
 

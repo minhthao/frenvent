@@ -70,7 +70,7 @@ static int const QUERY_LIMIT = 500;
                                   NSArray *data = (NSArray *)result[@"data"];
                                   NSArray *participants = data[0][@"fql_result_set"];
                                   for (NSDictionary *participant in participants)
-                                      [participantsDictionary setObject:participant[@"uid"] forKey:participant[@"rsvp_status"]];
+                                      [participantsDictionary setObject:participant[@"rsvp_status"] forKey:participant[@"uid"]];
                                   
                                   NSArray *participantsInfo = data[1][@"fql_result_set"];
                                   for (NSDictionary *participantInfo in participantsInfo) {
@@ -116,7 +116,8 @@ static int const QUERY_LIMIT = 500;
                                   NSMutableArray *suggestFriends = [[NSMutableArray alloc] init];
                                   for (int i = 0; i < MIN(10, [recommendUsers count]); i++) {
                                       if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 5 || [suggestFriends count] < 3)
-                                          [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
+                                          if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 0)
+                                              [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
                                   }
                                   
                                   [self.delegate notifyEventDetailRecommendUserCompleteWithResult:suggestFriends];

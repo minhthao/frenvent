@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RecommendFbUserRequest.h"
 
-@interface WebViewController : UIViewController <RecommendFbUserRequestDelegate>
+@interface WebViewController : UIViewController <RecommendFbUserRequestDelegate, UIWebViewDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
