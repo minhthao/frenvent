@@ -72,9 +72,10 @@
     bgColorView.backgroundColor = [UIColor orangeColor];
     [cell setSelectedBackgroundView:bgColorView];
     
-    Event *event = [[self pastFavoriteEvents] objectAtIndex:indexPath.row];
+    Event *event = nil;
     if (indexPath.section == 0 && [[self ongoingFavoriteEvents] count] > 0)
         event = [[self ongoingFavoriteEvents] objectAtIndex:indexPath.row];
+    else event = [[self pastFavoriteEvents] objectAtIndex:indexPath.row];
     
     UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:400];
     UILabel *eventName = (UILabel *)[cell viewWithTag:401];

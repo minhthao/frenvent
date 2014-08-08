@@ -10,6 +10,8 @@
 #import "TimeSupport.h"
 #import "Event.h"
 #import "EventCoreData.h"
+#import "Friend.h"
+#import "EventParticipant.h"
 
 @implementation EventDetail
 
@@ -38,7 +40,7 @@
 
 -(NSString *)getDisplayRsvp {
     if ([self.rsvp isEqualToString:RSVP_ATTENDING]) {
-        if ([TimeSupport getCurrentTimeInUnix] < self.startTime) return @"Attended";
+        if ([TimeSupport getCurrentTimeInUnix] > self.startTime) return @"Attended";
         else return @"Attending";
     } else if ([self.rsvp isEqualToString:RSVP_UNSURE]) {
         return @"Maybe";
@@ -59,5 +61,13 @@
     else return [self getEventPrivacy];
 }
 
+-(NSAttributedString *)getFriendsInterested {
+    Friend *friend = ((EventParticipant *)[self.attendingFriends objectAtIndex:0]).friend;
+    
+    NSMutableAttributedString *friendInterested = [[NSMutableAttributedString alloc] initWithString:friend.name attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]}];
+    [friendInterested appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:13]}]];
+    
+    return friendInterested;
+}
 
 @end

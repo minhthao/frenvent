@@ -162,7 +162,7 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
                           }
                       }
                       suggestFriend.cover = cover;
-                      
+        
                       [suggestedFriends addObject:suggestFriend];
                   }
                   

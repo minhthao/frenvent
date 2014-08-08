@@ -28,17 +28,18 @@
 @property (nonatomic, strong) NSString * description;
 @property (nonatomic) int32_t attendingCount;
 @property (nonatomic) int32_t unsureCount;
-@property (nonatomic) int32_t unrepliedCountl;
+@property (nonatomic) int32_t unrepliedCount;
 @property (nonatomic, strong) NSString * host;
 @property (nonatomic, strong) NSString * privacy;
 @property (nonatomic, strong) NSArray * attendingFriends;
 
 -(void) addToCoreData;
 
--(NSString *) getEventDisplayTime;
--(NSString *) getDisplayRsvp;
--(NSString *) getEventPrivacy;
--(NSString *) getDisplayPrivacyAndRsvp;
+-(NSString *)getEventDisplayTime;
+-(NSString *)getDisplayRsvp;
+-(NSString *)getEventPrivacy;
+-(NSString *)getDisplayPrivacyAndRsvp;
 
+-(NSAttributedString *)getFriendsInterested;
 
 @end

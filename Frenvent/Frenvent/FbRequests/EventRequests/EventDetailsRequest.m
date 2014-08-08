@@ -24,7 +24,8 @@ static int16_t const QUERY_LIMIT = 5000;
 - (NSDictionary *) prepareQueryParams:(NSString *)eid {
     NSString *myRsvp = [NSString stringWithFormat:@"SELECT rsvp_status FROM event_member WHERE eid = %@ AND uid = me()", eid];
     NSString *eventParticipants = [NSString stringWithFormat:@"SELECT uid, rsvp_status FROM event_member WHERE eid = %@ AND "
-                                   "uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) LIMIT %d", eid, QUERY_LIMIT];
+                                   "uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND "
+                                   "(rsvp_status = \"attending\" OR rsvp_status = \"unsure\") LIMIT %d", eid, QUERY_LIMIT];
     NSString *eventInfo = [NSString stringWithFormat:@"SELECT name, pic_big, pic_cover, start_time, end_time, "
                            "location, venue, description, attending_count, unsure_count, not_replied_count, host, privacy "
                            "FROM event WHERE eid = %@", eid];
@@ -189,7 +190,7 @@ static int16_t const QUERY_LIMIT = 5000;
                           
                           eventDetail.attendingCount = [eventObj[@"attending_count"] intValue];
                           eventDetail.unsureCount = [eventObj[@"unsure_count"] intValue];
-                          eventDetail.unrepliedCountl = [eventObj[@"not_replied_count"] intValue];
+                          eventDetail.unrepliedCount = [eventObj[@"not_replied_count"] intValue];
                       } else {
                           [self.delegate notifyEventDidNotExist];
                           eventExist = false;

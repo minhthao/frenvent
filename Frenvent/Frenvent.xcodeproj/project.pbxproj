@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E34E0F2199355D0006532A6 /* EventParticipantView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E34E0F1199355D0006532A6 /* EventParticipantView.m */; };
+		3E34E0F519941CF6006532A6 /* EventDetailRecommendUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E34E0F419941CF6006532A6 /* EventDetailRecommendUserRequest.m */; };
 		3E57FB2B1959517200D3293D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2A1959517200D3293D /* Foundation.framework */; };
 		3E57FB2D1959517200D3293D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2C1959517200D3293D /* CoreGraphics.framework */; };
 		3E57FB2F1959517200D3293D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2E1959517200D3293D /* UIKit.framework */; };
@@ -43,6 +45,7 @@
 		3EA9015D198CABBA0056BE36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */; };
 		3EA90160198CAED40056BE36 /* DbFBUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */; };
 		3EA90163198E49560056BE36 /* ShareEventRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90162198E49560056BE36 /* ShareEventRequest.m */; };
+		3EA90166199209020056BE36 /* EventWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90165199209020056BE36 /* EventWebViewController.m */; };
 		3EAAAC8B19646D83004AD322 /* FriendsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8A19646D83004AD322 /* FriendsRequest.m */; };
 		3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC8E1964879E004AD322 /* DBConstants.m */; };
 		3EAAAC9219648ED6004AD322 /* DbEventsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EAAAC9119648ED6004AD322 /* DbEventsRequest.m */; };
@@ -138,6 +141,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E34E0F0199355D0006532A6 /* EventParticipantView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventParticipantView.h; path = ViewControllers/EventViews/EventParticipantView.h; sourceTree = "<group>"; };
+		3E34E0F1199355D0006532A6 /* EventParticipantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventParticipantView.m; path = ViewControllers/EventViews/EventParticipantView.m; sourceTree = "<group>"; };
+		3E34E0F319941CF6006532A6 /* EventDetailRecommendUserRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailRecommendUserRequest.h; path = FbRequests/EventRequests/EventDetailRecommendUserRequest.h; sourceTree = "<group>"; };
+		3E34E0F419941CF6006532A6 /* EventDetailRecommendUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetailRecommendUserRequest.m; path = FbRequests/EventRequests/EventDetailRecommendUserRequest.m; sourceTree = "<group>"; };
 		3E57FB271959517200D3293D /* Frenvent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frenvent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E57FB2A1959517200D3293D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E57FB2C1959517200D3293D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -196,6 +203,8 @@
 		3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DbFBUserRequest.m; path = DBRequests/DbFBUserRequest.m; sourceTree = "<group>"; };
 		3EA90161198E49560056BE36 /* ShareEventRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShareEventRequest.h; path = FbRequests/EventRequests/ShareEventRequest.h; sourceTree = "<group>"; };
 		3EA90162198E49560056BE36 /* ShareEventRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareEventRequest.m; path = FbRequests/EventRequests/ShareEventRequest.m; sourceTree = "<group>"; };
+		3EA90164199209020056BE36 /* EventWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventWebViewController.h; path = ViewControllers/EventViews/EventWebViewController.h; sourceTree = "<group>"; };
+		3EA90165199209020056BE36 /* EventWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventWebViewController.m; path = ViewControllers/EventViews/EventWebViewController.m; sourceTree = "<group>"; };
 		3EAAAC8919646D83004AD322 /* FriendsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FriendsRequest.h; path = FbRequests/MainRequests/FriendsRequest.h; sourceTree = "<group>"; };
 		3EAAAC8A19646D83004AD322 /* FriendsRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FriendsRequest.m; path = FbRequests/MainRequests/FriendsRequest.m; sourceTree = "<group>"; };
 		3EAAAC8D1964879E004AD322 /* DBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = DBRequests/DBConstants.h; sourceTree = "<group>"; };
@@ -748,6 +757,8 @@
 				3EA9014F198C489A0056BE36 /* EventRsvpRequest.m */,
 				3ECF10AF197AFD7400963155 /* EventDetailsRequest.h */,
 				3ECF10B0197AFD7400963155 /* EventDetailsRequest.m */,
+				3E34E0F319941CF6006532A6 /* EventDetailRecommendUserRequest.h */,
+				3E34E0F419941CF6006532A6 /* EventDetailRecommendUserRequest.m */,
 				3ECF10B2197B3BF600963155 /* EventDetail.h */,
 				3ECF10B3197B3BF600963155 /* EventDetail.m */,
 				3ECF10B5197B4F7D00963155 /* EventParticipant.h */,
@@ -776,6 +787,10 @@
 			children = (
 				3ECF10AC197A75D800963155 /* EventDetailViewController.h */,
 				3ECF10AD197A75D800963155 /* EventDetailViewController.m */,
+				3EA90164199209020056BE36 /* EventWebViewController.h */,
+				3EA90165199209020056BE36 /* EventWebViewController.m */,
+				3E34E0F0199355D0006532A6 /* EventParticipantView.h */,
+				3E34E0F1199355D0006532A6 /* EventParticipantView.m */,
 			);
 			name = EventViews;
 			sourceTree = "<group>";
@@ -985,6 +1000,7 @@
 				3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
 				3ECF10A21979F95400963155 /* Friend.m in Sources */,
+				3EA90166199209020056BE36 /* EventWebViewController.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
 				3ECF10EC197F229100963155 /* UIImageView+WebCache.m in Sources */,
@@ -1006,6 +1022,7 @@
 				3EA9013C198A02BA0056BE36 /* FbUserInfoButtons.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				3E34E0F2199355D0006532A6 /* EventParticipantView.m in Sources */,
 				3EAAACEF196E7B89004AD322 /* EventButton.m in Sources */,
 				3EACE3F5195E2CF30023EF58 /* AFHTTPRequestOperationManager.m in Sources */,
 				3ECF10DF197F229100963155 /* NSData+ImageContentType.m in Sources */,
@@ -1036,6 +1053,7 @@
 				3EA90159198C67300056BE36 /* RecommendFbUserRequest.m in Sources */,
 				3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */,
 				3EAAACE2196C4FFD004AD322 /* FriendManager.m in Sources */,
+				3E34E0F519941CF6006532A6 /* EventDetailRecommendUserRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
