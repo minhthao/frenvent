@@ -33,6 +33,9 @@
 		3E8A3DDF19878963003C932A /* PagedPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DDE19878963003C932A /* PagedPhotoScrollView.m */; };
 		3E8A3DE219883EFB003C932A /* ScrollEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE119883EFB003C932A /* ScrollEvent.m */; };
 		3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE41988442B003C932A /* PagedEventScrollView.m */; };
+		3EA88F141995BAC9004994D5 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F131995BAC9004994D5 /* Friend.m */; };
+		3EA88F171995BACA004994D5 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F161995BACA004994D5 /* Notification.m */; };
+		3EA88F1A1995D16B004994D5 /* NotificationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F191995D16B004994D5 /* NotificationGroup.m */; };
 		3EA9013C198A02BA0056BE36 /* FbUserInfoButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */; };
 		3EA9013F198B00440056BE36 /* ScrollUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013E198B00440056BE36 /* ScrollUser.m */; };
 		3EA90142198B00D30056BE36 /* SuggestFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90141198B00D30056BE36 /* SuggestFriend.m */; };
@@ -98,14 +101,12 @@
 		3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF106419721D6400963155 /* SettingsTableViewController.m */; };
 		3ECF10681972246000963155 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10671972246000963155 /* LogoutViewController.m */; };
 		3ECF10711974AECF00963155 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10701974AECF00963155 /* NotificationManager.m */; };
-		3ECF10741974B77D00963155 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10731974B77D00963155 /* Notification.m */; };
 		3ECF10771974B77E00963155 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10761974B77E00963155 /* Event.m */; };
 		3ECF10901976417E00963155 /* UpdateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF108F1976417E00963155 /* UpdateManager.m */; };
 		3ECF10961977238400963155 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10951977238400963155 /* Reachability.m */; };
 		3ECF10991978A4BB00963155 /* BackwardTimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10981978A4BB00963155 /* BackwardTimeSupport.m */; };
 		3ECF109C1978ACA700963155 /* NearbyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */; };
 		3ECF109F1979E86600963155 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF109E1979E86600963155 /* MyAnnotation.m */; };
-		3ECF10A21979F95400963155 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A11979F95400963155 /* Friend.m */; };
 		3ECF10A71979FB9F00963155 /* FbUserInfoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */; };
 		3ECF10AA197A0A9600963155 /* FbUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10A9197A0A9600963155 /* FbUserInfoViewController.m */; };
 		3ECF10AE197A75D800963155 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF10AD197A75D800963155 /* EventDetailViewController.m */; };
@@ -181,6 +182,12 @@
 		3E8A3DE119883EFB003C932A /* ScrollEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScrollEvent.m; path = Libs/PageScrollView/ScrollEvent.m; sourceTree = "<group>"; };
 		3E8A3DE31988442B003C932A /* PagedEventScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PagedEventScrollView.h; path = Libs/PageScrollView/PagedEventScrollView.h; sourceTree = "<group>"; };
 		3E8A3DE41988442B003C932A /* PagedEventScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PagedEventScrollView.m; path = Libs/PageScrollView/PagedEventScrollView.m; sourceTree = "<group>"; };
+		3EA88F121995BAC9004994D5 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
+		3EA88F131995BAC9004994D5 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
+		3EA88F151995BACA004994D5 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
+		3EA88F161995BACA004994D5 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
+		3EA88F181995D16B004994D5 /* NotificationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationGroup.h; path = Objects/NotificationGroup.h; sourceTree = "<group>"; };
+		3EA88F191995D16B004994D5 /* NotificationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationGroup.m; path = Objects/NotificationGroup.m; sourceTree = "<group>"; };
 		3EA9013A198A02BA0056BE36 /* FbUserInfoButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoButtons.h; path = Libs/PageScrollView/FbUserInfoButtons.h; sourceTree = "<group>"; };
 		3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoButtons.m; path = Libs/PageScrollView/FbUserInfoButtons.m; sourceTree = "<group>"; };
 		3EA9013D198B00440056BE36 /* ScrollUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScrollUser.h; path = Libs/PageScrollView/ScrollUser.h; sourceTree = "<group>"; };
@@ -305,8 +312,6 @@
 		3ECF10671972246000963155 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutViewController.m; path = ViewControllers/LogoutViewController.m; sourceTree = "<group>"; };
 		3ECF106F1974AECF00963155 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationManager.h; path = Supports/NotificationManager.h; sourceTree = "<group>"; };
 		3ECF10701974AECF00963155 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationManager.m; path = Supports/NotificationManager.m; sourceTree = "<group>"; };
-		3ECF10721974B77D00963155 /* Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Notification.h; path = CoreDatas/Objects/Notification.h; sourceTree = "<group>"; };
-		3ECF10731974B77D00963155 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
 		3ECF10751974B77E00963155 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = CoreDatas/Objects/Event.h; sourceTree = "<group>"; };
 		3ECF10761974B77E00963155 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Event.m; path = CoreDatas/Objects/Event.m; sourceTree = "<group>"; };
 		3ECF108E1976417E00963155 /* UpdateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateManager.h; path = Supports/UpdateManager.h; sourceTree = "<group>"; };
@@ -319,8 +324,6 @@
 		3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NearbyEventsViewController.m; path = ViewControllers/MainViews/NearbyEventsViewController.m; sourceTree = "<group>"; };
 		3ECF109D1979E86600963155 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyAnnotation.h; path = Supports/MyAnnotation.h; sourceTree = "<group>"; };
 		3ECF109E1979E86600963155 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyAnnotation.m; path = Supports/MyAnnotation.m; sourceTree = "<group>"; };
-		3ECF10A01979F95400963155 /* Friend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Friend.h; path = CoreDatas/Objects/Friend.h; sourceTree = "<group>"; };
-		3ECF10A11979F95400963155 /* Friend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Friend.m; path = CoreDatas/Objects/Friend.m; sourceTree = "<group>"; };
 		3ECF10A51979FB9F00963155 /* FbUserInfoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoRequest.h; path = FbRequests/Others/FbUserInfoRequest.h; sourceTree = "<group>"; };
 		3ECF10A61979FB9F00963155 /* FbUserInfoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoRequest.m; path = FbRequests/Others/FbUserInfoRequest.m; sourceTree = "<group>"; };
 		3ECF10A8197A0A9600963155 /* FbUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoViewController.h; path = ViewControllers/FbUserInfoViewController.h; sourceTree = "<group>"; };
@@ -551,6 +554,8 @@
 			children = (
 				3EA9014B198BA6780056BE36 /* WebViewUser.h */,
 				3EA9014C198BA6780056BE36 /* WebViewUser.m */,
+				3EA88F181995D16B004994D5 /* NotificationGroup.h */,
+				3EA88F191995D16B004994D5 /* NotificationGroup.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -611,12 +616,12 @@
 		3EACE38A195A5D6E0023EF58 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				3ECF10A01979F95400963155 /* Friend.h */,
-				3ECF10A11979F95400963155 /* Friend.m */,
+				3EA88F151995BACA004994D5 /* Notification.h */,
+				3EA88F161995BACA004994D5 /* Notification.m */,
+				3EA88F121995BAC9004994D5 /* Friend.h */,
+				3EA88F131995BAC9004994D5 /* Friend.m */,
 				3ECF10751974B77E00963155 /* Event.h */,
 				3ECF10761974B77E00963155 /* Event.m */,
-				3ECF10721974B77D00963155 /* Notification.h */,
-				3ECF10731974B77D00963155 /* Notification.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -984,6 +989,7 @@
 				3EACE401195E37FB0023EF58 /* Constants.m in Sources */,
 				3ECF10771974B77E00963155 /* Event.m in Sources */,
 				3E8A3DDF19878963003C932A /* PagedPhotoScrollView.m in Sources */,
+				3EA88F141995BAC9004994D5 /* Friend.m in Sources */,
 				3EACE3FC195E2CF30023EF58 /* AFURLSessionManager.m in Sources */,
 				3ECBC99A19634F5F00BA75DB /* MyEventsRequest.m in Sources */,
 				3EA90160198CAED40056BE36 /* DbFBUserRequest.m in Sources */,
@@ -999,7 +1005,6 @@
 				3EAAACD5196B7CC3004AD322 /* UIButton+AFNetworking.m in Sources */,
 				3ECF10B1197AFD7400963155 /* EventDetailsRequest.m in Sources */,
 				3EACE3F7195E2CF30023EF58 /* AFNetworkReachabilityManager.m in Sources */,
-				3ECF10A21979F95400963155 /* Friend.m in Sources */,
 				3EA90166199209020056BE36 /* EventWebViewController.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
@@ -1020,6 +1025,7 @@
 				3ECF10901976417E00963155 /* UpdateManager.m in Sources */,
 				3E8A3DD61984DFB9003C932A /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				3EA9013C198A02BA0056BE36 /* FbUserInfoButtons.m in Sources */,
+				3EA88F171995BACA004994D5 /* Notification.m in Sources */,
 				3ECF106519721D6400963155 /* SettingsTableViewController.m in Sources */,
 				3EAAACD2196B7CC3004AD322 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3E34E0F2199355D0006532A6 /* EventParticipantView.m in Sources */,
@@ -1028,6 +1034,7 @@
 				3ECF10DF197F229100963155 /* NSData+ImageContentType.m in Sources */,
 				3ECF10E8197F229100963155 /* UIImage+GIF.m in Sources */,
 				3EAAACA4196A08FC004AD322 /* FriendEventsTableViewController.m in Sources */,
+				3EA88F1A1995D16B004994D5 /* NotificationGroup.m in Sources */,
 				3EA9014D198BA6780056BE36 /* WebViewUser.m in Sources */,
 				3ECF10B7197B4F7D00963155 /* EventParticipant.m in Sources */,
 				3EAAAC8F1964879E004AD322 /* DBConstants.m in Sources */,
@@ -1042,7 +1049,6 @@
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,
 				3EACE3D6195DFB2D0023EF58 /* LoginViewController.m in Sources */,
-				3ECF10741974B77D00963155 /* Notification.m in Sources */,
 				3ECF10E7197F229100963155 /* UIButton+WebCache.m in Sources */,
 				3E57FB391959517200D3293D /* main.m in Sources */,
 				3ECF10991978A4BB00963155 /* BackwardTimeSupport.m in Sources */,

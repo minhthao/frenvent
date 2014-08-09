@@ -106,7 +106,8 @@
 }
 
 -(void)setPageIndex:(int)index pageCount:(int)pageCount {
-    self.eventIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
+    if (pageCount == 1) self.eventIndexLabel.text = @"";
+    else self.eventIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
 }
 
 -(void)handleEventTap:(UITapGestureRecognizer *)recognizer {

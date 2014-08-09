@@ -10,13 +10,11 @@
 #import "Notification.h"
 
 @interface NotificationCoreData : NSObject
-+ (NSArray *) getNotifications:(NSPredicate *)predicates;
-+ (NSArray *) getNotificationsSince:(int64_t)sinceTime;
-+ (NSArray *) getNotificationsSince:(int64_t)sinceTime ofType:(NSInteger)type;
++ (NSArray *) getNotifications;
 
 + (void) removeAllNotifications;
-+ (Notification *) addNewInvitedNotification:(Event *)event;
-+ (Notification *) addNewNotificationForEvent:(Event *)event andFriend:(Friend *)friend;
++ (void)removeNotification:(Notification *)notification;
++ (Notification *) addNotificationForEvent:(Event *)event andFriend:(Friend *)friend;
 
 
 @end

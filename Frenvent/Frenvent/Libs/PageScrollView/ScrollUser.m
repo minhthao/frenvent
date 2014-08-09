@@ -84,7 +84,6 @@
     
     self.name.text = user.name;
     
-    NSLog(@"%@", user.rsvpStatus);
     if (user.numMutualFriends != 0) {
         if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = [NSString stringWithFormat:@"Attending ∙ %d mutual friends", user.numMutualFriends];
         else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = [NSString stringWithFormat:@"Maybe ∙ %d mutual friends", user.numMutualFriends];
@@ -99,7 +98,8 @@
 }
 
 -(void)setPageIndex:(int)index pageCount:(int)pageCount {
-    self.userIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
+    if (pageCount == 1) self.userIndexLabel.text = @"";
+    else self.userIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {

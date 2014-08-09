@@ -110,22 +110,8 @@ int64_t fetchStartTime;
 
 #pragma mark - private methods, call to check of the update finished
 -(void)checkUpdateRequestFinish:(void (^)(UIBackgroundFetchResult))completionHandler {
-    if (numRequestPending == 0) {
-        NSArray *invitedNotifications = [NotificationCoreData getNotificationsSince:fetchStartTime ofType:TYPE_NEW_INVITE];
-        NSArray *friendsNotifications = [NotificationCoreData getNotificationsSince:fetchStartTime ofType:TYPE_FRIEND_EVENT];
-        
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [invitedNotifications count] + [friendsNotifications count];
-        
-        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-            for (Notification *invitedNotif in invitedNotifications)
-                [NotificationManager createAndDisplayNewInvitedNotification:invitedNotif];
-            
-            for (Notification *friendNotif in friendsNotifications)
-                [NotificationManager createAndDisplayNewFriendNotification:friendNotif];
-        }
-        
+    if (numRequestPending == 0)
         completionHandler(UIBackgroundFetchResultNewData);
-    }
 }
 
 @end

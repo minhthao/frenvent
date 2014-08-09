@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PagedEventScrollView.h"
+#import "EventParticipantView.h"
 
-@interface NotificationsTableViewController : UITableViewController
+@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate>
 
 @end

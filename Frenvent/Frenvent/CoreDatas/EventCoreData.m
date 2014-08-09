@@ -11,6 +11,7 @@
 #import "TimeSupport.h"
 #import "Event.h"
 #import "DBConstants.h"
+#import "Notification.h"
 
 @interface EventCoreData()
 
@@ -193,6 +194,13 @@
     return [self getEvents:predicate sortByDateAsc:true];
 }
 
++ (NSArray *)getTodayEvents {
+    NSPredicate *startTime = [NSPredicate predicateWithFormat:@"startTime >= %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    NSPredicate *endTime = [NSPredicate predicateWithFormat:@"startTime < %d", [TimeSupport getTodayTimeFrameEndTimeInUnix]];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[startTime, endTime]];
+    return [self getEvents:predicate sortByDateAsc:true];
+}
+
 /**
  * Get all the events that match the given text
  * @param name(partial) of event
@@ -316,8 +324,11 @@
     NSArray *items = [self getEvents:predicate sortByDateAsc:true];
     NSManagedObjectContext *context = [self managedObjectContext];
     
-    for (NSManagedObject *managedObject in items) {
-    	[context deleteObject:managedObject];
+    for (Event *event in items) {
+        //also remove the notification associate with it
+        for (Notification *notification in event.notifications)
+            [context deleteObject:notification];
+    	[context deleteObject:event];
     }
     
     NSError *error = nil;
@@ -447,6 +458,24 @@
             event.rsvp = newRsvp;
             NSError *error = nil;
             if (![context save:&error]) NSLog(@"Error updating event's rsvp - error:%@", error);
+        }
+    }
+}
+
++ (void) checkEventCover:(Event *)event :(NSDictionary *)eventObj {
+    if ([event.cover length] == 0) {
+        NSString *cover = @"";
+        if ([eventObj[@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *coverDic = eventObj[@"pic_cover"];
+            if (coverDic[@"source"] != [NSNull null])
+                cover = coverDic[@"source"];
+        }
+        
+        if ([cover length] > 0) {
+            NSManagedObjectContext *context = [self managedObjectContext];
+            event.cover = cover;
+            NSError *error = nil;
+            if (![context save:&error]) NSLog(@"Error updating event's cover - error:%@", error);
         }
     }
 }

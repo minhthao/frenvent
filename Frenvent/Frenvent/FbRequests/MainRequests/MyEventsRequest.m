@@ -9,10 +9,10 @@
 #import "MyEventsRequest.h"
 #import "TimeSupport.h"
 #import "EventCoreData.h"
-#import "NotificationCoreData.h"
 #import "Notification.h"
 #import "TimeSupport.h"
 #import "Event.h"
+#import "NotificationManager.h"
 
 static int16_t const QUERY_LIMIT = 400;
 static int16_t const QUERY_TYPE_INITIALIZE = 0;
@@ -115,16 +115,21 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                   if (event == nil) {
                       event = [EventCoreData addEvent:eventInfo[i] usingRsvp:rsvpDictionary[eid]];
                       [newEventsDictionary setObject:event forKey:event.eid];
-                      if (type != QUERY_TYPE_INITIALIZE)
-                          [NotificationCoreData addNewInvitedNotification:event];
-                  } else if (![event.rsvp isEqualToString:rsvpDictionary[eid]]) {
-                      NSString *oldRsvp = event.rsvp;
-                      event.rsvp = rsvpDictionary[eid];
-                      [EventCoreData updateEventWithEid:eid usingRsvp:rsvpDictionary[eid]];
+                      if (type == QUERY_TYPE_BACKGROUND_SERVICE)
+                          [NotificationManager createNotificationForInviteEvent:event];
+                  } else {
+                      [EventCoreData checkEventCover:event :eventInfo[i]];
                       
-                      if ([oldRsvp isEqualToString:RSVP_NOT_INVITED] && type != QUERY_TYPE_INITIALIZE) {
-                          [newEventsDictionary setObject:event forKey:event.eid];
-                          [NotificationCoreData addNewInvitedNotification:event];
+                      if (![event.rsvp isEqualToString:rsvpDictionary[eid]]) {
+                          NSString *oldRsvp = event.rsvp;
+                          event.rsvp = rsvpDictionary[eid];
+                          [EventCoreData updateEventWithEid:eid usingRsvp:rsvpDictionary[eid]];
+                          
+                          if ([oldRsvp isEqualToString:RSVP_NOT_INVITED] && type != QUERY_TYPE_INITIALIZE) {
+                              [newEventsDictionary setObject:event forKey:event.eid];
+                              if (type == QUERY_TYPE_BACKGROUND_SERVICE)
+                                  [NotificationManager createNotificationForInviteEvent:event];
+                          }
                       }
                   }
                   [eventsDictionary setObject:event forKey:event.eid];

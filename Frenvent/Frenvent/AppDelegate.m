@@ -63,7 +63,7 @@
 }
 
 - (void)application:(UIApplication *)app didReceiveLocalNotification:(UILocalNotification *)notif {
-    // Handle the notificaton when the app is running. do nothing right now
+    //will never get call in the background. only call when your app is running in the foreground
 }
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{

@@ -8,6 +8,7 @@
 
 #import "FriendsRequest.h"
 #import "FriendCoreData.h"
+#import "Friend.h"
 
 static int16_t const QUERY_LIMIT = 5000;
 
@@ -25,7 +26,7 @@ static int16_t const QUERY_LIMIT = 5000;
  * @return dictionary
  */
 - (NSDictionary *) prepareFriendsQueryParams {
-    NSString *friendInfo = [NSString stringWithFormat:@"SELECT uid, name FROM user WHERE uid IN "
+    NSString *friendInfo = [NSString stringWithFormat:@"SELECT uid, name, pic_cover FROM user WHERE uid IN "
                             "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT %d) LIMIT %d", QUERY_LIMIT, QUERY_LIMIT];
     NSDictionary *queryParams = @{@"q": friendInfo};
     return queryParams;
@@ -74,8 +75,21 @@ static int16_t const QUERY_LIMIT = 5000;
                 else uid = [data[i][@"uid"] stringValue];
                   
                 NSString *name = data[i][@"name"];
-                if ([FriendCoreData getFriendWithUid:uid] == nil)
-                    [FriendCoreData addFriend:uid :name];
+                
+                NSString *cover = @"";
+                if ([data[i][@"pic_cover"] isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *coverDic = data[i][@"pic_cover"];
+                    if (coverDic[@"source"] != [NSNull null]) {
+                        cover = coverDic[@"source"];
+                    }
+                }
+                
+                Friend *friend = [FriendCoreData getFriendWithUid:uid];
+                if (friend == nil)
+                    [FriendCoreData addFriend:uid :name :cover];
+                else if ([cover length] > 0 && [friend.cover length] == 0)
+                    [FriendCoreData updateFriendCover:friend :cover];
+
             }
             [self.delegate notifyFriendsQueryCompleted];
         }

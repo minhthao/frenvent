@@ -26,6 +26,7 @@
 
 //for these three, we don't need to hide the hidden one
 + (NSArray *) getAllOngoingEvents;
++ (NSArray *) getTodayEvents;
 + (NSArray *) getEventsWithMatchingName:(NSString *)name;
 + (Event *) getEventWithEid:(NSString *)eid;
 
@@ -55,4 +56,5 @@
 + (Event *) addEvent:(NSDictionary *)eventObj usingRsvp:(NSString *)rsvp;
 
 + (void) updateEventWithEid:(NSString *)eid usingRsvp:(NSString *)newRsvp; //Still todo the notification callback
++ (void) checkEventCover:(Event *)event :(NSDictionary *)eventObj;
 @end

@@ -307,7 +307,7 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
  * @return time in unix
  */
 + (int64_t) getThisWeekTimeFrameStartTimeInUnix {
-    return [self getTodayTimeFrameStartTimeInUnix];
+    return [self getThisWeekTimeFrameEndTimeInUnix] - (NUM_SECOND_IN_DAY * NUM_DAY_IN_WEEK);
 }
 
 /**

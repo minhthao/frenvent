@@ -73,6 +73,31 @@
     Friend *friend = [[Friend alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
     friend.uid = uid;
     friend.name = name;
+    friend.cover = @"";
+    friend.mark = [NSNumber numberWithBool:false];
+    
+    NSError *error = nil;
+    if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);
+    
+    return friend;
+}
+
+/**
+ * Add a friend to the core data
+ * @param uid
+ * @param name
+ * @param cover
+ * @return added Friend
+ */
++ (Friend *) addFriend:(NSString *)uid :(NSString *)name :(NSString *)cover{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Friend"
+                                              inManagedObjectContext:context];
+    
+    Friend *friend = [[Friend alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    friend.uid = uid;
+    friend.name = name;
+    friend.cover = cover;
     friend.mark = [NSNumber numberWithBool:false];
     
     NSError *error = nil;
@@ -144,6 +169,17 @@
     if (![context save:&error]) NSLog(@"Error mark friend - error:%@", error);
 }
 
+/**
+ * Update friend's cover picture
+ * @param friend
+ * @param cover
+ */
++ (void) updateFriendCover:(Friend *)friend :(NSString *)cover {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    friend.cover = cover;
+    NSError *error = nil;
+    if (![context save:&error]) NSLog(@"Error mark friend - error:%@", error);
+}
 
 /**
  * Remove all friends from the database. Do this when user logged out

@@ -12,6 +12,7 @@
 #import "FriendCoreData.h"
 #import "NotificationCoreData.h"
 #import "FriendToEventCoreData.h"
+#import "NotificationManager.h"
 
 static int16_t const QUERY_LIMIT = 5000;
 static int16_t const QUERY_TYPE_INITIALIZE = 0;
@@ -92,7 +93,8 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                   if (event == nil) {
                       event = [EventCoreData addEvent:eventInfo[i] usingRsvp:RSVP_NOT_INVITED];
                       [newEventsDictionary setObject:event forKey:eid];
-                  }
+                  } else [EventCoreData checkEventCover:event :eventInfo[i]];
+                  
                   [eventsDictionary setObject:event forKey:eid];
               }
               
@@ -127,8 +129,10 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                       Friend *friend = friendsDictionary[uid];
                       if (event != nil && friend != nil) {
                           [FriendToEventCoreData addFriendToEventPair:event :friend];
-                          if (type != QUERY_TYPE_INITIALIZE)
-                              [NotificationCoreData addNewNotificationForEvent:event andFriend:friend];
+                          if (type != QUERY_TYPE_INITIALIZE) {
+                              Notification *notification = [NotificationCoreData addNotificationForEvent:event andFriend:friend];
+                              [NotificationManager createNewFriendNotification:notification];
+                          }
                       }
                   }
               }

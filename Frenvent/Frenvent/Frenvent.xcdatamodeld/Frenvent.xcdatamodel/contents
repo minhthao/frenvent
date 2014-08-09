@@ -19,21 +19,21 @@
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="event" inverseEntity="Notification" syncable="YES"/>
     </entity>
     <entity name="Friend" representedClassName="Friend" syncable="YES">
+        <attribute name="cover" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mark" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="eventsInterested" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="friendsInterested" inverseEntity="Event" syncable="YES"/>
-        <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="friends" inverseEntity="Notification" syncable="YES"/>
+        <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="friend" inverseEntity="Notification" syncable="YES"/>
     </entity>
     <entity name="Notification" representedClassName="Notification" syncable="YES">
         <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="notifications" inverseEntity="Event" syncable="YES"/>
-        <relationship name="friends" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Friend" inverseName="notifications" inverseEntity="Friend" syncable="YES"/>
+        <relationship name="friend" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Friend" inverseName="notifications" inverseEntity="Friend" syncable="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="22806" positionY="5108" width="128" height="285"/>
-        <element name="Friend" positionX="23247" positionY="5258" width="128" height="118"/>
-        <element name="Notification" positionX="23013" positionY="5139" width="128" height="103"/>
+        <element name="Friend" positionX="23247" positionY="5258" width="128" height="135"/>
+        <element name="Notification" positionX="23013" positionY="5139" width="128" height="88"/>
     </elements>
 </model>

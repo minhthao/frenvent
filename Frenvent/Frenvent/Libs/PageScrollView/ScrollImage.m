@@ -52,7 +52,8 @@
 
 -(void)setPageIndex:(int)index pageCount:(int)pageCount {
     self.index = index - 1; //the indexx start at 1
-    self.label.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
+    if (pageCount == 1) self.label.text = @"";
+    else self.label.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
 }
 
 -(void)handleImageTap:(UITapGestureRecognizer *)recognizer {
