@@ -155,7 +155,18 @@
 }
 
 -(void)eventClicked:(Event *)event {
-    [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+    }
 }
 
 -(void)eventRsvpButtonClicked:(Event *)event withButton:(UIButton *)rsvpButton{
@@ -320,6 +331,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
     
     [self.profileImage.layer setMasksToBounds:YES];
     [self.profileImage.layer setBorderWidth:3];

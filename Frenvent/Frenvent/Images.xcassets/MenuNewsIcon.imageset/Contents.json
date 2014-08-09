@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "submenu_notification_icon-1.png"
+      "filename" : "newfeeds-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "submenu_notification_icon.png"
+      "filename" : "newfeeds.png"
     }
   ],
   "info" : {

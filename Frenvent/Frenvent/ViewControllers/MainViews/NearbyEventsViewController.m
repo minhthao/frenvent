@@ -215,6 +215,9 @@ BOOL isUpdating;
     [self createAndDisplayPin];
 }
 
+- (IBAction)doFilter:(id)sender {
+}
+
 
 #pragma mark - Navigation
 

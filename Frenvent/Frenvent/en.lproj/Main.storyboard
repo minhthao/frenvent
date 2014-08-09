@@ -14,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="isP-7H-gpZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uis-n8-Hup">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="LoginBackground" translatesAutoresizingMaskIntoConstraints="NO" id="GCQ-x1-6z0">
@@ -22,7 +22,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frenvent honors your privacy and will not post without your permissions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="fTu-g4-AZc">
-                                <rect key="frame" x="20" y="503" width="280" height="45"/>
+                                <rect key="frame" x="20" y="454" width="280" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="hNA-pB-J04"/>
                                 </constraints>
@@ -31,7 +31,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rxt-fb-LvP" customClass="FBLoginView">
-                                <rect key="frame" x="15" y="421" width="290" height="60"/>
+                                <rect key="frame" x="15" y="380" width="290" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -77,7 +77,7 @@
             <objects>
                 <tableViewController title="Recommended Events" id="Vf1-nl-NRu" customClass="FriendEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="155" sectionHeaderHeight="25" sectionFooterHeight="22" id="1pQ-wr-uEX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.84260120059999999" green="0.84134539139999998" blue="0.86328125" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -306,11 +306,11 @@
                         <viewControllerLayoutGuide type="bottom" id="cP5-cR-NVe"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="e9Y-uX-1jO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9yJ-l5-evS">
-                                <rect key="frame" x="150" y="274" width="20" height="20"/>
+                                <rect key="frame" x="150" y="250" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="wait ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKD-b4-gYm">
                                 <rect key="frame" x="20" y="278" width="280" height="18"/>
@@ -353,11 +353,11 @@
                         <viewControllerLayoutGuide type="bottom" id="PDp-1m-2VW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jl2-YU-JFj">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Enter events' name" translatesAutoresizingMaskIntoConstraints="NO" id="1JN-9K-8Be">
-                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="18" width="320" height="44"/>
                                 <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -365,7 +365,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="yEb-Cu-p2Y">
-                                <rect key="frame" x="0.0" y="64" width="320" height="513"/>
+                                <rect key="frame" x="0.0" y="62" width="320" height="458"/>
                                 <color key="backgroundColor" red="0.97564572704081631" green="0.97564572704081631" blue="0.97564572704081631" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                 <prototypes>
@@ -485,10 +485,10 @@
                         <segue destination="eXG-Tk-V4h" kind="push" identifier="favoriteView" id="bWf-Dw-J8C"/>
                         <segue destination="bk8-r4-OFb" kind="push" identifier="trashView" id="y8e-kW-JYc"/>
                         <segue destination="Scy-8V-D4A" kind="push" identifier="pastEventView" id="Q1P-BU-va6"/>
-                        <segue destination="qSv-WD-F1W" kind="push" identifier="notificationView" id="y0e-Nh-elW"/>
                         <segue destination="efi-MM-0rs" kind="push" identifier="settingView" id="fUo-WQ-cze"/>
                         <segue destination="5jZ-Ir-2i4" kind="push" identifier="logoutView" id="4sa-cr-Vgy"/>
                         <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="QCA-Qm-aE2"/>
+                        <segue destination="lpq-Qp-5Tv" kind="push" identifier="invitedEventView" id="9AO-iQ-B6p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ile-pf-bda" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -500,7 +500,7 @@
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="eXG-Tk-V4h" customClass="FavoriteEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="105" sectionHeaderHeight="22" sectionFooterHeight="22" id="GGg-4e-1tT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -584,7 +584,7 @@
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="bk8-r4-OFb" customClass="TrashEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="109" sectionHeaderHeight="22" sectionFooterHeight="22" id="iKW-Gg-yIm">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -672,7 +672,7 @@
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="efi-MM-0rs" customClass="SettingsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lBc-Lx-zMb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -697,10 +697,10 @@
             </objects>
             <point key="canvasLocation" x="1845" y="4365"/>
         </scene>
-        <!--Notifications Table View Controller - Notifications-->
+        <!--Notifications Table View Controller - New Feeds-->
         <scene sceneID="ukI-fp-HqN">
             <objects>
-                <tableViewController storyboardIdentifier="notificationViewController" hidesBottomBarWhenPushed="YES" id="qSv-WD-F1W" customClass="NotificationsTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="notificationViewController" id="qSv-WD-F1W" customClass="NotificationsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="249" sectionHeaderHeight="25" sectionFooterHeight="22" id="QAI-Yf-kVG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -714,16 +714,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="249"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view tag="200" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axg-Cc-amo" userLabel="Container">
-                                            <rect key="frame" x="7" y="7" width="306" height="235"/>
+                                        <view tag="200" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="axg-Cc-amo" userLabel="Container">
+                                            <rect key="frame" x="7" y="7" width="306" height="236"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" tag="201" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tjk-Vt-fjo">
-                                                    <rect key="frame" x="7" y="7" width="43" height="43"/>
+                                                <imageView userInteractionEnabled="NO" tag="201" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tjk-Vt-fjo">
+                                                    <rect key="frame" x="7" y="7" width="44" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="202" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="nul-hO-WGJ">
-                                                    <rect key="frame" x="62" y="7" width="233" height="20"/>
+                                                    <rect key="frame" x="62" y="5" width="233" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="description">
@@ -736,8 +736,8 @@
                                                     </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="203" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbG-mI-GlV">
-                                                    <rect key="frame" x="62" y="36" width="233" height="14"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="203" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbG-mI-GlV">
+                                                    <rect key="frame" x="62" y="39" width="233" height="15"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -746,21 +746,21 @@
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="tjk-Vt-fjo" secondAttribute="trailing" constant="256" id="4Cg-yN-iK4"/>
-                                                <constraint firstItem="nul-hO-WGJ" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="7" id="Ae0-bt-6iS"/>
-                                                <constraint firstItem="xbG-mI-GlV" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="36" id="Bdg-VR-YDr"/>
-                                                <constraint firstAttribute="bottom" secondItem="xbG-mI-GlV" secondAttribute="bottom" constant="185" id="GtO-rH-gVa"/>
+                                                <constraint firstItem="nul-hO-WGJ" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="5" id="Ae0-bt-6iS"/>
+                                                <constraint firstItem="xbG-mI-GlV" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="39" id="Bdg-VR-YDr"/>
+                                                <constraint firstAttribute="bottom" secondItem="xbG-mI-GlV" secondAttribute="bottom" constant="182" id="GtO-rH-gVa"/>
+                                                <constraint firstItem="tjk-Vt-fjo" firstAttribute="leading" secondItem="axg-Cc-amo" secondAttribute="leading" constant="7" id="Hht-qG-jdF"/>
                                                 <constraint firstAttribute="trailing" secondItem="nul-hO-WGJ" secondAttribute="trailing" constant="11" id="LOw-zc-GXI"/>
-                                                <constraint firstAttribute="bottom" secondItem="tjk-Vt-fjo" secondAttribute="bottom" constant="185" id="P89-3N-KHq"/>
-                                                <constraint firstItem="tjk-Vt-fjo" firstAttribute="leading" secondItem="axg-Cc-amo" secondAttribute="leading" constant="7" id="dF2-mZ-bbp"/>
-                                                <constraint firstItem="tjk-Vt-fjo" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="7" id="kTo-2e-brW"/>
+                                                <constraint firstAttribute="bottom" secondItem="tjk-Vt-fjo" secondAttribute="bottom" constant="185" id="OfW-YU-blW"/>
+                                                <constraint firstItem="tjk-Vt-fjo" firstAttribute="top" secondItem="axg-Cc-amo" secondAttribute="top" constant="7" id="Zd2-hl-JpW"/>
                                                 <constraint firstItem="nul-hO-WGJ" firstAttribute="leading" secondItem="axg-Cc-amo" secondAttribute="leading" constant="62" id="w1E-Aa-sSL"/>
+                                                <constraint firstAttribute="trailing" secondItem="tjk-Vt-fjo" secondAttribute="trailing" constant="255" id="wec-Lu-I8p"/>
                                                 <constraint firstAttribute="trailing" secondItem="xbG-mI-GlV" secondAttribute="trailing" constant="11" id="wpI-2B-bc6"/>
                                                 <constraint firstItem="xbG-mI-GlV" firstAttribute="leading" secondItem="axg-Cc-amo" secondAttribute="leading" constant="62" id="y40-yI-RMh"/>
                                             </constraints>
                                         </view>
-                                        <view tag="204" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tx0-6f-3bm" userLabel="scrollerContainer">
-                                            <rect key="frame" x="3" y="73" width="314" height="155"/>
+                                        <view tag="204" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tx0-6f-3bm" userLabel="scrollerContainer">
+                                            <rect key="frame" x="3" y="73" width="314" height="156"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="0.84260120059999999" green="0.84134539139999998" blue="0.86328125" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
@@ -836,22 +836,23 @@
                             <outlet property="delegate" destination="qSv-WD-F1W" id="k8H-gz-6v9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Notifications" id="mEK-wr-EUb"/>
+                    <navigationItem key="navigationItem" title="New Feeds" id="mEK-wr-EUb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="har-Zd-cUR"/>
+                        <segue destination="GGd-TX-KvQ" kind="push" identifier="friendInfoView" id="b0L-Nj-uPe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KbR-am-IMg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1845" y="1641"/>
+            <point key="canvasLocation" x="1303" y="237"/>
         </scene>
         <!--Past Events Table View Controller - Past Events-->
         <scene sceneID="HfH-q9-BV1">
             <objects>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="Scy-8V-D4A" customClass="PastEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="105" sectionHeaderHeight="25" sectionFooterHeight="22" id="cPi-Jh-eeK">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -939,18 +940,19 @@
                         <viewControllerLayoutGuide type="bottom" id="iOp-DL-COK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="q7e-pm-Xfx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search your friends" translatesAutoresizingMaskIntoConstraints="NO" id="VvT-1j-NQC">
-                                <rect key="frame" x="0.0" y="69" width="320" height="44"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" text="" placeholder="Search your friends" translatesAutoresizingMaskIntoConstraints="NO" id="VvT-1j-NQC">
+                                <rect key="frame" x="0.0" y="18" width="320" height="44"/>
+                                <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="TJi-AZ-dQb" id="Ga9-1o-Plc"/>
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="48" sectionHeaderHeight="25" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="q6r-XB-gx7">
-                                <rect key="frame" x="0.0" y="113" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="62" width="320" height="457"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.1670675404671951" green="0.41352416296533162" blue="0.96161511479999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
@@ -982,12 +984,11 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.23137254900000001" green="0.34901960780000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Friends" id="bdu-0n-EuE">
-                        <barButtonItem key="rightBarButtonItem" title="share" id="Kod-zz-uA6"/>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationItem key="navigationItem" title="Friends" id="bdu-0n-EuE"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="Ql5-JT-nvZ" id="hZj-pJ-uzb"/>
                         <outlet property="tableView" destination="q6r-XB-gx7" id="XNa-84-fJW"/>
@@ -1330,9 +1331,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="I2I-ka-DMX" kind="relationship" relationship="viewControllers" id="Big-nH-19a"/>
                         <segue destination="knW-1R-Bvs" kind="relationship" relationship="viewControllers" id="0E6-Ao-D0a"/>
                         <segue destination="sEW-B3-eZF" kind="relationship" relationship="viewControllers" id="Et3-t3-VKs"/>
-                        <segue destination="I2I-ka-DMX" kind="relationship" relationship="viewControllers" id="Big-nH-19a"/>
                         <segue destination="ofq-3r-NVI" kind="relationship" relationship="viewControllers" id="IJg-H2-7QZ"/>
                         <segue destination="ge0-fH-Og2" kind="relationship" relationship="viewControllers" id="Y3l-iW-BD1"/>
                     </connections>
@@ -1344,7 +1345,7 @@
         <!--Invited Events Table View Controller - Invited Events-->
         <scene sceneID="7rG-Y3-H56">
             <objects>
-                <tableViewController id="lpq-Qp-5Tv" customClass="InvitedEventsTableViewController" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="lpq-Qp-5Tv" customClass="InvitedEventsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="155" sectionHeaderHeight="25" sectionFooterHeight="22" id="8nz-Km-QQq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1352,7 +1353,7 @@
                         <inset key="separatorInset" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="eventItem" id="3bK-Ec-IuD">
-                                <rect key="frame" x="0.0" y="25" width="320" height="155"/>
+                                <rect key="frame" x="0.0" y="89" width="320" height="155"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3bK-Ec-IuD" id="unX-5b-eQM">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="155"/>
@@ -1454,6 +1455,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="refreshButton" destination="vfL-sE-f65" id="l82-xH-mnf"/>
                         <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="Y5l-V0-NeQ"/>
@@ -1461,19 +1463,19 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxA-V2-pTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1303" y="243"/>
+            <point key="canvasLocation" x="1845" y="1627"/>
         </scene>
-        <!--Navigation Controller - Invited-->
+        <!--Navigation Controller - News-->
         <scene sceneID="GRz-Vs-3f5">
             <objects>
                 <navigationController definesPresentationContext="YES" id="I2I-ka-DMX" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Invited" image="MenuInvitedEventsIcon" id="FBa-d3-htY"/>
+                    <tabBarItem key="tabBarItem" title="News" image="MenuNewsIcon" id="FBa-d3-htY"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="X3w-Qr-RMl">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="lpq-Qp-5Tv" kind="relationship" relationship="rootViewController" id="FGL-CB-o3u"/>
+                        <segue destination="qSv-WD-F1W" kind="relationship" relationship="rootViewController" id="ER2-jI-KDc"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xtq-8g-G27" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1506,11 +1508,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Jav-xZ-GUJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4k7-db-m69">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="15P-zh-9vM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="-25" width="320" height="568"/>
                                 <connections>
                                     <outlet property="delegate" destination="vtl-e1-uO8" id="Fb1-WK-cIN"/>
                                 </connections>
@@ -1519,7 +1521,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Nearby Events" id="NIL-Rr-Q4V">
-                        <barButtonItem key="leftBarButtonItem" title="Filter" id="P3V-9k-sAC"/>
+                        <barButtonItem key="leftBarButtonItem" title="Filter" id="P3V-9k-sAC">
+                            <connections>
+                                <action selector="doFilter:" destination="vtl-e1-uO8" id="VU9-2J-OEl"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="0Iy-KY-Bto">
                             <connections>
                                 <action selector="refresh:" destination="vtl-e1-uO8" id="cx4-eg-Jhy"/>
@@ -1528,6 +1534,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="filterButton" destination="P3V-9k-sAC" id="tyl-zq-XOh"/>
                         <outlet property="mapView" destination="15P-zh-9vM" id="N3J-w4-Bj4"/>
                         <outlet property="refreshButton" destination="0Iy-KY-Bto" id="tS7-Gs-RKJ"/>
                         <segue destination="6Qb-z2-KrV" kind="push" identifier="eventDetailView" id="eYs-uZ-Y7V"/>
@@ -2107,9 +2114,9 @@
         <image name="LoginBackground" width="320" height="568"/>
         <image name="MenuFriendsEventsIcon" width="25" height="25"/>
         <image name="MenuFriendsIcon" width="25" height="25"/>
-        <image name="MenuInvitedEventsIcon" width="25" height="25"/>
         <image name="MenuMoreIcon" width="25" height="25"/>
         <image name="MenuNearbyEventsIcon" width="25" height="25"/>
+        <image name="MenuNewsIcon" width="25" height="25"/>
     </resources>
     <color key="tintColor" red="0.84260120057426546" green="0.84134539137839781" blue="0.86328125" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -2120,7 +2127,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="tPR-ZG-VdO"/>
         <segue reference="Zud-b6-34Z"/>
-        <segue reference="har-Zd-cUR"/>
+        <segue reference="eYs-uZ-Y7V"/>
         <segue reference="Ksn-hQ-die"/>
         <segue reference="K3C-nI-Ne2"/>
     </inferredMetricsTieBreakers>

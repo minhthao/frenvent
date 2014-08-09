@@ -13,6 +13,11 @@
 @interface NearbyEventsViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate, DbEventsRequestDelegate>
 
 - (IBAction)refresh:(id)sender;
+- (IBAction)doFilter:(id)sender;
+
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 

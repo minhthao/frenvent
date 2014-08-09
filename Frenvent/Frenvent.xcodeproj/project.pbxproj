@@ -709,14 +709,14 @@
 			children = (
 				3EAAACA2196A08FC004AD322 /* FriendEventsTableViewController.h */,
 				3EAAACA3196A08FC004AD322 /* FriendEventsTableViewController.m */,
-				3EAAACE6196CB2EC004AD322 /* InvitedEventsTableViewController.h */,
-				3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */,
+				3ECF109A1978ACA700963155 /* NearbyEventsViewController.h */,
+				3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */,
+				3ECF105A19721C9C00963155 /* NotificationsTableViewController.h */,
+				3ECF105B19721C9C00963155 /* NotificationsTableViewController.m */,
 				3EAAACDD196BCA10004AD322 /* FriendsTableViewController.h */,
 				3EAAACDE196BCA10004AD322 /* FriendsTableViewController.m */,
 				3ECF10531970DC6000963155 /* MoreTableViewController.h */,
 				3ECF10541970DC6000963155 /* MoreTableViewController.m */,
-				3ECF109A1978ACA700963155 /* NearbyEventsViewController.h */,
-				3ECF109B1978ACA700963155 /* NearbyEventsViewController.m */,
 			);
 			name = MainViews;
 			sourceTree = "<group>";
@@ -741,10 +741,10 @@
 		3ECF10561971FBB200963155 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				3EAAACE6196CB2EC004AD322 /* InvitedEventsTableViewController.h */,
+				3EAAACE7196CB2EC004AD322 /* InvitedEventsTableViewController.m */,
 				3ECF10571971FBD500963155 /* PastEventsTableViewController.h */,
 				3ECF10581971FBD500963155 /* PastEventsTableViewController.m */,
-				3ECF105A19721C9C00963155 /* NotificationsTableViewController.h */,
-				3ECF105B19721C9C00963155 /* NotificationsTableViewController.m */,
 				3ECF105D19721D0A00963155 /* FavoriteEventsTableViewController.h */,
 				3ECF105E19721D0A00963155 /* FavoriteEventsTableViewController.m */,
 				3ECF106019721D4700963155 /* TrashEventsTableViewController.h */,

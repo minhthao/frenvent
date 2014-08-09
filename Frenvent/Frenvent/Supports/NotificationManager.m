@@ -148,7 +148,7 @@
  * @return header title
  */
 -(NSString *)getSectionTitle:(NSInteger)section {
-    if ([self isUserSection:section]) return @"USER";
+    if ([self isUserSection:section]) return @"HIGHLIGHT";
     if ([self isTodaySection:section]) return @"TODAY";
     if ([self isThisWeekSection:section]) return @"THIS WEEK";
     if ([self isOthersSection:section]) return @"OTHERS";
@@ -203,10 +203,11 @@
  */
 -(NSAttributedString *)getDescriptionForInvitedEvents {
     NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
     
     if ([self.userInvitedEvents count] > 1) {
-        return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You are invited to %d events", (int)[self.userInvitedEvents count]] attributes:boldFont];
-    } else return [[NSAttributedString alloc] initWithString:@"You are invited to the event" attributes:boldFont];
+        return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d unreplied invitations to these events", (int)[self.userInvitedEvents count]] attributes:mediumFont];
+    } else return [[NSAttributedString alloc] initWithString:@"You have an unreplied invitation to the event" attributes:mediumFont];
 }
 
 /**
@@ -234,13 +235,13 @@
     NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
     
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:notificationGroup.friend.name attributes:boldFont];
-    
-    if ([self.userInvitedEvents count] > 1) {
+
+    if ([notificationGroup.events count] > 1) {
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to " attributes:mediumFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", (int)[notificationGroup.events count]] attributes:boldFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" events" attributes:mediumFont]];
-    } else if ([self.userInvitedEvents count] == 1) {
-        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to the event" attributes:boldFont]];
+    } else if ([notificationGroup.events count] == 1) {
+        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to the event" attributes:mediumFont]];
     }
     
     return description;

@@ -42,7 +42,7 @@ NSArray *allFriends;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:false];
+    [self.navigationController setNavigationBarHidden:YES animated:false];
 }
 
 - (void)didReceiveMemoryWarning {

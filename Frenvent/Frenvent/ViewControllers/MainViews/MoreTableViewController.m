@@ -174,8 +174,8 @@
         
         if (indexPath.section == 1) {
             if (indexPath.row == 0) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuNotificationIcon"]];
-                cellLabel.text = @"Notifications";
+                [cellIcon setImage:[UIImage imageNamed:@"SubMenuInvitedIcon"]];
+                cellLabel.text = @"Invited Events";
                 [separator setHidden:false];
             } else if (indexPath.row == 1) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuPastEventsIcon"]];
@@ -213,7 +213,7 @@
 - (void)handleMenuItemSelection:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     if (indexPath.section == 1) {
-        if (indexPath.row ==0) [self performSegueWithIdentifier:@"notificationView" sender:Nil];
+        if (indexPath.row ==0) [self performSegueWithIdentifier:@"invitedEventView" sender:Nil];
         else if (indexPath.row == 1) [self performSegueWithIdentifier:@"pastEventView" sender:Nil];
         else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
         else if (indexPath.row == 3) [self performSegueWithIdentifier:@"trashView" sender:Nil];
