@@ -15,9 +15,16 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Reachability.h"
 #import "EventDetailViewController.h"
+#import "TimeSupport.h"
 
 static double const DEFAULT_LATITUDE = 37.43;
 static double const DEFAULT_LONGITUDE = -122.17;
+
+static NSInteger const FILTER_TYPE_TODAY_EVENT = 0;
+static NSInteger const FILTER_TYPE_TOMORROW_EVENT = 1;
+static NSInteger const FILTER_TYPE_WEEKEND_EVENT = 2;
+static NSInteger const FILTER_TYPE_ALL_EVENT = 3;
+
 
 BOOL isUpdating;
 
@@ -26,6 +33,9 @@ BOOL isUpdating;
 @property (nonatomic, strong) NSArray *annotations;
 @property (nonatomic, strong) DbEventsRequest *dbEventRequest;
 @property (nonatomic, strong) NSArray *nearbyEvents;
+
+@property (nonatomic, strong) UIActionSheet *filterActionSheet;
+@property (nonatomic) NSInteger filterType;
 
 @end
 
@@ -40,9 +50,41 @@ BOOL isUpdating;
     return _dbEventRequest;
 }
 
+- (UIActionSheet *)filterActionSheet {
+    if (_filterActionSheet == nil) {
+        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select event time" delegate:self cancelButtonTitle:@"Result to default" destructiveButtonTitle:nil otherButtonTitles:@"Today", @"Tomorrow", @"Weekend", nil];
+        _filterActionSheet.delegate = self;
+    }
+    return _filterActionSheet;
+}
+
+#pragma mark - some private methods to help classify the events
+-(BOOL)isOfTypeTodayEvent:(Event *)event {
+    return ([event.startTime longLongValue] >= [TimeSupport getTodayTimeFrameStartTimeInUnix] &&
+            [event.startTime longLongValue] < [TimeSupport getTodayTimeFrameEndTimeInUnix]);
+}
+
+-(BOOL)isOfTypeTomorrowEvent:(Event *)event {
+    return ([event.startTime longLongValue] >= [TimeSupport getTodayTimeFrameEndTimeInUnix] &&
+            [event.startTime longLongValue] < ([TimeSupport getTodayTimeFrameEndTimeInUnix] + 60 * 60 * 24));
+}
+
+-(BOOL)isOfTypeWeekendEvent:(Event *)event {
+    return ([event.startTime longLongValue] >= [TimeSupport getThisWeekendTimeFrameStartTimeInUnix] &&
+            [event.startTime longLongValue] < [TimeSupport getThisWeekendTimeFrameEndTimeInUnix]);
+}
+
+-(BOOL)isWithinFilteredSet:(Event *)event {
+    return (self.filterType == FILTER_TYPE_ALL_EVENT ||
+            (self.filterType == FILTER_TYPE_TODAY_EVENT && [self isOfTypeTodayEvent:event]) ||
+            (self.filterType == FILTER_TYPE_TOMORROW_EVENT && [self isOfTypeTomorrowEvent:event]) ||
+            (self.filterType == FILTER_TYPE_WEEKEND_EVENT && [self isOfTypeWeekendEvent:event]));
+}
+
 #pragma mark -view delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.filterType = FILTER_TYPE_ALL_EVENT;
     [self.mapView setShowsUserLocation:YES];
     [self.refreshButton setEnabled:false];
 }
@@ -82,7 +124,6 @@ BOOL isUpdating;
     id <MKAnnotation> annotation = [view annotation];
     if ([annotation isKindOfClass:[MyAnnotation class]]) {
         [self performSegueWithIdentifier:@"eventDetailView" sender:((MyAnnotation *)annotation).event.eid];
-        //NSLog(@"%@", ((MyAnnotation *)annotation).event.name);
     }
 }
 
@@ -155,13 +196,16 @@ BOOL isUpdating;
     [self.mapView removeAnnotations:_annotations];
     
     NSMutableArray *newAnnotations = [[NSMutableArray alloc] init];
+    
     for (Event *event in _nearbyEvents) {
-        MyAnnotation *myAnnotation = [[MyAnnotation alloc] init];
-        myAnnotation.event = event;
-        myAnnotation.coordinate = CLLocationCoordinate2DMake([event.latitude doubleValue], [event.longitude doubleValue]);
-        myAnnotation.title = event.name;
-        myAnnotation.subtitle = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
-        [newAnnotations addObject:myAnnotation];
+        if ([self isWithinFilteredSet:event]) {
+            MyAnnotation *myAnnotation = [[MyAnnotation alloc] init];
+            myAnnotation.event = event;
+            myAnnotation.coordinate = CLLocationCoordinate2DMake([event.latitude doubleValue], [event.longitude doubleValue]);
+            myAnnotation.title = event.name;
+            myAnnotation.subtitle = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
+            [newAnnotations addObject:myAnnotation];
+        }
     }
     
     _annotations = newAnnotations;
@@ -184,7 +228,7 @@ BOOL isUpdating;
     double upperLong = center.longitude + longitudeDelta;
     double upperLat = center.latitude + latitudeDelta;
     
-   return [EventCoreData getNearbyEventsBoundedByLowerLongitude:lowerLong lowerLatitude:lowerLat upperLongitude:upperLong upperLatitude:upperLat];
+    return [EventCoreData getNearbyEventsBoundedByLowerLongitude:lowerLong lowerLatitude:lowerLat upperLongitude:upperLong upperLatitude:upperLat];
 }
 
 - (IBAction)refresh:(id)sender {
@@ -211,11 +255,55 @@ BOOL isUpdating;
     
     double upperLong = center.longitude + longitudeDelta;
     double upperLat = center.latitude + latitudeDelta;
+    
     [[self dbEventRequest] refreshNearbyEvents:lowerLong :lowerLat :upperLong :upperLat];
     [self createAndDisplayPin];
 }
 
+#pragma mark - UIActionSheet and filter
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case FILTER_TYPE_ALL_EVENT:
+            if (self.filterType != buttonIndex) {
+                self.filterButton.title = @"Filter";
+                self.filterType = buttonIndex;
+                [self refresh:nil];
+            }
+            break;
+            
+        case FILTER_TYPE_TODAY_EVENT:
+            if (self.filterType != buttonIndex) {
+                self.filterButton.title = @"Today";
+                self.filterType = buttonIndex;
+                [self refresh:nil];
+            }
+            break;
+            
+        case FILTER_TYPE_TOMORROW_EVENT:
+            if (self.filterType != buttonIndex) {
+                self.filterButton.title = @"Tomorrow";
+                self.filterType = buttonIndex;
+                [self refresh:nil];
+            }
+            break;
+            
+        case FILTER_TYPE_WEEKEND_EVENT:
+            if (self.filterType != buttonIndex) {
+                self.filterButton.title = @"Weekend";
+                self.filterType = buttonIndex;
+                [self refresh:nil];
+            }
+
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
 - (IBAction)doFilter:(id)sender {
+    [[self filterActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 

@@ -22,6 +22,13 @@
                                        lowerLatitude:(double)lowerLatitude
                                       upperLongitude:(double)upperLongitude
                                        upperLatitude:(double)upperLatitude;
++ (NSArray *) getNearbyEventsBoundedByLowerLongitude:(double)lowerLongitude
+                                       lowerLatitude:(double)lowerLatitude
+                                      upperLongitude:(double)upperLongitude
+                                       upperLatitude:(double)upperLatitude
+                                      lowerTimeBound:(int64_t)lowerTimeBound
+                                      upperTimeBound:(int64_t)upperTimeBound;
+
 + (NSArray *) getFriendsEvents;
 
 //for these three, we don't need to hide the hidden one

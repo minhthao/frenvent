@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "DbEventsRequest.h"
 
-@interface NearbyEventsViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate, DbEventsRequestDelegate>
+@interface NearbyEventsViewController : UIViewController <CLLocationManagerDelegate, MKMapViewDelegate, DbEventsRequestDelegate, UIActionSheetDelegate>
 
 - (IBAction)refresh:(id)sender;
 - (IBAction)doFilter:(id)sender;
