@@ -12,6 +12,7 @@
 #import "FriendEventsRequest.h"
 #import "UpdateManager.h"
 #import "Reachability.h"
+#import <Bolts/Bolts.h>
 
 @implementation AppDelegate
 
@@ -205,7 +206,18 @@
          annotation:(id)annotation {
     
     // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
-    BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call) {
+         // Parse the incoming URL
+         BFURL *parsedUrl = [BFURL URLWithURL:url];
+         if ([parsedUrl targetURL]) {
+             NSString *targetURLString = [[parsedUrl targetURL] absoluteString];
+             [[[UIAlertView alloc] initWithTitle:@"Received link:"
+                                         message:targetURLString
+                                        delegate:nil
+                               cancelButtonTitle:@"OK"
+                               otherButtonTitles:nil] show];
+         }
+     }];
     
     // You can add your app-specific url handling code here if needed
     

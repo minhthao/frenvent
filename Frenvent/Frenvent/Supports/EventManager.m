@@ -10,6 +10,11 @@
 #import "Event.h"
 #import "TimeSupport.h"
 
+NSInteger const FILTER_TYPE_WITHIN_ONE_MILE = 0;
+NSInteger const FILTER_TYPE_WITHIN_TEN_MILE = 1;
+NSInteger const FILTER_TYPE_WITHIN_FIFTY_MILE = 2;
+NSInteger const FILTER_TYPE_DEFAULT = 3;
+
 static NSString * const TODAY_EVENTS_HEADER = @"TODAY";
 static NSString * const THIS_WEEK_EVENTS_HEADER = @"THIS WEEK";
 static NSString * const THIS_WEEKEND_EVENTS_HEADER = @"THIS WEEKEND";
@@ -19,6 +24,18 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
 @implementation EventManager
 
 #pragma mark - private method
+/**
+ * Check if an event match filtered type
+ * @param event
+ * @return boolean
+ */
+-(BOOL)matchFilterType:(Event *)event {
+    return ((((self.filterType == FILTER_TYPE_WITHIN_ONE_MILE && [event.distance doubleValue] <= 1) ||
+            (self.filterType == FILTER_TYPE_WITHIN_TEN_MILE && [event.distance doubleValue] <= 10) ||
+            (self.filterType == FILTER_TYPE_WITHIN_FIFTY_MILE && [event.distance doubleValue] <= 50)) &&
+            [event.distance doubleValue] != 0) || self.filterType == FILTER_TYPE_DEFAULT);
+}
+
 /**
  * Get the title array for sections
  * @return Array of Title string
@@ -79,9 +96,10 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @param Array of Event
  */
 - (void)setEvents:(NSArray *)eventsArray {
+    self.eventsArray = eventsArray;
     [self resetEventArrays];
-    for (Event *event in eventsArray) {
-        [self setEventCategory:event];
+    for (Event *event in self.eventsArray) {
+        if ([self matchFilterType:event]) [self setEventCategory:event];
     }
 }
 
@@ -92,10 +110,11 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @param CLLocation
  */
 - (void)setEvents:(NSArray *)eventsArray withCurrentLocation:(CLLocation *)currentLocation {
+    self.eventsArray = eventsArray;
     [self resetEventArrays];
-    for (Event *event in eventsArray) {
+    for (Event *event in self.eventsArray) {
         [event computeDistanceToCurrentLocation:currentLocation];
-        [self setEventCategory:event];
+        if ([self matchFilterType:event]) [self setEventCategory:event];
     }
 }
 
@@ -104,24 +123,22 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @param CLLocation
  */
 - (void)setCurrentLocation:(CLLocation *)currentLocation {
-    for (Event *event in _todayEvents) {
+    [self resetEventArrays];
+    for (Event *event in self.eventsArray) {
         [event computeDistanceToCurrentLocation:currentLocation];
+        if ([self matchFilterType:event]) [self setEventCategory:event];
     }
-    
-    for (Event *event in _thisWeekendEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
-    }
-    
-    for (Event *event in _thisWeekEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
-    }
-    
-    for (Event *event in _nextWeekEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
-    }
-    
-    for (Event *event in _otherEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
+}
+
+/**
+ * Filter the event using a specify filter type
+ * @param filter type
+ */
+- (void)filterEvent:(NSInteger)filterType {
+    self.filterType = filterType;
+    [self resetEventArrays];
+    for (Event *event in self.eventsArray) {
+        if ([self matchFilterType:event]) [self setEventCategory:event];
     }
 }
 

@@ -18,75 +18,37 @@
 #import "Reachability.h"
 #import "EventDetailViewController.h"
 #import "ToastView.h"
+#import "UITableView+NXEmptyView.h"
 
 CLLocation *lastKnown;
 
 @interface InvitedEventsTableViewController ()
-
-@property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
-@property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
-@property (nonatomic, strong) NSIndexPath *indexPathOfRsvpEvent;
-
-@property (nonatomic, strong) UIActionSheet *shareActionSheet;
-@property (nonatomic, strong) ShareEventRequest *shareEventRequest;
-
 @property (nonatomic, strong) MyEventManager *eventManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
 @property (nonatomic, strong) MyEventsRequest *myEventsRequest;
 
+@property (nonatomic, strong) UIView *emptyView;
+
 @end
 
 @implementation InvitedEventsTableViewController
-
-
 #pragma mark - instantiation
-/**
- * Lazily instantiate the rsvp action sheet
- * @return rsvp action sheet
- */
-- (UIActionSheet *)rsvpActionSheet {
-    if (_rsvpActionSheet == nil) {
-        _rsvpActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Going", @"Maybe", nil];
-        _rsvpActionSheet.tag = 1;
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No invited events";
+        [_emptyView addSubview:noResult];
     }
-    return _rsvpActionSheet;
-}
-
-/**
- * Lazily instantiate the event rsvp request
- * @return rsvp request
- */
--(EventRsvpRequest *)eventRsvpRequest {
-    if (_eventRsvpRequest ==  nil) {
-        _eventRsvpRequest = [[EventRsvpRequest alloc] init];
-        _eventRsvpRequest.delegate = self;
-    }
-    return _eventRsvpRequest;
-}
-
-/**
- * Lazily instantiate the share action sheet
- * @return share action sheet
- */
--(UIActionSheet *)shareActionSheet {
-    if (_shareActionSheet == nil) {
-        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share with friends", @"Share on wall", nil];
-        _shareActionSheet.tag = 2;
-    }
-    return _shareActionSheet;
-}
-
-/**
- * Lazily instantiate the share event request
- * @return Share event request
- */
--(ShareEventRequest *)shareEventRequest {
-    if (_shareEventRequest == nil) {
-        _shareEventRequest = [[ShareEventRequest alloc] init];
-        _shareEventRequest.delegate = self;
-    }
-    return _shareEventRequest;
+    return _emptyView;
 }
 
 /**
@@ -183,54 +145,6 @@ CLLocation *lastKnown;
     [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentOffset.y - [self uiRefreshControl].frame.size.height) animated:YES];
 }
 
-#pragma mark - UIActionSheet and rsvp delegate
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
-    
-    if (actionSheet.tag == 1) {
-        switch (buttonIndex) {
-            case 0:
-                if (![event.rsvp isEqualToString:RSVP_ATTENDING])
-                    [[self eventRsvpRequest] replyAttendingToEvent:event.eid];
-                break;
-            case 1:
-                if (![event.rsvp isEqualToString:RSVP_UNSURE])
-                    [[self eventRsvpRequest] replyUnsureToEvent:event.eid];
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (buttonIndex) {
-            case 0:
-                [[self shareEventRequest] shareToFriendTheEventWithEid:event.eid];
-                break;
-                
-            case 1:
-                [[self shareEventRequest] shareToWallTheEvent:event.eid];
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
-
--(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp {
-    if (success) {
-        [[self eventManager]  setRepliedEvents:[EventCoreData getUserRepliedOngoingEvents] unrepliedEvents:[EventCoreData getUserUnrepliedOngoingEvents] withCurrentLocation:lastKnown];
-        
-        [self.tableView reloadData];
-        [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP" withDuaration:3.0];
-    } else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
-}
-
--(void)notifyShareEventRequestSuccess:(BOOL)success {
-    if (success) [ToastView showToastInParentView:self.view withText:@"Event shared successfully" withDuaration:3.0];
-    else [ToastView showToastInParentView:self.view withText:@"Fail to share event" withDuaration:3.0];
-}
-
-
 #pragma mark - delegate for my events request
 - (void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
     [[self uiRefreshControl] endRefreshing];
@@ -272,6 +186,8 @@ CLLocation *lastKnown;
 //handle event when view first load
 -(void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
 }
@@ -324,20 +240,18 @@ CLLocation *lastKnown;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventItem" forIndexPath:indexPath];
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventItem"];
     
-    UIView *containerView = (UIView *)[cell viewWithTag:200];
-    [containerView.layer setCornerRadius:3.0f];
-    [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    UIView *bgColorView = [[UIView alloc] init];
+    bgColorView.backgroundColor = [UIColor orangeColor];
+    [cell setSelectedBackgroundView:bgColorView];
     
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     
-    UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:201];
-    UILabel *eventName = (UILabel *)[cell viewWithTag:202];
-    UILabel *eventLocation = (UILabel *)[cell viewWithTag:203];
-    UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:204];
-    UILabel *eventStartTime = (UILabel *)[cell viewWithTag:205];
-    UILabel *eventDistance = (UILabel *)[cell viewWithTag:206];
+    UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:400];
+    UILabel *eventName = (UILabel *)[cell viewWithTag:401];
+    UILabel *eventLocation = (UILabel *)[cell viewWithTag:402];
+    UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:403];
+    UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
+    UILabel *eventDistance = (UILabel *)[cell viewWithTag:405];
     
     [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
     eventName.text = event.name;
@@ -350,29 +264,10 @@ CLLocation *lastKnown;
     eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
     eventDistance.text = [event getDistanceString];
     
-    //add the buttons
-    UIView *buttonsBar = (UIView *)[cell viewWithTag:207];
-    [buttonsBar.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
-    [buttonsBar.layer setBorderWidth:0.5f];
-    
-    EventButton *shareButton = [self cellShareButton:indexPath];
-    if (shareButton != nil) [buttonsBar addSubview:shareButton];
-    
-    EventButton *rsvpButton = [self cellRsvpButton:indexPath];
-    if (rsvpButton != nil) [buttonsBar addSubview:rsvpButton];
-    
-    if (rsvpButton == nil && shareButton == nil) {
-        EventButton *detailButton = [self cellDetailButton:indexPath];
-        [buttonsBar addSubview:detailButton];
-    }
-    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UIView *containerView = (UIView *)[cell viewWithTag:200];
-    [containerView setBackgroundColor:[UIColor orangeColor]];
     [self.tableView deselectRowAtIndexPath:indexPath animated:true];
     
     //we check if there is a internet connection, if no then stop refreshing and alert
@@ -390,158 +285,6 @@ CLLocation *lastKnown;
         [message show];
     }
 }
-
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UIView *containerView = (UIView *)[cell viewWithTag:200];
-    [containerView setBackgroundColor:[UIColor whiteColor]];
-}
-
-#pragma mark - cell buttons
-/**
- * Create and return the share button for a cell at a given index path
- * @param index path
- */
-- (EventButton *)cellShareButton:(NSIndexPath *)indexPath {
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    
-    if (![event canShare]) return nil;
-    
-    //otherwise we create that button
-    CGRect buttonFrame = CGRectMake(155.0, 0.0, 155.0, 35.0); //all 3 buttons presents
-    EventButton *shareButton = [[EventButton alloc] initWithFrame:buttonFrame];
-    
-    //set title and format button
-    [shareButton setButtonTitle:@"Share"];
-    [shareButton setImage:[UIImage imageNamed:@"EventCellShareIcon"] forState:UIControlStateNormal];
-    [shareButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:shareButton];
-    
-    //set the index path to recognize which event the button is resided to configured its actions.
-    shareButton.indexPath = indexPath;
-    [shareButton addTarget:self action:@selector(shareActionPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return shareButton;
-}
-
-/**
- * Create and return the rsvp button for a cell at a given index path
- * @param index path
- */
-- (EventButton *)cellRsvpButton:(NSIndexPath *)indexPath {
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    
-    CGRect buttonFrame;
-    if ([event canShare])  //can share implies can rsvp
-        buttonFrame = CGRectMake(0.0, 0.0, 155.0, 35.0);
-    else if ([event canRsvp])
-        buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0);
-    else return nil; //no need to create this button
-    
-    EventButton *rsvpButton = [[EventButton alloc] initWithFrame:buttonFrame];
-    
-    //set title and format button
-    [rsvpButton setButtonTitle:@"Rsvp"];
-    [rsvpButton setImage:[UIImage imageNamed:@"EventCellRsvpIcon"] forState:UIControlStateNormal];
-    [rsvpButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:rsvpButton];
-    
-    //set the index path to recognize which event the button is resided to configured its actions.
-    rsvpButton.indexPath = indexPath;
-    [rsvpButton addTarget:self action:@selector(rsvpActionPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return rsvpButton;
-}
-
-/**
- * Create and return the detail button for a cell at a given index path
- * @param index path
- */
-- (EventButton *)cellDetailButton:(NSIndexPath *)indexPath {
-    CGRect buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0); //only this button present
-    
-    EventButton *detailButton = [[EventButton alloc] initWithFrame:buttonFrame];
-    
-    //set title and format button
-    [detailButton setButtonTitle:@"Detail"];
-    [detailButton setImage:[UIImage imageNamed:@"EventCellDetailIcon"] forState:UIControlStateNormal];
-    [detailButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:detailButton];
-    
-    //set the index path to recognize which event the button is resided to configured its actions.
-    detailButton.indexPath = indexPath;
-    [detailButton addTarget:self action:@selector(detailActionPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return detailButton;
-}
-
-
-#pragma mark - format event cell button
-/**
- * Format the event cell buttons. This include the behavior when highlight and font
- * @param Event button
- */
-- (void)formatEventCellButton:(EventButton *)button {
-    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonNormalBackgroundColor]] forState:UIControlStateNormal];
-    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonHighlightBackgroundColor]] forState:UIControlStateHighlighted];
-    
-    [button setTitleColor:[MyColor eventCellButtonNormalTextColor] forState:UIControlStateNormal];
-    [button setTitleColor:[MyColor eventCellButtonHighlightTextColor] forState:UIControlStateHighlighted];
-    
-    [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.5]];
-    
-    [button setUserInteractionEnabled:true];
-}
-
-#pragma mark - cell button actions selector
-//Handle the event when the the share button for a given event is pressed
-- (void)shareActionPressed:(EventButton *)sender{
-    self.indexPathOfRsvpEvent = sender.indexPath;
-    Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-
-    if ([FBDialogs canPresentMessageDialog])
-        [[self shareActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
-    else [[self shareEventRequest] shareToWallTheEvent:event.eid];
-}
-
-//Handle the event when the the rsvp button for a given event is pressed
-- (void)rsvpActionPressed:(EventButton *)sender{
-    self.indexPathOfRsvpEvent = sender.indexPath;
-    
-    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    if ([internetReachable isReachable]) {
-        [[self rsvpActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-    }
-    
-}
-
-//Handle the event when the the detail button for a given event is pressed
-- (void)detailActionPressed:(EventButton *)sender{
-    Event *event = [[[self eventManager] getEventsAtSection:sender.indexPath.section] objectAtIndex:sender.indexPath.row];
-    
-    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    if ([internetReachable isReachable]) {
-        [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        
-        [message show];
-    }
-}
-
 
 #pragma mark - Navigation
 

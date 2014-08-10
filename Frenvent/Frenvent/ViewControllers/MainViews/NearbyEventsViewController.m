@@ -52,7 +52,7 @@ BOOL isUpdating;
 
 - (UIActionSheet *)filterActionSheet {
     if (_filterActionSheet == nil) {
-        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select event time" delegate:self cancelButtonTitle:@"Result to default" destructiveButtonTitle:nil otherButtonTitles:@"Today", @"Tomorrow", @"Weekend", nil];
+        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:@"Select event time" delegate:self cancelButtonTitle:@"default" destructiveButtonTitle:nil otherButtonTitles:@"Today", @"Tomorrow", @"Weekend", nil];
         _filterActionSheet.delegate = self;
     }
     return _filterActionSheet;
@@ -262,42 +262,29 @@ BOOL isUpdating;
 
 #pragma mark - UIActionSheet and filter
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case FILTER_TYPE_ALL_EVENT:
-            if (self.filterType != buttonIndex) {
+    if (self.filterType != buttonIndex) {
+        self.filterType = buttonIndex;
+        switch (buttonIndex) {
+            case FILTER_TYPE_ALL_EVENT:
                 self.filterButton.title = @"Filter";
-                self.filterType = buttonIndex;
-                [self refresh:nil];
-            }
-            break;
-            
-        case FILTER_TYPE_TODAY_EVENT:
-            if (self.filterType != buttonIndex) {
+                break;
+                
+            case FILTER_TYPE_TODAY_EVENT:
                 self.filterButton.title = @"Today";
+                break;
+                
+            case FILTER_TYPE_TOMORROW_EVENT:
                 self.filterType = buttonIndex;
-                [self refresh:nil];
-            }
-            break;
-            
-        case FILTER_TYPE_TOMORROW_EVENT:
-            if (self.filterType != buttonIndex) {
-                self.filterButton.title = @"Tomorrow";
+                break;
+                
+            case FILTER_TYPE_WEEKEND_EVENT:
                 self.filterType = buttonIndex;
-                [self refresh:nil];
-            }
-            break;
-            
-        case FILTER_TYPE_WEEKEND_EVENT:
-            if (self.filterType != buttonIndex) {
-                self.filterButton.title = @"Weekend";
-                self.filterType = buttonIndex;
-                [self refresh:nil];
-            }
-
-            break;
-            
-        default:
-            break;
+                break;
+                
+            default:
+                break;
+        }
+        [self refresh:nil];
     }
     
 }

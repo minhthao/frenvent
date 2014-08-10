@@ -14,6 +14,8 @@
 #import "Event.h"
 #import "TimeSupport.h"
 #import "EventDetailViewController.h"
+#import "UITableView+NXEmptyView.h"
+#import "MyColor.h"
 
 @interface MoreTableViewController ()
 
@@ -24,11 +26,30 @@
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *name;
+
+@property (nonatomic, strong) UIView *emptyView;
 @end
 
 @implementation MoreTableViewController
 
 #pragma mark - instantiation
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No matches";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 //lazily instantiate logout action sheet
 -(UIActionSheet *)logoutActionSheet {
     if (_logoutActionSheet == nil) {
@@ -70,6 +91,8 @@
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,7 +127,7 @@
     if (_searchBar.text == nil || [_searchBar.text length] == 0) {
         if (section == 0) return 1;
         if (section == 1) return 4;
-        else return 2;
+        else return 1;
     } else return [[self searchEvents] count];
 }
 
@@ -191,11 +214,12 @@
                 [separator setHidden:true];
             }
         } else if (indexPath.section == 2) {
+//            if (indexPath.row == 0) {
+//                [cellIcon setImage:[UIImage imageNamed:@"SubMenuSettingIcon"]];
+//                cellLabel.text = @"Settings";
+//                [separator setHidden:false];
+//            } else
             if (indexPath.row == 0) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuSettingIcon"]];
-                cellLabel.text = @"Settings";
-                [separator setHidden:false];
-            } else if (indexPath.row == 1) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuLogoutIcon"]];
                 cellLabel.text = @"Logout";
                 [separator setHidden:true];
@@ -218,8 +242,9 @@
         else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
         else if (indexPath.row == 3) [self performSegueWithIdentifier:@"trashView" sender:Nil];
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
-        else if (indexPath.row == 1) [[self logoutActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
+//        if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
+//        else
+        if (indexPath.row == 0) [[self logoutActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
     }
 }
 

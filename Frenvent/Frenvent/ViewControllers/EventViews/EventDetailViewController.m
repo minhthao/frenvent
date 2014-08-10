@@ -809,6 +809,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     description.text = self.eventDetail.description;
     description.dataDetectorTypes = UIDataDetectorTypeLink;
     description.backgroundColor = [UIColor clearColor];
+    description.tintColor = [UIColor blueColor];
     [containerView addSubview:description];
 
     return cell;

@@ -14,10 +14,13 @@
 #import "TimeSupport.h"
 #import "Reachability.h"
 #import "EventDetailViewController.h"
+#import "UITableView+NXEmptyView.h"
+#import "MyColor.h"
 
 @interface PastEventsTableViewController ()
 
 @property (nonatomic, strong) NSArray *pastEvents;
+@property (nonatomic, strong) UIView *emptyView;
 
 @end
 
@@ -28,9 +31,28 @@
     return _pastEvents;
 }
 
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No past events";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 #pragma mark - view delegates
 - (void)viewDidLoad{
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
     [self.navigationController setNavigationBarHidden:NO animated:true];
 }
 

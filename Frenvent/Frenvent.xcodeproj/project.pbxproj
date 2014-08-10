@@ -36,6 +36,7 @@
 		3EA88F141995BAC9004994D5 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F131995BAC9004994D5 /* Friend.m */; };
 		3EA88F171995BACA004994D5 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F161995BACA004994D5 /* Notification.m */; };
 		3EA88F1A1995D16B004994D5 /* NotificationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F191995D16B004994D5 /* NotificationGroup.m */; };
+		3EA88F1E1997768A004994D5 /* UITableView+NXEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F1D1997768A004994D5 /* UITableView+NXEmptyView.m */; };
 		3EA9013C198A02BA0056BE36 /* FbUserInfoButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */; };
 		3EA9013F198B00440056BE36 /* ScrollUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013E198B00440056BE36 /* ScrollUser.m */; };
 		3EA90142198B00D30056BE36 /* SuggestFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90141198B00D30056BE36 /* SuggestFriend.m */; };
@@ -188,6 +189,8 @@
 		3EA88F161995BACA004994D5 /* Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Notification.m; path = CoreDatas/Objects/Notification.m; sourceTree = "<group>"; };
 		3EA88F181995D16B004994D5 /* NotificationGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NotificationGroup.h; path = Objects/NotificationGroup.h; sourceTree = "<group>"; };
 		3EA88F191995D16B004994D5 /* NotificationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationGroup.m; path = Objects/NotificationGroup.m; sourceTree = "<group>"; };
+		3EA88F1C1997768A004994D5 /* UITableView+NXEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITableView+NXEmptyView.h"; path = "Libs/UITableView+NXEmptyView/UITableView+NXEmptyView.h"; sourceTree = "<group>"; };
+		3EA88F1D1997768A004994D5 /* UITableView+NXEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITableView+NXEmptyView.m"; path = "Libs/UITableView+NXEmptyView/UITableView+NXEmptyView.m"; sourceTree = "<group>"; };
 		3EA9013A198A02BA0056BE36 /* FbUserInfoButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoButtons.h; path = Libs/PageScrollView/FbUserInfoButtons.h; sourceTree = "<group>"; };
 		3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoButtons.m; path = Libs/PageScrollView/FbUserInfoButtons.m; sourceTree = "<group>"; };
 		3EA9013D198B00440056BE36 /* ScrollUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScrollUser.h; path = Libs/PageScrollView/ScrollUser.h; sourceTree = "<group>"; };
@@ -549,6 +552,15 @@
 			name = PageScrollView;
 			sourceTree = "<group>";
 		};
+		3EA88F1B19977648004994D5 /* UITableView+NXEmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				3EA88F1C1997768A004994D5 /* UITableView+NXEmptyView.h */,
+				3EA88F1D1997768A004994D5 /* UITableView+NXEmptyView.m */,
+			);
+			name = "UITableView+NXEmptyView";
+			sourceTree = "<group>";
+		};
 		3EA9014A198BA6580056BE36 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -646,6 +658,7 @@
 		3EACE3DF195E2CD90023EF58 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3EA88F1B19977648004994D5 /* UITableView+NXEmptyView */,
 				3E8A3DCA1983259F003C932A /* PageScrollView */,
 				3ECF10BC197F227A00963155 /* SDWebImage */,
 				3EAAACC0196B7CC3004AD322 /* UIKit+AFNetworking */,
@@ -960,6 +973,7 @@
 			files = (
 				3EA90163198E49560056BE36 /* ShareEventRequest.m in Sources */,
 				3ECF10E3197F229100963155 /* SDWebImageDownloader.m in Sources */,
+				3EA88F1E1997768A004994D5 /* UITableView+NXEmptyView.m in Sources */,
 				3ECF10EA197F229100963155 /* UIImage+WebP.m in Sources */,
 				3EAAAC9519649B00004AD322 /* DbUserRequest.m in Sources */,
 				3ECF10AE197A75D800963155 /* EventDetailViewController.m in Sources */,

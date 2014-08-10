@@ -202,7 +202,6 @@
  * @return description string
  */
 -(NSAttributedString *)getDescriptionForInvitedEvents {
-    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]};
     NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
     
     if ([self.userInvitedEvents count] > 1) {

@@ -27,8 +27,11 @@
 #import "DbFBUserRequest.h"
 #import "RecommendFbUserRequest.h"
 #import "Reachability.h"
+#import "UITableView+NXEmptyView.h"
 
 @interface FbUserInfoViewController ()
+
+@property (nonatomic, strong) UIView *emptyView;
 
 @property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
 
@@ -51,6 +54,23 @@
 
 @implementation FbUserInfoViewController
 #pragma mark - initiation and private methods
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.eventTable.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.eventTable.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No events";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 - (UIActionSheet *)rsvpActionSheet {
     if (_rsvpActionSheet == nil) {
         _rsvpActionSheet =  [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Going", @"Maybe", nil];
@@ -302,6 +322,8 @@
 #pragma mark - view delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.eventTable.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.eventTable.nxEV_emptyView = [self emptyView];
     [self.mainTable setHidden:true];
     [self.eventTable setHidden:true];
     [self.loadingSpinner setHidesWhenStopped:true];

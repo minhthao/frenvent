@@ -22,12 +22,6 @@
                                        lowerLatitude:(double)lowerLatitude
                                       upperLongitude:(double)upperLongitude
                                        upperLatitude:(double)upperLatitude;
-+ (NSArray *) getNearbyEventsBoundedByLowerLongitude:(double)lowerLongitude
-                                       lowerLatitude:(double)lowerLatitude
-                                      upperLongitude:(double)upperLongitude
-                                       upperLatitude:(double)upperLatitude
-                                      lowerTimeBound:(int64_t)lowerTimeBound
-                                      upperTimeBound:(int64_t)upperTimeBound;
 
 + (NSArray *) getFriendsEvents;
 

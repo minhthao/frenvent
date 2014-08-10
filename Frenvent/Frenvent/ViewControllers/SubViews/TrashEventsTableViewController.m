@@ -14,10 +14,13 @@
 #import "TimeSupport.h"
 #import "Reachability.h"
 #import "EventDetailViewController.h"
+#import "UITableView+NXEmptyView.h"
+#import "MyColor.h"
 
 @interface TrashEventsTableViewController ()
 
 @property (nonatomic, strong) NSArray *trashEvents;
+@property (nonatomic, strong) UIView *emptyView;
 
 @end
 
@@ -28,10 +31,29 @@
     return _trashEvents;
 }
 
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No hidden events";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
     [self.navigationController setNavigationBarHidden:NO animated:true];
 }
 
@@ -63,14 +85,11 @@
     UILabel *eventLocation = (UILabel *)[cell viewWithTag:402];
     UILabel *eventHost = (UILabel *)[cell viewWithTag:403];
     UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
-    UIView *separator = (UIView *)[cell viewWithTag:405];
     
     [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
     eventName.text = event.name;
     eventLocation.text = event.location;
     eventHost.attributedText = [event getHostAttributedString];
-    if (indexPath.row == [[self trashEvents] count] - 1) [separator setHidden:true];
-    else [separator setHidden:false];
     
     eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
     return cell;

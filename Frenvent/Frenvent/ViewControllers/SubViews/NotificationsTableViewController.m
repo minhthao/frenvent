@@ -24,8 +24,12 @@
 #import "Reachability.h"
 #import "ToastView.h"
 #import "EventDetailViewController.h"
+#import "UITableView+NXEmptyView.h"
+#import "MyColor.h"
 
 @interface NotificationsTableViewController ()
+
+@property (nonatomic, strong) UIView *emptyView;
 
 @property (nonatomic, strong) NotificationManager *notificationManager;
 @property (nonatomic, strong) NSURL *userImageUrl;
@@ -39,6 +43,23 @@
 
 @implementation NotificationsTableViewController
 #pragma mark - instantiations
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No new feeds";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 - (NotificationManager *)notificationManager {
     if (_notificationManager == nil) {
         _notificationManager = [[NotificationManager alloc] init];
@@ -76,14 +97,15 @@
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
     [self.navigationController setNavigationBarHidden:NO animated:true];
-    
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -140,7 +162,6 @@
             notificationTime.text = @"";
             PagedEventScrollView *eventScrollView = [[PagedEventScrollView alloc] initWithFrame:scrollViewFrame];
             eventScrollView.delegate = self;
-            NSLog(@"%d", (int)[[self notificationManager].userInvitedEvents count]);
             [eventScrollView setEvents:[self notificationManager].userInvitedEvents];
             [content addSubview:eventScrollView];
             

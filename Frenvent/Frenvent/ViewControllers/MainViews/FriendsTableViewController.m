@@ -13,10 +13,13 @@
 #import "Reachability.h"
 #import "FbUserInfoViewController.h"
 #import "TimeSupport.h"
+#import "UITableView+NXEmptyView.h"
+#import "MyColor.h"
 
 @interface FriendsTableViewController ()
 
 @property (nonatomic, strong) FriendManager *friendManager;
+@property (nonatomic, strong) UIView *emptyView;
 
 @end
 
@@ -25,6 +28,23 @@
 NSArray *allFriends;
 
 #pragma mark - private class
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No matches";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 - (FriendManager *) friendManager {
     if (_friendManager == nil) {
         _friendManager = [[FriendManager alloc] init];
@@ -38,6 +58,8 @@ NSArray *allFriends;
 #pragma mark - view controller methods
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

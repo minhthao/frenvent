@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSInteger const FILTER_TYPE_WITHIN_ONE_MILE;
+extern NSInteger const FILTER_TYPE_WITHIN_TEN_MILE;
+extern NSInteger const FILTER_TYPE_WITHIN_FIFTY_MILE;
+extern NSInteger const FILTER_TYPE_DEFAULT;
+
 @interface EventManager : NSObject
+
+@property (nonatomic) NSInteger filterType;
+@property (nonatomic, strong) NSArray *eventsArray;
 
 @property (nonatomic, strong) NSMutableArray *todayEvents;
 @property (nonatomic, strong) NSMutableArray *thisWeekEvents;
@@ -19,6 +27,7 @@
 - (void)setEvents:(NSArray *)eventsArray;
 - (void)setEvents:(NSArray *)eventsArray withCurrentLocation:(CLLocation *)currentLocation;
 - (void)setCurrentLocation:(CLLocation *)currentLocation;
+- (void)filterEvent:(NSInteger)filterType;
 - (NSInteger) getNumberOfSections;
 - (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
 - (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;

@@ -238,26 +238,24 @@ static int64_t const LOWER_TIME_LIMIT = 1262304000;
 - (void)processEventsResult:(id)result forFriend:(Friend *)friend{
     NSArray *data = (NSArray *)result[@"data"];
     NSArray *resultSet = data[1][@"fql_result_set"];
-    if ([resultSet count] > 0) {
-        for (NSDictionary *eventInfo in resultSet) {
-            NSString *eid;
-            if ([eventInfo[@"eid"] isKindOfClass:[NSString class]])
-                eid = eventInfo[@"eid"];
-            else eid = [eventInfo[@"eid"] stringValue];
-            Event *event = [EventCoreData getEventWithEid:eid];
-            if (event == nil)
-                event = [EventCoreData addEvent:eventInfo usingRsvp:RSVP_NOT_INVITED];
-            
-            if (![FriendToEventCoreData isFriendToEventPairExist:eid :friend.uid])
-                [FriendToEventCoreData addFriendToEventPair:event :friend];
-        }
-        NSArray *pastEvents = [FriendCoreData getAllPastEventsPertainingToUser:friend.uid];
-        NSArray *ongoingEvents = [FriendCoreData getAllFutureEventsPertainingToUser:friend.uid];
-        [FriendCoreData markFriend:friend];
+    for (NSDictionary *eventInfo in resultSet) {
+        NSString *eid;
+        if ([eventInfo[@"eid"] isKindOfClass:[NSString class]])
+            eid = eventInfo[@"eid"];
+        else eid = [eventInfo[@"eid"] stringValue];
+        Event *event = [EventCoreData getEventWithEid:eid];
+        if (event == nil)
+            event = [EventCoreData addEvent:eventInfo usingRsvp:RSVP_NOT_INVITED];
         
-        [self.delegate fbUserInfoRequestOngoingEvents:ongoingEvents];
-        [self.delegate fbUserInfoRequestPastEvents:pastEvents];
+        if (![FriendToEventCoreData isFriendToEventPairExist:eid :friend.uid])
+            [FriendToEventCoreData addFriendToEventPair:event :friend];
     }
+    NSArray *pastEvents = [FriendCoreData getAllPastEventsPertainingToUser:friend.uid];
+    NSArray *ongoingEvents = [FriendCoreData getAllFutureEventsPertainingToUser:friend.uid];
+    [FriendCoreData markFriend:friend];
+    
+    [self.delegate fbUserInfoRequestOngoingEvents:ongoingEvents];
+    [self.delegate fbUserInfoRequestPastEvents:pastEvents];
 }
 
 

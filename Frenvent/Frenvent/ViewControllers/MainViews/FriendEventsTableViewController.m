@@ -21,10 +21,13 @@
 #import "EventRsvpRequest.h"
 #import "ShareEventRequest.h"
 #import "ToastView.h"
+#import "UITableView+NXEmptyView.h"
 
 CLLocation *lastKnown;
 
 @interface FriendEventsTableViewController ()
+
+@property (nonatomic, strong) UIView *emptyView;
 
 @property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
 @property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
@@ -32,6 +35,8 @@ CLLocation *lastKnown;
 
 @property (nonatomic, strong) UIActionSheet *shareActionSheet;
 @property (nonatomic, strong) ShareEventRequest *shareEventRequest;
+
+@property (nonatomic, strong) UIActionSheet *filterActionSheet;
 
 @property (nonatomic, strong) EventManager *eventManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -43,6 +48,23 @@ CLLocation *lastKnown;
 @implementation FriendEventsTableViewController
 
 #pragma mark - instantiation
+-(UIView *)emptyView {
+    if (_emptyView == nil) {
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
+        noResult.shadowColor = [UIColor whiteColor];
+        noResult.textAlignment = NSTextAlignmentCenter;
+        noResult.shadowOffset = CGSizeMake(1, 1);
+        noResult.text = @"No featured events";
+        [_emptyView addSubview:noResult];
+    }
+    return _emptyView;
+}
+
 /**
  * Lazily instantiate the rsvp action sheet
  * @return rsvp action sheet
@@ -92,12 +114,26 @@ CLLocation *lastKnown;
 }
 
 /**
+ * Lazily instantiate the filter action sheet
+ * @return filter action sheet
+ */
+- (UIActionSheet *)filterActionSheet {
+    if (_filterActionSheet == nil) {
+        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Default" destructiveButtonTitle:nil otherButtonTitles:@"< 1 mile", @"< 10 miles", @"< 50 miles", nil];
+        _filterActionSheet.tag = 3;
+        _filterActionSheet.delegate = self;
+    }
+    return _filterActionSheet;
+}
+
+/**
  * Lazily instantiate and get the event manager object
  * @return Event Manager
  */
 - (EventManager *) eventManager {
     if (_eventManager == nil) {
         _eventManager = [[EventManager alloc] init];
+        _eventManager.filterType = FILTER_TYPE_DEFAULT;
         [self.eventManager setEvents:[EventCoreData getFriendsEvents]];
     }
     
@@ -204,7 +240,7 @@ CLLocation *lastKnown;
             default:
                 break;
         }
-    } else {
+    } else if (actionSheet.tag == 2) {
         switch (buttonIndex) {
             case 0:
                 [[self shareEventRequest] shareToFriendTheEventWithEid:event.eid];
@@ -216,6 +252,16 @@ CLLocation *lastKnown;
                 
             default:
                 break;
+        }
+    } else if (actionSheet.tag == 3) {
+        if ([self eventManager].filterType != buttonIndex) {
+            if (buttonIndex == FILTER_TYPE_WITHIN_ONE_MILE) self.filterButton.title = @"< 1 mile";
+            else if (buttonIndex == FILTER_TYPE_WITHIN_TEN_MILE) self.filterButton.title = @"< 10 miles";
+            else if (buttonIndex == FILTER_TYPE_WITHIN_FIFTY_MILE) self.filterButton.title = @"< 50 miles";
+            else if (buttonIndex == FILTER_TYPE_DEFAULT) self.filterButton.title = @"Filter";
+            
+            [[self eventManager] filterEvent:buttonIndex];
+            [self.tableView reloadData];
         }
     }
 }
@@ -259,6 +305,8 @@ CLLocation *lastKnown;
 - (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     [[self locationManager] stopUpdatingLocation];
     if (locations != nil && [locations count] > 0) {
+        [self.filterButton setEnabled:true];
+        
         lastKnown = [locations objectAtIndex:0];
         
         if (_eventManager == nil) [self eventManager:lastKnown];
@@ -278,6 +326,9 @@ CLLocation *lastKnown;
 #pragma mark - view delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
+    self.tableView.nxEV_emptyView = [self emptyView];
+    [self.filterButton setEnabled:false];
     self.refreshControl = [self uiRefreshControl];
     
     [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -288,6 +339,11 @@ CLLocation *lastKnown;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -552,7 +608,6 @@ CLLocation *lastKnown;
 
 
 #pragma mark - Navigation
-
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
@@ -562,6 +617,10 @@ CLLocation *lastKnown;
         viewController.eid = eid;
     }
     
+}
+
+- (IBAction)doFilter:(id)sender {
+    [[self filterActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 @end

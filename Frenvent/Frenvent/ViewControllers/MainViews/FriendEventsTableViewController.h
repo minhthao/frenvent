@@ -18,7 +18,8 @@
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *filter;
+- (IBAction)doFilter:(id)sender;
+
 
 
 @end
