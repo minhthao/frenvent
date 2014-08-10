@@ -13,6 +13,7 @@
 #import "UpdateManager.h"
 #import "Reachability.h"
 #import <Bolts/Bolts.h>
+#import "EventDetailViewController.h"
 
 @implementation AppDelegate
 
@@ -31,8 +32,7 @@
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0]];
-    
-    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
     NSShadow *shadow = [NSShadow new];
     [shadow setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
@@ -208,15 +208,33 @@
     // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
     BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call) {
          // Parse the incoming URL
-         BFURL *parsedUrl = [BFURL URLWithURL:url];
-         if ([parsedUrl targetURL]) {
-             NSString *targetURLString = [[parsedUrl targetURL] absoluteString];
-             [[[UIAlertView alloc] initWithTitle:@"Received link:"
-                                         message:targetURLString
-                                        delegate:nil
-                               cancelButtonTitle:@"OK"
-                               otherButtonTitles:nil] show];
-         }
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
+             BFURL *parsedUrl = [BFURL URLWithURL:url];
+             if ([parsedUrl targetURL]) {
+                 NSString *targetURLString = [[parsedUrl targetURL] absoluteString];
+                 NSString *url = [[targetURLString componentsSeparatedByString:@"&"] objectAtIndex:0];
+                 NSString *eid = [[url componentsSeparatedByString:@"="] objectAtIndex:1];
+                 
+                 Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+                 if ([internetReachable isReachable]) {
+                     UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+                     EventDetailViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"eventDetailViewController"];
+                     rootViewController.eid = eid;
+                     rootViewController.isModal = true;
+                     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+                     
+                     [self.window.rootViewController presentViewController:navigationController animated:true completion:NULL];
+                 } else {
+                     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                                       message:@"Connect to internet and try again."
+                                                                      delegate:nil
+                                                             cancelButtonTitle:@"OK"
+                                                             otherButtonTitles:nil];
+                     [message show];
+                 }
+             }
+        }
      }];
     
     // You can add your app-specific url handling code here if needed

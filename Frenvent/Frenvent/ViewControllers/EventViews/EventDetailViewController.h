@@ -18,6 +18,7 @@
 @interface EventDetailViewController : UIViewController <EventDetailsRequestDelegate, UIAlertViewDelegate, DbEventsRequestDelegate, ShareEventRequestDelegate, EventRsvpRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, EventParticipantViewDelegate, EventDetailRecommendUserRequestDelegate, PagedUserScrollViewDelegate>
 
 @property (nonatomic, strong) NSString *eid;
+@property (nonatomic) BOOL isModal;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 - (IBAction)shareAction:(id)sender;

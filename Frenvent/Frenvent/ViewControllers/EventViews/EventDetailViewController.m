@@ -401,6 +401,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [self.navigationController popViewControllerAnimated:true];
 }
 
+-(void)backClick {
+    [self dismissViewControllerAnimated:true completion:NULL];
+}
+
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -412,6 +416,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     if (self.eid != nil) {
         [[self eventDetailsRequest] queryEventDetail:self.eid];
         [[self eventDetailRecommendUserRequest] queryRecommendUser:self.eid];
+    }
+    
+    if (self.isModal) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
     }
     
     [self.loadingSpinner setHidesWhenStopped:true];
