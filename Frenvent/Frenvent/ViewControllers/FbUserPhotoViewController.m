@@ -14,14 +14,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     if ([self.photoUrls count] > 0) {
-        PagedPhotoScrollView *pageScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 64, 320, 504)];
+        PagedPhotoScrollView *pageScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.mainView.frame.size.height)];
         
         pageScrollView.backgroundColor = [MyColor eventCellButtonsContainerBorderColor];
         [pageScrollView setScrollViewPhotoUrls:self.photoUrls withContentModeFit:true];
         [pageScrollView changeToPage:self.index];
         
-        [self.view addSubview:pageScrollView];
+        [self.mainView addSubview:pageScrollView];
     } else [self.navigationController popViewControllerAnimated:true];
 }
 

@@ -166,6 +166,7 @@ NSArray *allFriends;
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *uid = (NSString *)sender;
         FbUserInfoViewController *viewController = segue.destinationViewController;
+        viewController.shouldReadjustInset = true;
         viewController.targetUid = uid;
     }
 }

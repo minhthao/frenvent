@@ -408,10 +408,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:NO animated:true];
     [self.shareButton setEnabled:false];
-    
-    self.mainView.contentInset = UIEdgeInsetsMake(0, 0, self.navigationController.navigationBar.frame.size.height, 0);
     
     if (self.eid != nil) {
         [[self eventDetailsRequest] queryEventDetail:self.eid];
@@ -437,6 +434,14 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [self formatMenuButton:self.saveButton];
     [self formatMenuButton:self.moreButton];
 
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if ([self.navigationController isNavigationBarHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:false];
+        //[self.mainView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

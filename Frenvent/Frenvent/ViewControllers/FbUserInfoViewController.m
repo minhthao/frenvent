@@ -353,7 +353,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:false];
+    if ([self.navigationController isNavigationBarHidden]) {
+        [self.navigationController setNavigationBarHidden:NO animated:false];
+        //[self.mainTable setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
+    }
     
     [self.profileImage.layer setMasksToBounds:YES];
     [self.profileImage.layer setBorderWidth:3];

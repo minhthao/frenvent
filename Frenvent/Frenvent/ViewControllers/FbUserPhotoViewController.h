@@ -10,6 +10,9 @@
 
 @interface FbUserPhotoViewController : UIViewController
 
+
+@property (weak, nonatomic) IBOutlet UIView *mainView;
+
 @property (nonatomic) int index;
 @property (nonatomic, strong) NSArray *photoUrls;
 @end
