@@ -85,6 +85,7 @@ BOOL isUpdating;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.filterType = FILTER_TYPE_ALL_EVENT;
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self.mapView setShowsUserLocation:YES];
     [self.refreshButton setEnabled:false];
 }

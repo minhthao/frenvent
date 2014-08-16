@@ -47,19 +47,19 @@
         
         CGRect detailFrame = CGRectMake(0, frame.size.height - 60, frame.size.width, 60);
         UIView *eventDetailContainerView = [[UIView alloc] initWithFrame:detailFrame];
-        eventDetailContainerView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+        eventDetailContainerView.backgroundColor = [UIColor colorWithRed:250/255.0 green:250/255.0 blue:250/255.0 alpha:1.0];
         [self addSubview:eventDetailContainerView];
         
         self.eventRsvpButtonView = [[UIButton alloc] initWithFrame:CGRectMake(detailFrame.size.width - 50, 10, 40, 40)];
         [self.eventRsvpButtonView setUserInteractionEnabled:true];
-        [self.eventRsvpButtonView.layer setMasksToBounds:NO];
+        [self.eventRsvpButtonView.layer setMasksToBounds:YES];
         [self.eventRsvpButtonView.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
         [self.eventRsvpButtonView.layer setCornerRadius:3.0f];
         [self.eventRsvpButtonView.layer setBorderWidth:1];
         
         [self.eventRsvpButtonView.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [self.eventRsvpButtonView.layer setShadowRadius:2.0f];
-        [self.eventRsvpButtonView.layer setShadowOffset:CGSizeMake(1, 1)];
+        [self.eventRsvpButtonView.layer setShadowRadius:1.0f];
+        [self.eventRsvpButtonView.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
         [self.eventRsvpButtonView.layer setShadowOpacity:0.5];
         
         [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateNormal"] forState:UIControlStateNormal];
@@ -75,17 +75,17 @@
         
         self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, infoFrame.size.width, 20)];
         self.title.textColor = [UIColor darkTextColor];
-        self.title.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:16];
+        self.title.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15];
         [eventInfoContainerView addSubview:self.title];
         
-        self.location = [[UILabel alloc] initWithFrame:CGRectMake(0, 24, infoFrame.size.width, 15)];
+        self.location = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, infoFrame.size.width, 17)];
         self.location.textColor = [UIColor grayColor];
         self.location.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
         [eventInfoContainerView addSubview:self.location];
     
-        self.time = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, infoFrame.size.width, 15)];
-        self.time.textColor = [UIColor grayColor];
-        self.time.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:13];
+        self.time = [[UILabel alloc] initWithFrame:CGRectMake(0, 37, infoFrame.size.width, 18)];
+        self.time.textColor = [UIColor darkGrayColor];
+        self.time.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
         [eventInfoContainerView addSubview:self.time];
     }
     return self;

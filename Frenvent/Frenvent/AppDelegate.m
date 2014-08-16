@@ -27,7 +27,7 @@
     [FBSettings enablePlatformCompatibility:true];
     
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:300.0]; //call update every 5 mins, change this before release
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum]; 
     
     [[UITabBar appearance] setTintColor:[UIColor blueColor]];
     

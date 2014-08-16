@@ -60,6 +60,7 @@ NSArray *allFriends;
     [super viewDidLoad];
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
+    [self.searchDisplayController.searchBar setTranslucent:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -225,9 +225,8 @@ CLLocation *lastKnown;
 
 #pragma mark - UIActionSheet and rsvp delegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
-    
     if (actionSheet.tag == 1) {
+        Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
         switch (buttonIndex) {
             case 0:
                 if (![event.rsvp isEqualToString:RSVP_ATTENDING])
@@ -241,6 +240,7 @@ CLLocation *lastKnown;
                 break;
         }
     } else if (actionSheet.tag == 2) {
+        Event *event = [[[self eventManager] getEventsAtSection:self.indexPathOfRsvpEvent.section] objectAtIndex:self.indexPathOfRsvpEvent.row];
         switch (buttonIndex) {
             case 0:
                 [[self shareEventRequest] shareToFriendTheEventWithEid:event.eid];
@@ -254,15 +254,29 @@ CLLocation *lastKnown;
                 break;
         }
     } else if (actionSheet.tag == 3) {
-        if ([self eventManager].filterType != buttonIndex) {
-            if (buttonIndex == FILTER_TYPE_WITHIN_ONE_MILE) self.filterButton.title = @"< 1 mile";
-            else if (buttonIndex == FILTER_TYPE_WITHIN_TEN_MILE) self.filterButton.title = @"< 10 miles";
-            else if (buttonIndex == FILTER_TYPE_WITHIN_FIFTY_MILE) self.filterButton.title = @"< 50 miles";
-            else if (buttonIndex == FILTER_TYPE_DEFAULT) self.filterButton.title = @"Filter";
-            
-            [[self eventManager] filterEvent:buttonIndex];
-            [self.tableView reloadData];
+        switch (buttonIndex) {
+            case 0:
+                self.filterButton.title = @"< 1 mile";
+                break;
+                
+            case 1:
+                self.filterButton.title = @"< 10 miles";
+                break;
+                
+            case 2:
+                self.filterButton.title = @"< 50 miles";
+                break;
+                
+            case 3:
+                self.filterButton.title = @"Filter";
+                break;
+                
+            default:
+                break;
         }
+        
+        [[self eventManager] filterEvent:buttonIndex];
+        [self.tableView reloadData];
     }
 }
 
@@ -306,7 +320,6 @@ CLLocation *lastKnown;
     [[self locationManager] stopUpdatingLocation];
     if (locations != nil && [locations count] > 0) {
         [self.filterButton setEnabled:true];
-        
         lastKnown = [locations objectAtIndex:0];
         
         if (_eventManager == nil) [self eventManager:lastKnown];
@@ -328,6 +341,7 @@ CLLocation *lastKnown;
     [super viewDidLoad];
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self.filterButton setEnabled:false];
     self.refreshControl = [self uiRefreshControl];
     

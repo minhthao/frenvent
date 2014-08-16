@@ -99,6 +99,7 @@
     [super viewDidLoad];
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController setNavigationBarHidden:NO animated:true];
 }
 
@@ -148,9 +149,12 @@
         UIView *content = (UIView *)[cell viewWithTag:204];
         [content.layer setMasksToBounds:NO];
         [content.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [content.layer setShadowRadius:3.5f];
-        [content.layer setShadowOffset:CGSizeMake(1, 1)];
-        [content.layer setShadowOpacity:0.5];
+        [content.layer setShadowRadius:1];
+        [content.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
+        [content.layer setShadowOpacity:0.35f];
+        [content.layer setBorderWidth:0.5f];
+        [content.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        
         for (UIView *subview in [content subviews]) {
             [subview removeFromSuperview];
         }

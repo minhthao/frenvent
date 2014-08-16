@@ -45,14 +45,12 @@ extern NSString * const PUBLIC_EVENT_UPPER_LONGITUDE;
 extern NSString * const PUBLIC_EVENT_LOWER_LATITUDE;
 extern NSString * const PUBLIC_EVENT_UPPER_LATITUDE;
 
-extern NSString * const NOTIFICATION_UID;
-extern NSString * const NOTIFICATION_TYPE;
-extern NSString * const NOTIFICATION_MESSAGE;
-extern NSString * const NOTIFICATION_MESSAGE_EXTRA1;
-extern NSString * const NOTIFICATION_MESSAGE_EXTRA2;
-extern NSString * const NOTIFICATION_EXTRA_INFO;
-extern NSString * const NOTIFICATION_VIEWED;
-extern NSString * const NOTIFICATION_TIME;
+extern NSString * const IOS_NOTIFICATION_TABLE_NAME;
+extern NSString * const IOS_NOTIFICATION_UID;
+extern NSString * const IOS_NOTIFICATION_FRIEND_UID;
+extern NSString * const IOS_NOTIFICATION_EID;
+extern NSString * const IOS_NOTIFICATION_START_TIME;
+extern NSString * const IOS_NOTIFICATION_TIMESTAMP;
 
 // database connection constants
 extern NSString * const REQUEST_TYPE;
@@ -65,7 +63,7 @@ extern NSString * const REQUEST_DATA_TYPE;
 extern NSString * const REQUEST_DATA_TYPE_USER;
 extern NSString * const REQUEST_DATA_TYPE_FBUSER;
 extern NSString * const REQUEST_DATA_TYPE_EVENT;
-extern NSString * const REQUEST_DATA_TYPE_NOTIFICATION;
+extern NSString * const REQUEST_DATA_TYPE_IOS_NOTIFICATION;
 
 extern NSString * const REQUEST_DATA;
 

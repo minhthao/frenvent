@@ -27,7 +27,7 @@
     NSString *post = [NSString stringWithFormat:@"&%@=%@&%@=%@&%@=%@",REQUEST_TYPE,REQUEST_TYPE_POST,
                       REQUEST_DATA_TYPE, REQUEST_DATA_TYPE_FBUSER, REQUEST_DATA, params];
     
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     

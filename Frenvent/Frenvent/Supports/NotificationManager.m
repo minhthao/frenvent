@@ -16,7 +16,23 @@
 #import "Friend.h"
 #import "EventParticipant.h"
 
+@interface NotificationManager()
+
+@property (nonatomic) int64_t todayStartTime;
+@property (nonatomic) int64_t thisWeekStartTime;
+
+@end
+
 @implementation NotificationManager
+
+-(id)init {
+    self = [super init];
+    if (self) {
+        self.todayStartTime = [TimeSupport getTodayTimeFrameStartTimeInUnix];
+        self.thisWeekStartTime = [TimeSupport getThisWeekTimeFrameStartTimeInUnix];
+    }
+    return self;
+}
 
 -(void)initialize {
     //we first group the notifications
@@ -30,7 +46,7 @@
 
     NSArray *notifications = [NotificationCoreData getNotifications];
     for (Notification *notification in notifications) {
-        if ([notification.time longLongValue] > [TimeSupport getTodayTimeFrameStartTimeInUnix]) {
+        if ([notification.time longLongValue] >= self.todayStartTime) {
             [friendsTodayNotifications addObject:notification.friend.uid];
             NSUInteger indexOfFriend = [friendsTodayNotifications indexOfObject:notification.friend.uid];
             if ([self.todayNotification count] > indexOfFriend) {
@@ -42,7 +58,7 @@
                 notificationGroup.friend = notification.friend;
                 [self.todayNotification addObject:notificationGroup];
             }
-        } else if ([notification.time longLongValue] > [TimeSupport getThisWeekTimeFrameStartTimeInUnix]) {
+        } else if ([notification.time longLongValue] >= self.thisWeekStartTime) {
             [friendsThisWeekNotifications addObject:notification.friend.uid];
             NSUInteger indexOfFriend = [friendsThisWeekNotifications indexOfObject:notification.friend.uid];
             if ([self.thisWeekNotification count] > indexOfFriend) {

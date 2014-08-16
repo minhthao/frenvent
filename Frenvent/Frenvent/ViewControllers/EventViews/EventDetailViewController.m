@@ -200,7 +200,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
  */
 - (PagedUserScrollView *)userScrollView {
     if (_userScrollView == nil) {
-        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
+        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(0, 0, 304, 150)];
         _userScrollView.delegate = self;
     }
     return _userScrollView;

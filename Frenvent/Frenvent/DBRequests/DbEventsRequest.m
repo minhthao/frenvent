@@ -42,7 +42,7 @@ static double const DISTANCE_RADIUS = 30;
     }
     
     NSData* nsdata = [NSJSONSerialization dataWithJSONObject:jsonArray options:0 error:nil];
-    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSASCIIStringEncoding];
+    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSUTF8StringEncoding];
     
     CFStringRef originalString = (__bridge CFStringRef)jsonString;
     
@@ -85,7 +85,7 @@ static double const DISTANCE_RADIUS = 30;
     [params setObject:[NSNumber numberWithLongLong:endDay] forKey:EVENT_END_TIME];
     
     NSData* nsdata = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
-    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSASCIIStringEncoding];
+    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSUTF8StringEncoding];
     
     CFStringRef originalString = (__bridge CFStringRef)jsonString;
     
@@ -130,7 +130,7 @@ static double const DISTANCE_RADIUS = 30;
     [params setObject:[NSNumber numberWithLongLong:endDay] forKey:PUBLIC_EVENT_TIME_FRAME_END];
     
     NSData* nsdata = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
-    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSASCIIStringEncoding];
+    NSMutableString* jsonString =[[NSMutableString alloc] initWithData:nsdata encoding:NSUTF8StringEncoding];
     
     CFStringRef originalString = (__bridge CFStringRef)jsonString;
     

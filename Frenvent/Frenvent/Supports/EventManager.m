@@ -21,7 +21,36 @@ static NSString * const THIS_WEEKEND_EVENTS_HEADER = @"THIS WEEKEND";
 static NSString * const NEXT_WEEK_EVENTS_HEADER = @"NEXT WEEK";
 static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
 
+@interface EventManager()
+
+@property (nonatomic) int64_t todayStartTime;
+@property (nonatomic) int64_t todayEndTime;
+@property (nonatomic) int64_t thisWeekendStartTime;
+@property (nonatomic) int64_t thisWeekendEndTime;
+@property (nonatomic) int64_t thisWeekStartTime;
+@property (nonatomic) int64_t thisWeekEndTime;
+@property (nonatomic) int64_t nextWeekStartTime;
+@property (nonatomic) int64_t nextWeekEndTime;
+
+
+@end
+
 @implementation EventManager
+
+-(id)init {
+    self = [super init];
+    if (self) {
+        self.todayStartTime = [TimeSupport getTodayTimeFrameStartTimeInUnix];
+        self.todayEndTime = [TimeSupport getTodayTimeFrameEndTimeInUnix];
+        self.thisWeekendStartTime = [TimeSupport getThisWeekendTimeFrameStartTimeInUnix];
+        self.thisWeekendEndTime = [TimeSupport getThisWeekendTimeFrameEndTimeInUnix];
+        self.thisWeekStartTime = [TimeSupport getThisWeekTimeFrameStartTimeInUnix];
+        self.thisWeekEndTime = [TimeSupport getThisWeekTimeFrameEndTimeInUnix];
+        self.nextWeekStartTime = [TimeSupport getNextWeekTimeFrameStartTimeInUnix];
+        self.nextWeekEndTime = [TimeSupport getNextWeekTimeFrameEndTimeInUnix];
+    }
+    return self;
+}
 
 #pragma mark - private method
 /**
@@ -47,7 +76,6 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
     if ([_thisWeekendEvents count] > 0) [sectionTitles addObject:THIS_WEEKEND_EVENTS_HEADER];
     if ([_nextWeekEvents count] > 0) [sectionTitles addObject:NEXT_WEEK_EVENTS_HEADER];
     if ([_otherEvents count] > 0) [sectionTitles addObject:OTHER_EVENTS_HEADER];
-    
     return sectionTitles;
 }
 
@@ -76,13 +104,13 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @param Event
  */
 - (void)setEventCategory:(Event *)event {
-    if ([event.startTime longLongValue] >= [TimeSupport getTodayTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getTodayTimeFrameEndTimeInUnix]) {
+    if ([event.startTime longLongValue] >= self.todayStartTime && [event.startTime longLongValue] < self.todayEndTime) {
         [_todayEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekendTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekendTimeFrameEndTimeInUnix]) {
+    } else if ([event.startTime longLongValue] >= self.thisWeekendStartTime && [event.startTime longLongValue] < self.thisWeekendEndTime) {
         [_thisWeekendEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= [TimeSupport getThisWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getThisWeekTimeFrameEndTimeInUnix]) {
+    } else if ([event.startTime longLongValue] >= self.thisWeekStartTime && [event.startTime longLongValue] < self.thisWeekEndTime) {
         [_thisWeekEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= [TimeSupport getNextWeekTimeFrameStartTimeInUnix] && [event.startTime longLongValue] < [TimeSupport getNextWeekTimeFrameEndTimeInUnix]) {
+    } else if ([event.startTime longLongValue] >= self.nextWeekStartTime && [event.startTime longLongValue] < self.nextWeekEndTime) {
         [_nextWeekEvents addObject:event];
     } else {
         [_otherEvents addObject:event];
