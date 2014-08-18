@@ -325,7 +325,7 @@ CLLocation *lastKnown;
         if (_eventManager == nil) [self eventManager:lastKnown];
         else if ([[self uiRefreshControl] isRefreshing]) [[self friendEventsRequest] refreshFriendEvents];
         else {
-            [self.eventManager setCurrentLocation:[locations objectAtIndex:0]];
+            [self.eventManager setEvents:[EventCoreData getFriendsEvents] withCurrentLocation:[locations objectAtIndex:0]];
             [self.tableView reloadData];
         }
     }
@@ -346,18 +346,17 @@ CLLocation *lastKnown;
     self.refreshControl = [self uiRefreshControl];
     
     [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-        [[self locationManager] startUpdatingLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.tableView reloadData];
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        [[self locationManager] startUpdatingLocation];
+    else if (_eventManager != nil) {
+        [[self eventManager] setEvents:[EventCoreData getFriendsEvents]];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

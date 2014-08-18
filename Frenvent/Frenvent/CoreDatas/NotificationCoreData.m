@@ -100,5 +100,28 @@
     return notification;
 }
 
+/**
+ * Add a new friend events notification to the core data
+ * @param event
+ * @param friend
+ * @param time
+ * @return notification
+ */
++ (Notification *) addNotificationForEvent:(Event *)event andFriend:(Friend *)friend andTime:(NSNumber *)time{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Notification"
+                                              inManagedObjectContext:context];
+    
+    Notification *notification = [[Notification alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    notification.time = time;
+    notification.event = event;
+    notification.friend = friend;
+    
+    NSError *addingError = nil;
+    if (![context save:&addingError]) NSLog(@"Error adding notification - error:%@", addingError);
+    return notification;
+}
+
+
 
 @end

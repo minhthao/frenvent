@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSMutableArray *othersNotification;
 
 -(void)initialize;
+-(void)reset;
 -(NSInteger)getNumberOfSections;
 -(BOOL)isUserSection:(NSInteger)section;
 -(BOOL)isTodaySection:(NSInteger)section;

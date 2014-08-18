@@ -37,6 +37,7 @@
 		3EA88F171995BACA004994D5 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F161995BACA004994D5 /* Notification.m */; };
 		3EA88F1A1995D16B004994D5 /* NotificationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F191995D16B004994D5 /* NotificationGroup.m */; };
 		3EA88F1E1997768A004994D5 /* UITableView+NXEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F1D1997768A004994D5 /* UITableView+NXEmptyView.m */; };
+		3EA88F2719A29C0C004994D5 /* DBNotificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F2619A29C0C004994D5 /* DBNotificationRequest.m */; };
 		3EA9013C198A02BA0056BE36 /* FbUserInfoButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */; };
 		3EA9013F198B00440056BE36 /* ScrollUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9013E198B00440056BE36 /* ScrollUser.m */; };
 		3EA90142198B00D30056BE36 /* SuggestFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90141198B00D30056BE36 /* SuggestFriend.m */; };
@@ -191,6 +192,8 @@
 		3EA88F191995D16B004994D5 /* NotificationGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NotificationGroup.m; path = Objects/NotificationGroup.m; sourceTree = "<group>"; };
 		3EA88F1C1997768A004994D5 /* UITableView+NXEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITableView+NXEmptyView.h"; path = "Libs/UITableView+NXEmptyView/UITableView+NXEmptyView.h"; sourceTree = "<group>"; };
 		3EA88F1D1997768A004994D5 /* UITableView+NXEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITableView+NXEmptyView.m"; path = "Libs/UITableView+NXEmptyView/UITableView+NXEmptyView.m"; sourceTree = "<group>"; };
+		3EA88F2519A29C0C004994D5 /* DBNotificationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBNotificationRequest.h; path = DBRequests/DBNotificationRequest.h; sourceTree = "<group>"; };
+		3EA88F2619A29C0C004994D5 /* DBNotificationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBNotificationRequest.m; path = DBRequests/DBNotificationRequest.m; sourceTree = "<group>"; };
 		3EA9013A198A02BA0056BE36 /* FbUserInfoButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FbUserInfoButtons.h; path = Libs/PageScrollView/FbUserInfoButtons.h; sourceTree = "<group>"; };
 		3EA9013B198A02BA0056BE36 /* FbUserInfoButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FbUserInfoButtons.m; path = Libs/PageScrollView/FbUserInfoButtons.m; sourceTree = "<group>"; };
 		3EA9013D198B00440056BE36 /* ScrollUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScrollUser.h; path = Libs/PageScrollView/ScrollUser.h; sourceTree = "<group>"; };
@@ -583,6 +586,8 @@
 				3EAAAC9419649B00004AD322 /* DbUserRequest.m */,
 				3EA9015E198CAED40056BE36 /* DbFBUserRequest.h */,
 				3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */,
+				3EA88F2519A29C0C004994D5 /* DBNotificationRequest.h */,
+				3EA88F2619A29C0C004994D5 /* DBNotificationRequest.m */,
 			);
 			name = DBRequests;
 			sourceTree = "<group>";
@@ -1059,6 +1064,7 @@
 				3E8A3DE219883EFB003C932A /* ScrollEvent.m in Sources */,
 				3ECF105C19721C9C00963155 /* NotificationsTableViewController.m in Sources */,
 				3EAAACD7196B7CC3004AD322 /* UIProgressView+AFNetworking.m in Sources */,
+				3EA88F2719A29C0C004994D5 /* DBNotificationRequest.m in Sources */,
 				3ECF10711974AECF00963155 /* NotificationManager.m in Sources */,
 				3EACE3F8195E2CF30023EF58 /* AFSecurityPolicy.m in Sources */,
 				3EACE3D0195CA1EE0023EF58 /* FriendCoreData.m in Sources */,

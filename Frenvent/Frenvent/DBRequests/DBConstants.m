@@ -45,14 +45,12 @@ NSString * const PUBLIC_EVENT_UPPER_LONGITUDE = @"upper_long";
 NSString * const PUBLIC_EVENT_LOWER_LATITUDE = @"lower_latitude";
 NSString * const PUBLIC_EVENT_UPPER_LATITUDE = @"upper_latitude";
 
-NSString * const NOTIFICATION_UID = @"uid";
-NSString * const NOTIFICATION_TYPE = @"type";
-NSString * const NOTIFICATION_MESSAGE = @"message";
-NSString * const NOTIFICATION_MESSAGE_EXTRA1 = @"message_extra1";
-NSString * const NOTIFICATION_MESSAGE_EXTRA2 = @"message_extra2";
-NSString * const NOTIFICATION_EXTRA_INFO = @"extra_info";
-NSString * const NOTIFICATION_VIEWED = @"viewed";
-NSString * const NOTIFICATION_TIME = @"time";
+NSString * const IOS_NOTIFICATION_TABLE_NAME = @"ios_notification";
+NSString * const IOS_NOTIFICATION_UID = @"uid";
+NSString * const IOS_NOTIFICATION_FRIEND_UID = @"friend_uid";
+NSString * const IOS_NOTIFICATION_EID = @"eid";
+NSString * const IOS_NOTIFICATION_START_TIME = @"start_time";
+NSString * const IOS_NOTIFICATION_TIMESTAMP = @"timestamp";
 
 // database connection constants
 NSString * const REQUEST_TYPE = @"type";
@@ -65,7 +63,7 @@ NSString * const REQUEST_DATA_TYPE = @"data_type";
 NSString * const REQUEST_DATA_TYPE_USER = @"user";
 NSString * const REQUEST_DATA_TYPE_FBUSER = @"fbuser";
 NSString * const REQUEST_DATA_TYPE_EVENT = @"event";
-NSString * const REQUEST_DATA_TYPE_NOTIFICATION = @"notification";
+NSString * const REQUEST_DATA_TYPE_IOS_NOTIFICATION = @"ios_notification";
 
 NSString * const REQUEST_DATA = @"data";
 NSString * const REQUEST_UPDATE_TYPE = @"update_type";

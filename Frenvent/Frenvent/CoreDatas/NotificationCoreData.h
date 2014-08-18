@@ -15,6 +15,7 @@
 + (void) removeAllNotifications;
 + (void)removeNotification:(Notification *)notification;
 + (Notification *) addNotificationForEvent:(Event *)event andFriend:(Friend *)friend;
++ (Notification *) addNotificationForEvent:(Event *)event andFriend:(Friend *)friend andTime:(NSNumber *)time;
 
 
 @end

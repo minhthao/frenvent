@@ -106,7 +106,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [self.tableView reloadData];
+    if ([self notificationManager] != nil) {
+        [[self notificationManager] reset];
+        [self.tableView reloadData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

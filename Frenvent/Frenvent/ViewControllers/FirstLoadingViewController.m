@@ -15,8 +15,9 @@
 #import "EventCoreData.h"
 #import "FriendCoreData.h"
 #import "Constants.h"
+#import "DBNotificationRequest.h"
 
-static NSInteger NUM_QUERIES = 4; //one for friends event, one for my events, one for friends, one for nearby
+static NSInteger NUM_QUERIES = 4; //one for friends event, one for my events, one for friends, one for nearby, and one for notif
 NSInteger numQueriesDone;
 NSInteger numFriendsEvents;
 NSInteger numMyEvents;
@@ -125,6 +126,20 @@ NSInteger numMyEvents;
     [self checkIfAllQueryCompleted];
 }
 
+//delegate for DBNotificationRequest
+- (void) notifyNotificationComplete {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *uid = [defaults stringForKey:FB_LOGIN_USER_ID];
+    NSString *name = [defaults stringForKey:FB_LOGIN_USER_NAME];
+    
+    [defaults setBool:true forKey:LOGIN_DATA_INITIALIZED];
+    [defaults synchronize];
+    
+    DbUserRequest *userRequest = [[DbUserRequest alloc] init];
+    [userRequest registerUser:uid :name :numFriendsEvents :numMyEvents];
+    [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
+}
+
 //delegate for location manager, call back for location update
 - (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (locations != nil && [locations count] > 0) {
@@ -160,16 +175,10 @@ NSInteger numMyEvents;
  */
 - (void) checkIfAllQueryCompleted {
     if (numQueriesDone == NUM_QUERIES) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *uid = [defaults stringForKey:FB_LOGIN_USER_ID];
-        NSString *name = [defaults stringForKey:FB_LOGIN_USER_NAME];
         
-        [defaults setBool:true forKey:LOGIN_DATA_INITIALIZED];
-        [defaults synchronize];
-        
-        DbUserRequest *userRequest = [[DbUserRequest alloc] init];
-        [userRequest registerUser:uid :name :numFriendsEvents :numMyEvents];
-        [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
+        DBNotificationRequest *notificationRequest = [[DBNotificationRequest alloc] init];
+        notificationRequest.delegate = self;
+        [notificationRequest getNotifications];
     }
 }
 

@@ -15,6 +15,7 @@
 #import "Event.h"
 #import "Friend.h"
 #import "EventParticipant.h"
+#import "DBNotificationRequest.h"
 
 @interface NotificationManager()
 
@@ -92,6 +93,12 @@
     
     //and finally we get all the ongoing events that you got invited to but not replied
     self.userInvitedEvents = [EventCoreData getUserUnrepliedOngoingEvents];
+}
+
+-(void)reset {
+    self.todayStartTime = [TimeSupport getTodayTimeFrameStartTimeInUnix];
+    self.thisWeekStartTime = [TimeSupport getThisWeekTimeFrameStartTimeInUnix];
+    [self initialize];
 }
 
 /**
@@ -285,6 +292,8 @@
  * @param notification
  */
 + (void)createNewFriendNotification:(Notification *)notification {
+    [DBNotificationRequest addNotificationForFriend:notification.friend.uid andEvent:notification.event.eid andStartTime:[notification.event.startTime longLongValue]];
+    
     UIApplication *frenvent = [UIApplication sharedApplication];
     
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
