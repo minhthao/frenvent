@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PagedScrollView : UIScrollView
-
-@property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
 -(void)changeToPage:(int)page;

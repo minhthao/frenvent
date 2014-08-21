@@ -150,19 +150,13 @@
         UILabel *notificationTime = (UILabel *)[cell viewWithTag:203];
         
         UIView *content = (UIView *)[cell viewWithTag:204];
-        [content.layer setMasksToBounds:NO];
-        [content.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [content.layer setShadowRadius:1];
-        [content.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
-        [content.layer setShadowOpacity:0.35f];
-        [content.layer setBorderWidth:0.5f];
-        [content.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        [content setBackgroundColor:[UIColor clearColor]];
         
         for (UIView *subview in [content subviews]) {
             [subview removeFromSuperview];
         }
         
-        CGRect scrollViewFrame = CGRectMake(0, 0, content.frame.size.width, content.frame.size.height);
+        CGRect scrollViewFrame = CGRectMake(12, 0, content.frame.size.width - 24, content.frame.size.height);
 
 
         if ([[self notificationManager] isUserSection:indexPath.section]) {

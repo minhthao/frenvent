@@ -57,8 +57,6 @@ static int16_t const QUERY_LIMIT = 5000;
 
 //the actual work for initialization
 - (void) doInit {
-    NSLog(@"friends query started at: %@", [TimeSupport getDateTimeFromUnixTimeInStandardFormat:[TimeSupport getCurrentTimeInUnix]]);
-    
     NSDictionary *queryParams = [self prepareFriendsQueryParams];
     
     [FBRequestConnection startWithGraphPath:@"/fql"
@@ -94,8 +92,6 @@ static int16_t const QUERY_LIMIT = 5000;
                     [FriendCoreData updateFriendCover:friend :cover];
 
             }
-            
-            NSLog(@"friends query ended at: %@", [TimeSupport getDateTimeFromUnixTimeInStandardFormat:[TimeSupport getCurrentTimeInUnix]]);
             [self.delegate notifyFriendsQueryCompleted];
         }
     }];

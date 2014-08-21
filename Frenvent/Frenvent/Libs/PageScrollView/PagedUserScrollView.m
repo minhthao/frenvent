@@ -32,14 +32,13 @@
         self.contentSize = CGSizeMake(scrollViewSize.width * [users count], scrollViewSize.height);
         for (int i = 0; i < [users count]; i++) {
             SuggestFriend *user = [users objectAtIndex:i];
-            CGRect userFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
+            CGRect userFrame = CGRectMake(scrollViewSize.width * i + 3, 1, scrollViewSize.width - 6, scrollViewSize.height - 2);
+
             ScrollUser *userView = [[ScrollUser alloc] initWithFrame:userFrame];
             userView.delegate = self;
-            [userView setPageIndex:i+1 pageCount:(int)[users count]];
             [userView setSuggestedUser:user];
             [self addSubview:userView];
         }
-        self.pageControl.numberOfPages = [users count];
     } else {
         self.contentSize = scrollViewSize;
         
@@ -48,7 +47,6 @@
         [defaultEmptyImage setContentMode:UIViewContentModeScaleToFill];
         [self addSubview:defaultEmptyImage];
         
-        self.pageControl.numberOfPages = 1;
     }
 }
 

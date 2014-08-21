@@ -56,7 +56,6 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
  * @param completion handler for the background fetch
  */
 - (void) executeQueryWithType:(NSInteger)type withCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    NSLog(@"friend event query started at: %@", [TimeSupport getDateTimeFromUnixTimeInStandardFormat:[TimeSupport getCurrentTimeInUnix]]);
     NSDictionary *queryParams = [self prepareQueryParams];
     
     [FBRequestConnection startWithGraphPath:@"/fql"
@@ -137,8 +136,6 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                       }
                   }
               }
-              
-              NSLog(@"friend event query ended at: %@", [TimeSupport getDateTimeFromUnixTimeInStandardFormat:[TimeSupport getCurrentTimeInUnix]]);
               
               if (type == QUERY_TYPE_INITIALIZE || type == QUERY_TYPE_REFRESH)
                   [self.delegate notifyFriendEventsQueryCompletedWithResult:[eventsDictionary allValues] :newEventsDictionary];

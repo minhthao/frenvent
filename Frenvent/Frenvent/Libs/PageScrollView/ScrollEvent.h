@@ -20,6 +20,5 @@
 @property (nonatomic, weak) id <ScrollEventDelegate> delegate;
 
 -(void)setViewEvent:(Event *)event;
--(void)setPageIndex:(int)index pageCount:(int)pageCount;
 
 @end

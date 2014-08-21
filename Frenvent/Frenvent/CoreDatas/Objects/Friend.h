@@ -13,6 +13,7 @@
 
 @interface Friend : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * favorite;
 @property (nonatomic, retain) NSNumber * mark;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * uid;

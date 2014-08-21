@@ -26,6 +26,14 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        [self.layer setMasksToBounds:NO];
+        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+        [self.layer setShadowRadius:1];
+        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
+        [self.layer setShadowOpacity:0.35f];
+        [self.layer setBorderWidth:0.5f];
+        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        
         UITapGestureRecognizer *eventTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEventTap:)];
         [self setUserInteractionEnabled:true];
         [self addGestureRecognizer:eventTap];
@@ -103,11 +111,6 @@
     
     if ([event.rsvp isEqualToString:RSVP_ATTENDING] || [event.rsvp isEqualToString:RSVP_UNSURE] || ![event canRsvp])
         [self.eventRsvpButtonView setEnabled:false];
-}
-
--(void)setPageIndex:(int)index pageCount:(int)pageCount {
-    if (pageCount == 1) self.eventIndexLabel.text = @"";
-    else self.eventIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
 }
 
 -(void)handleEventTap:(UITapGestureRecognizer *)recognizer {

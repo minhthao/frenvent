@@ -31,15 +31,17 @@
     if ([urls count] > 0) {
         self.contentSize = CGSizeMake(scrollViewSize.width * [urls count], scrollViewSize.height);
         for (int i = 0; i < [urls count]; i++) {
-            CGRect imageFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
+            CGRect imageFrame = CGRectMake(scrollViewSize.width * i + 3, 1, scrollViewSize.width - 6, scrollViewSize.height - 2);
+            if (contentModeFit) imageFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
+            
             ScrollImage *imageView = [[ScrollImage alloc] initWithFrame:imageFrame];
             if (contentModeFit) [imageView setImageAspectFit];
+            if (!self.shouldShowImageIndex) [imageView hidePageIndex];
             imageView.delegate = self;
             [imageView setPageIndex:i+1 pageCount:(int)[urls count]];
             [imageView setImageUrl:[urls objectAtIndex:i]];
             [self addSubview:imageView];
         }
-        self.pageControl.numberOfPages = [urls count];
     } else {
         self.contentSize = scrollViewSize;
         
@@ -47,8 +49,6 @@
         [defaultEmptyImage setImage:[UIImage imageNamed:@"PagedEventScrollViewNoPhoto"]];
         [defaultEmptyImage setContentMode:UIViewContentModeScaleToFill];
         [self addSubview:defaultEmptyImage];
-        
-        self.pageControl.numberOfPages = 1;
     }
 }
 

@@ -75,6 +75,7 @@
     friend.name = name;
     friend.cover = @"";
     friend.mark = [NSNumber numberWithBool:false];
+    friend.favorite = [NSNumber numberWithBool:false];
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);
@@ -169,6 +170,13 @@
     if (![context save:&error]) NSLog(@"Error mark friend - error:%@", error);
 }
 
++ (void) setFriend:(Friend *)friend toFavorite:(BOOL)favorite {
+     NSManagedObjectContext *context = [self managedObjectContext];
+    friend.favorite = [NSNumber numberWithBool:favorite];
+    NSError *error = nil;
+    if (![context save:&error]) NSLog(@"Error changing friend's favorite - error:%@", error);
+}
+
 /**
  * Update friend's cover picture
  * @param friend
@@ -178,7 +186,7 @@
     NSManagedObjectContext *context = [self managedObjectContext];
     friend.cover = cover;
     NSError *error = nil;
-    if (![context save:&error]) NSLog(@"Error mark friend - error:%@", error);
+    if (![context save:&error]) NSLog(@"Error update cover for friend - error:%@", error);
 }
 
 /**

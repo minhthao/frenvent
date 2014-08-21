@@ -41,6 +41,7 @@
 @property (nonatomic, strong) NSArray *ongoingEvents;
 @property (nonatomic, strong) NSArray *pastEvents;
 @property (nonatomic, strong) NSArray *photoUrls;
+@property (nonatomic, strong) NSArray *suggestedFriends;
 
 @property (nonatomic, strong) PagedEventScrollView *eventScrollView;
 @property (nonatomic, strong) PagedPhotoScrollView *photoScrollView;
@@ -105,27 +106,24 @@
 
 - (PagedEventScrollView *)eventScrollView {
     if (_eventScrollView == nil) {
-        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(0, 40, 320, 180)];
+        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
         _eventScrollView.delegate = self;
-        [self maskPagedScrollView:_eventScrollView];
     }
     return _eventScrollView;
 }
 
 - (PagedPhotoScrollView *)photoScrollView {
     if (_photoScrollView == nil) {
-        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 40, 320, 200)];
+        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
         _photoScrollView.delegate = self;
-        [self maskPagedScrollView:_photoScrollView];
     }
     return _photoScrollView;
 }
 
 - (PagedUserScrollView *)userScrollView {
     if (_userScrollView == nil) {
-        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(0, 40, 320, 150)];
+        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
         _userScrollView.delegate = self;
-        [self maskPagedScrollView:_userScrollView];
     }
     return _userScrollView;
 }
@@ -136,14 +134,6 @@
         _userInfoButtons.delegate = self;
     }
     return _userInfoButtons;
-}
-
-- (void)maskPagedScrollView:(UIView *)view {
-    [view.layer setMasksToBounds:NO];
-    [view.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [view.layer setShadowRadius:3.5f];
-    [view.layer setShadowOffset:CGSizeMake(1, 1)];
-    [view.layer setShadowOpacity:0.5];
 }
 
 #pragma mark - alert view and actionsheet delegates
@@ -283,21 +273,26 @@
 -(void)fbUserInfoRequestOngoingEvents:(NSArray *)ongoingEvents {
     self.ongoingEvents = ongoingEvents;
     if ([self.ongoingEvents count] > 0) {
+        [[self eventScrollView] setEvents:ongoingEvents];
+        [self.mainTable reloadData];
         [self.eventTable reloadData];
     }
-    [[self eventScrollView] setEvents:ongoingEvents];
-    [self.mainTable reloadData];
 }
 
 -(void)fbUserInfoRequestSuggestedFriends:(NSArray *)users {
-    [[self userScrollView] setSuggestedUsers:users];
-    [self.mainTable reloadData];
+    self.suggestedFriends = users;
+    if ([self.suggestedFriends count] > 0) {
+        [[self userScrollView] setSuggestedUsers:users];
+        [self.mainTable reloadData];
+    }
 }
 
 -(void)fbUserInfoRequestPhotos:(NSArray *)urls {
     self.photoUrls = urls;
-    [[self photoScrollView] setScrollViewPhotoUrls:urls withContentModeFit:NO];
-    [self.mainTable reloadData];
+    if ([self.photoUrls count] > 0) {
+        [[self photoScrollView] setScrollViewPhotoUrls:urls withContentModeFit:NO];
+        [self.mainTable reloadData];
+    }
 }
 
 -(void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents {
@@ -347,7 +342,6 @@
                                                 otherButtonTitles:nil];
         
         [message show];
-
     }
 }
 
@@ -355,7 +349,6 @@
     [super viewWillAppear:animated];
     if ([self.navigationController isNavigationBarHidden]) {
         [self.navigationController setNavigationBarHidden:NO animated:false];
-        //[self.mainTable setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
     }
     
     [self.profileImage.layer setMasksToBounds:YES];
@@ -412,7 +405,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.mainTable]) {
         if (section == 0) return 1;
-        else return 3;
+        else {
+            NSInteger numRow = 0;
+            if ([self.suggestedFriends count] > 0) numRow++;
+            if ([self.ongoingEvents count] > 0) numRow++;
+            if ([self.photoUrls count] > 0) numRow++;
+            return numRow;
+        }
     } else {
         if (section == 0 && [self.ongoingEvents count] > 0) return [self.ongoingEvents count];
         else if ((section == 0 && [self.ongoingEvents count] == 0) || section == 1) return [self.pastEvents count];
@@ -440,11 +439,7 @@
     if ([tableView isEqual:self.eventTable]) return 105;
     else {
         if (indexPath.section == 0) return 80;
-        else {
-            if (indexPath.row == 0) return 230;
-            else if (indexPath.row == 1) return 250;
-            else return 200;
-        }
+        else return 210;
     }
 }
 
@@ -492,18 +487,44 @@
         UITableViewCell *cell = [self.mainTable dequeueReusableCellWithIdentifier:@"fbUserInfoMainContentViews" forIndexPath:indexPath];
         if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fbUserInfoMainContentViews"];
         
-        UIView *cellContainer = (UIView *)[cell viewWithTag:1100];
-        UILabel *cellTitleLabel = (UILabel *)[cell viewWithTag:1101];
+        UIView *cellContainer = (UIView *)[cell viewWithTag:100];
+        [cellContainer.layer setCornerRadius:3.0f];
+        [cellContainer.layer setMasksToBounds:YES];
+        [cellContainer.layer setBorderWidth:0.5f];
+        [cellContainer.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
         
-        if (indexPath.row == 0) {
-            cellTitleLabel.text = @"Upcoming Events";
-            [cellContainer addSubview:[self eventScrollView]];
-        } else if (indexPath.row == 1) {
-            cellTitleLabel.text = @"Photos";
-            [cellContainer addSubview:[self photoScrollView]];
-        } else if (indexPath.row == 2) {
+        UILabel *cellTitleLabel = (UILabel *)[cell viewWithTag:101];
+        UIView *scrollContainer = (UIView *)[cell viewWithTag:102];
+        
+        if ([self.ongoingEvents count] > 0) {
+            if (indexPath.row == 0) {
+                cellTitleLabel.text = @"Upcoming Events";
+                [scrollContainer addSubview:[self eventScrollView]];
+            } else {
+                if ([self.photoUrls count] > 0) {
+                    if (indexPath.row == 1) {
+                        cellTitleLabel.text = @"Photos";
+                        [scrollContainer addSubview:[self photoScrollView]];
+                    } else {
+                        cellTitleLabel.text = @"Suggested Friends";
+                        [scrollContainer addSubview:[self userScrollView]];
+                    }
+                } else {
+                    cellTitleLabel.text = @"Suggested Friends";
+                    [scrollContainer addSubview:[self userScrollView]];
+                }
+            }
+        } else if ([self.photoUrls count] > 0) {
+            if (indexPath.row == 0) {
+                cellTitleLabel.text = @"Photos";
+                [scrollContainer addSubview:[self photoScrollView]];
+            } else {
+                cellTitleLabel.text = @"Suggested Friends";
+                [scrollContainer addSubview:[self userScrollView]];
+            }
+        } else {
             cellTitleLabel.text = @"Suggested Friends";
-            [cellContainer addSubview:[self userScrollView]];
+            [scrollContainer addSubview:[self userScrollView]];
         }
         
         return cell;

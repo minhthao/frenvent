@@ -18,12 +18,14 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+
         self.contentSize = CGSizeMake(self.frame.size.width , self.frame.size.height);
-        self.backgroundColor = [UIColor lightGrayColor];
+        self.backgroundColor = [UIColor clearColor];
+        self.clipsToBounds = false;
         
         //add a loading spinner (size 20-by-20) at the middle of the view
         self.loadingSpinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake((self.frame.size.width - 20) / 2, (self.frame.size.height - 20) / 2, 20, 20)];
-        [self.loadingSpinner setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+        [self.loadingSpinner setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         [self.loadingSpinner setHidesWhenStopped:true];
         [self.loadingSpinner startAnimating];
         [self addSubview:self.loadingSpinner];
@@ -32,46 +34,8 @@
         self.pagingEnabled = YES;
         self.showsVerticalScrollIndicator = NO;
         self.showsHorizontalScrollIndicator = NO;
-        
-        self.pageControl = [[UIPageControl alloc] init];
-        self.pageControl.pageIndicatorTintColor = [UIColor clearColor];
-        self.pageControl.currentPageIndicatorTintColor = [UIColor clearColor];
-        self.pageControl.hidesForSinglePage = YES;
-        [self.pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
-        
-        [self addSubview:self.pageControl];
     }
     return self;
-}
-
-- (void)setDefaults {
-    self.pageControl.pageIndicatorTintColor = [UIColor clearColor];
-    self.pageControl.currentPageIndicatorTintColor = [UIColor clearColor];
-    self.pageControl.hidesForSinglePage = YES;
-}
-
-#pragma mark - scrollview delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (self.pageControlIsChangingPage) return;
-    self.pageControl.currentPage = [self getCurrentPage:scrollView];
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    self.pageControlIsChangingPage = NO;
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    self.pageControlIsChangingPage = NO;
-}
-
-#pragma mark - change the page
-- (void)changePage:(UIPageControl *)sender {
-    CGRect frame = self.frame;
-    frame.origin.x = self.frame.size.width * self.pageControl.currentPage;
-    frame.origin.y = 0;
-    frame.size = self.frame.size;
-    [self scrollRectToVisible:frame animated:YES];
-    self.pageControlIsChangingPage = YES;
 }
 
 - (int)getCurrentPage:(UIScrollView *)scrollView {
@@ -82,13 +46,11 @@
 
 - (void)changeToPage:(int)page {
     CGRect frame = self.frame;
-    self.pageControl.currentPage = page;
-    frame.origin.x = self.frame.size.width * self.pageControl.currentPage;
+    frame.origin.x = self.frame.size.width * page;
     frame.origin.y = 0;
     frame.size = self.frame.size;
     [self scrollRectToVisible:frame animated:NO];
     self.pageControlIsChangingPage = YES;
-
 }
 
 @end

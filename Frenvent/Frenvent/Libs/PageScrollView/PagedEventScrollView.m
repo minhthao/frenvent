@@ -29,16 +29,15 @@
     CGSize scrollViewSize = self.frame.size;
     if ([events count] > 0) {
         self.contentSize = CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
+        //CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
         for (int i = 0; i < [events count]; i++) {
             Event *event = [events objectAtIndex:i];
-            CGRect eventFrame = CGRectMake(scrollViewSize.width * i, 0, scrollViewSize.width, scrollViewSize.height);
+            CGRect eventFrame = CGRectMake(scrollViewSize.width * i + 3, 1, scrollViewSize.width - 6, scrollViewSize.height - 2);
             ScrollEvent *eventView = [[ScrollEvent alloc] initWithFrame:eventFrame];
             eventView.delegate = self;
-            [eventView setPageIndex:i+1 pageCount:(int)[events count]];
             [eventView setViewEvent:event];
             [self addSubview:eventView];
         }
-        self.pageControl.numberOfPages = [events count];
     } else {
         self.contentSize = scrollViewSize;
         
@@ -47,7 +46,6 @@
         [defaultEmptyImage setContentMode:UIViewContentModeScaleToFill];
         [self addSubview:defaultEmptyImage];
         
-        self.pageControl.numberOfPages = 1;
     }
 }
 

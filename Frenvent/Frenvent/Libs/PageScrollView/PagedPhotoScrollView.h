@@ -16,6 +16,8 @@
 
 @interface PagedPhotoScrollView : PagedScrollView <ScrollImageDelegate>
 
+@property (nonatomic) BOOL shouldShowImageIndex;
 @property (nonatomic, weak) id <PagedPhotoScrollViewDelegate> delegate;
 - (void)setScrollViewPhotoUrls:(NSArray *)urls withContentModeFit:(BOOL)contentModeFit;
+
 @end

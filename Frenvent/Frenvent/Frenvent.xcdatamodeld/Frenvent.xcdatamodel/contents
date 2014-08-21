@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Event" representedClassName="Event" syncable="YES">
         <attribute name="cover" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eid" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,6 +20,7 @@
     </entity>
     <entity name="Friend" representedClassName="Friend" syncable="YES">
         <attribute name="cover" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="mark" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,7 +34,7 @@
     </entity>
     <elements>
         <element name="Event" positionX="22806" positionY="5108" width="128" height="285"/>
-        <element name="Friend" positionX="23247" positionY="5258" width="128" height="135"/>
+        <element name="Friend" positionX="23247" positionY="5258" width="128" height="150"/>
         <element name="Notification" positionX="23013" positionY="5139" width="128" height="88"/>
     </elements>
 </model>

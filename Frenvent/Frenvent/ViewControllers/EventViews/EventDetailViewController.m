@@ -55,8 +55,6 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 
 @property (nonatomic, strong) ShareEventRequest *shareEventRequest;
 
-@property (nonatomic, strong) PagedUserScrollView *userScrollView;
-
 @end
 
 @implementation EventDetailViewController
@@ -192,18 +190,6 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         _navigationSheet.tag = ACTION_SHEET_NAVIGATION;
     }
     return _navigationSheet;
-}
-
-/**
- * Lazily instantiate the user scroll ciew
- * @return user scroll view
- */
-- (PagedUserScrollView *)userScrollView {
-    if (_userScrollView == nil) {
-        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(0, 0, 304, 150)];
-        _userScrollView.delegate = self;
-    }
-    return _userScrollView;
 }
 
 
@@ -391,7 +377,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(void)reloadTableData {
     if (self.recommendFriends == nil) [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.2];
     else {
-        if ([self.recommendFriends count] > 0)[[self userScrollView] setSuggestedUsers:self.recommendFriends];
+        //if ([self.recommendFriends count] > 0)[[self userScrollView] setSuggestedUsers:self.recommendFriends];
         [self.mainView reloadData];
     }
 }
@@ -621,12 +607,12 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
             else if (indexPath.row == 1) {
                 if ([self.eventDetail.attendingFriends count] > 0) return 155;
                 else return 70;
-            } else return 165;
+            } else return 190;
         } else {
             if (indexPath.row == 0) {
                 if ([self.eventDetail.attendingFriends count] > 0) return 155;
                 else return 70;
-            } else return 165;
+            } else return 190;
         }
     } else return [self calculateDescriptionViewHeight];
 }
@@ -777,11 +763,19 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     
     //mask the container to get the border and round corner
     UIView *containerView = (UIView *)[cell viewWithTag:300];
-    [self maskShadowView:containerView];
-    for (UIView *subviews in [containerView subviews])
-        [subviews removeFromSuperview];
+    [containerView.layer setCornerRadius:3.0f];
+    [containerView.layer setMasksToBounds:YES];
+    [containerView.layer setBorderWidth:0.5f];
+    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    containerView.backgroundColor = [UIColor whiteColor];
+
+    UIView *usersView = (UIView *)[cell viewWithTag:301];
+    [usersView setBackgroundColor:[UIColor clearColor]];
+    PagedUserScrollView *userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12, 0, usersView.frame.size.width - 24, usersView.frame.size.height)];
+    userScrollView.delegate = self;
+    [userScrollView setSuggestedUsers:self.recommendFriends];
     
-    [containerView addSubview:[self userScrollView]];
+    [usersView addSubview:userScrollView];
     
     return cell;
 }

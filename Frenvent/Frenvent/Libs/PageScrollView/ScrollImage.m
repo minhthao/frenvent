@@ -8,6 +8,7 @@
 
 #import "ScrollImage.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "MyColor.h"
 
 @interface ScrollImage()
 @property (nonatomic, strong) UIImageView *imageView;
@@ -20,6 +21,15 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        [self.layer setMasksToBounds:NO];
+        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+        [self.layer setShadowRadius:1];
+        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
+        [self.layer setShadowOpacity:0.35f];
+        [self.layer setBorderWidth:0.5f];
+        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+
+        
         UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
         [self setUserInteractionEnabled:true];
         [self addGestureRecognizer:imageTap];
@@ -37,7 +47,6 @@
         self.label.shadowColor = [UIColor blackColor];
         self.label.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.label];
-
     }
     return self;
 }
@@ -54,6 +63,10 @@
     self.index = index - 1; //the indexx start at 1
     if (pageCount == 1) self.label.text = @"";
     else self.label.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
+}
+
+-(void)hidePageIndex {
+    self.label.hidden = true;
 }
 
 -(void)handleImageTap:(UITapGestureRecognizer *)recognizer {

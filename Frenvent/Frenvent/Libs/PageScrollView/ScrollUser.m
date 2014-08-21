@@ -15,7 +15,6 @@
 @interface ScrollUser()
 @property (nonatomic, strong) UIImageView *cover;
 @property (nonatomic, strong) UIImageView *profilePicture;
-@property (nonatomic, strong) UILabel *userIndexLabel;
 @property (nonatomic, strong) UILabel *name;
 @property (nonatomic, strong) UILabel *mutualFriend;
 @property (nonatomic, strong) SuggestFriend *user;
@@ -26,6 +25,14 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        [self.layer setMasksToBounds:NO];
+        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
+        [self.layer setShadowRadius:1];
+        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
+        [self.layer setShadowOpacity:0.35f];
+        [self.layer setBorderWidth:0.5f];
+        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        
         UITapGestureRecognizer *userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleUserTap:)];
         [self setUserInteractionEnabled:true];
         [self addGestureRecognizer:userTap];
@@ -35,15 +42,6 @@
         self.cover.contentMode = UIViewContentModeScaleAspectFill;
         self.cover.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:self.cover];
-        
-        self.userIndexLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, frame.size.width - 40, 20)];
-        self.userIndexLabel.backgroundColor = [UIColor clearColor];
-        self.userIndexLabel.textColor =[UIColor whiteColor];
-        self.userIndexLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:15];
-        self.userIndexLabel.textAlignment = NSTextAlignmentCenter;
-        self.userIndexLabel.shadowColor = [UIColor blackColor];
-        self.userIndexLabel.shadowOffset = CGSizeMake(1.0, 1.0);
-        [self addSubview:self.userIndexLabel];
         
         self.profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(8, frame.size.height - 70, 65, 65)];
         [self.profilePicture.layer setMasksToBounds:YES];
@@ -92,14 +90,6 @@
         if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = @"Attending";
         else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = @"Maybe";
     }
-    
-    if ([user.rsvpStatus length] > 0) self.userIndexLabel.textAlignment = NSTextAlignmentRight;
-    
-}
-
--(void)setPageIndex:(int)index pageCount:(int)pageCount {
-    if (pageCount == 1) self.userIndexLabel.text = @"";
-    else self.userIndexLabel.text = [NSString stringWithFormat:@"%d of %d", index, pageCount];
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {

@@ -20,4 +20,5 @@
 -(void)setImageUrl:(NSString *)url;
 -(void)setPageIndex:(int)index pageCount:(int)pageCount;
 -(void)setImageAspectFit;
+-(void)hidePageIndex;
 @end

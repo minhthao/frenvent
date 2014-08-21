@@ -18,5 +18,4 @@
 
 @property (nonatomic, weak) id <ScrollUserDelegate> delegate;
 -(void)setSuggestedUser:(SuggestFriend *)user;
--(void)setPageIndex:(int)index pageCount:(int)pageCount;
 @end
