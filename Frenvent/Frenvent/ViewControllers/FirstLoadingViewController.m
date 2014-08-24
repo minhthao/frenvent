@@ -17,6 +17,7 @@
 #import "Constants.h"
 #import "DBNotificationRequest.h"
 #import "TimeSupport.h"
+#import <QuartzCore/QuartzCore.h>
 
 static NSInteger NUM_QUERIES = 4; //one for friends event, one for my events, one for friends, one for nearby
 NSInteger numQueriesDone;
@@ -30,12 +31,15 @@ NSInteger numMyEvents;
 @property (nonatomic, strong) MyEventsRequest *myEventsRequest;
 @property (nonatomic, strong) FriendsRequest *friendsRequest;
 @property (nonatomic, strong) DbEventsRequest *dbEventsRequest;
+
 @property (nonatomic) BOOL friendListObtain;
 @property (nonatomic) BOOL readyToNavigateToMainPage;
-
+@property (nonatomic) BOOL didGetNearbyEvent;
 @property (nonatomic) BOOL pageControlIsChangingPage;
 
-@property (nonatomic) BOOL didGetNearbyEvent;
+@property (nonatomic) UIButton *skipToFriendSelectionButton;
+
+@property (nonatomic, strong) UIWebView *secondLoginWebView;
 
 @end
 
@@ -103,6 +107,34 @@ NSInteger numMyEvents;
     return _dbEventsRequest;
 }
 
+/**
+ * Lazily instantiate the second login webview
+ * @return second login webview
+ */
+- (UIWebView *)secondLoginWebView {
+    if (_secondLoginWebView == nil) {
+        _secondLoginWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
+        [_secondLoginWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://m.facebook.com"]]];
+        [_secondLoginWebView.scrollView setContentInset:UIEdgeInsetsMake(-114, 0, 0, 0)];
+        [_secondLoginWebView.scrollView setScrollEnabled:false];
+        _secondLoginWebView.scrollView.delegate = self;
+        _secondLoginWebView.delegate = self;
+    }
+    return _secondLoginWebView;
+}
+
+#pragma mark - webview delegate
+-(void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSString *currentUrl = webView.request.URL.absoluteString;
+    if ([currentUrl rangeOfString:@"m.facebook.com/home.php?"].location != NSNotFound) {
+        [[self secondLoginWebView] removeFromSuperview];
+        _secondLoginWebView = nil;
+        [self navigateToMainPage];
+    } else if (![currentUrl isEqualToString:@"https://m.facebook.com"]) {
+        [[self secondLoginWebView] goBack];
+    }
+}
+
 #pragma mark - delegates for fb request
 //delegate for FriendEventsRequest
 - (void) notifyFriendEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
@@ -136,7 +168,7 @@ NSInteger numMyEvents;
 - (void) notifyFriendsQueryCompleted {
     numQueriesDone ++;
     self.friendListObtain = true;
-    if (!self.loadingView.isHidden) [self showFriendSelectionView];
+    if (!self.loadingView.isHidden) [self showFriendSelectionView:nil];
 }
 
 - (void) notifyFriendsQueryError {
@@ -173,7 +205,7 @@ NSInteger numMyEvents;
     
     DbUserRequest *userRequest = [[DbUserRequest alloc] init];
     [userRequest registerUser:uid :name :numFriendsEvents :numMyEvents];
-    [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
+    [self performSelector:@selector(goToMainView) withObject:nil afterDelay:0.5];
 }
 
 //delegate for location manager, call back for location update
@@ -209,7 +241,7 @@ NSInteger numMyEvents;
     [self initTutorialView];
     
     self.friendSelectionView.hidden = true;
-    self.secondLoginView.hidden = true;
+    [self initSecondLoginView];
     
     //start requests
     self.didGetNearbyEvent = false;
@@ -230,8 +262,17 @@ NSInteger numMyEvents;
 
 #pragma mark - scroll view delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (self.pageControlIsChangingPage) return;
-    self.pageControl.currentPage = [self getCurrentPage:scrollView];
+    if (scrollView != self.tutorialScrollView) {
+        CGRect webViewBound = [self secondLoginWebView].bounds;
+        scrollView.bounds = CGRectMake(0, 114, webViewBound.size.width, webViewBound.size.height);
+    } else if (self.skipToFriendSelectionButton != nil){
+        if ([self getCurrentPage:scrollView] == 4)
+            [self.skipToFriendSelectionButton setTitle:@"Done" forState:UIControlStateNormal];
+        else [self.skipToFriendSelectionButton setTitle:@"Skip" forState:UIControlStateNormal];
+        
+        if (self.pageControlIsChangingPage) return;
+        self.pageControl.currentPage = [self getCurrentPage:scrollView];
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -242,7 +283,6 @@ NSInteger numMyEvents;
     self.pageControlIsChangingPage = NO;
 }
 
-#pragma mark - change the page in the scroll view
 - (void)changePage:(UIPageControl *)sender {
     CGRect frame = self.tutorialView.frame;
     frame.origin.x = self.tutorialView.frame.size.width * [self pageControl].currentPage;
@@ -258,17 +298,8 @@ NSInteger numMyEvents;
     return floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 }
 
-- (void)changeToPage:(int)page {
-    CGRect frame = self.tutorialView.frame;
-    self.pageControl.currentPage = page;
-    frame.origin.x = self.tutorialView.frame.size.width * [self pageControl].currentPage;
-    frame.origin.y = 0;
-    frame.size = self.tutorialView.frame.size;
-    [self.tutorialScrollView scrollRectToVisible:frame animated:NO];
-    self.pageControlIsChangingPage = YES;
-}
-
--(void)showFriendSelectionView {
+#pragma mark - selector for navigating within the view
+-(void)showFriendSelectionView:(UIButton *)sender {
     self.tutorialView.hidden = true;
     if (self.friendListObtain) {
         self.loadingView.hidden = true;
@@ -284,55 +315,68 @@ NSInteger numMyEvents;
     self.secondLoginView.hidden = false;
 }
 
+- (void)navigateToMainPage {
+    self.readyToNavigateToMainPage = true;
+    self.secondLoginView.hidden = true;
+    self.loadingView.hidden = false;
+    [self checkIfAllQueryCompleted];
+}
+
+- (void)goToMainView {
+    [self performSegueWithIdentifier:@"mainViewWithInitialize" sender:Nil];
+}
+
 #pragma mark - initiate the views
 -(void)initTutorialView {
     self.tutorialView.hidden = false;
     [self initPageControl];
     
+    float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    if (screenHeight > 540) self.tutorialView.frame = CGRectMake(0, 0, 320, 568);
+    else self.tutorialView.frame = CGRectMake(0, 0, 320, 480);
+    
+    if (screenHeight > 540) self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(255, 18, 50, 36)];
+    else self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(255, 431, 50, 36)];
+    [self.skipToFriendSelectionButton setTitle:@"Skip" forState:UIControlStateNormal];
+    [self.skipToFriendSelectionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.5]];
+    [self.skipToFriendSelectionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.skipToFriendSelectionButton setTitleColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self.skipToFriendSelectionButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+    [self.skipToFriendSelectionButton addTarget:self action:@selector(showFriendSelectionView:) forControlEvents:UIControlEventTouchUpInside];
+    
     CGSize tutorialFrame = self.tutorialView.frame.size;
+    [self.tutorialView addSubview:self.skipToFriendSelectionButton];
+    
     self.tutorialScrollView.contentSize = CGSizeMake(tutorialFrame.width * 5, tutorialFrame.height);
     
+    // first tutorial view
     UIImageView *view1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tutorialFrame.width, tutorialFrame.height)];
-    if (tutorialFrame.height > 540) [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone5"]]; //iphone5
+    if (screenHeight > 540)[view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone5"]]; //iphone5
     else [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone4"]];
     [self.tutorialScrollView addSubview:view1];
     
+    // second tutorial view
     UIImageView *view2 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width, 0, tutorialFrame.width, tutorialFrame.height)];
-    if (tutorialFrame.height > 540) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone5"]];
+    if (screenHeight > 540) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone5"]];
     else [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone4"]];
     [self.tutorialScrollView addSubview:view2];
     
+    //third tutorial view
     UIImageView *view3 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 2, 0, tutorialFrame.width, tutorialFrame.height)];
-    if (tutorialFrame.height > 540) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone5"]];
+    if (screenHeight > 540) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone5"]];
     else [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone4"]];
     [self.tutorialScrollView addSubview:view3];
     
+    //fourth tutorial view
     UIImageView *view4 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 3, 0, tutorialFrame.width, tutorialFrame.height)];
-    if (tutorialFrame.height >  540) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone5"]];
+    if (screenHeight > 540) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone5"]]; //iphone5
     else [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone4"]];
     [self.tutorialScrollView addSubview:view4];
     
-    UIView *view5 = [[UIView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 4, 0, tutorialFrame.width, tutorialFrame.height)];
-    UIImageView *view5Image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tutorialFrame.width, tutorialFrame.height)];
-    if (tutorialFrame.height > 540) [view5Image setImage:[UIImage imageNamed:@"TutorialFifthPageIphone5"]];
-    else [view5Image setImage:[UIImage imageNamed:@"TutorialFifthPageIphone4"]];
-    [view5 addSubview:view5Image];
-    
-    
-    UIButton *goToFriendSelectionViewButton = [[UIButton alloc] initWithFrame:CGRectMake((tutorialFrame.width - 50)/2, tutorialFrame.height - 90, 50, 30)];
-    [goToFriendSelectionViewButton setTitle:@"Next" forState:UIControlStateNormal];
-    [goToFriendSelectionViewButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14]];
-    [goToFriendSelectionViewButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [goToFriendSelectionViewButton setBackgroundColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0]];
-    [goToFriendSelectionViewButton.layer setCornerRadius:3.0f];
-    [goToFriendSelectionViewButton.layer setMasksToBounds:YES];
-    [goToFriendSelectionViewButton.layer setBorderWidth:0.5f];
-    [goToFriendSelectionViewButton.layer setBorderColor:[[UIColor colorWithRed:40/255.0 green:70/255.0 blue:135/255.0 alpha:1.0] CGColor]];
-    [goToFriendSelectionViewButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [goToFriendSelectionViewButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [goToFriendSelectionViewButton addTarget:self action:@selector(showFriendSelectionView) forControlEvents:UIControlEventTouchUpInside];
-    [view5 addSubview:goToFriendSelectionViewButton];
-    
+    //fifth tutorial view
+    UIImageView *view5 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 4, 0, tutorialFrame.width, tutorialFrame.height)];
+    if (screenHeight > 540) [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone5"]]; //iphone5
+    else [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone4"]];
     [self.tutorialScrollView addSubview:view5];
 }
 
@@ -343,10 +387,26 @@ NSInteger numMyEvents;
 
 -(void)initSecondLoginView {
     self.secondLoginView.hidden = true;
+    [self.secondLoginView addSubview:[self secondLoginWebView]];
+    
+    UIButton *doneButton = [[UIButton alloc] initWithFrame:CGRectMake(10, self.secondLoginView.frame.size.height - 55, 300, 40)];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15]];
+    [doneButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [doneButton setBackgroundColor:[UIColor lightGrayColor]];
+    [doneButton.layer setCornerRadius:3.0f];
+    [doneButton.layer setMasksToBounds:YES];
+    [doneButton.layer setBorderWidth:0.5f];
+    [doneButton.layer setBorderColor:[[UIColor grayColor] CGColor]];
+    [doneButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+    [doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [doneButton addTarget:self action:@selector(navigateToMainPage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.secondLoginView addSubview:doneButton];
+
 }
 
 -(void)initPageControl {
-    self.pageControl.pageIndicatorTintColor = [UIColor whiteColor];
     self.pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0];
     self.pageControl.hidesForSinglePage = YES;
     self.pageControl.numberOfPages = 5;
@@ -358,19 +418,11 @@ NSInteger numMyEvents;
  * Check if all tasks are completed. If so, then segue to the main view
  */
 - (void) checkIfAllQueryCompleted {
-    
     if (numQueriesDone == NUM_QUERIES && self.readyToNavigateToMainPage) {
         DBNotificationRequest *notificationRequest = [[DBNotificationRequest alloc] init];
         notificationRequest.delegate = self;
         [notificationRequest getNotifications];
     }
-}
-
-- (IBAction)doneAction:(id)sender {
-    self.readyToNavigateToMainPage = true;
-    self.secondLoginView.hidden = true;
-    self.loadingView.hidden = false;
-    [self checkIfAllQueryCompleted];
 }
 
 - (IBAction)nextActionFromSelectionView:(id)sender {

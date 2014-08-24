@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ShareEventRequest.h"
 
-@interface EventWebViewController : UIViewController <UIActionSheetDelegate, ShareEventRequestDelegate>
+@interface EventWebViewController : UIViewController <UIActionSheetDelegate, ShareEventRequestDelegate, UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 - (IBAction)shareButtonClick:(id)sender;

@@ -66,6 +66,20 @@
     else [ToastView showToastInParentView:self.view withText:@"Fail to share event" withDuaration:3.0];
 }
 
+#pragma mark - web view delegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    //[self updateButtons];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    //[self updateButtons];
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    //[self updateButtons];
+}
+
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -13,6 +13,7 @@
 
 @implementation Friend
 
+@dynamic favorite;
 @dynamic mark;
 @dynamic name;
 @dynamic uid;
