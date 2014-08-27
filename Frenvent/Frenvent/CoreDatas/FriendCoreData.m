@@ -121,10 +121,19 @@
 
 /**
  * Get all the friends stored in the core data
- * @param Array of Friend
+ * @return Array of Friend
  */
 + (NSArray *) getAllFriends {
     return [self getFriend:nil];
+}
+
+/**
+ * Get all the favorite friends in the core data
+ * @return Array of Friends
+ */
++ (NSArray *) getAllFavoriteFriends {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"favorite = 1"];
+    return [self getFriend:predicate];
 }
 
 /**

@@ -9,9 +9,10 @@
 #import "EventManager.h"
 #import "Event.h"
 #import "TimeSupport.h"
+#import "Friend.h"
 
-NSInteger const FILTER_TYPE_WITHIN_ONE_MILE = 0;
-NSInteger const FILTER_TYPE_WITHIN_TEN_MILE = 1;
+NSInteger const FILTER_TYPE_WITHIN_FIVE_MILE = 0;
+NSInteger const FILTER_TYPE_WITHIN_TWENTY_FIVE_MILE = 1;
 NSInteger const FILTER_TYPE_WITHIN_FIFTY_MILE = 2;
 NSInteger const FILTER_TYPE_DEFAULT = 3;
 
@@ -31,7 +32,6 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
 @property (nonatomic) int64_t thisWeekEndTime;
 @property (nonatomic) int64_t nextWeekStartTime;
 @property (nonatomic) int64_t nextWeekEndTime;
-
 
 @end
 
@@ -59,8 +59,8 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @return boolean
  */
 -(BOOL)matchFilterType:(Event *)event {
-    return ((((self.filterType == FILTER_TYPE_WITHIN_ONE_MILE && [event.distance doubleValue] <= 1) ||
-            (self.filterType == FILTER_TYPE_WITHIN_TEN_MILE && [event.distance doubleValue] <= 10) ||
+    return ((((self.filterType == FILTER_TYPE_WITHIN_FIVE_MILE && [event.distance doubleValue] <= 5) ||
+            (self.filterType == FILTER_TYPE_WITHIN_TWENTY_FIVE_MILE && [event.distance doubleValue] <= 25) ||
             (self.filterType == FILTER_TYPE_WITHIN_FIFTY_MILE && [event.distance doubleValue] <= 50)) &&
             [event.distance doubleValue] != 0) || self.filterType == FILTER_TYPE_DEFAULT);
 }
@@ -104,14 +104,27 @@ static NSString * const OTHER_EVENTS_HEADER = @"OTHER";
  * @param Event
  */
 - (void)setEventCategory:(Event *)event {
-    if ([event.startTime longLongValue] >= self.todayStartTime && [event.startTime longLongValue] < self.todayEndTime) {
-        [_todayEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= self.thisWeekendStartTime && [event.startTime longLongValue] < self.thisWeekendEndTime) {
-        [_thisWeekendEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= self.thisWeekStartTime && [event.startTime longLongValue] < self.thisWeekEndTime) {
-        [_thisWeekEvents addObject:event];
-    } else if ([event.startTime longLongValue] >= self.nextWeekStartTime && [event.startTime longLongValue] < self.nextWeekEndTime) {
-        [_nextWeekEvents addObject:event];
+    BOOL shouldBeCategorize = false;
+    
+    for (Friend *friend in event.friendsInterested) {
+        if ([friend.favorite boolValue]) {
+            shouldBeCategorize = true;
+            break;
+        }
+    }
+    
+    if (shouldBeCategorize) {
+        if ([event.startTime longLongValue] >= self.todayStartTime && [event.startTime longLongValue] < self.todayEndTime) {
+            [_todayEvents addObject:event];
+        } else if ([event.startTime longLongValue] >= self.thisWeekendStartTime && [event.startTime longLongValue] < self.thisWeekendEndTime) {
+            [_thisWeekendEvents addObject:event];
+        } else if ([event.startTime longLongValue] >= self.thisWeekStartTime && [event.startTime longLongValue] < self.thisWeekEndTime) {
+            [_thisWeekEvents addObject:event];
+        } else if ([event.startTime longLongValue] >= self.nextWeekStartTime && [event.startTime longLongValue] < self.nextWeekEndTime) {
+            [_nextWeekEvents addObject:event];
+        } else {
+            [_otherEvents addObject:event];
+        }
     } else {
         [_otherEvents addObject:event];
     }

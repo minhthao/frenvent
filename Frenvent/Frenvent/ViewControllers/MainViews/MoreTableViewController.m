@@ -180,7 +180,7 @@
         NSString *url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", [self uid]];
         UIImageView *profilePic = (UIImageView *)[cell viewWithTag:350];
         UILabel *profileName = (UILabel *)[cell viewWithTag:351];
-        [profilePic setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+        [profilePic setImageWithURL:[NSURL URLWithString:url]];
         profileName.text = [self name];
         
         return cell;

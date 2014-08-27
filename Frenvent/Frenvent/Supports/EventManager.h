@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSInteger const FILTER_TYPE_WITHIN_ONE_MILE;
-extern NSInteger const FILTER_TYPE_WITHIN_TEN_MILE;
+extern NSInteger const FILTER_TYPE_WITHIN_FIVE_MILE;
+extern NSInteger const FILTER_TYPE_WITHIN_TWENTY_FIVE_MILE;
 extern NSInteger const FILTER_TYPE_WITHIN_FIFTY_MILE;
 extern NSInteger const FILTER_TYPE_DEFAULT;
 

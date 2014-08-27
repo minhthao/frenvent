@@ -131,43 +131,54 @@ static double const METER_IN_MILE = 1609.344;
         NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
         
         //create attributes for the string that we are going to use
-        NSDictionary *italicStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-BoldItalic" andSize:14];
+        NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-Bold" andSize:14];
         NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:14];
         
-        //we get the first name of your friend
-        NSString *firstFriendName = [self getTheShortenNameOfFriend:[interestedFriends objectAtIndex:0]];
-        NSAttributedString *firstFriendAttributedString = [[NSAttributedString alloc] initWithString:firstFriendName attributes:italicStringAttributes];
-        
-        [finalString appendAttributedString:firstFriendAttributedString];
+        NSAttributedString *firstFriendAttributedString = [[NSAttributedString alloc] initWithString:((Friend *)[interestedFriends objectAtIndex:0]).name attributes:boldStringAttributes];
         
         if ([interestedFriends count] == 1) {
-            //if only one of your friends is interested in this event
+            //statement
             NSAttributedString *statement = [[NSAttributedString alloc] initWithString:@" is interested" attributes:normalStringAttributes];
+            
+            [finalString appendAttributedString:firstFriendAttributedString];
+            [finalString appendAttributedString:statement];
+        } else if ([interestedFriends count] == 2){
+            //and conjunction
+            NSAttributedString *andConjunction = [[NSAttributedString alloc] initWithString:@" and " attributes:normalStringAttributes];
+            
+            //name of second friend
+             NSAttributedString *secondFriendAttributedString = [[NSAttributedString alloc] initWithString:((Friend *)[interestedFriends objectAtIndex:1]).name attributes:boldStringAttributes];
+            
+            //add the final statement
+            NSAttributedString *statement = [[NSAttributedString alloc] initWithString:@" are interested" attributes:normalStringAttributes];
+            
+            [finalString appendAttributedString:firstFriendAttributedString];
+            [finalString appendAttributedString:andConjunction];
+            [finalString appendAttributedString:secondFriendAttributedString];
             [finalString appendAttributedString:statement];
         } else {
-            //now we add in the word ' and ' to separate the two indicators
-            NSAttributedString *andConjunction = [[NSAttributedString alloc] initWithString:@" and " attributes:normalStringAttributes];
-            [finalString appendAttributedString:andConjunction];
-            
-            if ([interestedFriends count] == 2) {
-                //if two of your friends are interested in this event
-                NSString *secondFriendName = [self getTheShortenNameOfFriend:[interestedFriends objectAtIndex:1]];
-                NSAttributedString *secondFriendAttributedString = [[NSAttributedString alloc] initWithString:secondFriendName attributes:italicStringAttributes];
-                [finalString appendAttributedString:secondFriendAttributedString];
-                
-                //add the final statement
-                NSAttributedString *statement = [[NSAttributedString alloc] initWithString:@" are interested" attributes:normalStringAttributes];
-                [finalString appendAttributedString:statement];
-            } else {
-                //add the number of other friends also interested
-                NSString *numOtherFriends = [NSString stringWithFormat:@"%ld", (long)([interestedFriends count] - 1)];
-                NSAttributedString *numOtherFriendsString = [[NSAttributedString alloc] initWithString:numOtherFriends attributes:italicStringAttributes];
-                [finalString appendAttributedString:numOtherFriendsString];
-                
-                //add the final statement
-                NSAttributedString *statement = [[NSAttributedString alloc] initWithString:@" others are interested" attributes:normalStringAttributes];
-                [finalString appendAttributedString:statement];
+            //we iterate through the loop to find a favorite friend if exist;
+            for (Friend *friend in interestedFriends) {
+                if ([friend.favorite boolValue]) {
+                    firstFriendAttributedString = [[NSAttributedString alloc] initWithString:friend.name attributes:boldStringAttributes];
+                    break;
+                }
             }
+            
+            //and conjunction
+            NSAttributedString *andConjunction = [[NSAttributedString alloc] initWithString:@" and " attributes:normalStringAttributes];
+                
+            //add the number of other friends also interested
+            NSString *numOtherFriends = [NSString stringWithFormat:@"%ld", (long)([interestedFriends count] - 1)];
+            NSAttributedString *numOtherFriendsString = [[NSAttributedString alloc] initWithString:numOtherFriends attributes:boldStringAttributes];
+            
+            //add the final statement
+            NSAttributedString *statement = [[NSAttributedString alloc] initWithString:@" others are interested" attributes:normalStringAttributes];
+            
+            [finalString appendAttributedString:firstFriendAttributedString];
+            [finalString appendAttributedString:andConjunction];
+            [finalString appendAttributedString:numOtherFriendsString];
+            [finalString appendAttributedString:statement];
         }
         return finalString;
     }
@@ -220,9 +231,10 @@ static double const METER_IN_MILE = 1609.344;
         return @"N/A";
     } else {
         double eDistance = [self.distance doubleValue];
+        NSLog(@"%@ at %f", self.name, eDistance);
         if (eDistance >= 10 && eDistance < 1000) return [NSString stringWithFormat:@"%d mi.", (int)eDistance];
         else if (eDistance >= 1000) return @"1k+ mi.";
-        else return [NSString stringWithFormat:@"%.1g mi.", eDistance];
+        else return [NSString stringWithFormat:@"%.1f mi.", eDistance];
     }
 }
 

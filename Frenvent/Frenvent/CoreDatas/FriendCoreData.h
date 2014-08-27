@@ -15,6 +15,7 @@
 + (Friend *) addFriend:(NSString *)uid :(NSString *)name :(NSString *)cover;
 + (Friend *) getFriendWithUid:(NSString *)uid;
 + (NSArray *) getAllFriends;
++ (NSArray *) getAllFavoriteFriends;
 + (NSArray *) getAllFutureEventsPertainingToUser:(NSString *)uid;
 + (NSArray *) getAllPastEventsPertainingToUser:(NSString *)uid;
 + (void) markFriend:(Friend *)friend;

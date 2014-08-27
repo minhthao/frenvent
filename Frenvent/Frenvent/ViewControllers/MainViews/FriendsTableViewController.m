@@ -15,11 +15,13 @@
 #import "TimeSupport.h"
 #import "UITableView+NXEmptyView.h"
 #import "MyColor.h"
+#import "ToastView.h"
 
 @interface FriendsTableViewController ()
 
 @property (nonatomic, strong) FriendManager *friendManager;
 @property (nonatomic, strong) UIView *emptyView;
+@property (nonatomic, strong) NSMutableSet *favoriteFriends;
 
 @end
 
@@ -47,8 +49,11 @@ NSArray *allFriends;
 
 - (FriendManager *) friendManager {
     if (_friendManager == nil) {
+        _favoriteFriends = [[NSMutableSet alloc] init];
         _friendManager = [[FriendManager alloc] init];
         allFriends = [FriendCoreData getAllFriends];
+        for (Friend *friend in allFriends) 
+            if ([friend.favorite boolValue]) [_favoriteFriends addObject:friend.uid];
         [self.friendManager setFriends:[FriendCoreData getAllFriends]];
     }
     
@@ -74,7 +79,6 @@ NSArray *allFriends;
 }
 
 #pragma mark - Table view data source
-
 //Get the number of seccion in table view
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [[self friendManager].sectionTitles count];
@@ -118,6 +122,9 @@ NSArray *allFriends;
     
     UIImageView *profilePicture = (UIImageView *)[cell viewWithTag:101];
     UILabel *username = (UILabel *)[cell viewWithTag:102];
+    UIImageView *mark = (UIImageView *)[cell viewWithTag:103];
+    if ([self.favoriteFriends containsObject:friend.uid]) mark.hidden = false;
+    else mark.hidden = true;
     
     NSString *url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", friend.uid];
     [profilePicture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
@@ -146,6 +153,40 @@ NSArray *allFriends;
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+// Override to support conditional editing of the table view.
+- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return(YES);
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
+    NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
+    Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
+
+    if ([self.favoriteFriends containsObject:friend.uid]) return @"Unfollow      ";
+    else return @"Follow      ";
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
+    NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
+    Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
+    
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UIImageView *mark = (UIImageView *)[cell viewWithTag:103];
+
+    if (![self.favoriteFriends containsObject:friend.uid]) {
+        [self.favoriteFriends addObject:friend.uid];
+        [FriendCoreData setFriend:friend toFavorite:true];
+        mark.hidden = false;
+    } else if ([self.favoriteFriends count] <= 20) {
+        [ToastView showToastOnTopOfParentView:self.view withText:@"Cannot have less than 20 favorite friends" withDuaration:2];
+    } else {
+        [self.favoriteFriends removeObject:friend.uid];
+        [FriendCoreData setFriend:friend toFavorite:false];
+        mark.hidden = true;
+    }
+}
 
 #pragma mark - search bar delegate
 //handle the case where the new item is typed in the search

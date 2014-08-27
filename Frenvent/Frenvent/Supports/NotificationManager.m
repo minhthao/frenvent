@@ -16,6 +16,7 @@
 #import "Friend.h"
 #import "EventParticipant.h"
 #import "DBNotificationRequest.h"
+#import "FriendCoreData.h"
 
 @interface NotificationManager()
 
@@ -39,40 +40,40 @@
     //we first group the notifications
     NSMutableOrderedSet *friendsTodayNotifications = [[NSMutableOrderedSet alloc] init];
     self.todayNotification = [[NSMutableArray alloc] init];
-    
     NSMutableOrderedSet *friendsThisWeekNotifications = [[NSMutableOrderedSet alloc] init];
     self.thisWeekNotification = [[NSMutableArray alloc] init];
-    
     self.othersNotification = [[NSMutableArray alloc] init];
 
     NSArray *notifications = [NotificationCoreData getNotifications];
     for (Notification *notification in notifications) {
-        if ([notification.time longLongValue] >= self.todayStartTime) {
-            [friendsTodayNotifications addObject:notification.friend.uid];
-            NSUInteger indexOfFriend = [friendsTodayNotifications indexOfObject:notification.friend.uid];
-            if ([self.todayNotification count] > indexOfFriend) {
-                [((NotificationGroup *)[self.todayNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
-            } else if ([self.todayNotification count] == indexOfFriend) {
-                NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
-                notificationGroup.time = [notification.time longLongValue];
-                notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
-                notificationGroup.friend = notification.friend;
-                [self.todayNotification addObject:notificationGroup];
+        if ([notification.friend.favorite boolValue]) {
+            if ([notification.time longLongValue] >= self.todayStartTime) {
+                [friendsTodayNotifications addObject:notification.friend.uid];
+                NSUInteger indexOfFriend = [friendsTodayNotifications indexOfObject:notification.friend.uid];
+                if ([self.todayNotification count] > indexOfFriend) {
+                    [((NotificationGroup *)[self.todayNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
+                } else if ([self.todayNotification count] == indexOfFriend) {
+                    NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
+                    notificationGroup.time = [notification.time longLongValue];
+                    notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
+                    notificationGroup.friend = notification.friend;
+                    [self.todayNotification addObject:notificationGroup];
+                }
+            } else if ([notification.time longLongValue] >= self.thisWeekStartTime) {
+                [friendsThisWeekNotifications addObject:notification.friend.uid];
+                NSUInteger indexOfFriend = [friendsThisWeekNotifications indexOfObject:notification.friend.uid];
+                if ([self.thisWeekNotification count] > indexOfFriend) {
+                    [((NotificationGroup *)[self.thisWeekNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
+                } else if ([self.thisWeekNotification count] == indexOfFriend) {
+                    NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
+                    notificationGroup.time = [notification.time longLongValue];
+                    notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
+                    notificationGroup.friend = notification.friend;
+                    [self.thisWeekNotification addObject:notificationGroup];
+                }
+            } else {
+                [self.othersNotification addObject:notification];
             }
-        } else if ([notification.time longLongValue] >= self.thisWeekStartTime) {
-            [friendsThisWeekNotifications addObject:notification.friend.uid];
-            NSUInteger indexOfFriend = [friendsThisWeekNotifications indexOfObject:notification.friend.uid];
-            if ([self.thisWeekNotification count] > indexOfFriend) {
-                [((NotificationGroup *)[self.thisWeekNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
-            } else if ([self.thisWeekNotification count] == indexOfFriend) {
-                NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
-                notificationGroup.time = [notification.time longLongValue];
-                notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
-                notificationGroup.friend = notification.friend;
-                [self.thisWeekNotification addObject:notificationGroup];
-            }
-        } else {
-            [self.othersNotification addObject:notification];
         }
     }
     
@@ -294,15 +295,17 @@
 + (void)createNewFriendNotification:(Notification *)notification {
     [DBNotificationRequest addNotificationForFriend:notification.friend.uid andEvent:notification.event.eid andStartTime:[notification.event.startTime longLongValue]];
     
-    UIApplication *frenvent = [UIApplication sharedApplication];
-    
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    localNotification.alertBody = [NSString stringWithFormat:@"%@ is interested in %@", notification.friend.name, [notification.event.name capitalizedString]];
-    localNotification.alertAction = @"Slide to unlock";
-    localNotification.soundName = UILocalNotificationDefaultSoundName;
-    localNotification.applicationIconBadgeNumber = frenvent.applicationIconBadgeNumber + 1;
-    
-    [frenvent presentLocalNotificationNow:localNotification];
+    if ([notification.friend.favorite boolValue] == true) {
+        UIApplication *frenvent = [UIApplication sharedApplication];
+        
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        localNotification.alertBody = [NSString stringWithFormat:@"%@ is interested in %@", notification.friend.name, [notification.event.name capitalizedString]];
+        localNotification.alertAction = @"Slide to unlock";
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        localNotification.applicationIconBadgeNumber = frenvent.applicationIconBadgeNumber + 1;
+        
+        [frenvent presentLocalNotificationNow:localNotification];
+    }
 }
 
 @end

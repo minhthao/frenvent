@@ -119,7 +119,7 @@ CLLocation *lastKnown;
  */
 - (UIActionSheet *)filterActionSheet {
     if (_filterActionSheet == nil) {
-        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Default" destructiveButtonTitle:nil otherButtonTitles:@"< 1 mile", @"< 10 miles", @"< 50 miles", nil];
+        _filterActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Default" destructiveButtonTitle:nil otherButtonTitles:@"< 5 mile", @"< 25 miles", @"< 50 miles", nil];
         _filterActionSheet.tag = 3;
         _filterActionSheet.delegate = self;
     }
@@ -256,11 +256,11 @@ CLLocation *lastKnown;
     } else if (actionSheet.tag == 3) {
         switch (buttonIndex) {
             case 0:
-                self.filterButton.title = @"< 1 mile";
+                self.filterButton.title = @"< 5 mile";
                 break;
                 
             case 1:
-                self.filterButton.title = @"< 10 miles";
+                self.filterButton.title = @"< 25 miles";
                 break;
                 
             case 2:

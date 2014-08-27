@@ -12,7 +12,7 @@
 #import "FriendsRequest.h"
 #import "DbEventsRequest.h"
 #import "DBNotificationRequest.h"
-@interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate, DBNotificationRequestDelegate, UIScrollViewDelegate,  UIWebViewDelegate>
+@interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate, DBNotificationRequestDelegate, UIScrollViewDelegate,  UIWebViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
@@ -22,8 +22,10 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *tutorialScrollView;
 
 @property (weak, nonatomic) IBOutlet UIView *friendSelectionView;
-@property (weak, nonatomic) IBOutlet UITableView *selectionFriendTable;
-- (IBAction)nextActionFromSelectionView:(id)sender;
+@property (weak, nonatomic) IBOutlet UITableView *friendSelectionTableView;
+@property (weak, nonatomic) IBOutlet UIButton *selectAllButton;
+@property (weak, nonatomic) IBOutlet UIButton *friendSelectionNextButton;
+
 
 @property (weak, nonatomic) IBOutlet UIView *secondLoginView;
 
