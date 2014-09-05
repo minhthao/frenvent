@@ -278,6 +278,9 @@ NSInteger numMyEvents;
         self.didGetNearbyEvent = true;
         CLLocation *currentLocation = [locations objectAtIndex:0];
         [[self dbEventsRequest] initNearbyEvents:(double)[currentLocation coordinate].longitude :(double)[currentLocation coordinate].latitude];
+    } else if (!self.didGetNearbyEvent){
+        numQueriesDone ++;
+        [self checkIfAllQueryCompleted];
     }
 }
 

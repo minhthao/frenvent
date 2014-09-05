@@ -231,7 +231,6 @@ static double const METER_IN_MILE = 1609.344;
         return @"N/A";
     } else {
         double eDistance = [self.distance doubleValue];
-        NSLog(@"%@ at %f", self.name, eDistance);
         if (eDistance >= 10 && eDistance < 1000) return [NSString stringWithFormat:@"%d mi.", (int)eDistance];
         else if (eDistance >= 1000) return @"1k+ mi.";
         else return [NSString stringWithFormat:@"%.1f mi.", eDistance];
