@@ -17,7 +17,6 @@
 		3E57FB391959517200D3293D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB381959517200D3293D /* main.m */; };
 		3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB3C1959517200D3293D /* AppDelegate.m */; };
 		3E57FB401959517200D3293D /* Frenvent.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB3E1959517200D3293D /* Frenvent.xcdatamodeld */; };
-		3E57FB491959517200D3293D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB481959517200D3293D /* XCTest.framework */; };
 		3E57FB4A1959517200D3293D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2A1959517200D3293D /* Foundation.framework */; };
 		3E57FB4B1959517200D3293D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB2E1959517200D3293D /* UIKit.framework */; };
 		3E57FB4C1959517200D3293D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E57FB301959517200D3293D /* CoreData.framework */; };
@@ -33,6 +32,8 @@
 		3E8A3DDF19878963003C932A /* PagedPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DDE19878963003C932A /* PagedPhotoScrollView.m */; };
 		3E8A3DE219883EFB003C932A /* ScrollEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE119883EFB003C932A /* ScrollEvent.m */; };
 		3E8A3DE51988442B003C932A /* PagedEventScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DE41988442B003C932A /* PagedEventScrollView.m */; };
+		3E923D6919BF1075001FF1FD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015A198CABBA0056BE36 /* Bolts.framework */; };
+		3E923D6A19BF1075001FF1FD /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */; };
 		3EA88F141995BAC9004994D5 /* Friend.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F131995BAC9004994D5 /* Friend.m */; };
 		3EA88F171995BACA004994D5 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F161995BACA004994D5 /* Notification.m */; };
 		3EA88F1A1995D16B004994D5 /* NotificationGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA88F191995D16B004994D5 /* NotificationGroup.m */; };
@@ -46,8 +47,6 @@
 		3EA90150198C489A0056BE36 /* EventRsvpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9014F198C489A0056BE36 /* EventRsvpRequest.m */; };
 		3EA90153198C4BC80056BE36 /* ToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90152198C4BC80056BE36 /* ToastView.m */; };
 		3EA90159198C67300056BE36 /* RecommendFbUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90158198C67300056BE36 /* RecommendFbUserRequest.m */; };
-		3EA9015C198CABBA0056BE36 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015A198CABBA0056BE36 /* Bolts.framework */; };
-		3EA9015D198CABBA0056BE36 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */; };
 		3EA90160198CAED40056BE36 /* DbFBUserRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA9015F198CAED40056BE36 /* DbFBUserRequest.m */; };
 		3EA90163198E49560056BE36 /* ShareEventRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90162198E49560056BE36 /* ShareEventRequest.m */; };
 		3EA90166199209020056BE36 /* EventWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA90165199209020056BE36 /* EventWebViewController.m */; };
@@ -161,7 +160,6 @@
 		3E57FB3C1959517200D3293D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3E57FB3F1959517200D3293D /* Frenvent.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Frenvent.xcdatamodel; sourceTree = "<group>"; };
 		3E57FB471959517200D3293D /* FrenventTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FrenventTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E57FB481959517200D3293D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3E57FB511959517200D3293D /* FrenventTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FrenventTests-Info.plist"; sourceTree = "<group>"; };
 		3E57FB531959517200D3293D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E57FB551959517200D3293D /* FrenventTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrenventTests.m; sourceTree = "<group>"; };
@@ -382,8 +380,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EA9015C198CABBA0056BE36 /* Bolts.framework in Frameworks */,
-				3EA9015D198CABBA0056BE36 /* FacebookSDK.framework in Frameworks */,
+				3E923D6919BF1075001FF1FD /* Bolts.framework in Frameworks */,
+				3E923D6A19BF1075001FF1FD /* FacebookSDK.framework in Frameworks */,
 				3EACE3FE195E2E4B0023EF58 /* SDWebImage.framework in Frameworks */,
 				3EACE3DE195E0E530023EF58 /* QuartzCore.framework in Frameworks */,
 				3EACE3DC195E0E210023EF58 /* CoreLocation.framework in Frameworks */,
@@ -400,7 +398,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E57FB491959517200D3293D /* XCTest.framework in Frameworks */,
 				3E57FB4C1959517200D3293D /* CoreData.framework in Frameworks */,
 				3E57FB4B1959517200D3293D /* UIKit.framework in Frameworks */,
 				3E57FB4A1959517200D3293D /* Foundation.framework in Frameworks */,
@@ -443,7 +440,6 @@
 				3E57FB2C1959517200D3293D /* CoreGraphics.framework */,
 				3E57FB2E1959517200D3293D /* UIKit.framework */,
 				3E57FB301959517200D3293D /* CoreData.framework */,
-				3E57FB481959517200D3293D /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1162,7 +1158,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
 				SDKROOT = iphoneos;
@@ -1196,6 +1192,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
 				SDKROOT = iphoneos;
@@ -1221,7 +1218,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
+				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1244,7 +1241,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
+				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -20,7 +20,7 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if ([self.photoUrls count] > 0) {
-        PagedPhotoScrollView *pageScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.mainView.frame.size.height)];
+        PagedPhotoScrollView *pageScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 0, self.mainView.frame.size.width, self.mainView.frame.size.height)];
         pageScrollView.shouldShowImageIndex = true;
         
         pageScrollView.backgroundColor = [MyColor eventCellButtonsContainerBorderColor];

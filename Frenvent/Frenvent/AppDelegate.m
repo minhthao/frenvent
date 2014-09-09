@@ -14,6 +14,7 @@
 #import "Reachability.h"
 #import <Bolts/Bolts.h>
 #import "EventDetailViewController.h"
+#import "FbUserInfoViewController.h"
 
 @implementation AppDelegate
 
@@ -205,41 +206,85 @@
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
     
-    // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
-    BOOL wasHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call) {
-         // Parse the incoming URL
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
-             BFURL *parsedUrl = [BFURL URLWithURL:url];
-             if ([parsedUrl targetURL]) {
-                 NSString *targetURLString = [[parsedUrl targetURL] absoluteString];
-                 NSString *url = [[targetURLString componentsSeparatedByString:@"&"] objectAtIndex:0];
-                 NSString *eid = [[url componentsSeparatedByString:@"="] objectAtIndex:1];
-                 
-                 Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-                 if ([internetReachable isReachable]) {
-                     UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-                     EventDetailViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"eventDetailViewController"];
-                     rootViewController.eid = eid;
-                     rootViewController.isModal = true;
-                     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-                     
-                     [self.window.rootViewController presentViewController:navigationController animated:true completion:NULL];
-                 } else {
-                     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                                       message:@"Connect to internet and try again."
-                                                                      delegate:nil
-                                                             cancelButtonTitle:@"OK"
-                                                             otherButtonTitles:nil];
-                     [message show];
-                 }
-             }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *urlString = [url absoluteString];
+    if ([urlString rangeOfString:@"fb-messenger"].location != NSNotFound &&
+        [urlString rangeOfString:@"frenvent://event/"].location != NSNotFound &&
+        [defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
+        
+        NSRange range = [urlString rangeOfString:@"?al_applink_data"];
+        NSString *eid = [[urlString substringToIndex:range.location] substringFromIndex:17];
+        
+        Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+        if ([internetReachable isReachable]) {
+            UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+            EventDetailViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"eventDetailViewController"];
+            rootViewController.eid = eid;
+            rootViewController.isModal = true;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+            
+            [self.window.rootViewController presentViewController:navigationController animated:true completion:NULL];
+        } else {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            [message show];
         }
+        return true;
+    } else if ([urlString rangeOfString:@"fb-messenger"].location != NSNotFound &&
+               [urlString rangeOfString:@"frenvent://user/"].location != NSNotFound &&
+               [defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
+        
+        NSRange range = [urlString rangeOfString:@"?al_applink_data"];
+        NSString *uid = [[urlString substringToIndex:range.location] substringFromIndex:16];
+        
+        Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+        if ([internetReachable isReachable]) {
+            UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+            FbUserInfoViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"fbUserInfoViewController"];
+            rootViewController.targetUid = uid;
+            rootViewController.isModal = true;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+            
+            [self.window.rootViewController presentViewController:navigationController animated:true completion:NULL];
+        } else {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            [message show];
+        }
+        return true;
+    } else return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call) {
+         // Parse the incoming URL
+         BFURL *parsedUrl = [BFURL URLWithURL:url];
+         if ([parsedUrl targetURL]) {
+             NSString *targetURLString = [[parsedUrl targetURL] absoluteString];
+             NSString *url = [[targetURLString componentsSeparatedByString:@"&"] objectAtIndex:0];
+             NSString *eid = [[url componentsSeparatedByString:@"="] objectAtIndex:1];
+             
+             Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+             if ([internetReachable isReachable]) {
+                 UIStoryboard *storyboard = self.window.rootViewController.storyboard;
+                 EventDetailViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"eventDetailViewController"];
+                 rootViewController.eid = eid;
+                 rootViewController.isModal = true;
+                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+                 
+                 [self.window.rootViewController presentViewController:navigationController animated:true completion:NULL];
+             } else {
+                 UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                                   message:@"Connect to internet and try again."
+                                                                  delegate:nil
+                                                         cancelButtonTitle:@"OK"
+                                                         otherButtonTitles:nil];
+                 [message show];
+             }
+         }
      }];
-    
-    // You can add your app-specific url handling code here if needed
-    
-    return wasHandled;
 }
 
 @end

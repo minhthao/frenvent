@@ -50,10 +50,10 @@ CLLocation *lastKnown;
 #pragma mark - instantiation
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, self.tableView.frame.size.width, 36)];
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];
@@ -485,8 +485,9 @@ CLLocation *lastKnown;
     
     if (![event canShare]) return nil;
     
+    float width = self.tableView.frame.size.width - 10; //for padding
     //otherwise we create that button
-    CGRect buttonFrame = CGRectMake(155.0, 0.0, 155.0, 35.0); //all 3 buttons presents
+    CGRect buttonFrame = CGRectMake(width/2, 0.0, width/2, 35.0); //all 2 buttons presents
     EventButton *shareButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
     //set title and format button
@@ -509,11 +510,12 @@ CLLocation *lastKnown;
 - (EventButton *)cellRsvpButton:(NSIndexPath *)indexPath {
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     
+    float width = self.tableView.frame.size.width - 10; //for padding
     CGRect buttonFrame;
     if ([event canShare])  //can share implies can rsvp
-        buttonFrame = CGRectMake(0.0, 0.0, 155.0, 35.0);
+        buttonFrame = CGRectMake(0.0, 0.0, width/2, 35.0);
     else if ([event canRsvp])
-        buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0);
+        buttonFrame = CGRectMake(0.0, 0.0, width, 35.0);
     else return nil; //no need to create this button
     
     EventButton *rsvpButton = [[EventButton alloc] initWithFrame:buttonFrame];
@@ -536,7 +538,8 @@ CLLocation *lastKnown;
  * @param index path
  */
 - (EventButton *)cellDetailButton:(NSIndexPath *)indexPath {
-    CGRect buttonFrame = CGRectMake(0.0, 0.0, 310.0, 35.0); //only this button present
+    float width = self.tableView.frame.size.width - 10; //for padding
+    CGRect buttonFrame = CGRectMake(0.0, 0.0, width, 35.0); //only this button present
     
     EventButton *detailButton = [[EventButton alloc] initWithFrame:buttonFrame];
     

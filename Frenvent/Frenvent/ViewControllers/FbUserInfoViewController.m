@@ -310,8 +310,11 @@
     
     if ([cover length] > 0)
         [self.coverImage setImageWithURL:[NSURL URLWithString:cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
-    else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];   
-    
+    else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
+}
+
+-(void)backClick {
+    [self dismissViewControllerAnimated:true completion:NULL];
 }
 
 #pragma mark - view delegate
@@ -325,6 +328,10 @@
     [self.loadingSpinner startAnimating];
     [self.shareButton setEnabled:false];
     [self.viewSegmentControl setEnabled:false];
+    
+    if (self.isModal) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
+    }
     
     FbUserInfoButtons *infoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10, 154, 300, 64)];
     infoButtons.delegate = self;

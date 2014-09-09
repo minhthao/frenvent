@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSString * country;
 @property (nonatomic) double longitude;
 @property (nonatomic) double latitude;
-@property (nonatomic, strong) NSString * description;
+@property (nonatomic, strong) NSString * eDescription;
 @property (nonatomic) int32_t attendingCount;
 @property (nonatomic) int32_t unsureCount;
 @property (nonatomic) int32_t unrepliedCount;

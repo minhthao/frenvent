@@ -427,11 +427,11 @@ NSInteger numMyEvents;
     [self initPageControl];
     
     float screenHeight = [[UIScreen mainScreen] bounds].size.height;
-    if (screenHeight > 540) self.tutorialView.frame = CGRectMake(0, 0, 320, 568);
-    else self.tutorialView.frame = CGRectMake(0, 0, 320, 480);
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    self.tutorialView.frame = CGRectMake(0, 0, screenWidth, screenHeight);
     
-    if (screenHeight > 540) self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(255, 18, 50, 36)];
-    else self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(255, 431, 50, 36)];
+    if (screenHeight > 540) self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth - 65, 18, 50, 36)];
+    else self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth - 65, 431, 50, 36)];
     [self.skipToFriendSelectionButton setTitle:@"Skip" forState:UIControlStateNormal];
     [self.skipToFriendSelectionButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.5]];
     [self.skipToFriendSelectionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
@@ -446,30 +446,35 @@ NSInteger numMyEvents;
     
     // first tutorial view
     UIImageView *view1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tutorialFrame.width, tutorialFrame.height)];
+    [view1 setContentMode:UIViewContentModeScaleAspectFill];
     if (screenHeight > 540)[view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone5"]]; //iphone5
     else [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone4"]];
     [self.tutorialScrollView addSubview:view1];
     
     // second tutorial view
     UIImageView *view2 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width, 0, tutorialFrame.width, tutorialFrame.height)];
+    [view2 setContentMode:UIViewContentModeScaleAspectFill];
     if (screenHeight > 540) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone5"]];
     else [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone4"]];
     [self.tutorialScrollView addSubview:view2];
     
     //third tutorial view
     UIImageView *view3 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 2, 0, tutorialFrame.width, tutorialFrame.height)];
+    [view3 setContentMode:UIViewContentModeScaleAspectFill];
     if (screenHeight > 540) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone5"]];
     else [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone4"]];
     [self.tutorialScrollView addSubview:view3];
     
     //fourth tutorial view
     UIImageView *view4 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 3, 0, tutorialFrame.width, tutorialFrame.height)];
+    [view4 setContentMode:UIViewContentModeScaleAspectFill];
     if (screenHeight > 540) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone5"]]; //iphone5
     else [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone4"]];
     [self.tutorialScrollView addSubview:view4];
     
     //fifth tutorial view
     UIImageView *view5 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 4, 0, tutorialFrame.width, tutorialFrame.height)];
+    [view5 setContentMode:UIViewContentModeScaleAspectFill];
     if (screenHeight > 540) [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone5"]]; //iphone5
     else [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone4"]];
     [self.tutorialScrollView addSubview:view5];
@@ -483,8 +488,9 @@ NSInteger numMyEvents;
 
 -(void)initSecondLoginView {
     self.secondLoginView.hidden = true;
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     
-    UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(255, 18, 50, 36)];
+    UIButton *skipButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth - 65, 18, 50, 36)];
     [skipButton setTitle:@"Skip" forState:UIControlStateNormal];
     [skipButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.5]];
     [skipButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
@@ -503,13 +509,13 @@ NSInteger numMyEvents;
     UILabel *description;
 
     if (screenHeight > 540) {
-        profileImage = [[UIImageView alloc] initWithFrame:CGRectMake(117, 82, 86, 86)];
-        profileName = [[UILabel alloc] initWithFrame:CGRectMake(0, 170, 320, 28)];
-        description = [[UILabel alloc] initWithFrame:CGRectMake(20, 240, 280, 50)];
+        profileImage = [[UIImageView alloc] initWithFrame:CGRectMake((screenWidth - 86)/2, 82, 86, 86)];
+        profileName = [[UILabel alloc] initWithFrame:CGRectMake(0, 170, screenWidth, 28)];
+        description = [[UILabel alloc] initWithFrame:CGRectMake(20, 240, screenWidth - 40, 50)];
     } else {
-        profileImage = [[UIImageView alloc] initWithFrame:CGRectMake(117, 65, 86, 86)];
-        profileName = [[UILabel alloc] initWithFrame:CGRectMake(0, 152, 320, 28)];
-        description = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, 280, 50)];
+        profileImage = [[UIImageView alloc] initWithFrame:CGRectMake((screenWidth - 86)/2, 65, 86, 86)];
+        profileName = [[UILabel alloc] initWithFrame:CGRectMake(0, 152, screenWidth, 28)];
+        description = [[UILabel alloc] initWithFrame:CGRectMake(20, 190, screenWidth - 40, 50)];
     }
     
     [profileImage.layer setCornerRadius:15.0f];
@@ -611,9 +617,9 @@ NSInteger numMyEvents;
     if (![[self selectedFriends] containsObject:friend.uid]) {
         [[self selectedFriends] addObject:friend.uid];
         
-        if ([[self selectedFriends] count] >= 20) self.friendSelectionNextButton.enabled = true;
+        if ([[self selectedFriends] count] >= 10) self.friendSelectionNextButton.enabled = true;
         else {
-            [ToastView showToastOnTopOfParentView:self.friendSelectionView withText:[NSString stringWithFormat:@"Select %d more", (int)(20 - [[self selectedFriends] count])] withDuaration:1.5f];
+            [ToastView showToastOnTopOfParentView:self.friendSelectionView withText:[NSString stringWithFormat:@"Select %d more", (int)(10 - [[self selectedFriends] count])] withDuaration:1.5f];
             self.friendSelectionNextButton.enabled = false;
         }
     }
@@ -627,8 +633,8 @@ NSInteger numMyEvents;
     Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
     if ([[self selectedFriends] containsObject:friend.uid]) {
         [[self selectedFriends] removeObject:friend.uid];
-        if ([[self selectedFriends] count] < 20)
-            [ToastView showToastOnTopOfParentView:self.friendSelectionView withText:[NSString stringWithFormat:@"Select %d more", (int)(20 - [[self selectedFriends] count])] withDuaration:1.5];
+        if ([[self selectedFriends] count] < 10)
+            [ToastView showToastOnTopOfParentView:self.friendSelectionView withText:[NSString stringWithFormat:@"Select %d more", (int)(10 - [[self selectedFriends] count])] withDuaration:1.5];
     }
 }
 

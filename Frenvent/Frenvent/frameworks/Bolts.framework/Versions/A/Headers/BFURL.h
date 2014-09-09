@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @class BFAppLink;
 
 /*!
@@ -19,46 +21,57 @@
 @interface BFURL : NSObject
 
 /*!
- Creates a link target from a raw URL. Usually, this will be used to parse a URL passed into
- an app delegate's handleOpenURL: method.
+ Creates a link target from a raw URL.
+ On success, this posts the BFAppLinkParseEventName measurement event. If you are constructing the BFURL within your application delegate's
+ application:openURL:sourceApplication:annotation:, you should instead use URLWithInboundURL:sourceApplication:
+ to support better BFMeasurementEvent notifications
+ @param url The instance of `NSURL` to create BFURL from.
  */
 + (BFURL *)URLWithURL:(NSURL *)url;
+
+/*! 
+ Creates a link target from a raw URL received from an external application. This is typically called from the app delegate's 
+ application:openURL:sourceApplication:annotation: and will post the BFAppLinkNavigateInEventName measurement event.
+ @param url The instance of `NSURL` to create BFURL from.
+ @param sourceApplication the bundle ID of the app that is requesting your app to open the URL. The same sourceApplication in application:openURL:sourceApplication:annotation:
+*/
++ (BFURL *)URLWithInboundURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /*!
  Gets the target URL.  If the link is an App Link, this is the target of the App Link.
  Otherwise, it is the url that created the target.
  */
-@property (readonly, strong) NSURL *targetURL;
+@property (nonatomic, strong, readonly) NSURL *targetURL;
 
 /*!
  Gets the query parameters for the target, parsed into an NSDictionary.
  */
-@property (readonly, strong) NSDictionary *targetQueryParameters;
+@property (nonatomic, strong, readonly) NSDictionary *targetQueryParameters;
 
 /*!
  If this link target is an App Link, this is the data found in al_applink_data.
  Otherwise, it is nil.
  */
-@property (readonly, strong) NSDictionary *appLinkData;
+@property (nonatomic, strong, readonly) NSDictionary *appLinkData;
 
 /*!
  If this link target is an App Link, this is the data found in extras.
  */
-@property (readonly, strong) NSDictionary *appLinkExtras;
+@property (nonatomic, strong, readonly) NSDictionary *appLinkExtras;
 
 /*!
  The App Link indicating how to navigate back to the referer app, if any.
  */
-@property (readonly, strong) BFAppLink *appLinkReferer;
+@property (nonatomic, strong, readonly) BFAppLink *appLinkReferer;
 
 /*!
  The URL that was used to create this BFURL.
  */
-@property (readonly, strong) NSURL *inputURL;
+@property (nonatomic, strong, readonly) NSURL *inputURL;
 
 /*!
  The query parameters of the inputURL, parsed into an NSDictionary.
  */
-@property (readonly, strong) NSDictionary *inputQueryParameters;
+@property (nonatomic, strong, readonly) NSDictionary *inputQueryParameters;
 
 @end

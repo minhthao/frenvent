@@ -176,7 +176,7 @@ static int16_t const QUERY_LIMIT = 5000;
                           NSString *description = @"";
                           if (eventObj[@"description"] != nullInstance)
                               description = eventObj[@"description"];
-                          eventDetail.description = description;
+                          eventDetail.eDescription = description;
                           
                           NSString *host = @"";
                           if (eventObj[@"host"] != nullInstance)

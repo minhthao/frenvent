@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *numMutualFriends;
 
 @property (nonatomic, strong) NSString *targetUid;
+@property (nonatomic) BOOL isModal;
 @property (nonatomic) BOOL shouldReadjustInset;
 
 @end

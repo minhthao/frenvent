@@ -426,8 +426,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [super viewWillAppear:animated];
     if ([self.navigationController isNavigationBarHidden]) {
         [self.navigationController setNavigationBarHidden:NO animated:false];
-        //[self.mainView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
     }
+    
+    float frameHeight = self.joinButton.frame.size.height;
+    float frameWidth = self.mainView.frame.size.width / 3;
+    self.joinButton.frame = CGRectMake(0, 0, frameWidth, frameHeight);
+    self.saveButton.frame = CGRectMake(frameWidth, 0, frameWidth, frameHeight);
+    self.moreButton.frame = CGRectMake(frameWidth * 2, 0, frameWidth, frameHeight);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -563,7 +568,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 #pragma mark - table view delegates
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.eventDetail != nil) {
-        if ([self.eventDetail.description length] > 0) return 2;
+        if ([self.eventDetail.eDescription length] > 0) return 2;
         else return 1;
     }
     else return 0;
@@ -620,9 +625,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(CGFloat)calculateDescriptionViewHeight {
     UITextView *tempView = [[UITextView alloc] init];
     tempView.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
-    tempView.text = self.eventDetail.description;
+    tempView.text = self.eventDetail.eDescription;
     
-    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake(284, FLT_MAX)];
+    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake(self.mainView.frame.size.width - 36, FLT_MAX)];
     return textViewSize.height + 15 + 5 + 15 + 5; //for padding, detail label pad, detail label, detail label bottom pad, and textview bottom pad
 }
 
@@ -707,6 +712,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
     numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
     numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
+    
+    float width = containerView.frame.size.width;
+    float height = numGoing.frame.size.height;
+    [numGoing superview].frame = CGRectMake(0, 0, width/3, height);
+    [numMaybe superview].frame = CGRectMake(width/3, 0, width/3, height);
+    [numInvited superview].frame = CGRectMake(2 * width/3, 0, width/3, height);
+    
     return cell;
 }
 
@@ -748,6 +760,12 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
     numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
     numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
+    
+    float width = containerView.frame.size.width;
+    float height = numGoing.frame.size.height;
+    numGoing.frame = CGRectMake(0, 0, width/3, height);
+    numMaybe.frame = CGRectMake(width/3, 0, width/3, height);
+    numInvited.frame = CGRectMake(2 * width/3, 0, width/3, height);
     return cell;
 }
 
@@ -794,9 +812,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         [subview removeFromSuperview];
     
     CGFloat viewHeight = [self calculateDescriptionViewHeight];
-    [cell.contentView setFrame:CGRectMake(0, 0, 320, viewHeight)];
+    CGFloat viewWidth = self.mainView.frame.size.width;
+    [cell.contentView setFrame:CGRectMake(0, 0, viewWidth , viewHeight)];
     
-    UIView *containerView  = [[UIView alloc] initWithFrame:CGRectMake(8, 10, 304, viewHeight - 15)];
+    UIView *containerView  = [[UIView alloc] initWithFrame:CGRectMake(8, 10, viewWidth - 16, viewHeight - 15)];
     [containerView.layer setCornerRadius:3.0f];
     [containerView.layer setMasksToBounds:YES];
     [containerView.layer setBorderWidth:0.5f];
@@ -804,16 +823,16 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     containerView.backgroundColor = [UIColor whiteColor];
     [cell.contentView addSubview:containerView];
     
-    UILabel *aboutLabel =  [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 284, 15)];
+    UILabel *aboutLabel =  [[UILabel alloc] initWithFrame:CGRectMake(10, 5, viewWidth - 36, 15)];
     aboutLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
     aboutLabel.text = @"About";
     [containerView addSubview:aboutLabel];
     
-    UITextView *description = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, 284, viewHeight - 40)];
+    UITextView *description = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, viewWidth - 36, viewHeight - 40)];
     description.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
     description.scrollEnabled = NO;
     description.editable = NO;
-    description.text = self.eventDetail.description;
+    description.text = self.eventDetail.eDescription;
     description.dataDetectorTypes = UIDataDetectorTypeLink;
     description.backgroundColor = [UIColor clearColor];
     description.tintColor = [UIColor blueColor];
