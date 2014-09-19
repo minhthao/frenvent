@@ -124,14 +124,15 @@
     self.tableView.nxEV_emptyView = [self emptyView];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController setNavigationBarHidden:NO animated:true];
-    
-    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0)
-        [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%d", (int)[UIApplication sharedApplication].applicationIconBadgeNumber];
-    else [[self navigationController] tabBarItem].badgeValue = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0)
+        [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%d", (int)[UIApplication sharedApplication].applicationIconBadgeNumber];
+    else [[self navigationController] tabBarItem].badgeValue = nil;
+    
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     if ([self notificationManager] != nil) {
         [[self notificationManager] reset];
@@ -162,7 +163,6 @@
             return [self getTodayEventGoersCell:tableView withIndexPath:indexPath];
         
     } else {
-
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"notificationItem" forIndexPath:indexPath];
         if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"notificationItem"];
         
