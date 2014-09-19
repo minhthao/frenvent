@@ -9,6 +9,11 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "NotificationAppIcon.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "artwork-source.png"
     }
   ],
   "info" : {

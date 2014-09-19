@@ -55,6 +55,15 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 
 @property (nonatomic, strong) ShareEventRequest *shareEventRequest;
 
+@property (nonatomic, strong) UIImageView *cover;
+@property (nonatomic, strong) UILabel *eventTitle;
+@property (nonatomic, strong) UILabel *rsvpStatus;
+@property (nonatomic, strong) UILabel *startTime;
+
+@property (nonatomic, strong) UIButton *joinButton;
+@property (nonatomic, strong) UIButton *saveButton;
+@property (nonatomic, strong) UIButton *moreButton;
+
 @end
 
 @implementation EventDetailViewController
@@ -191,6 +200,137 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
     return _navigationSheet;
 }
+
+/**
+ * Lazily instantiate the cover 
+ * @return cover
+ */
+-(UIImageView *)cover {
+    if (_cover == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 150)];
+        _cover.contentMode = UIViewContentModeScaleAspectFill;
+        _cover.clipsToBounds = true;
+        if ([self.eventDetail.cover length] > 0)
+            [_cover setImageWithURL:[NSURL URLWithString:self.eventDetail.cover]];
+        else [_cover setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
+
+        [self.headerView addSubview:_cover];
+    }
+    return _cover;
+}
+
+/**
+ * Lazily instantiate the event title
+ * @return event title lable
+ */
+-(UILabel *)eventTitle {
+    if (_eventTitle == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        
+        _eventTitle = [[UILabel alloc] init];
+        _eventTitle.text = self.eventDetail.name;
+        _eventTitle.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+        _eventTitle.textColor = [UIColor whiteColor];
+        _eventTitle.shadowColor = [UIColor blackColor];
+        _eventTitle.shadowOffset = CGSizeMake(1, 1);
+        _eventTitle.numberOfLines = 3;
+        
+        float viewHeight = [_eventTitle sizeThatFits:CGSizeMake(screenWidth - 8, FLT_MAX)].height;
+        _eventTitle.frame = CGRectMake(8, 122 - viewHeight, screenWidth - 16, viewHeight);
+        
+        [self.headerView addSubview:_eventTitle];
+    }
+    return _eventTitle;
+}
+
+/**
+ * Lazily instantiate the event rsvp and privacy
+ * @return privacy and rsvp status
+ */
+-(UILabel *)rsvpStatus {
+    if (_rsvpStatus == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _rsvpStatus = [[UILabel alloc] initWithFrame:CGRectMake(8, 124 , screenWidth - 16, 21)];
+        _rsvpStatus.text = [self.eventDetail getDisplayPrivacyAndRsvp];
+        _rsvpStatus.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15];
+        _rsvpStatus.textColor = [UIColor whiteColor];
+        _rsvpStatus.shadowColor = [UIColor darkGrayColor];
+        _rsvpStatus.shadowOffset = CGSizeMake(0, 1);
+        [self.headerView addSubview:_rsvpStatus];
+    }
+    return _rsvpStatus;
+}
+
+/**
+ * Lazily instantiate the join button
+ * @return UIButton
+ */
+-(UIButton *)joinButton {
+    if (_joinButton == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, screenWidth * 0.33, 50)];
+        _joinButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+        [_joinButton setTitle:@"Join" forState:UIControlStateNormal];
+        [_joinButton setImage:[UIImage imageNamed:@"EventDetailJoinButton"] forState:UIControlStateNormal];
+        [_joinButton setImage:[UIImage imageNamed:@"EventDetailJoinButtonSelected"] forState:UIControlStateSelected];
+        [_joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self formatMenuButton:_joinButton];
+    }
+    return _joinButton;
+}
+
+/**
+ * Lazily instantiate the save button
+ * @return UIButton
+ */
+-(UIButton *)saveButton {
+    if (_saveButton == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.335, 0, screenWidth * 0.33, 50)];
+        _saveButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+        [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+        [_saveButton setImage:[UIImage imageNamed:@"EventDetailSaveButton"] forState:UIControlStateNormal];
+        [_saveButton setImage:[UIImage imageNamed:@"EventDetailSaveButtonSelected"] forState:UIControlStateSelected];
+        [_saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self formatMenuButton:_saveButton];
+    }
+    return _saveButton;
+}
+
+/**
+ * Lazily instantiate the more button
+ * @return UIButton
+ */
+-(UIButton *)moreButton {
+    if (_moreButton == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _moreButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.67, 0, screenWidth * 0.33, 50)];
+        _moreButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+        [_moreButton setTitle:@"More" forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"EventDetailAboutButton"] forState:UIControlStateNormal];
+        [_moreButton addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self formatMenuButton:_moreButton];
+    }
+    return _moreButton;
+}
+
+/**
+ * Lazily instantiate the start time label
+ * @return UILabel
+ */
+-(UILabel *)startTime {
+    if (_startTime == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _startTime = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, screenWidth - 70, 45)];
+        _startTime.numberOfLines = 2;
+        _startTime.font = [UIFont fontWithName:@"HelveticaNeue" size:14.5];
+        _startTime.textColor = [UIColor darkGrayColor];
+    }
+    return _startTime;
+}
+
+//@property (nonatomic, strong) UILabel *startTime;
 
 
 #pragma mark - UIActionSheet and rsvp delegate
@@ -338,21 +478,19 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     Event *event = [EventCoreData getEventWithEid:eventDetail.eid];
     [[self dbEventsRequest] uploadEvents:@[event]];
     
-    if (![event canRsvp]) [self.joinButton setEnabled:false];
+    if (![event canRsvp]) [[self joinButton] setEnabled:false];
     [self refreshJoinButtonView];
-    if ([[event markType] intValue] == MARK_TYPE_FAVORITE) [self.saveButton setSelected:true];
-    else [self.saveButton setSelected:false];
+    if ([[event markType] intValue] == MARK_TYPE_FAVORITE) [[self saveButton] setSelected:true];
+    else [[self saveButton] setSelected:false];
     
     if ([event canShare]) [self.shareButton setEnabled:true];
     
     self.title = eventDetail.name;
-    self.eventTitle.text = eventDetail.name;
-    self.rsvpStatus.text = [eventDetail getDisplayPrivacyAndRsvp];
-    if ([eventDetail.cover length] > 0)
-        [self.cover setImageWithURL:[NSURL URLWithString:eventDetail.cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
-    else [self.cover setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
+    [self cover];
+    [self rsvpStatus];
+    [self eventTitle];
     
-    self.startTime.text = [eventDetail getEventDisplayTime];
+    [self startTime].text = [eventDetail getEventDisplayTime];
     
     [self.loadingSpinner stopAnimating];
     [self.mainView setHidden:false];
@@ -408,18 +546,6 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [self.loadingSpinner setHidesWhenStopped:true];
     [self.loadingSpinner startAnimating];
     [self.mainView setHidden:true];
-    
-    NSArray *containerColor = [NSArray arrayWithObjects:(id)[[UIColor whiteColor] CGColor], (id)[[MyColor eventCellButtonsContainerBorderColor] CGColor], (id)[[UIColor whiteColor] CGColor], nil];
-
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.buttonViewsContainer.bounds;
-    gradient.colors = containerColor;
-    [self.buttonViewsContainer.layer insertSublayer:gradient atIndex:0];
-    
-    [self formatMenuButton:self.joinButton];
-    [self formatMenuButton:self.saveButton];
-    [self formatMenuButton:self.moreButton];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -428,11 +554,32 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         [self.navigationController setNavigationBarHidden:NO animated:false];
     }
     
-    float frameHeight = self.joinButton.frame.size.height;
-    float frameWidth = self.mainView.frame.size.width / 3;
-    self.joinButton.frame = CGRectMake(0, 0, frameWidth, frameHeight);
-    self.saveButton.frame = CGRectMake(frameWidth, 0, frameWidth, frameHeight);
-    self.moreButton.frame = CGRectMake(frameWidth * 2, 0, frameWidth, frameHeight);
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    self.headerView.frame = CGRectMake(0, 0, screenWidth, 245);
+    
+    UIView *buttonViews = [[UIView alloc] initWithFrame:CGRectMake(0, 150 , screenWidth, 50)];
+    NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor whiteColor] CGColor], (id)[[MyColor eventCellButtonsContainerBorderColor] CGColor], (id)[[UIColor whiteColor] CGColor], nil];
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = buttonViews.bounds;
+    gradient.colors = separatorColor;
+    [buttonViews.layer insertSublayer:gradient atIndex:0];
+    
+    [buttonViews addSubview:[self joinButton]];
+    [buttonViews addSubview:[self saveButton]];
+    [buttonViews addSubview:[self moreButton]];
+    [self.headerView addSubview:buttonViews];
+    
+    UIView *timeViews = [[UIView alloc] initWithFrame:CGRectMake(0, 200, screenWidth, 45)];
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
+    separator.backgroundColor = [UIColor lightGrayColor];
+    [timeViews addSubview:separator];
+    UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 25, 25)];
+    timeIcon.contentMode = UIViewContentModeScaleAspectFill;
+    timeIcon.image = [UIImage imageNamed:@"EventDetailTimeIcon"];
+    [timeViews addSubview:timeIcon];
+    [timeViews addSubview:[self startTime]];
+    [self.headerView addSubview:timeViews];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -448,7 +595,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 }
 
 - (IBAction)joinButtonClick:(id)sender {
-    [self.joinButton setHighlighted:true];
+    [[self joinButton] setHighlighted:true];
     
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
@@ -474,10 +621,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     Event *event = [EventCoreData getEventWithEid:self.eventDetail.eid];
     if ([event.markType intValue] == MARK_TYPE_FAVORITE) {
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_NORMAL];
-        [self.saveButton setSelected:false];
+        [[self saveButton] setSelected:false];
     } else {
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_FAVORITE];
-        [self.saveButton setSelected:true];
+        [[self saveButton] setSelected:true];
     }
 }
 
@@ -540,14 +687,22 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 #pragma mark - handle button state so that what it display is correct
 - (void)refreshJoinButtonView {
     if ([self.eventDetail.rsvp isEqualToString:RSVP_ATTENDING] || [self.eventDetail.rsvp isEqualToString:RSVP_UNSURE])
-        [self.joinButton setSelected:true];
+        [[self joinButton] setSelected:true];
     else {
-        [self.joinButton setSelected:false];
-        [self.joinButton setHighlighted:false];
+        [[self joinButton] setSelected:false];
+        [[self joinButton] setHighlighted:false];
     }
 }
 
 -(void)formatMenuButton:(UIButton *)button {
+    [button setTitleColor:[UIColor colorWithRed:127/255.0 green:127/255.0 blue:127/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateSelected];
+    [button setTitleColor:[UIColor colorWithRed:212/255.0 green:212/255.0 blue:212/255.0 alpha:1.0] forState:UIControlStateDisabled];
+    
+    [button setImageEdgeInsets:UIEdgeInsetsMake(-14, 31, 0, 0)];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(25, -26, 0, 0)];
+    
     NSArray *buttonsColor = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:250/255.0 green:250/255.0 blue:250/255.0 alpha:1.0] CGColor], (id)[[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1.0] CGColor], nil];
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
@@ -555,14 +710,6 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     gradient.colors = buttonsColor;
     [button.layer insertSublayer:gradient atIndex:0];
     [button bringSubviewToFront:button.imageView];
-}
-
-- (void)maskShadowView:(UIView *)view {
-    [view.layer setMasksToBounds:NO];
-    [view.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [view.layer setShadowRadius:3.5f];
-    [view.layer setShadowOffset:CGSizeMake(1, 1)];
-    [view.layer setShadowOpacity:0.5];
 }
 
 #pragma mark - table view delegates
@@ -627,7 +774,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     tempView.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
     tempView.text = self.eventDetail.eDescription;
     
-    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake(self.mainView.frame.size.width - 36, FLT_MAX)];
+    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 36, FLT_MAX)];
     return textViewSize.height + 15 + 5 + 15 + 5; //for padding, detail label pad, detail label, detail label bottom pad, and textview bottom pad
 }
 
@@ -646,9 +793,23 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [cell.contentView setUserInteractionEnabled:true];
     [cell.contentView addGestureRecognizer:navigationTap];
     
-    UILabel *locationLabel = (UILabel *)[cell viewWithTag:101];
+    float screenWidth = cell.contentView.frame.size.width;
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
+    separator.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
+    [cell.contentView addSubview:separator];
     
+    UIImageView *locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 25, 25)];
+    locationIcon.contentMode = UIViewContentModeScaleAspectFill;
+    locationIcon.image = [UIImage imageNamed:@"EventDetailLocationIcon"];
+    [cell.contentView addSubview:locationIcon];
+    
+    UILabel *locationLabel= [[UILabel alloc] initWithFrame:CGRectMake(55, 0, screenWidth - 70, 45)];
     locationLabel.text = self.eventDetail.location;
+    locationLabel.numberOfLines = 2;
+    locationLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.5];
+    locationLabel.textColor = [UIColor darkGrayColor];
+    [cell.contentView addSubview:locationLabel];
+    
     return cell;
 }
 
@@ -662,26 +823,31 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailMemberCell" forIndexPath:indexPath];
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailMemberCell"];
     
+    for (UIView *subview in [cell.contentView subviews]) {
+        [subview removeFromSuperview];
+    }
+    
     //add the shadow to separate the top views
-    UIView *separator = (UIView *)[cell viewWithTag:207];
+    float cellWidth = [[UIScreen mainScreen] bounds].size.width;
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cellWidth, 1)];
     NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor lightGrayColor] CGColor], (id)[[MyColor eventCellButtonNormalBackgroundColor] CGColor], nil];
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = separator.bounds;
     gradient.colors = separatorColor;
     [separator.layer insertSublayer:gradient atIndex:0];
+    [cell.contentView addSubview:separator];
     
     //mask the container to get the border and round corner
-    UIView *containerView = (UIView *)[cell viewWithTag:200];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(8, 10, cellWidth - 16, 140)];
+    containerView.backgroundColor = [UIColor whiteColor];
     [containerView.layer setCornerRadius:3.0f];
     [containerView.layer setMasksToBounds:YES];
     [containerView.layer setBorderWidth:0.5f];
     [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    [cell.contentView addSubview:containerView];
 
     //add the list of friends interested
-    UIView *friendsAttendingView = (UIView *)[cell viewWithTag:201];
-    for (UIView *subview in [friendsAttendingView subviews]) {
-        [subview removeFromSuperview];
-    }
+    UIView *friendsAttendingView = [[UIView alloc] initWithFrame:CGRectMake(10, 5, containerView.frame.size.width - 20, 55)];
     
     CGFloat participantViewSize = friendsAttendingView.frame.size.height;
     UIScrollView *friendsAttendingScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, friendsAttendingView.frame.size.width, participantViewSize)];
@@ -695,31 +861,103 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         [participantView setEventPartipant:[self.eventDetail.attendingFriends objectAtIndex:i]];
         [friendsAttendingScrollView addSubview:participantView];
     }
+    [containerView addSubview:friendsAttendingView];
     
     //display the text of friend attendings and member
-    UILabel *friendsAttending = (UILabel *)[cell viewWithTag:202];
+    UILabel *friendsAttending = [[UILabel alloc] initWithFrame:CGRectMake(10, 62, containerView.frame.size.width - 20, 20)];
+    friendsAttending.textColor = [UIColor colorWithRed:150/255.0 green:150/255.0 blue:150/255.0 alpha:1.0];
+    friendsAttending.numberOfLines = 1;
     friendsAttending.attributedText = [self.eventDetail getFriendsInterested];
+    [containerView addSubview:friendsAttending];
     
-    UIView *membersContainer = (UIView *)[cell viewWithTag:203];
+    
+    //Now we add the member container
+    UIView *membersContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 85, containerView.frame.size.width, 55)];
     UITapGestureRecognizer *membersContainerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMembersContainerTap:)];
     [membersContainer setUserInteractionEnabled:true];
     [containerView addGestureRecognizer:membersContainerTap];
     
-    UILabel *numGoing = (UILabel *)[cell viewWithTag:204];
-    UILabel *numMaybe = (UILabel *)[cell viewWithTag:205];
-    UILabel *numInvited = (UILabel *)[cell viewWithTag:206];
+    UIView *memberSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, 1)];
+    memberSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
+    [membersContainer addSubview:memberSeparator];
     
-    numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
-    numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
-    numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
-    
-    float width = containerView.frame.size.width;
-    float height = numGoing.frame.size.height;
-    [numGoing superview].frame = CGRectMake(0, 0, width/3, height);
-    [numMaybe superview].frame = CGRectMake(width/3, 0, width/3, height);
-    [numInvited superview].frame = CGRectMake(2 * width/3, 0, width/3, height);
+    [membersContainer addSubview:[self getNumMembersView:membersContainer.frame.size.width]];
+    [containerView addSubview:membersContainer];
     
     return cell;
+}
+
+/**
+ * Get the number of members view
+ * @return UIView
+ */
+-(UIView *)getNumMembersView:(float)viewWidth {
+    UIView *membersView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 55)];
+    float width = viewWidth * 0.33;
+    
+    //join button
+    UIView *joinView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 55)];
+    UILabel *numGoing = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
+    numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
+    numGoing.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
+    numGoing.textColor = [UIColor darkGrayColor];
+    numGoing.textAlignment = NSTextAlignmentCenter;
+    [joinView addSubview:numGoing];
+    
+    UILabel *goingText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
+    goingText.text = @"Going";
+    goingText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
+    goingText.textColor = [UIColor darkGrayColor];
+    goingText.textAlignment = NSTextAlignmentCenter;
+    [joinView addSubview:goingText];
+    
+    [membersView addSubview:joinView];
+    
+    UIView *firstSeparator = [[UIView alloc] initWithFrame:CGRectMake(width, 8, 1, 39)];
+    firstSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
+    [membersView addSubview:firstSeparator];
+    
+    //maybe button
+    UIView *maybeView = [[UIView alloc] initWithFrame:CGRectMake(0.335 * viewWidth, 0, width, 55)];
+    UILabel *numMaybe = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
+    numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
+    numMaybe.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
+    numMaybe.textColor = [UIColor darkGrayColor];
+    numMaybe.textAlignment = NSTextAlignmentCenter;
+    [maybeView addSubview:numMaybe];
+    
+    UILabel *maybeText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
+    maybeText.text = @"Maybe";
+    maybeText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
+    maybeText.textColor = [UIColor darkGrayColor];
+    maybeText.textAlignment = NSTextAlignmentCenter;
+    [maybeView addSubview:maybeText];
+    
+    [membersView addSubview:maybeView];
+    
+    UIView *secondSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.665 * viewWidth, 8, 1, 39)];
+    secondSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
+    [membersView addSubview:secondSeparator];
+    
+    //invite button
+    UIView *invitedView = [[UIView alloc] initWithFrame:CGRectMake(0.67 * viewWidth, 0, width, 55)];
+    UILabel *numInvited = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
+    numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
+    numInvited.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
+    numInvited.textColor = [UIColor darkGrayColor];
+    numInvited.textAlignment = NSTextAlignmentCenter;
+    [invitedView addSubview:numInvited];
+    
+    UILabel *invitedText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
+    invitedText.text = @"Invited";
+    invitedText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
+    invitedText.textColor = [UIColor darkGrayColor];
+    invitedText.textAlignment = NSTextAlignmentCenter;
+    [invitedView addSubview:invitedText];
+    
+    [membersView addSubview:invitedView];
+    
+    return membersView;
 }
 
 /**
@@ -732,40 +970,42 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailMemberWithoutFriendCell" forIndexPath:indexPath];
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailMemberWithoutFriendCell"];
     
+    for (UIView *subview in [cell.contentView subviews]) {
+        [subview removeFromSuperview];
+    }
+    
     //add the shadow to separate the top views
-    UIView *separator = (UIView *)[cell viewWithTag:207];
+    float cellWidth = [[UIScreen mainScreen] bounds].size.width;
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cellWidth, 1)];
     NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor lightGrayColor] CGColor], (id)[[MyColor eventCellButtonNormalBackgroundColor] CGColor], nil];
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = separator.bounds;
     gradient.colors = separatorColor;
     [separator.layer insertSublayer:gradient atIndex:0];
+    [cell.contentView addSubview:separator];
     
     //mask the container to get the border and round corner
-    UIView *containerView = (UIView *)[cell viewWithTag:200];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(8, 10, cellWidth - 16, 55)];
+    containerView.backgroundColor = [UIColor whiteColor];
     [containerView.layer setCornerRadius:3.0f];
     [containerView.layer setMasksToBounds:YES];
     [containerView.layer setBorderWidth:0.5f];
     [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    [cell.contentView addSubview:containerView];
     
-    //display the num members
-    UIView *membersContainer = (UIView *)[cell viewWithTag:203];
+    //Now we add the member container
+    UIView *membersContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, containerView.frame.size.height)];
     UITapGestureRecognizer *membersContainerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMembersContainerTap:)];
     [membersContainer setUserInteractionEnabled:true];
     [containerView addGestureRecognizer:membersContainerTap];
     
-    UILabel *numGoing = (UILabel *)[cell viewWithTag:204];
-    UILabel *numMaybe = (UILabel *)[cell viewWithTag:205];
-    UILabel *numInvited = (UILabel *)[cell viewWithTag:206];
+    UIView *memberSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, 1)];
+    memberSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
+    [membersContainer addSubview:memberSeparator];
     
-    numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
-    numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
-    numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
+    [membersContainer addSubview:[self getNumMembersView:membersContainer.frame.size.width]];
+    [containerView addSubview:membersContainer];
     
-    float width = containerView.frame.size.width;
-    float height = numGoing.frame.size.height;
-    numGoing.frame = CGRectMake(0, 0, width/3, height);
-    numMaybe.frame = CGRectMake(width/3, 0, width/3, height);
-    numInvited.frame = CGRectMake(2 * width/3, 0, width/3, height);
     return cell;
 }
 
@@ -789,7 +1029,11 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 
     UIView *usersView = (UIView *)[cell viewWithTag:301];
     [usersView setBackgroundColor:[UIColor clearColor]];
-    PagedUserScrollView *userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12, 0, usersView.frame.size.width - 24, usersView.frame.size.height)];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    float scaleFactor = screenWidth/320;
+    
+    PagedUserScrollView *userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, usersView.frame.size.height)];
     userScrollView.delegate = self;
     [userScrollView setSuggestedUsers:self.recommendFriends];
     

@@ -9,6 +9,11 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "EventDetailSaveButtonSelected.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "EventDetailSaveButtonSelected-2.png"
     }
   ],
   "info" : {

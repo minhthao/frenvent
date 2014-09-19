@@ -32,10 +32,12 @@ NSArray *allFriends;
 #pragma mark - private class
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];
@@ -179,13 +181,19 @@ NSArray *allFriends;
         [self.favoriteFriends addObject:friend.uid];
         [FriendCoreData setFriend:friend toFavorite:true];
         mark.hidden = false;
-    } else if ([self.favoriteFriends count] <= 20) {
-        [ToastView showToastOnTopOfParentView:self.view withText:@"Cannot have less than 20 favorite friends" withDuaration:2];
+    } else if ([self.favoriteFriends count] <= 10) {
+        [ToastView showToastOnTopOfParentView:self.view withText:@"Cannot have less than 10 favorite friends" withDuaration:2];
     } else {
         [self.favoriteFriends removeObject:friend.uid];
         [FriendCoreData setFriend:friend toFavorite:false];
         mark.hidden = true;
     }
+    
+    [self.tableView reloadData];
+}
+
+- (BOOL)tableView:(UITableView *)tableview shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
 }
 
 #pragma mark - search bar delegate

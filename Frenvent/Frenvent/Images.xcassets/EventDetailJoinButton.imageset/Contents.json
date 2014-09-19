@@ -9,6 +9,11 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "EventDetailJoinButton.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "EventDetailJoinButton-2.png"
     }
   ],
   "info" : {

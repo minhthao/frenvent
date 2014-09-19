@@ -9,6 +9,11 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "EventDetailRsvpAttendingIcon.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "EventDetailRsvpAttendingIcon-2.png"
     }
   ],
   "info" : {

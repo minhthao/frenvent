@@ -23,6 +23,9 @@
 		3E57FB541959517200D3293D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E57FB521959517200D3293D /* InfoPlist.strings */; };
 		3E57FB561959517200D3293D /* FrenventTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB551959517200D3293D /* FrenventTests.m */; };
 		3E57FB681959587400D3293D /* TimeSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E57FB671959587400D3293D /* TimeSupport.m */; };
+		3E7C0CAA19CBB61E00A5A5DB /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3E7C0CA719CBB61E00A5A5DB /* iRate.bundle */; };
+		3E7C0CAB19CBB61E00A5A5DB /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C0CA919CBB61E00A5A5DB /* iRate.m */; };
+		3E7C0CAD19CBC13100A5A5DB /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7C0CAC19CBC13100A5A5DB /* EventKit.framework */; };
 		3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC319807AD4003C932A /* Images.xcassets */; };
 		3E8A3DC9198231EA003C932A /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DC8198231EA003C932A /* WebViewController.m */; };
 		3E8A3DD3198333B3003C932A /* ScrollImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8A3DD2198333B3003C932A /* ScrollImage.m */; };
@@ -165,6 +168,10 @@
 		3E57FB551959517200D3293D /* FrenventTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrenventTests.m; sourceTree = "<group>"; };
 		3E57FB661959587400D3293D /* TimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSupport.h; path = Supports/TimeSupport.h; sourceTree = "<group>"; };
 		3E57FB671959587400D3293D /* TimeSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimeSupport.m; path = Supports/TimeSupport.m; sourceTree = "<group>"; };
+		3E7C0CA719CBB61E00A5A5DB /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iRate.bundle; path = Libs/iRate/iRate.bundle; sourceTree = "<group>"; };
+		3E7C0CA819CBB61E00A5A5DB /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iRate.h; path = Libs/iRate/iRate.h; sourceTree = "<group>"; };
+		3E7C0CA919CBB61E00A5A5DB /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iRate.m; path = Libs/iRate/iRate.m; sourceTree = "<group>"; };
+		3E7C0CAC19CBC13100A5A5DB /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		3E8A3DC319807AD4003C932A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E8A3DC7198231EA003C932A /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewController.h; path = ViewControllers/WebViewController.h; sourceTree = "<group>"; };
 		3E8A3DC8198231EA003C932A /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewController.m; path = ViewControllers/WebViewController.m; sourceTree = "<group>"; };
@@ -380,6 +387,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E7C0CAD19CBC13100A5A5DB /* EventKit.framework in Frameworks */,
 				3E923D6919BF1075001FF1FD /* Bolts.framework in Frameworks */,
 				3E923D6A19BF1075001FF1FD /* FacebookSDK.framework in Frameworks */,
 				3EACE3FE195E2E4B0023EF58 /* SDWebImage.framework in Frameworks */,
@@ -429,6 +437,7 @@
 		3E57FB291959517200D3293D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E7C0CAC19CBC13100A5A5DB /* EventKit.framework */,
 				3EA9015A198CABBA0056BE36 /* Bolts.framework */,
 				3EA9015B198CABBA0056BE36 /* FacebookSDK.framework */,
 				3EACE3FD195E2E4B0023EF58 /* SDWebImage.framework */,
@@ -526,6 +535,16 @@
 				3EAAACBE196B5C00004AD322 /* FriendToEventCoreData.m */,
 			);
 			name = CoreDatas;
+			sourceTree = "<group>";
+		};
+		3E7C0CA619CBB58600A5A5DB /* iRate */ = {
+			isa = PBXGroup;
+			children = (
+				3E7C0CA719CBB61E00A5A5DB /* iRate.bundle */,
+				3E7C0CA819CBB61E00A5A5DB /* iRate.h */,
+				3E7C0CA919CBB61E00A5A5DB /* iRate.m */,
+			);
+			name = iRate;
 			sourceTree = "<group>";
 		};
 		3E8A3DCA1983259F003C932A /* PageScrollView */ = {
@@ -659,6 +678,7 @@
 		3EACE3DF195E2CD90023EF58 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3E7C0CA619CBB58600A5A5DB /* iRate */,
 				3EA88F1B19977648004994D5 /* UITableView+NXEmptyView */,
 				3E8A3DCA1983259F003C932A /* PageScrollView */,
 				3ECF10BC197F227A00963155 /* SDWebImage */,
@@ -913,7 +933,7 @@
 		3E57FB1F1959517200D3293D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Frenvent;
 				TargetAttributes = {
 					3E57FB261959517200D3293D = {
@@ -952,6 +972,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E8A3DC419807AD4003C932A /* Images.xcassets in Resources */,
+				3E7C0CAA19CBB61E00A5A5DB /* iRate.bundle in Resources */,
 				3EAAACE3196C63C5004AD322 /* Main.storyboard in Resources */,
 				3E57FB371959517200D3293D /* InfoPlist.strings in Resources */,
 			);
@@ -1023,6 +1044,7 @@
 				3EA90166199209020056BE36 /* EventWebViewController.m in Sources */,
 				3EAAACF6196EFBD0004AD322 /* MyColor.m in Sources */,
 				3E57FB3D1959517200D3293D /* AppDelegate.m in Sources */,
+				3E7C0CAB19CBB61E00A5A5DB /* iRate.m in Sources */,
 				3ECF10EC197F229100963155 /* UIImageView+WebCache.m in Sources */,
 				3ECF10ED197F229100963155 /* UIView+WebCacheOperation.m in Sources */,
 				3ECF10A71979FB9F00963155 /* FbUserInfoRequest.m in Sources */,
@@ -1158,9 +1180,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
+				PROVISIONING_PROFILE = "53E1ED6C-C559-431C-B654-086EBA42B2B7";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1192,9 +1214,9 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
+				PROVISIONING_PROFILE = "53E1ED6C-C559-431C-B654-086EBA42B2B7";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1218,7 +1240,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
+				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1241,7 +1263,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "983B919C-EB75-498F-B807-8158961F4202";
+				PROVISIONING_PROFILE = "E948EEAB-986D-4E76-89DF-05B0EF5AC887";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

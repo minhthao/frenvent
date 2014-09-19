@@ -9,6 +9,11 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "EventDetailTimeIcon.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "EventDetailTimeIcon-2.png"
     }
   ],
   "info" : {

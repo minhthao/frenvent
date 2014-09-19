@@ -11,6 +11,8 @@
 #import "Constants.h"
 #import "AppDelegate.h"
 
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 @interface LoginViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -47,8 +49,7 @@
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
@@ -65,6 +66,14 @@
 
         [defaults synchronize];
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+        // The following line must only run under iOS 8. This runtime check prevents
+        // it from running if it doesn't exist (such as running under iOS 7 or earlier).
+        if ([[self locationManager] respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [[self locationManager] requestAlwaysAuthorization];
+        }
+#endif
+        
         if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
             [self performSegueWithIdentifier:@"initialize" sender:Nil];
         else [[self locationManager] startUpdatingLocation];

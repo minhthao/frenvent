@@ -15,6 +15,7 @@
 #import <Bolts/Bolts.h>
 #import "EventDetailViewController.h"
 #import "FbUserInfoViewController.h"
+#import "iRate.h"
 
 @implementation AppDelegate
 
@@ -23,9 +24,30 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize updateManager = _updateManager;
 
++ (void)initialize {
+    [iRate sharedInstance].appStoreID = 908123368;
+    
+    [iRate sharedInstance].daysUntilPrompt = 3;
+    [iRate sharedInstance].usesUntilPrompt = 5;
+    [iRate sharedInstance].remindPeriod = 2;
+    [iRate sharedInstance].messageTitle = @"Rate Frenvent";
+    [iRate sharedInstance].messageTitle = @"Please rate us on iTunes store!";
+    [iRate sharedInstance].cancelButtonLabel = @"Cancel";
+    [iRate sharedInstance].rateButtonLabel = @"Rate";
+    [iRate sharedInstance].remindButtonLabel = @"";
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBLoginView class];
     [FBSettings enablePlatformCompatibility:true];
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    // The following line must only run under iOS 8. This runtime check prevents
+    // it from running if it doesn't exist (such as running under iOS 7 or earlier).
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
+#endif
     
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum]; 

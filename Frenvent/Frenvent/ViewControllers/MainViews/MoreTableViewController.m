@@ -35,10 +35,12 @@
 #pragma mark - instantiation
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];
@@ -127,7 +129,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (_searchBar.text == nil || [_searchBar.text length] == 0) {
         if (section == 0) return 1;
-        if (section == 1) return 4;
+        if (section == 1) return 3;
         else return 1;
     } else return [[self searchEvents] count];
 }
@@ -199,27 +201,22 @@
         if (indexPath.section == 1) {
             if (indexPath.row == 0) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuInvitedIcon"]];
-                cellLabel.text = @"Invited Events";
+                cellLabel.text = @"My Events";
                 [separator setHidden:false];
             } else if (indexPath.row == 1) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuPastEventsIcon"]];
                 cellLabel.text = @"Past Events";
                 [separator setHidden:false];
+//            } else if (indexPath.row == 2) {
+//                [cellIcon setImage:[UIImage imageNamed:@"SubMenuFavoriteIcon"]];
+//                cellLabel.text = @"Favorite Events";
+//                [separator setHidden:false];
             } else if (indexPath.row == 2) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuFavoriteIcon"]];
-                cellLabel.text = @"Favorite Events";
-                [separator setHidden:false];
-            } else if (indexPath.row == 3) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuTrashIcon"]];
                 cellLabel.text = @"Hidden Events";
                 [separator setHidden:true];
             }
         } else if (indexPath.section == 2) {
-//            if (indexPath.row == 0) {
-//                [cellIcon setImage:[UIImage imageNamed:@"SubMenuSettingIcon"]];
-//                cellLabel.text = @"Settings";
-//                [separator setHidden:false];
-//            } else
             if (indexPath.row == 0) {
                 [cellIcon setImage:[UIImage imageNamed:@"SubMenuLogoutIcon"]];
                 cellLabel.text = @"Logout";
@@ -240,8 +237,8 @@
     if (indexPath.section == 1) {
         if (indexPath.row ==0) [self performSegueWithIdentifier:@"invitedEventView" sender:Nil];
         else if (indexPath.row == 1) [self performSegueWithIdentifier:@"pastEventView" sender:Nil];
-        else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
-        else if (indexPath.row == 3) [self performSegueWithIdentifier:@"trashView" sender:Nil];
+        //else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
+        else if (indexPath.row == 2) [self performSegueWithIdentifier:@"trashView" sender:Nil];
     } else if (indexPath.section == 2) {
 //        if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
 //        else

@@ -26,20 +26,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
 @property (weak, nonatomic) IBOutlet UITableView *mainView;
 
-@property (weak, nonatomic) IBOutlet UIImageView *cover;
-@property (weak, nonatomic) IBOutlet UILabel *eventTitle;
-@property (weak, nonatomic) IBOutlet UILabel *rsvpStatus;
-@property (weak, nonatomic) IBOutlet UILabel *startTime;
 
-
-@property (weak, nonatomic) IBOutlet UIView *buttonViewsContainer;
-@property (weak, nonatomic) IBOutlet UIButton *joinButton;
-- (IBAction)joinButtonClick:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *saveButton;
-- (IBAction)saveButtonClick:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
-- (IBAction)moreButtonClick:(id)sender;
-
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 
 

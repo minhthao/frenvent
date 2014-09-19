@@ -21,10 +21,13 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *tutorialScrollView;
 
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @property (weak, nonatomic) IBOutlet UIView *friendSelectionView;
 @property (weak, nonatomic) IBOutlet UITableView *friendSelectionTableView;
 @property (weak, nonatomic) IBOutlet UIButton *selectAllButton;
 @property (weak, nonatomic) IBOutlet UIButton *friendSelectionNextButton;
+
 
 
 @property (weak, nonatomic) IBOutlet UIView *secondLoginView;

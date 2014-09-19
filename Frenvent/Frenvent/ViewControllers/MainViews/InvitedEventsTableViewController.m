@@ -36,10 +36,13 @@ CLLocation *lastKnown;
 #pragma mark - instantiation
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.tableView.frame.size.height)];
+        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, 320, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
+
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];

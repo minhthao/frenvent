@@ -12,6 +12,7 @@
 #import "Event.h"
 #import "DBConstants.h"
 #import "Notification.h"
+#import <EventKit/EventKit.h>
 
 @interface EventCoreData()
 
@@ -262,11 +263,98 @@
 
 #pragma mark - set event mark type
 + (void) setEventMarkType:(Event *)event withType:(int32_t)markType{
+    int originalMarkType = [event.markType intValue];
     event.markType = [NSNumber numberWithInt:markType];
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSError *error = nil;
-    if (![context save:&error]) NSLog(@"Error updating the mark type of events - error:%@", error);
+    
+    if (originalMarkType == MARK_TYPE_FAVORITE) {
+        //remove the event
+        EKEventStore *eventStore = [[EKEventStore alloc] init];
+        if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)]) {
+            // iOS 6 and later
+            [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (granted) {
+                    EKEvent* eventToRemove = [eventStore eventWithIdentifier:event.host];
+                    if (eventToRemove) {
+                        NSError* error = nil;
+                        [eventStore removeEvent:eventToRemove span:EKSpanThisEvent commit:YES error:&error];
+                    }
+                    
+                    NSManagedObjectContext *context = [self managedObjectContext];
+                    NSError *error = nil;
+                    if (![context save:&error]) NSLog(@"Error updating the mark type of events - error:%@", error);
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"You did not granted Frenvent the permission to access your calendar"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        } else {
+            EKEvent* eventToRemove = [eventStore eventWithIdentifier:event.host];
+            if (eventToRemove) {
+                NSError* error = nil;
+                [eventStore removeEvent:eventToRemove span:EKSpanThisEvent commit:YES error:&error];
+            }
+            
+            NSManagedObjectContext *context = [self managedObjectContext];
+            NSError *error = nil;
+            if (![context save:&error]) NSLog(@"Error updating the mark type of events - error:%@", error);
+        }
+    } else if (markType == MARK_TYPE_FAVORITE) {
+        //add the event
+        EKEventStore *eventStore = [[EKEventStore alloc] init];
+        if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)]) {
+            // iOS 6 and later
+            [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (granted) {
+                    EKEvent *myEvent  = [EKEvent eventWithEventStore:eventStore];
+                    myEvent.title     = event.name;
+                    myEvent.startDate = [[NSDate alloc] initWithTimeIntervalSince1970:[event.startTime doubleValue]];
+                    if ([event.endTime intValue] == 0)
+                        myEvent.endDate   = [[NSDate alloc] initWithTimeInterval:600 sinceDate:myEvent.startDate];
+                    else myEvent.endDate = [[NSDate alloc] initWithTimeIntervalSince1970:[event.endTime doubleValue]];
+                    
+                    [myEvent setCalendar:[eventStore defaultCalendarForNewEvents]];
+                    
+                    NSError *err;
+                    [eventStore saveEvent:myEvent span:EKSpanThisEvent error:&err];
+                    //this is kind of cheating, but we basically save the event identifier in the host
+                    event.host = myEvent.eventIdentifier;
+                    
+                    NSManagedObjectContext *context = [self managedObjectContext];
+                    NSError *error = nil;
+                    if (![context save:&error]) NSLog(@"Error updating the mark type of events - error:%@", error);
+                } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"You did not granted Frenvent the permission to access your calendar"
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }];
+        } else {
+            EKEvent *myEvent  = [EKEvent eventWithEventStore:eventStore];
+            myEvent.title     = event.name;
+            myEvent.startDate = [[NSDate alloc] initWithTimeIntervalSince1970:[event.startTime doubleValue]];
+            if ([event.endTime intValue] == 0)
+                myEvent.endDate   = [[NSDate alloc] initWithTimeInterval:3600 sinceDate:myEvent.startDate]; // 1 hour event
+            else myEvent.endDate = [[NSDate alloc] initWithTimeIntervalSince1970:[event.endTime doubleValue]];
+            
+            [myEvent setCalendar:[eventStore defaultCalendarForNewEvents]];
+            
+            NSError *err;
+            [eventStore saveEvent:myEvent span:EKSpanThisEvent error:&err];
+            //this is kind of cheating, but we basically save the event identifier in the host
+            event.host = myEvent.eventIdentifier;
+        }
+        
+    }
 }
+
+
 
 #pragma mark - public remove methods
 

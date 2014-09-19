@@ -126,8 +126,9 @@ NSInteger numMyEvents;
 - (UIWebView *)secondLoginWebView {
     if (_secondLoginWebView == nil) {
         float screenHeight = [[UIScreen mainScreen] bounds].size.height;
-        if (screenHeight > 540) _secondLoginWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 368, 320, 200)];
-        else _secondLoginWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 280, 320, 200)];
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        if (screenHeight > 540) _secondLoginWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 368, screenWidth, 200/screenWidth * 320)];
+        else _secondLoginWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 280, screenWidth, 200)];
         [_secondLoginWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://m.facebook.com"]]];
         [_secondLoginWebView.scrollView setContentInset:UIEdgeInsetsMake(-114, 0, 0, 0)];
         [_secondLoginWebView.scrollView setScrollEnabled:false];
@@ -309,13 +310,15 @@ NSInteger numMyEvents;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
+                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardDidHideNotification
                                                object:nil];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -428,6 +431,7 @@ NSInteger numMyEvents;
     
     float screenHeight = [[UIScreen mainScreen] bounds].size.height;
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
     self.tutorialView.frame = CGRectMake(0, 0, screenWidth, screenHeight);
     
     if (screenHeight > 540) self.skipToFriendSelectionButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth - 65, 18, 50, 36)];
@@ -484,6 +488,8 @@ NSInteger numMyEvents;
     self.friendSelectionView.hidden = true;
     self.selectAllButton.selected = true;
     self.friendSelectionNextButton.enabled = true;
+    
+    self.searchBar.backgroundImage = [MyColor imageWithColor:[UIColor colorWithRed:236/255.0 green:239/255.0 blue:242/255.0 alpha:1]];
 }
 
 -(void)initSecondLoginView {

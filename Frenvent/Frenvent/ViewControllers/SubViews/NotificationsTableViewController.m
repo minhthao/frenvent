@@ -39,22 +39,26 @@
 @property (nonatomic, strong) Event *eventToBeRsvp;
 @property (nonatomic, strong) UIButton *rsvpButton;
 
+@property (nonatomic, strong) UIAlertView *ratingAlert;
+
 @end
 
 @implementation NotificationsTableViewController
 #pragma mark - instantiations
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height)];
+        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.tableView.frame.size.height/2 - 50, self.tableView.frame.size.width, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];
         noResult.textAlignment = NSTextAlignmentCenter;
         noResult.shadowOffset = CGSizeMake(1, 1);
-        noResult.text = @"No new feeds";
+        noResult.text = @"No news feed";
         [_emptyView addSubview:noResult];
     }
     return _emptyView;
@@ -93,6 +97,24 @@
     return _eventRsvpRequest;
 }
 
+- (UIAlertView *)ratingAlert {
+    if (_ratingAlert == nil) {
+        _ratingAlert = [[UIAlertView alloc] initWithTitle:@"Rate Frenvent"
+                                                  message:@"Please rate us on iTunes store!"
+                                                 delegate:self
+                                        cancelButtonTitle:@"Cancel"
+                                        otherButtonTitles:@"Rate", nil];
+    }
+    return _ratingAlert;
+}
+
+#pragma mark - alert view delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSString *reviewURL = @"itms-apps://itunes.apple.com/app/id908123368";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+    }
+}
 
 #pragma mark - view delegates
 - (void)viewDidLoad {
@@ -156,8 +178,10 @@
             [subview removeFromSuperview];
         }
         
-        CGRect scrollViewFrame = CGRectMake(12, 0, content.frame.size.width - 24, content.frame.size.height);
-
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        
+        CGRect scrollViewFrame = CGRectMake(12 * scaleFactor , 0, 294 * scaleFactor, content.frame.size.height);
 
         if ([[self notificationManager] isUserSection:indexPath.section]) {
             notificationTime.text = @"";
@@ -339,5 +363,8 @@
     }
 }
 
+- (IBAction)rateAction:(id)sender {
+    [[self ratingAlert] show];
+}
 
 @end

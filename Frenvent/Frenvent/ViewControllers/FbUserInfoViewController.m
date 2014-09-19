@@ -57,10 +57,12 @@
 #pragma mark - initiation and private methods
 -(UIView *)emptyView {
     if (_emptyView == nil) {
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.eventTable.frame.size.height)];
+        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
         _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
         
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, self.eventTable.frame.size.height/2 - 50, 320, 36)];
+        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
         noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
         noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
         noResult.shadowColor = [UIColor whiteColor];
@@ -106,7 +108,9 @@
 
 - (PagedEventScrollView *)eventScrollView {
     if (_eventScrollView == nil) {
-        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, 150)];
         _eventScrollView.delegate = self;
     }
     return _eventScrollView;
@@ -114,7 +118,9 @@
 
 - (PagedPhotoScrollView *)photoScrollView {
     if (_photoScrollView == nil) {
-        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor , 0, 296 * scaleFactor, 150)];
         _photoScrollView.delegate = self;
     }
     return _photoScrollView;
@@ -122,7 +128,9 @@
 
 - (PagedUserScrollView *)userScrollView {
     if (_userScrollView == nil) {
-        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12, 0, 296, 150)];
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, 150)];
         _userScrollView.delegate = self;
     }
     return _userScrollView;
@@ -130,7 +138,9 @@
 
 - (FbUserInfoButtons *)userInfoButtons {
     if (_userInfoButtons == nil) {
-        _userInfoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10, 5, 300, 64)];
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        _userInfoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10 * scaleFactor, 5, 300 * scaleFactor, 64 * scaleFactor)];
         _userInfoButtons.delegate = self;
     }
     return _userInfoButtons;
@@ -308,8 +318,11 @@
     [self.viewSegmentControl setSelectedSegmentIndex:0];
     [self.shareButton setEnabled:true];
     
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    self.coverImage.frame = CGRectMake(0, 0, screenWidth, self.coverImage.frame.size.height);
+    
     if ([cover length] > 0)
-        [self.coverImage setImageWithURL:[NSURL URLWithString:cover] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+        [self.coverImage setImageWithURL:[NSURL URLWithString:cover]];
     else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
 }
 
@@ -445,7 +458,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.eventTable]) return 105;
     else {
-        if (indexPath.section == 0) return 80;
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        float scaleFactor = screenWidth/320;
+        if (indexPath.section == 0) return 40 * scaleFactor + 40;
         else return 210;
     }
 }
@@ -471,7 +486,7 @@
     UILabel *eventHost = (UILabel *)[cell viewWithTag:403];
     UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
     
-    [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+    [eventPicture setImageWithURL:[NSURL URLWithString:event.picture]];
     eventName.text = event.name;
     eventLocation.text = event.location;
     eventHost.attributedText = [event getHostAttributedString];
