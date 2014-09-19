@@ -30,27 +30,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.shareButton setEnabled:false];
+    if (self.isModal) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
+    }
+
     if (self.url != nil) [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
     if (self.uid != nil && self.name != nil) {
         if ([DbFBUserRequest addFbUserWithUid:self.uid andName:self.name])
             [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
+    } else if (self.uid != nil) {
+        //this case, you are getting the view from the modal, so we did not need to add it to the db anymore
+        NSString *urlString = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.uid];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+        [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
     }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)loadRequestFromString:(NSString*)urlString {
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:urlRequest];
-}
-
-- (void)updateButtons {
-    [self.nextButton setEnabled:self.webView.canGoForward];
-    [self.prevButton setEnabled:self.webView.canGoBack];
 }
 
 #pragma mark - web view delegate
@@ -67,11 +65,9 @@
     //[self updateButtons];
 }
 
-//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//    [self updateButtons];
-//    return true;
-//}
+-(void)backClick {
+    [self dismissViewControllerAnimated:true completion:NULL];
+}
 
 #pragma mark - recommend user delegate
 - (void)notifyRecommendFbUserRequestSuccess:(BOOL)success {

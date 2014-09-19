@@ -14,7 +14,7 @@
 #import "Reachability.h"
 #import <Bolts/Bolts.h>
 #import "EventDetailViewController.h"
-#import "FbUserInfoViewController.h"
+#import "WebViewController.h"
 #import "iRate.h"
 
 @implementation AppDelegate
@@ -265,8 +265,8 @@
         Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
         if ([internetReachable isReachable]) {
             UIStoryboard *storyboard = self.window.rootViewController.storyboard;
-            FbUserInfoViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"fbUserInfoViewController"];
-            rootViewController.targetUid = uid;
+            WebViewController *rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"FbUserWebView"];
+            rootViewController.uid = uid;
             rootViewController.isModal = true;
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
             

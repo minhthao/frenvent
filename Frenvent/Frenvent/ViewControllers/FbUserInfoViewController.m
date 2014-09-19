@@ -140,7 +140,7 @@
     if (_userInfoButtons == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
         float scaleFactor = screenWidth/320;
-        _userInfoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10 * scaleFactor, 5, 300 * scaleFactor, 64 * scaleFactor)];
+        _userInfoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10 * scaleFactor, 5, 300 * scaleFactor, 64)];
         _userInfoButtons.delegate = self;
     }
     return _userInfoButtons;
@@ -326,10 +326,6 @@
     else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
 }
 
--(void)backClick {
-    [self dismissViewControllerAnimated:true completion:NULL];
-}
-
 #pragma mark - view delegate
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -341,13 +337,7 @@
     [self.loadingSpinner startAnimating];
     [self.shareButton setEnabled:false];
     [self.viewSegmentControl setEnabled:false];
-    
-    if (self.isModal) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
-    }
-    
-    FbUserInfoButtons *infoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10, 154, 300, 64)];
-    infoButtons.delegate = self;
+    [self userInfoButtons];
 
     //view load
     if (self.targetUid != nil) {
@@ -458,9 +448,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([tableView isEqual:self.eventTable]) return 105;
     else {
-        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        float scaleFactor = screenWidth/320;
-        if (indexPath.section == 0) return 40 * scaleFactor + 40;
+        if (indexPath.section == 0) return 80;
         else return 210;
     }
 }

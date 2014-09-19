@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
+@property (nonatomic) BOOL isModal;
+
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *name;

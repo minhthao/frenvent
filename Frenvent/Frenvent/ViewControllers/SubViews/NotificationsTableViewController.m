@@ -26,6 +26,7 @@
 #import "EventDetailViewController.h"
 #import "UITableView+NXEmptyView.h"
 #import "MyColor.h"
+#import "AppDelegate.h"
 
 @interface NotificationsTableViewController ()
 
@@ -123,6 +124,10 @@
     self.tableView.nxEV_emptyView = [self emptyView];
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController setNavigationBarHidden:NO animated:true];
+    
+    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0)
+        [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%d", (int)[UIApplication sharedApplication].applicationIconBadgeNumber];
+    else [[self navigationController] tabBarItem].badgeValue = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

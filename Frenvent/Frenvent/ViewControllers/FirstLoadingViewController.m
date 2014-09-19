@@ -451,36 +451,51 @@ NSInteger numMyEvents;
     // first tutorial view
     UIImageView *view1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, tutorialFrame.width, tutorialFrame.height)];
     [view1 setContentMode:UIViewContentModeScaleAspectFill];
-    if (screenHeight > 540)[view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone5"]]; //iphone5
-    else [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone4"]];
+    if (screenHeight > 540) {
+        if (screenWidth == 320) [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone5"]]; //iphone5
+        else if (screenWidth == 375) [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone6"]]; //iphone6
+        else [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone6Plus"]]; //iphone6Plus
+    } else [view1 setImage:[UIImage imageNamed:@"TutorialFirstPageIphone4"]];
     [self.tutorialScrollView addSubview:view1];
     
     // second tutorial view
     UIImageView *view2 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width, 0, tutorialFrame.width, tutorialFrame.height)];
     [view2 setContentMode:UIViewContentModeScaleAspectFill];
-    if (screenHeight > 540) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone5"]];
-    else [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone4"]];
+    if (screenHeight > 540) {
+        if (screenWidth == 320) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone5"]];
+        else if (screenWidth == 375) [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone6"]];
+        else [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone6Plus"]]; //iphone6Plus
+    } else [view2 setImage:[UIImage imageNamed:@"TutorialSecondPageIphone4"]];
     [self.tutorialScrollView addSubview:view2];
     
     //third tutorial view
     UIImageView *view3 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 2, 0, tutorialFrame.width, tutorialFrame.height)];
     [view3 setContentMode:UIViewContentModeScaleAspectFill];
-    if (screenHeight > 540) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone5"]];
-    else [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone4"]];
+    if (screenHeight > 540) {
+        if (screenWidth == 320) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone5"]];
+        else if (screenWidth == 375) [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone6"]];
+        else [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone6Plus"]]; //iphone6Plus
+    } else [view3 setImage:[UIImage imageNamed:@"TutorialThirdPageIphone4"]];
     [self.tutorialScrollView addSubview:view3];
     
     //fourth tutorial view
     UIImageView *view4 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 3, 0, tutorialFrame.width, tutorialFrame.height)];
     [view4 setContentMode:UIViewContentModeScaleAspectFill];
-    if (screenHeight > 540) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone5"]]; //iphone5
-    else [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone4"]];
+    if (screenHeight > 540) {
+        if (screenWidth == 320) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone5"]];
+        else if (screenWidth == 375) [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone6"]];
+        else [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone6Plus"]]; //iphone6Plus
+    } else [view4 setImage:[UIImage imageNamed:@"TutorialFourthPageIphone4"]];
     [self.tutorialScrollView addSubview:view4];
     
     //fifth tutorial view
     UIImageView *view5 = [[UIImageView alloc] initWithFrame:CGRectMake(tutorialFrame.width * 4, 0, tutorialFrame.width, tutorialFrame.height)];
     [view5 setContentMode:UIViewContentModeScaleAspectFill];
-    if (screenHeight > 540) [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone5"]]; //iphone5
-    else [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone4"]];
+    if (screenHeight > 540) {
+        if (screenWidth == 320) [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone5"]];
+        else if (screenWidth == 375) [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone6"]];
+        else [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone6Plus"]]; //iphone6Plus
+    } else [view5 setImage:[UIImage imageNamed:@"TutorialFifthPageIphone4"]];
     [self.tutorialScrollView addSubview:view5];
 }
 

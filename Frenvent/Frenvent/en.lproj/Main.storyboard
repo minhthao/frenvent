@@ -1562,7 +1562,7 @@
         <!--Web View Controller-->
         <scene sceneID="yrT-81-BA8">
             <objects>
-                <viewController id="42w-dc-wM6" customClass="WebViewController" sceneMemberID="viewController">
+                <viewController restorationIdentifier="FbUserWebView" storyboardIdentifier="FbUserWebView" id="42w-dc-wM6" customClass="WebViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BSH-Uf-ttL"/>
                         <viewControllerLayoutGuide type="bottom" id="7Mp-qS-haP"/>
