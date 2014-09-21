@@ -506,6 +506,9 @@
         UILabel *cellTitleLabel = (UILabel *)[cell viewWithTag:101];
         UIView *scrollContainer = (UIView *)[cell viewWithTag:102];
         
+        for (UIView *subview in [scrollContainer subviews])
+            [subview removeFromSuperview];
+        
         if ([self.ongoingEvents count] > 0) {
             if (indexPath.row == 0) {
                 cellTitleLabel.text = @"Upcoming Events";

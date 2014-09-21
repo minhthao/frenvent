@@ -171,7 +171,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
  */
 -(UIActionSheet *)shareActionSheet {
     if (_shareActionSheet == nil) {
-        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share with friends", @"Share on wall", nil];
+        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share via messenger", @"Share on wall", nil];
         _shareActionSheet.tag = ACTION_SHEET_SHARE_EVENT;
     }
     return _shareActionSheet;
@@ -789,6 +789,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailLocationCell" forIndexPath:indexPath];
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailLocationCell"];
     
+    for (UIView *subview in [cell.contentView subviews])
+        [subview removeFromSuperview];
+    
     UITapGestureRecognizer *navigationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLocationButtonTap:)];
     [cell.contentView setUserInteractionEnabled:true];
     [cell.contentView addGestureRecognizer:navigationTap];
@@ -1029,6 +1032,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 
     UIView *usersView = (UIView *)[cell viewWithTag:301];
     [usersView setBackgroundColor:[UIColor clearColor]];
+    
+    for (UIView *subview in [usersView subviews])
+        [subview removeFromSuperview];
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     float scaleFactor = screenWidth/320;

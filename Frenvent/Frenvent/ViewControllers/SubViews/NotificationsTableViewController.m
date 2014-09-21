@@ -134,7 +134,7 @@
     else [[self navigationController] tabBarItem].badgeValue = nil;
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    if ([self notificationManager] != nil) {
+    if (self.notificationManager != nil) {
         [[self notificationManager] reset];
         [self.tableView reloadData];
     }

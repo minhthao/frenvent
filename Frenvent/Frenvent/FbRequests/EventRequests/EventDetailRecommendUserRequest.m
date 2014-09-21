@@ -75,7 +75,7 @@ static int const QUERY_LIMIT = 500;
                                   NSArray *participantsInfo = data[1][@"fql_result_set"];
                                   for (NSDictionary *participantInfo in participantsInfo) {
                                       SuggestFriend *suggestFriend = [[SuggestFriend alloc] init];
-                                      suggestFriend.uid = [participantInfo[@"uid"] stringValue];
+                                      suggestFriend.uid = [NSString stringWithFormat:@"%@", participantInfo[@"uid"]];
                                       suggestFriend.name = participantInfo[@"name"];
                                       suggestFriend.numMutualFriends = [participantInfo[@"mutual_friend_count"] intValue];
                                       suggestFriend.gender = participantInfo[@"sex"];

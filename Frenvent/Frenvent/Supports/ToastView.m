@@ -43,7 +43,7 @@ float const ToastGap = 10.0f;
     
     CGRect parentFrame = parentView.frame;
     
-    float yOrigin = parentFrame.size.height - (100.0 + ToastHeight * toastsAlreadyInParent + ToastGap * toastsAlreadyInParent);
+    float yOrigin = parentFrame.size.height - 100.0;
     
     CGRect selfFrame = CGRectMake(parentFrame.origin.x + 20.0, yOrigin, parentFrame.size.width - 40.0, ToastHeight);
     ToastView *toast = [[ToastView alloc] initWithFrame:selfFrame];

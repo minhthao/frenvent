@@ -677,6 +677,7 @@ NSInteger numMyEvents;
  * Check if all tasks are completed. If so, then segue to the main view
  */
 - (void) checkIfAllQueryCompleted {
+    NSLog(@"%d", (int)numQueriesDone);
     if (numQueriesDone == NUM_QUERIES && self.readyToNavigateToMainPage) {
         DBNotificationRequest *notificationRequest = [[DBNotificationRequest alloc] init];
         notificationRequest.delegate = self;

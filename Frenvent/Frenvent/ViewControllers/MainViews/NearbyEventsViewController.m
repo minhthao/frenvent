@@ -16,6 +16,7 @@
 #import "Reachability.h"
 #import "EventDetailViewController.h"
 #import "TimeSupport.h"
+#import "ToastView.h"
 
 static double const DEFAULT_LATITUDE = 37.43;
 static double const DEFAULT_LONGITUDE = -122.17;
@@ -191,6 +192,10 @@ BOOL isUpdating;
     }
 }
 
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    [ToastView showToastInParentView:self.view withText:@"Tap refresh button on top to reload" withDuaration:3.0];
+}
+
 #pragma mark - private methods
 //Create and display the pin
 - (void)createAndDisplayPin {
@@ -287,7 +292,6 @@ BOOL isUpdating;
         }
         [self refresh:nil];
     }
-    
 }
 
 - (IBAction)doFilter:(id)sender {

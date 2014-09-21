@@ -27,7 +27,7 @@
  */
 -(UIActionSheet *)shareActionSheet {
     if (_shareActionSheet == nil) {
-        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share with friends", @"Share on wall", nil];
+        _shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Share via messenger", @"Share on wall", nil];
         _shareActionSheet.tag = 2;
     }
     return _shareActionSheet;

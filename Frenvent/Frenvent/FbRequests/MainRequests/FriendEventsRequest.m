@@ -88,7 +88,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               
               //we first add in the events to the core data
               for (int i = 0; i < [eventInfo count]; i++) {
-                  NSString *eid = [eventInfo[i][@"eid"] stringValue];
+                  NSString *eid = [NSString stringWithFormat:@"%@", eventInfo[i][@"eid"]];
                   Event *event = [EventCoreData getEventWithEid:eid];
                   if (event == nil) {
                       event = [EventCoreData addEvent:eventInfo[i] usingRsvp:RSVP_NOT_INVITED];
@@ -100,10 +100,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               
               //we then add the friends to the core data
               for (NSDictionary *friendName in friendNames) {
-                  NSString *uid;
-                  if ([friendName[@"uid"] isKindOfClass:[NSString class]])
-                      uid = friendName[@"uid"];
-                  else uid = [friendName[@"uid"] stringValue];
+                  NSString *uid = [NSString stringWithFormat:@"%@", friendName[@"uid"]];
                   NSString *name = friendName[@"name"];
                   Friend *friend = [FriendCoreData getFriendWithUid:uid];
                   if (friend == nil)
@@ -114,15 +111,8 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
               
               //Finally, we add in the friend to events pairs
               for (NSDictionary *friendEvent in friendEvents) {
-                  NSString *uid;
-                  if ([friendEvent[@"uid"] isKindOfClass:[NSString class]])
-                      uid = friendEvent[@"uid"];
-                  else uid = [friendEvent[@"uid"] stringValue];
-                  
-                  NSString *eid;
-                  if ([friendEvent[@"eid"] isKindOfClass:[NSString class]])
-                      eid = friendEvent[@"eid"];
-                  else eid = [friendEvent[@"eid"] stringValue];
+                  NSString *uid = [NSString stringWithFormat:@"%@", friendEvent[@"uid"]];
+                  NSString *eid = [NSString stringWithFormat:@"%@", friendEvent[@"eid"]];
                   
                   if (![FriendToEventCoreData isFriendToEventPairExist:eid :uid]) {
                       Event *event = eventsDictionary[eid];

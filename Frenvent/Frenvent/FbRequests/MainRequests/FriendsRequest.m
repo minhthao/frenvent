@@ -70,11 +70,7 @@ static int16_t const QUERY_LIMIT = 5000;
               
             //get approprivate info arrays
             for (int i = 0; i < [data count]; i++) {
-                NSString *uid;
-                if ([data[i][@"uid"] isKindOfClass:[NSString class]])
-                    uid = data[i][@"uid"];
-                else uid = [data[i][@"uid"] stringValue];
-                  
+                NSString *uid = [NSString stringWithFormat:@"%@", data[i][@"uid"]];
                 NSString *name = data[i][@"name"];
                 
                 NSString *cover = @"";

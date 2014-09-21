@@ -478,11 +478,7 @@
 + (Event *) addEvent:(NSDictionary *)eventObj usingRsvp:(NSString *)rsvp {
     NSNull *nullInstance = [NSNull null];
     
-    NSString *eid;
-    if ([eventObj[@"eid"] isKindOfClass:[NSString class]])
-        eid = eventObj[@"eid"];
-    else eid = [eventObj[@"eid"] stringValue];
-    
+    NSString *eid = [NSString stringWithFormat:@"%@", eventObj[@"eid"]];
     NSString *name = eventObj[@"name"];
     
     NSString *picture = @"";
