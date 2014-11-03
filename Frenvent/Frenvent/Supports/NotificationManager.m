@@ -27,52 +27,34 @@
 
 @implementation NotificationManager
 
+@synthesize recommendUsers;
+
 -(id)init {
     self = [super init];
     if (self) {
         self.todayStartTime = [TimeSupport getTodayTimeFrameStartTimeInUnix];
-        self.thisWeekStartTime = [TimeSupport getThisWeekTimeFrameStartTimeInUnix];
     }
     return self;
 }
 
 -(void)initialize {
     //we first group the notifications
-    NSMutableOrderedSet *friendsTodayNotifications = [[NSMutableOrderedSet alloc] init];
-    self.todayNotification = [[NSMutableArray alloc] init];
-    NSMutableOrderedSet *friendsThisWeekNotifications = [[NSMutableOrderedSet alloc] init];
-    self.thisWeekNotification = [[NSMutableArray alloc] init];
-    self.othersNotification = [[NSMutableArray alloc] init];
+    NSMutableOrderedSet *friendActivitiesNotification = [[NSMutableOrderedSet alloc] init];
+    self.friendActivities = [[NSMutableArray alloc] init];
 
     NSArray *notifications = [NotificationCoreData getNotifications];
     for (Notification *notification in notifications) {
         if ([notification.friend.favorite boolValue]) {
-            if ([notification.time longLongValue] >= self.todayStartTime) {
-                [friendsTodayNotifications addObject:notification.friend.uid];
-                NSUInteger indexOfFriend = [friendsTodayNotifications indexOfObject:notification.friend.uid];
-                if ([self.todayNotification count] > indexOfFriend) {
-                    [((NotificationGroup *)[self.todayNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
-                } else if ([self.todayNotification count] == indexOfFriend) {
-                    NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
-                    notificationGroup.time = [notification.time longLongValue];
-                    notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
-                    notificationGroup.friend = notification.friend;
-                    [self.todayNotification addObject:notificationGroup];
-                }
-            } else if ([notification.time longLongValue] >= self.thisWeekStartTime) {
-                [friendsThisWeekNotifications addObject:notification.friend.uid];
-                NSUInteger indexOfFriend = [friendsThisWeekNotifications indexOfObject:notification.friend.uid];
-                if ([self.thisWeekNotification count] > indexOfFriend) {
-                    [((NotificationGroup *)[self.thisWeekNotification objectAtIndex:indexOfFriend]).events addObject:notification.event];
-                } else if ([self.thisWeekNotification count] == indexOfFriend) {
-                    NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
-                    notificationGroup.time = [notification.time longLongValue];
-                    notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
-                    notificationGroup.friend = notification.friend;
-                    [self.thisWeekNotification addObject:notificationGroup];
-                }
-            } else {
-                [self.othersNotification addObject:notification];
+            [friendActivitiesNotification addObject:notification.friend.uid];
+            NSUInteger indexOfFriend = [friendActivitiesNotification indexOfObject:notification.friend.uid];
+            if ([self.friendActivities count] > indexOfFriend) {
+                [((NotificationGroup *)[self.friendActivities objectAtIndex:indexOfFriend]).events addObject:notification.event];
+            } else if ([self.friendActivities count] == indexOfFriend) {
+                NotificationGroup *notificationGroup = [[NotificationGroup alloc] init];
+                notificationGroup.time = [notification.time longLongValue];
+                notificationGroup.events = [NSMutableArray arrayWithObjects:notification.event, nil];
+                notificationGroup.friend = notification.friend;
+                [self.friendActivities addObject:notificationGroup];
             }
         }
     }
@@ -108,11 +90,19 @@
  */
 - (NSInteger)getNumberOfSections {
     NSInteger numSections = 0;
+    if (self.recommendUsers != nil && [self.recommendUsers count] > 0) numSections ++;
     if ([self.friendsGoingoutToday count] > 0 || [self.userInvitedEvents count] > 0) numSections++;
-    if ([self.todayNotification count] > 0) numSections++;
-    if ([self.thisWeekNotification count] > 0) numSections++;
-    if ([self.othersNotification count] > 0) numSections++;
+    if ([self.friendActivities count] > 0) numSections++;
     return numSections;
+}
+
+/**
+ * Check if the section index is the recommend user section
+ * @param section index
+ * @return boolean
+ */
+-(BOOL)isRecommendUsersSection:(NSInteger)section {
+    return (section == 0 && self.recommendUsers != nil && [self.recommendUsers count] > 0);
 }
 
 /**
@@ -121,49 +111,20 @@
  * @return boolean
  */
 -(BOOL)isUserSection:(NSInteger)section {
-    if (section == 0 && ([self.friendsGoingoutToday count] > 0 || [self.userInvitedEvents count] > 0))
-        return true;
-    else return false;
-}
-
-/**
- * Check if the section index is today notifications section
- * @param section index
- * @return boolean
- */
--(BOOL)isTodaySection:(NSInteger)section {
-    if ([self.todayNotification count] > 0) {
-        if (section == 0 && ![self isUserSection:section]) return true;
-        else if (section == 1  && [self isUserSection:0]) return true;
+    if ([self.friendsGoingoutToday count] > 0 || [self.userInvitedEvents count] > 0) {
+        if ([self isRecommendUsersSection:0]) return section == 1;
+        else return section == 0;
     }
-    
     return false;
 }
 
 /**
- * Check if the section index is this week notifications section
+ * Check if the section index is friends activities section
  * @param section index
  * @return boolean
  */
--(BOOL)isThisWeekSection:(NSInteger)section {
-    if ([self.thisWeekNotification count] > 0) {
-        if (section == 0 && ![self isUserSection:section] && ![self isTodaySection:section]) return true;
-        else if (section == 1  && [self isUserSection:0] && ![self isTodaySection:section]) return true;
-        else if (section == 1 && ![self isUserSection:0] && [self isTodaySection:0]) return true;
-        else if (section == 2 && [self isUserSection:0] && [self isTodaySection:1]) return true;
-    }
-    
-    return false;
-}
-
-/**
- * Check if the section index is others notifications section
- * @param section index
- * @return boolean
- */
--(BOOL)isOthersSection:(NSInteger)section {
-    if ([self.othersNotification count] > 0 && section == ([self getNumberOfSections] - 1)) return true;
-    else return false;
+-(BOOL)isFriendActivitySection:(NSInteger)section {
+    return !([self isRecommendUsersSection:section] || [self isUserSection:section]);
 }
 
 /**
@@ -172,10 +133,9 @@
  * @return header title
  */
 -(NSString *)getSectionTitle:(NSInteger)section {
-    if ([self isUserSection:section]) return @"HIGHLIGHT";
-    if ([self isTodaySection:section]) return @"TODAY";
-    if ([self isThisWeekSection:section]) return @"THIS WEEK";
-    if ([self isOthersSection:section]) return @"OTHERS";
+    if ([self isRecommendUsersSection:section]) return @"Friends to meet today";
+    if ([self isUserSection:section]) return @"Highlights";
+    if ([self isFriendActivitySection:section]) return @"Friend activities";
     return nil;
 }
 
@@ -185,13 +145,12 @@
  * @return num of rows
  */
 -(NSInteger)numberOfRowInSection:(NSInteger)section {
+    if ([self isRecommendUsersSection:section]) return 1;
     if ([self isUserSection:section]) {
         if ([self.friendsGoingoutToday count] > 0 && [self.userInvitedEvents count] > 0) return 2;
         if ([self.friendsGoingoutToday count] > 0 || [self.userInvitedEvents count] > 0) return 1;
     }
-    if ([self isTodaySection:section]) return [self.todayNotification count];
-    if ([self isThisWeekSection:section]) return [self.thisWeekNotification count];
-    if ([self isOthersSection:section]) return [self.othersNotification count];
+    if ([self isFriendActivitySection:section]) return [self.friendActivities count];
     return 0;
 }
 
@@ -200,8 +159,8 @@
  * @return description string
  */
 -(NSAttributedString *)getDescriptionForFriendsGoingoutToday {
-    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]};
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
+    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Light" size:14]};
 
     NSString *firstFriendName = ((EventParticipant *)[self.friendsGoingoutToday objectAtIndex:0]).friend.name;
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:firstFriendName attributes:boldFont];
@@ -226,26 +185,11 @@
  * @return description string
  */
 -(NSAttributedString *)getDescriptionForInvitedEvents {
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Regular" size:14]};
     
     if ([self.userInvitedEvents count] > 1) {
         return [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"You have %d unreplied invitations to these events", (int)[self.userInvitedEvents count]] attributes:mediumFont];
     } else return [[NSAttributedString alloc] initWithString:@"You have an unreplied invitation to the event" attributes:mediumFont];
-}
-
-/**
- * Get the attributed description string for a given notification
- * @param notification
- * @return description string
- */
--(NSAttributedString *)getDescriptionForNotification:(Notification *)notification {
-    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]};
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
-    
-    NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:notification.friend.name attributes:boldFont];
-    [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to the event" attributes:mediumFont]];
-    
-    return description;
 }
 
 /**
@@ -254,17 +198,17 @@
  * @return description string
  */
 -(NSAttributedString *)getDescriptionForNotificationGroup:(NotificationGroup *)notificationGroup {
-    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]};
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Medium" size:14]};
+    NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Light" size:14]};
     
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:notificationGroup.friend.name attributes:boldFont];
 
     if ([notificationGroup.events count] > 1) {
-        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to " attributes:mediumFont]];
+        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested to " attributes:mediumFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", (int)[notificationGroup.events count]] attributes:boldFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" events" attributes:mediumFont]];
     } else if ([notificationGroup.events count] == 1) {
-        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" replied interested to the event" attributes:mediumFont]];
+        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested to the event" attributes:mediumFont]];
     }
     
     return description;

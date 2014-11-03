@@ -25,27 +25,19 @@
     }
     
     [self.loadingSpinner stopAnimating];
-    
     CGSize scrollViewSize = self.frame.size;
+    
     if ([events count] > 0) {
         self.contentSize = CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
         //CGSizeMake(scrollViewSize.width * [events count], scrollViewSize.height);
         for (int i = 0; i < [events count]; i++) {
             Event *event = [events objectAtIndex:i];
-            CGRect eventFrame = CGRectMake(scrollViewSize.width * i + 3, 1, scrollViewSize.width - 6, scrollViewSize.height - 2);
+            CGRect eventFrame = CGRectMake(scrollViewSize.width * i + 3 , 1, scrollViewSize.width - 6, scrollViewSize.height - 2);
             ScrollEvent *eventView = [[ScrollEvent alloc] initWithFrame:eventFrame];
             eventView.delegate = self;
             [eventView setViewEvent:event];
             [self addSubview:eventView];
         }
-    } else {
-        self.contentSize = scrollViewSize;
-        
-        UIImageView *defaultEmptyImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height)];
-        [defaultEmptyImage setImage:[UIImage imageNamed:@"PagedEventScrollViewNoEvent"]];
-        [defaultEmptyImage setContentMode:UIViewContentModeScaleToFill];
-        [self addSubview:defaultEmptyImage];
-        
     }
 }
 

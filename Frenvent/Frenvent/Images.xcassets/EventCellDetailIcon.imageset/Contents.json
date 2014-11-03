@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "EventDetailIcon-1.png"
+      "filename" : "bars-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "EventDetailIcon.png"
+      "filename" : "bars-1.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "bars.png"
     }
   ],
   "info" : {

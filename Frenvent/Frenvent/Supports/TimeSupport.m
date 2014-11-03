@@ -209,13 +209,13 @@ static NSString * const STANDARD_DATETIME_FORMAT = @"yyyy-MM-dd HH:mm:ss";
     NSDateFormatter *targetFormat = [[NSDateFormatter alloc] init];
     if ([self isDateTimeSpecifiedTheHour:dateTimeInStandardFormat]) {
         if ([self isOfTheSameDay:dateTimeInStandardFormat :todayInStandardFormat]) {
-            [targetFormat setDateFormat:@"'Today @' h:mm a"];
+            [targetFormat setDateFormat:@"'Today at' h:mm a"];
         } else if ([self isOfTheSameDay:dateTimeInStandardFormat :tomorrowInStandardFormat]) {
-            [targetFormat setDateFormat:@"'Tomorrow @' h:mm a"];
+            [targetFormat setDateFormat:@"'Tomorrow at' h:mm a"];
         } else if ([self isOfTheSameYear:dateTimeInStandardFormat :todayInStandardFormat]) {
-            [targetFormat setDateFormat:@"EEE, MMM d '@' h:mm a"];
+            [targetFormat setDateFormat:@"EEE, MMM d 'at' h:mm a"];
         } else {
-            [targetFormat setDateFormat:@"EEE, MMM d, yyyy '@' h:mm a"];
+            [targetFormat setDateFormat:@"EEE, MMM d, yyyy 'at' h:mm a"];
         }
     } else { //the date did not specified the hours
         if ([self isOfTheSameDay:dateTimeInStandardFormat :todayInStandardFormat]) {

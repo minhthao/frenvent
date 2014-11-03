@@ -98,26 +98,24 @@ static int const QUERY_LIMIT = 500;
                                   NSString *userGender = [defaults stringForKey:FB_LOGIN_USER_GENDER];
                                  
                                   [recommendUsers sortUsingComparator:^(SuggestFriend * user1, SuggestFriend *user2){
-                                      if ([user1.gender isEqualToString:userGender] && [user2.gender isEqualToString:userGender]) {
+                                      if ([user1.gender isEqualToString:user2.gender]) {
                                           if (user1.numMutualFriends >  user2.numMutualFriends) return NSOrderedAscending;
                                           else if (user1.numMutualFriends < user2.numMutualFriends) return NSOrderedDescending;
                                           else return NSOrderedSame;
                                       } else if ([user1.gender isEqualToString:userGender] && ![user2.gender isEqualToString:userGender]) {
-                                          if (user1.numMutualFriends > (user2.numMutualFriends + 5)) return NSOrderedAscending;
-                                          else if (user1.numMutualFriends < (user2.numMutualFriends + 5)) return NSOrderedDescending;
-                                          else return NSOrderedSame;
+                                          if (user1.numMutualFriends > 0 && user2.numMutualFriends == 0) return NSOrderedAscending;
+                                          else return NSOrderedDescending;
                                       } else {
-                                          if ((user1.numMutualFriends + 5) > user2.numMutualFriends) return NSOrderedAscending;
-                                          else if ((user1.numMutualFriends + 5) < user2.numMutualFriends) return NSOrderedDescending;
-                                          else return NSOrderedSame;
+                                          if (user1.numMutualFriends == 0 && user2.numMutualFriends > 0) return NSOrderedDescending;
+                                          else return NSOrderedAscending;
                                       }
                                   }];
                                   
                                   NSMutableArray *suggestFriends = [[NSMutableArray alloc] init];
                                   for (int i = 0; i < MIN(10, [recommendUsers count]); i++) {
-                                      if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 5 || [suggestFriends count] < 3)
-                                          if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 0)
-                                              [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
+                                      if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 5 ||
+                                          [suggestFriends count] < 5)
+                                          [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
                                   }
                                   
                                   [self.delegate notifyEventDetailRecommendUserCompleteWithResult:suggestFriends];

@@ -49,20 +49,24 @@
     }
 #endif
     
+    UIColor *themeColor = [UIColor colorWithRed:255/255.0 green:128/255.0 blue:64/255.0 alpha:1.0];
+    
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum]; 
     
-    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0]];
+    [[UITabBar appearance] setTintColor:themeColor];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Regular" size:17]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Regular" size:10]} forState:UIControlStateNormal];
     
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0]];
+    [[UINavigationBar appearance] setBarTintColor:themeColor];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
-    NSShadow *shadow = [NSShadow new];
-    [shadow setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
-    [shadow setShadowOffset: CGSizeMake(0.0f, 1.0f)];
+//    NSShadow *shadow = [NSShadow new];
+//    [shadow setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
+//    [shadow setShadowOffset: CGSizeMake(0.0f, 1.0f)];
     [[UINavigationBar appearance] setTitleTextAttributes:
-            @{ NSForegroundColorAttributeName:[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0],
-               NSShadowAttributeName:shadow}];
+            @{ NSForegroundColorAttributeName:[UIColor whiteColor],
+               NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:17]}];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults boolForKey:LOGIN_DATA_INITIALIZED]) {

@@ -18,6 +18,7 @@ extern NSInteger const FILTER_TYPE_DEFAULT;
 @property (nonatomic) NSInteger filterType;
 @property (nonatomic, strong) NSArray *eventsArray;
 
+@property (nonatomic, strong) NSMutableArray *recommendedEvents;
 @property (nonatomic, strong) NSMutableArray *todayEvents;
 @property (nonatomic, strong) NSMutableArray *thisWeekEvents;
 @property (nonatomic, strong) NSMutableArray *thisWeekendEvents;

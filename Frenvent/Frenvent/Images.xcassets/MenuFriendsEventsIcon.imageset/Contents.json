@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "menu_friends_events_icon_unselected-1.png"
+      "filename" : "star5-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "menu_friends_events_icon_unselected.png"
+      "filename" : "star5-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "MenuFriendsEventsIcon.png"
+      "filename" : "star5.png"
     }
   ],
   "info" : {

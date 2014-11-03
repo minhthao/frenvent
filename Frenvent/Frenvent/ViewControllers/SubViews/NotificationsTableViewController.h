@@ -10,11 +10,13 @@
 #import "PagedEventScrollView.h"
 #import "EventParticipantView.h"
 #import "EventRsvpRequest.h"
+#import "EventDetailRecommendUserRequest.h"
 
-@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate>
+@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate, EventDetailRecommendUserRequestDelegate, CLLocationManagerDelegate>
 
 - (IBAction)rateAction:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 
 
 @end

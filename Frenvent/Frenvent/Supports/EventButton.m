@@ -14,47 +14,16 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        //implement later
+        [self setBackgroundImage:[MyColor imageWithColor:[UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0]] forState:UIControlStateNormal];
+        [self setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonHighlightBackgroundColor]] forState:UIControlStateHighlighted];
+        
+        [self.titleLabel setFont:[UIFont fontWithName:@"SourceSansPro-Semibold" size:17]];
+        [self setTitleColor:[UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [self setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+        
+        [self setUserInteractionEnabled:true];
     }
     return self;
 }
-
-
-/**
- * Set the button title
- * @param String title
- */
-- (void) setButtonTitle:(NSString *)title {
-    [self setTitle:title forState:UIControlStateNormal];
-    [self setTitle:title forState:UIControlStateHighlighted];
-}
-
-///**
-// * Set the color for the title on highlight state
-// * @param color
-// */
-//- (void) setHighlightTitleColor:(UIColor *)color {
-//    [self setTitleColor:color forState:UIControlStateHighlighted];
-//}
-//
-///**
-// * Set the color for the title on normal state
-// * @param color
-// */
-//- (void) setNormalTitleColor:(UIColor *)color {
-//    [self setTitleColor:color forState:UIControlStateNormal];
-//}
-//
-///**
-// * Set the image for the button on the highlight state {
-// * @param image
-// */
-//- (void) setHighlightImage:(UIImage *)image {
-//    [self setImage:image forState:UIControlStateHighlighted];
-//}
-//
-//- (void) setNormalImage:(UIImage *)image;
-//- (void) setHighlightBackgroundColor:(UIColor *)color;
-//- (void) setNormalBackgroundColor:(UIColor *)color;
 
 @end

@@ -47,23 +47,11 @@ static double const METER_IN_MILE = 1609.344;
 @dynamic notifications;
 
 @synthesize distance;
-
+@synthesize score;
 
 #pragma mark - private methods
 /**
  * Get the attributes by font name and font size
- * For reference, there are all the font name we will be using
- *      "HelveticaNeue-Bold",
- *      "HelveticaNeue-CondensedBlack",
- *      "HelveticaNeue-Medium",
- *      "HelveticaNeue",
- *      "HelveticaNeue-Light",
- *      "HelveticaNeue-CondensedBold",
- *      "HelveticaNeue-LightItalic",
- *      "HelveticaNeue-UltraLightItalic",
- *      "HelveticaNeue-UltraLight",
- *      "HelveticaNeue-BoldItalic",
- *      "HelveticaNeue-Italic",
  * @param font name
  * @param font size
  * @return dictionary of attributes
@@ -102,7 +90,7 @@ static double const METER_IN_MILE = 1609.344;
     return ([self.privacy isEqualToString:PRIVACY_FRIENDS] || [self.privacy isEqualToString:PRIVACY_OPEN]);
 }
 
-#pragma mark - distance
+#pragma mark - compute distance and score
 /**
  * Given a location, compute the distance between the event and this location
  * @param CLLocation
@@ -131,8 +119,8 @@ static double const METER_IN_MILE = 1609.344;
         NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
         
         //create attributes for the string that we are going to use
-        NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-Bold" andSize:14];
-        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:14];
+        NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
+        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Light" andSize:14];
         
         NSAttributedString *firstFriendAttributedString = [[NSAttributedString alloc] initWithString:((Friend *)[interestedFriends objectAtIndex:0]).name attributes:boldStringAttributes];
         
@@ -189,18 +177,34 @@ static double const METER_IN_MILE = 1609.344;
  * @return attributed string
  */
 - (NSAttributedString *) getRsvpAttributedString {
-    NSDictionary *rsvpStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-BoldItalic" andSize:13];
+    NSDictionary *rsvpStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
     
     if ([self.rsvp isEqualToString:RSVP_ATTENDING])
-        return [[NSAttributedString alloc] initWithString:@"JOINED" attributes:rsvpStringAttributes];
+        return [[NSAttributedString alloc] initWithString:@"Joined" attributes:rsvpStringAttributes];
     
     if ([self.rsvp isEqualToString:RSVP_UNSURE])
-        return [[NSAttributedString alloc] initWithString:@"MAYBE" attributes:rsvpStringAttributes];
+        return [[NSAttributedString alloc] initWithString:@"Maybe" attributes:rsvpStringAttributes];
     
     if ([self.rsvp isEqualToString:RSVP_DECLINED])
-        return [[NSAttributedString alloc] initWithString:@"DECLINED" attributes:rsvpStringAttributes];
+        return [[NSAttributedString alloc] initWithString:@"Declined" attributes:rsvpStringAttributes];
     
     return nil;
+}
+
+/**
+ * Get the rsvp and people attending
+ * @return attributed string
+ */
+- (NSAttributedString *) getRsvpAndAttendeesAttributedString {
+    NSDictionary *rsvpStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
+    NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
+    [finalString appendAttributedString:[self getRsvpAttributedString]];
+    if ([self getFriendsInterestedAttributedString] != nil) {
+        [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:@" - " attributes:rsvpStringAttributes]];
+        [finalString appendAttributedString:[self getFriendsInterestedAttributedString]];
+    }
+        
+    return finalString;
 }
 
 /**
@@ -212,14 +216,24 @@ static double const METER_IN_MILE = 1609.344;
         return nil;
     } else {
         //create attributes for the string that we are going to use
-        NSDictionary *italicStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue-Italic" andSize:13];
-        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"HelveticaNeue" andSize:13];
+        NSDictionary *hostStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
+        NSString *hostString = [NSString stringWithFormat:@"Host: %@", self.host];
         
-        NSMutableAttributedString *finalString = [[NSMutableAttributedString alloc] init];
-        [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Host: " attributes:normalStringAttributes]];
-        [finalString appendAttributedString:[[NSAttributedString alloc] initWithString:self.host attributes:italicStringAttributes]];
-        return finalString;
+        return [[NSAttributedString alloc] initWithString:hostString attributes:hostStringAttributes];
     }
+}
+
+/**
+ * Get from event name attributed string
+ * @return attributed string
+ */
+- (NSAttributedString *) getFromEventNameAttributedString {
+    NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
+    NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Light" andSize:14];
+    
+    NSMutableAttributedString *name = [[NSMutableAttributedString alloc] initWithString:@"From event " attributes:normalStringAttributes];
+    [name appendAttributedString:[[NSAttributedString alloc ] initWithString:self.name attributes:boldStringAttributes]];
+    return name;
 }
 
 /**
@@ -231,9 +245,9 @@ static double const METER_IN_MILE = 1609.344;
         return @"N/A";
     } else {
         double eDistance = [self.distance doubleValue];
-        if (eDistance >= 10 && eDistance < 1000) return [NSString stringWithFormat:@"%d mi.", (int)eDistance];
-        else if (eDistance >= 1000) return @"1k+ mi.";
-        else return [NSString stringWithFormat:@"%.1f mi.", eDistance];
+        if (eDistance >= 10 && eDistance < 1000) return [NSString stringWithFormat:@"%d mil", (int)eDistance];
+        else if (eDistance >= 1000) return @"1k+ mil";
+        else return [NSString stringWithFormat:@"%.1f mil", eDistance];
     }
 }
 

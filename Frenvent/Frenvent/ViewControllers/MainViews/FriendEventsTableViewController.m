@@ -198,13 +198,12 @@ CLLocation *lastKnown;
 #pragma mark - refresh control methods
 -(void)refresh:(id)sender {
     [self.refreshButton setEnabled:false];
-    
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
-        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
             [[self locationManager] startUpdatingLocation];
-        else [[self friendEventsRequest] refreshFriendEvents];
+        } else [[self friendEventsRequest] refreshFriendEvents];
     } else {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
                                                           message:@"Connect to internet and try again."
@@ -334,6 +333,7 @@ CLLocation *lastKnown;
 }
 
 - (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    [[self locationManager] stopUpdatingLocation];
     if ([[self uiRefreshControl] isRefreshing]) [[self friendEventsRequest] refreshFriendEvents];
 }
 
@@ -353,6 +353,7 @@ CLLocation *lastKnown;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
+    
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
     else if (_eventManager != nil) {
@@ -377,25 +378,45 @@ CLLocation *lastKnown;
     return [[self eventManager] getTitleAtSection:section];
 }
 
+// Customize the title
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(10, 8, 300, 18);
+    myLabel.font = [UIFont fontWithName:@"SourceSansPro-SemiBold" size:14];
+    myLabel.textColor = [UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIView *labelContainer = [[UIView alloc] init];
+    labelContainer.frame = CGRectMake(0, 0, screenWidth, 35);
+    labelContainer.backgroundColor = [UIColor whiteColor];
+    [labelContainer addSubview:myLabel];
+    
+    UIView *topBorber = [[UIView alloc] init];
+    topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
+    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    
+    UIView *bottomBorder = [[UIView alloc] init];
+    bottomBorder.frame = CGRectMake(0, 35, screenWidth, 1);
+    bottomBorder.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:labelContainer];
+    if (section != 0) [headerView addSubview:topBorber];
+    [headerView addSubview:bottomBorder];
+    
+    return headerView;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 48;
+}
+
 // Get the number of rows in each section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [[[self eventManager] getEventsAtSection:section] count];
-}
-
-// Override to support conditional editing of the table view.
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return(YES);
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    [EventCoreData setEventMarkType:event withType:MARK_TYPE_HIDDEN];
-    [[self eventManager] hideEventAtIndexPath:indexPath];
-    [self.tableView reloadData];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Hide";
 }
 
 // Get the cell in the table
@@ -404,10 +425,17 @@ CLLocation *lastKnown;
     if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventItem"];
     
     UIView *containerView = (UIView *)[cell viewWithTag:200];
-    [containerView.layer setCornerRadius:3.0f];
+    [containerView.layer setCornerRadius:4.0f];
     [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
+    
+    UIView *shadowView = (UIView *)[cell viewWithTag:199];
+    [shadowView.layer setCornerRadius:4.0f];
+    [shadowView.layer setMasksToBounds:NO];
+    [shadowView.layer setShadowColor:[[UIColor lightGrayColor] CGColor]];
+    [shadowView.layer setShadowRadius:3];
+    [shadowView.layer setShadowOffset:CGSizeMake(0, 1)];
+    [shadowView.layer setShadowOpacity:0.25f];
+
     
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     
@@ -417,13 +445,17 @@ CLLocation *lastKnown;
     UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:204];
     UILabel *eventStartTime = (UILabel *)[cell viewWithTag:205];
     UILabel *eventDistance = (UILabel *)[cell viewWithTag:206];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat notificationHeaderWidth = screenWidth - 125;
+    [eventName setPreferredMaxLayoutWidth:notificationHeaderWidth];
 
     [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
     eventName.text = event.name;
     eventLocation.text = event.location;
     
     if ([event getRsvpAttributedString] != nil)
-        eventFriendsInterested.attributedText = [event getRsvpAttributedString];
+        eventFriendsInterested.attributedText = [event getRsvpAndAttendeesAttributedString];
     else eventFriendsInterested.attributedText = [event getFriendsInterestedAttributedString];
     
     eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
@@ -431,8 +463,7 @@ CLLocation *lastKnown;
     
     //add the buttons
     UIView *buttonsBar = (UIView *)[cell viewWithTag:207];
-    [buttonsBar.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
-    [buttonsBar.layer setBorderWidth:0.5f];
+    [buttonsBar setClipsToBounds:true];
     
     EventButton *shareButton = [self cellShareButton:indexPath];
     if (shareButton != nil) [buttonsBar addSubview:shareButton];
@@ -487,16 +518,15 @@ CLLocation *lastKnown;
     
     if (![event canShare]) return nil;
     
-    float width = self.tableView.frame.size.width - 10; //for padding
+    float width = self.tableView.frame.size.width - 20; //for padding
     //otherwise we create that button
-    CGRect buttonFrame = CGRectMake(width/2, 0.0, width/2, 35.0); //all 2 buttons presents
+    CGRect buttonFrame = CGRectMake(width/2, 0.0, width/2, 44.0); //all 2 buttons presents
     EventButton *shareButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
     //set title and format button
-    [shareButton setButtonTitle:@"Share"];
+    [shareButton setTitle:@"Share" forState:UIControlStateNormal];
     [shareButton setImage:[UIImage imageNamed:@"EventCellShareIcon"] forState:UIControlStateNormal];
     [shareButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:shareButton];
     
     //set the index path to recognize which event the button is resided to configured its actions.
     shareButton.indexPath = indexPath;
@@ -512,21 +542,20 @@ CLLocation *lastKnown;
 - (EventButton *)cellRsvpButton:(NSIndexPath *)indexPath {
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
     
-    float width = self.tableView.frame.size.width - 10; //for padding
+    float width = self.tableView.frame.size.width - 20; //for padding
     CGRect buttonFrame;
     if ([event canShare])  //can share implies can rsvp
-        buttonFrame = CGRectMake(0.0, 0.0, width/2, 35.0);
+        buttonFrame = CGRectMake(0.0, 0.0, width/2, 44.0);
     else if ([event canRsvp])
-        buttonFrame = CGRectMake(0.0, 0.0, width, 35.0);
+        buttonFrame = CGRectMake(0.0, 0.0, width, 44.0);
     else return nil; //no need to create this button
     
     EventButton *rsvpButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
     //set title and format button
-    [rsvpButton setButtonTitle:@"Rsvp"];
+    [rsvpButton setTitle:@"RSVP" forState:UIControlStateNormal];
     [rsvpButton setImage:[UIImage imageNamed:@"EventCellRsvpIcon"] forState:UIControlStateNormal];
     [rsvpButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:rsvpButton];
     
     //set the index path to recognize which event the button is resided to configured its actions.
     rsvpButton.indexPath = indexPath;
@@ -540,40 +569,21 @@ CLLocation *lastKnown;
  * @param index path
  */
 - (EventButton *)cellDetailButton:(NSIndexPath *)indexPath {
-    float width = self.tableView.frame.size.width - 10; //for padding
-    CGRect buttonFrame = CGRectMake(0.0, 0.0, width, 35.0); //only this button present
+    float width = self.tableView.frame.size.width - 20; //for padding
+    CGRect buttonFrame = CGRectMake(0.0, 0.0, width, 44.0); //only this button present
     
     EventButton *detailButton = [[EventButton alloc] initWithFrame:buttonFrame];
     
     //set title and format button
-    [detailButton setButtonTitle:@"Detail"];
+    [detailButton setTitle:@"Detail" forState:UIControlStateNormal];
     [detailButton setImage:[UIImage imageNamed:@"EventCellDetailIcon"] forState:UIControlStateNormal];
     [detailButton setImageEdgeInsets:(UIEdgeInsetsMake(0.0, 0.0, 1.0, 8.0))];
-    [self formatEventCellButton:detailButton];
     
     //set the index path to recognize which event the button is resided to configured its actions.
     detailButton.indexPath = indexPath;
     [detailButton addTarget:self action:@selector(detailActionPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     return detailButton;
-}
-
-
-#pragma mark - format event cell button
-/**
- * Format the event cell buttons. This include the behavior when highlight and font
- * @param Event button
- */
-- (void)formatEventCellButton:(EventButton *)button {
-    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonNormalBackgroundColor]] forState:UIControlStateNormal];
-    [button setBackgroundImage:[MyColor imageWithColor:[MyColor eventCellButtonHighlightBackgroundColor]] forState:UIControlStateHighlighted];
-    
-    [button setTitleColor:[MyColor eventCellButtonNormalTextColor] forState:UIControlStateNormal];
-    [button setTitleColor:[MyColor eventCellButtonHighlightTextColor] forState:UIControlStateHighlighted];
-    
-    [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:14.5]];
-    
-    [button setUserInteractionEnabled:true];
 }
 
 #pragma mark - cell button actions selector

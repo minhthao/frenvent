@@ -11,7 +11,7 @@
 @protocol EventDetailRecommendUserRequestDelegate <NSObject>
 @required
 - (void)notifyEventDetailRecommendUserQueryFail;
-- (void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriendss;
+- (void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends;
 @end
 
 @interface EventDetailRecommendUserRequest : NSObject

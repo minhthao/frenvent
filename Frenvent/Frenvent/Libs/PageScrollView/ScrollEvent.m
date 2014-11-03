@@ -27,19 +27,14 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor lightGrayColor];
-        [self.layer setMasksToBounds:NO];
-        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [self.layer setShadowRadius:1];
-        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
-        [self.layer setShadowOpacity:0.35f];
-        [self.layer setBorderWidth:0.5f];
-        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
-        
+        [self.layer setMasksToBounds:YES];
+        [self.layer setCornerRadius:2];
+
         UITapGestureRecognizer *eventTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEventTap:)];
         [self setUserInteractionEnabled:true];
         [self addGestureRecognizer:eventTap];
         
-        self.cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height - 60)];
+        self.cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height - 75)];
         self.cover.clipsToBounds = true;
         self.cover.contentMode = UIViewContentModeScaleAspectFill;
         self.cover.backgroundColor = [UIColor lightGrayColor];
@@ -54,47 +49,39 @@
         self.eventIndexLabel.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.eventIndexLabel];
         
-        CGRect detailFrame = CGRectMake(0, frame.size.height - 60, frame.size.width, 60);
+        CGRect detailFrame = CGRectMake(0, frame.size.height - 75, frame.size.width, 75);
         UIView *eventDetailContainerView = [[UIView alloc] initWithFrame:detailFrame];
-        eventDetailContainerView.backgroundColor = [UIColor colorWithRed:250/255.0 green:250/255.0 blue:250/255.0 alpha:1.0];
+        eventDetailContainerView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+        [eventDetailContainerView.layer setBorderColor:[[UIColor colorWithRed:238/255.0 green:238/255.0 blue:238/255.0 alpha:1.0] CGColor]];
+        [eventDetailContainerView.layer setBorderWidth:0.8];
         [self addSubview:eventDetailContainerView];
         
-        self.eventRsvpButtonView = [[UIButton alloc] initWithFrame:CGRectMake(detailFrame.size.width - 50, 10, 40, 40)];
+        self.eventRsvpButtonView = [[UIButton alloc] initWithFrame:CGRectMake(detailFrame.size.width - 60, 0, 60, 75)];
         [self.eventRsvpButtonView setUserInteractionEnabled:true];
-        [self.eventRsvpButtonView.layer setMasksToBounds:YES];
-        [self.eventRsvpButtonView.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
-        [self.eventRsvpButtonView.layer setCornerRadius:3.0f];
-        [self.eventRsvpButtonView.layer setBorderWidth:1];
-        
-        [self.eventRsvpButtonView.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [self.eventRsvpButtonView.layer setShadowRadius:1.0f];
-        [self.eventRsvpButtonView.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
-        [self.eventRsvpButtonView.layer setShadowOpacity:0.5];
         
         [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateNormal"] forState:UIControlStateNormal];
         [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateDisable"] forState:UIControlStateDisabled];
-        [self.eventRsvpButtonView setBackgroundImage:[UIImage imageNamed:@"ScrollViewOngoingEventRsvpButtonStateHighlight"] forState:UIControlStateHighlighted];
         
         [self.eventRsvpButtonView addTarget:self action:@selector(handleEventRsvp:) forControlEvents:UIControlEventTouchUpInside];
         [eventDetailContainerView addSubview:self.eventRsvpButtonView];
         
-        CGRect infoFrame = CGRectMake(8, 2, detailFrame.size.width - 76, 56);
+        CGRect infoFrame = CGRectMake(10, 10, detailFrame.size.width - 85, 60);
         UIView *eventInfoContainerView = [[UIView alloc] initWithFrame:infoFrame];
         [eventDetailContainerView addSubview:eventInfoContainerView];
         
-        self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, infoFrame.size.width, 20)];
-        self.title.textColor = [UIColor darkTextColor];
-        self.title.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15];
+        self.title = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, infoFrame.size.width, 18)];
+        self.title.textColor = [UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0];
+        self.title.font = [UIFont fontWithName:@"SourceSansPro-Semibold" size:14];
         [eventInfoContainerView addSubview:self.title];
         
-        self.location = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, infoFrame.size.width, 17)];
-        self.location.textColor = [UIColor grayColor];
-        self.location.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+        self.location = [[UILabel alloc] initWithFrame:CGRectMake(0, 21, infoFrame.size.width, 18)];
+        self.location.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+        self.location.font = [UIFont fontWithName:@"SourceSansPro-Light" size:14];
         [eventInfoContainerView addSubview:self.location];
     
-        self.time = [[UILabel alloc] initWithFrame:CGRectMake(0, 37, infoFrame.size.width, 18)];
-        self.time.textColor = [UIColor darkGrayColor];
-        self.time.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+        self.time = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, infoFrame.size.width, 18)];
+        self.time.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+        self.time.font = [UIFont fontWithName:@"SourceSansPro-Light" size:14];
         [eventInfoContainerView addSubview:self.time];
     }
     return self;

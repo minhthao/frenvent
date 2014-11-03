@@ -62,7 +62,7 @@ static int16_t const QUERY_TYPE_BACKGROUND_SERVICE = 2;
                                  parameters:queryParams
                                  HTTPMethod:@"GET"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              
+                      
           NSMutableDictionary *eventsDictionary =[[NSMutableDictionary alloc] init];
           NSMutableDictionary *friendsDictionary = [[NSMutableDictionary alloc] init];
           NSMutableDictionary *newEventsDictionary = [[NSMutableDictionary alloc] init];

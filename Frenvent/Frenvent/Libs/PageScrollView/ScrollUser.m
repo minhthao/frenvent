@@ -13,7 +13,6 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 
 @interface ScrollUser()
-@property (nonatomic, strong) UIImageView *cover;
 @property (nonatomic, strong) UIImageView *profilePicture;
 @property (nonatomic, strong) UILabel *name;
 @property (nonatomic, strong) UILabel *mutualFriend;
@@ -26,47 +25,31 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor lightGrayColor];
-        [self.layer setMasksToBounds:NO];
-        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [self.layer setShadowRadius:1];
-        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
-        [self.layer setShadowOpacity:0.35f];
-        [self.layer setBorderWidth:0.5f];
-        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
+        [self.layer setMasksToBounds:YES];
+        [self.layer setCornerRadius:2.0];
         
         UITapGestureRecognizer *userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleUserTap:)];
         [self setUserInteractionEnabled:true];
         [self addGestureRecognizer:userTap];
         
-        self.cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        self.cover.clipsToBounds = true;
-        self.cover.contentMode = UIViewContentModeScaleAspectFill;
-        self.cover.backgroundColor = [UIColor lightGrayColor];
-        [self addSubview:self.cover];
+        self.profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self.profilePicture setClipsToBounds:YES];
+        [self.profilePicture setContentMode:UIViewContentModeScaleAspectFill];
         
-        self.profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(8, frame.size.height - 70, 65, 65)];
-        [self.profilePicture.layer setMasksToBounds:YES];
-        [self.profilePicture.layer setBorderWidth:3];
-        [self.profilePicture.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-        [self.profilePicture setBackgroundColor:[UIColor whiteColor]];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = CGRectMake(0, frame.size.height - 100, frame.size.width, 100);
+        gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithWhite:0 alpha:0.95] CGColor], nil];
+        [self.profilePicture.layer insertSublayer:gradient atIndex:0];
         [self addSubview:self.profilePicture];
         
-        self.name = [[UILabel alloc] initWithFrame:CGRectMake(80, frame.size.height - 50, frame.size.width - 90, 25)];
-        [self.name setFont:[UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:24]];
+        self.name = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 50, frame.size.width - 90, 22)];
+        [self.name setFont:[UIFont fontWithName:@"SourceSansPro-Bold" size:18]];
         [self.name setTextColor:[UIColor whiteColor]];
-        [self.name setBackgroundColor:[UIColor clearColor]];
-        [self.name setTextAlignment:NSTextAlignmentLeft];
-        self.name.shadowColor = [UIColor blackColor];
-        self.name.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.name];
         
-        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(80, frame.size.height - 25, frame.size.width - 90, 20)];
-        [self.mutualFriend setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:15]];
+        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 28, frame.size.width - 90, 18)];
+        [self.mutualFriend setFont:[UIFont fontWithName:@"SourceSansPro-Regular" size:14]];
         [self.mutualFriend setTextColor:[UIColor whiteColor]];
-        [self.mutualFriend setBackgroundColor:[UIColor clearColor]];
-        [self.mutualFriend setTextAlignment:NSTextAlignmentLeft];
-        self.mutualFriend.shadowColor = [UIColor blackColor];
-        self.mutualFriend.shadowOffset = CGSizeMake(1.0, 1.0);
         [self addSubview:self.mutualFriend];
     }
     return self;
@@ -74,23 +57,14 @@
 
 -(void)setSuggestedUser:(SuggestFriend *)user {
     self.user = user;
-    if ([user.cover length] > 0)
-        [self.cover setImageWithURL:[NSURL URLWithString:user.cover] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    else [self.cover setImage:[MyColor imageWithColor:[UIColor grayColor]]];
     
-    NSString *profileUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", user.uid];
+    NSString *profileUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=512&height=512", user.uid];
     [self.profilePicture sd_setImageWithURL:[NSURL URLWithString:profileUrl]];
     
     self.name.text = user.name;
     
-    if (user.numMutualFriends != 0) {
-        if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = [NSString stringWithFormat:@"Attending ∙ %d mutual friends", user.numMutualFriends];
-        else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = [NSString stringWithFormat:@"Maybe ∙ %d mutual friends", user.numMutualFriends];
-        else self.mutualFriend.text = [NSString stringWithFormat:@"%d mutual friends", user.numMutualFriends];
-    } else {
-        if ([user.rsvpStatus isEqualToString:RSVP_ATTENDING]) self.mutualFriend.text = @"Attending";
-        else if ([user.rsvpStatus isEqualToString:RSVP_UNSURE]) self.mutualFriend.text = @"Maybe";
-    }
+    if (user.numMutualFriends == 1) self.mutualFriend.text = [NSString stringWithFormat:@"%d friend in common", user.numMutualFriends];
+    else if (user.numMutualFriends != 0) self.mutualFriend.text = [NSString stringWithFormat:@"%d friends in common", user.numMutualFriends];
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {

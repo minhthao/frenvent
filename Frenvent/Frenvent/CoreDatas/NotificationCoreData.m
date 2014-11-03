@@ -45,6 +45,9 @@
     [fetchRequest setReturnsObjectsAsFaults:NO];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event.startTime > %d", [TimeSupport getTodayTimeFrameStartTimeInUnix]];
+    [fetchRequest setPredicate:predicate];
+    
     NSError *error = nil;
     NSArray *notifications = [context executeFetchRequest:fetchRequest error:&error];
     

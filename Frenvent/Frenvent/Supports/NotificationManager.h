@@ -14,24 +14,20 @@
 
 @property (nonatomic, strong) NSMutableArray *friendsGoingoutToday;
 @property (nonatomic, strong) NSArray *userInvitedEvents;
-@property (nonatomic, strong) NSMutableArray *todayNotification;
-@property (nonatomic, strong) NSMutableArray *thisWeekNotification;
-@property (nonatomic, strong) NSMutableArray *othersNotification;
+@property (nonatomic, strong) NSMutableArray *friendActivities;
+@property (nonatomic, strong) NSArray *recommendUsers;
 
 -(void)initialize;
 -(void)reset;
 -(NSInteger)getNumberOfSections;
+-(BOOL)isRecommendUsersSection:(NSInteger)section;
 -(BOOL)isUserSection:(NSInteger)section;
--(BOOL)isTodaySection:(NSInteger)section;
--(BOOL)isThisWeekSection:(NSInteger)section;
--(BOOL)isOthersSection:(NSInteger)section;
+-(BOOL)isFriendActivitySection:(NSInteger)section;
 -(NSString *)getSectionTitle:(NSInteger)section;
 -(NSInteger)numberOfRowInSection:(NSInteger)section;
 
 -(NSAttributedString *)getDescriptionForFriendsGoingoutToday;
 -(NSAttributedString *)getDescriptionForInvitedEvents;
-
--(NSAttributedString *)getDescriptionForNotification:(Notification *)notification;
 -(NSAttributedString *)getDescriptionForNotificationGroup:(NotificationGroup *)notificationGroup;
 
 

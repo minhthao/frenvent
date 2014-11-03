@@ -11,6 +11,4 @@
 @interface EventButton : UIButton
 @property (nonatomic, retain) NSIndexPath *indexPath;
 
-- (void) setButtonTitle:(NSString *)title;
-
 @end

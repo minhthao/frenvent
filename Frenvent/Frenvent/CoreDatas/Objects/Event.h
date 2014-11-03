@@ -45,6 +45,7 @@ extern int32_t const MARK_TYPE_HIDDEN;
 @property (nonatomic, retain) NSSet *notifications;
 
 @property (nonatomic, strong) NSNumber * distance;
+@property (nonatomic) double score;
 
 - (BOOL)canRsvp;
 - (BOOL)canShare;
@@ -53,7 +54,9 @@ extern int32_t const MARK_TYPE_HIDDEN;
 // get the display attributed string
 - (NSAttributedString *)getFriendsInterestedAttributedString;
 - (NSAttributedString *)getRsvpAttributedString;
+- (NSAttributedString *)getRsvpAndAttendeesAttributedString;
 - (NSAttributedString *)getHostAttributedString;
+- (NSAttributedString *)getFromEventNameAttributedString;
 - (NSString *)getDistanceString;
 @end
 

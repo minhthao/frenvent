@@ -103,6 +103,42 @@ NSArray *allFriends;
     return [[self friendManager] getCharacterIndices];
 }
 
+// Customize the title
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(5, 0, 300, 25);
+    myLabel.font = [UIFont fontWithName:@"SourceSansPro-SemiBold" size:15];
+    myLabel.textColor = [UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIView *labelContainer = [[UIView alloc] init];
+    labelContainer.frame = CGRectMake(0, 0, screenWidth, 25);
+    labelContainer.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
+    [labelContainer addSubview:myLabel];
+    
+    UIView *topBorber = [[UIView alloc] init];
+    topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
+    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    
+    UIView *bottomBorder = [[UIView alloc] init];
+    topBorber.frame = CGRectMake(0, 35, screenWidth, 1);
+    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:labelContainer];
+    if (section != 0) [headerView addSubview:topBorber];
+    [headerView addSubview:bottomBorder];
+    
+    return headerView;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 26;
+}
+
 //Get the index of the title
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     return [[self friendManager].sectionTitles indexOfObject:title];
@@ -124,9 +160,14 @@ NSArray *allFriends;
     
     UIImageView *profilePicture = (UIImageView *)[cell viewWithTag:101];
     UILabel *username = (UILabel *)[cell viewWithTag:102];
-    UIImageView *mark = (UIImageView *)[cell viewWithTag:103];
-    if ([self.favoriteFriends containsObject:friend.uid]) mark.hidden = false;
-    else mark.hidden = true;
+    if ([self.favoriteFriends containsObject:friend.uid]) {
+        [profilePicture setAlpha:1.0];
+        [username setTextColor:[UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0]];
+    } else {
+        [profilePicture setAlpha:0.3];
+        [username setTextColor:[UIColor colorWithRed:170/255.0 green:170/255.0 blue:170/255.0 alpha:1.0]];
+
+    }
     
     NSString *url = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", friend.uid];
     [profilePicture setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
@@ -181,8 +222,6 @@ NSArray *allFriends;
         [self.favoriteFriends addObject:friend.uid];
         [FriendCoreData setFriend:friend toFavorite:true];
         mark.hidden = false;
-    } else if ([self.favoriteFriends count] <= 10) {
-        [ToastView showToastOnTopOfParentView:self.view withText:@"Cannot have less than 10 favorite friends" withDuaration:2];
     } else {
         [self.favoriteFriends removeObject:friend.uid];
         [FriendCoreData setFriend:friend toFavorite:false];
