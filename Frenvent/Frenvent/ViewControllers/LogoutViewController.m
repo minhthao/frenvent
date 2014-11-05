@@ -35,13 +35,9 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:FB_LOGIN_USER_ID];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:FB_LOGIN_USER_NAME];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:LOGIN_DATA_INITIALIZED];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WEBVIEW_LOGGED_IN];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self performSegueWithIdentifier:@"loginView" sender:self];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

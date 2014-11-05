@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIImageView *profilePicture;
 @property (nonatomic, strong) UILabel *name;
 @property (nonatomic, strong) UILabel *mutualFriend;
+@property (nonatomic, strong) UIButton *sayHiButton;
 @property (nonatomic, strong) SuggestFriend *user;
 @end
 
@@ -29,7 +30,7 @@
         [self.layer setCornerRadius:2.0];
         
         UITapGestureRecognizer *userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleUserTap:)];
-        [self setUserInteractionEnabled:true];
+        [self setUserInteractionEnabled:YES];
         [self addGestureRecognizer:userTap];
         
         self.profilePicture = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
@@ -42,15 +43,22 @@
         [self.profilePicture.layer insertSublayer:gradient atIndex:0];
         [self addSubview:self.profilePicture];
         
-        self.name = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 50, frame.size.width - 90, 22)];
+        self.name = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 50, frame.size.width - 100, 22)];
         [self.name setFont:[UIFont fontWithName:@"SourceSansPro-Bold" size:18]];
         [self.name setTextColor:[UIColor whiteColor]];
         [self addSubview:self.name];
         
-        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 28, frame.size.width - 90, 18)];
+        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 28, frame.size.width - 100, 18)];
         [self.mutualFriend setFont:[UIFont fontWithName:@"SourceSansPro-Regular" size:14]];
         [self.mutualFriend setTextColor:[UIColor whiteColor]];
         [self addSubview:self.mutualFriend];
+        
+        self.sayHiButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 54, frame.size.height - 52, 34, 34)];
+        self.sayHiButton.titleLabel.text = @"";
+        [self.sayHiButton setBackgroundImage:[UIImage imageNamed:@"ScrollViewRecommendUserSayHiButton"] forState:UIControlStateNormal];
+        [self.sayHiButton setUserInteractionEnabled:YES];
+        [self.sayHiButton addTarget:self action:@selector(handleSayHiButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.sayHiButton];
     }
     return self;
 }
@@ -69,6 +77,10 @@
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {
     [self.delegate userClicked:self.user];
+}
+
+-(void)handleSayHiButtonTap:(UITapGestureRecognizer *)recognizer {
+    [self.delegate hiButtonClicked:self.user];
 }
 
 @end

@@ -11,8 +11,9 @@
 #import "EventParticipantView.h"
 #import "EventRsvpRequest.h"
 #import "EventDetailRecommendUserRequest.h"
+#import "PagedUserScrollView.h"
 
-@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate, EventDetailRecommendUserRequestDelegate, CLLocationManagerDelegate>
+@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate, EventDetailRecommendUserRequestDelegate, CLLocationManagerDelegate, PagedUserScrollViewDelegate, UIScrollViewDelegate>
 
 - (IBAction)rateAction:(id)sender;
 

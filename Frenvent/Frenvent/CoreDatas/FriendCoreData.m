@@ -75,7 +75,7 @@
     friend.name = name;
     friend.cover = @"";
     friend.mark = [NSNumber numberWithBool:false];
-    friend.favorite = [NSNumber numberWithBool:false];
+    friend.favorite = [NSNumber numberWithBool:true];
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);
@@ -100,6 +100,7 @@
     friend.name = name;
     friend.cover = cover;
     friend.mark = [NSNumber numberWithBool:false];
+    friend.favorite = [NSNumber numberWithBool:true];
     
     NSError *error = nil;
     if (![context save:&error]) NSLog(@"Error adding friend - error:%@", error);

@@ -31,12 +31,15 @@
 #import "EventCoreData.h"
 #import "EventDetailRecommendUserRequest.h"
 #import "PagedUserScrollView.h"
+#import "WebViewController.h"
+#import "WebViewUser.h"
 
 CLLocation *lastKnown;
 
 @interface NotificationsTableViewController ()
 
 @property (nonatomic, strong) UIView *emptyView;
+@property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
 
 @property (nonatomic, strong) NotificationManager *notificationManager;
 @property (nonatomic, strong) NSURL *userImageUrl;
@@ -48,17 +51,19 @@ CLLocation *lastKnown;
 
 @property (nonatomic, strong) UIAlertView *ratingAlert;
 
-@property (nonatomic, strong) EventDetailRecommendUserRequest *recommendUserRequest;
-@property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
-
-@property (nonatomic, strong) CLLocationManager *locationManager;
-
 @property (nonatomic, strong) Event *event;
+@property (nonatomic, strong) EventDetailRecommendUserRequest *recommendUserRequest;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSMutableArray *quoteArrays;
+@property (nonatomic, strong) PagedUserScrollView *usersScrollView;
 
 @end
 
 @implementation NotificationsTableViewController
 #pragma mark - instantiations
+/**
+ * Instantialte the empty view
+ */
 -(UIView *)emptyView {
     if (_emptyView == nil) {
         float screenHeight = [[UIScreen mainScreen] bounds].size.height;
@@ -147,6 +152,28 @@ CLLocation *lastKnown;
     return _locationManager;
 }
 
+//init the paged user scroll view
+- (PagedUserScrollView *)usersScrollView {
+    if (_usersScrollView == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        CGRect scrollViewFrame = CGRectMake(17, 0, screenWidth - 34, (screenWidth - 40) * (240/280.0));
+        
+        _usersScrollView = [[PagedUserScrollView alloc] initWithFrame:scrollViewFrame];
+        _usersScrollView.delegate = self;
+    }
+    return _usersScrollView;
+}
+
+//init the quote array
+- (NSMutableArray *)quoteArrays {
+    if (_quoteArrays == nil) {
+        _quoteArrays = [[NSMutableArray alloc] init];
+        [_quoteArrays addObject:@"“Hey that bubble chat icon looks like a perfect ice breaker, don’t you think?”"];
+        [_quoteArrays addObject:@"“You’re not gonna wait for me to add you, right?”"];
+    }
+    return _quoteArrays;
+}
+
 #pragma mark - other delegates
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
@@ -156,20 +183,19 @@ CLLocation *lastKnown;
 }
 
 - (void)notifyEventDetailRecommendUserQueryFail {
-    [[self notificationManager] reset];
-    [self.tableView reloadData];
-    [[self uiRefreshControl] endRefreshing];
-    [self.refreshButton setEnabled:true];
-
+    [self performSelector:@selector(refreshEnded) withObject:nil afterDelay:1];
 }
 
 - (void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends {
     [self notificationManager].recommendUsers = suggestFriends;
+    [self refreshEnded];
+}
+
+- (void)refreshEnded {
     [[self notificationManager] reset];
     [self.tableView reloadData];
     [[self uiRefreshControl] endRefreshing];
     [self.refreshButton setEnabled:true];
-
 }
 
 /**
@@ -228,13 +254,8 @@ CLLocation *lastKnown;
             }
             [[self recommendUserRequest] queryRecommendUser:selectedEvent.eid];
             self.event = selectedEvent;
-        }
-    } else {
-        [[self notificationManager] reset];
-        [self.tableView reloadData];
-        [[self uiRefreshControl] endRefreshing];
-        [self.refreshButton setEnabled:true];
-    }
+        } else [self performSelector:@selector(refreshEnded) withObject:nil afterDelay:1];
+    } else [self performSelector:@selector(refreshEnded) withObject:nil afterDelay:1];
 }
 
 
@@ -445,17 +466,15 @@ CLLocation *lastKnown;
     eventNameLabel.attributedText = [self.event getFromEventNameAttributedString];
 
     UIView *scrollView = (UIView *)[cell viewWithTag:3];
-    for (UIView *subview in [scrollView subviews]) {
+    for (UIView *subview in [[self usersScrollView] subviews]) {
         [subview removeFromSuperview];
     }
     
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    CGRect scrollViewFrame = CGRectMake(17, 0, screenWidth - 34, (screenWidth - 40) * (240/280.0));
+    [[self usersScrollView] setSuggestedUsers:[self notificationManager].recommendUsers];
+    [scrollView addSubview:[self usersScrollView]];
     
-    PagedUserScrollView *usersScrollView = [[PagedUserScrollView alloc] initWithFrame:scrollViewFrame];
-//    usersScrollView.delegate = self;
-    [usersScrollView setSuggestedUsers:[self notificationManager].recommendUsers];
-    [scrollView addSubview:usersScrollView];
+    UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
+    quoteLabel.text = [self pickupQuote];
     return cell;
 
 }
@@ -544,6 +563,79 @@ CLLocation *lastKnown;
     }
 }
 
+/**
+ * Handle the case when any of the suggested friends is clicked
+ * @param suggest friend
+ */
+-(void)userClicked:(SuggestFriend *)suggestedUser {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        WebViewUser *webViewUser = [[WebViewUser alloc] init];
+        webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", suggestedUser.uid];
+        webViewUser.uid = suggestedUser.uid;
+        webViewUser.name = suggestedUser.name;
+        [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+}
+
+/**
+ * Handle the case when the say hi button is clicked
+ * @param suggest friend
+ */
+-(void)hiButtonClicked:(SuggestFriend *)suggestedUser {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        WebViewUser *webViewUser = [[WebViewUser alloc] init];
+        webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", suggestedUser.uid];
+        webViewUser.uid = suggestedUser.uid;
+        NSLog(@"%@", webViewUser.url);
+        webViewUser.name = suggestedUser.name;
+        [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+
+}
+
+/**
+ * Delegate for when the suggested friends scroll view scroll from one view to another
+ * @param scroll view
+ */
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == [self usersScrollView]) {
+        NSIndexPath *recommendUsersIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:recommendUsersIndexPath];
+        UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
+        
+        [UIView transitionWithView:quoteLabel duration:.5f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            quoteLabel.text = [self pickupQuote];
+        } completion:nil];
+    }
+}
+
+/**
+ * A simple function that will returned a random pick up quote
+ * @return NSString
+ */
+-(NSString *)pickupQuote {
+    return (NSString *)[[self quoteArrays] objectAtIndex:(rand() % [[self quoteArrays] count])];
+}
+
+/**
+ * Delegate for action sheet buttons
+ */
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
@@ -568,7 +660,10 @@ CLLocation *lastKnown;
     }
 }
 
--(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvpb{
+/**
+ * Delegate for when when the rsvp for any event is successful
+ **/
+-(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp{
     if (success) {
         [self.rsvpButton setEnabled:false];
         [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP!" withDuaration:3.0];
@@ -576,7 +671,9 @@ CLLocation *lastKnown;
 }
 
 #pragma mark - Navigation
-
+/**
+ * Handle click action for typical friends activities arrow. Basically allow the option to unfollow a certain user
+ */
 -(void)cardArrowClick:(UIButton *)sender {
     UITableViewCell *cell = (UITableViewCell *)[[[sender superview] superview] superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
@@ -589,13 +686,19 @@ CLLocation *lastKnown;
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    if ([[segue identifier] isEqualToString:@"webView"]) {
+        WebViewController *viewController = segue.destinationViewController;
+        WebViewUser *webViewUser = (WebViewUser *)sender;
+        viewController.url = webViewUser.url;
+        viewController.uid = webViewUser.uid;
+        viewController.name = webViewUser.name;
+    } else if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
         NSString *uid = (NSString *)sender;
         FbUserInfoViewController *viewController = segue.destinationViewController;
         viewController.targetUid = uid;
     } else if ([[segue identifier] isEqualToString:@"eventDetailView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;

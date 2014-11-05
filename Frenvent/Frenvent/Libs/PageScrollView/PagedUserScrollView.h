@@ -13,6 +13,7 @@
 @protocol PagedUserScrollViewDelegate <NSObject>
 @optional
 - (void)userClicked:(SuggestFriend *)suggestedUser;
+- (void)hiButtonClicked:(SuggestFriend *)suggestedUser;
 @end
 
 
@@ -20,6 +21,5 @@
 
 @property (nonatomic, weak) id<PagedUserScrollViewDelegate> delegate;
 -(void)setSuggestedUsers:(NSArray *)users;
-
 
 @end

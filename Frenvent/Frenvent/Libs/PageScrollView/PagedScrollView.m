@@ -18,7 +18,6 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-
         self.contentSize = CGSizeMake(self.frame.size.width , self.frame.size.height);
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = false;

@@ -10,7 +10,7 @@
 #import "SuggestFriend.h"
 #import "ScrollUser.h"
 
-@implementation PagedUserScrollView
+@implementation PagedUserScrollView 
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -52,6 +52,10 @@
 
 -(void)userClicked:(SuggestFriend *)suggestedUser {
     [self.delegate userClicked:suggestedUser];
+}
+
+-(void)hiButtonClicked:(SuggestFriend *)suggestedUser {
+    [self.delegate hiButtonClicked:suggestedUser];
 }
 
 @end

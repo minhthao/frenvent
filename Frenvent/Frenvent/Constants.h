@@ -11,8 +11,10 @@
 extern NSString * const FB_LOGIN_USER_NAME;
 extern NSString * const FB_LOGIN_USER_ID;
 extern NSString * const FB_LOGIN_USER_GENDER;
+extern NSString * const FB_LOGIN_USER_EMAIL;
 
 extern NSString * const LOGIN_DATA_INITIALIZED;
+extern NSString * const WEBVIEW_LOGGED_IN;
 
 @interface Constants : NSObject
 

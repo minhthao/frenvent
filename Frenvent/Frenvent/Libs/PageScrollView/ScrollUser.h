@@ -12,6 +12,7 @@
 @protocol ScrollUserDelegate <NSObject>
 @optional
 - (void)userClicked:(SuggestFriend *)suggestedUser;
+- (void)hiButtonClicked:(SuggestFriend *)suggestedUser;
 @end
 
 @interface ScrollUser : UIView

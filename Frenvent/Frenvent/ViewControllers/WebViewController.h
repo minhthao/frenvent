@@ -15,9 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 - (IBAction)shareButtonClick:(id)sender;
 
-
-@property (weak, nonatomic) IBOutlet UIButton *nextButton;
-@property (weak, nonatomic) IBOutlet UIButton *prevButton;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @property (nonatomic) BOOL isModal;
