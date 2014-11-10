@@ -146,6 +146,7 @@ CLLocation *lastKnown;
     [super viewDidLoad];
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self setRefreshControl:[self uiRefreshControl]];
 }
 
@@ -157,6 +158,13 @@ CLLocation *lastKnown;
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        [self.navigationController.barHideOnSwipeGestureRecognizer removeTarget:self action:@selector(swipe:)];
     }
 }
 

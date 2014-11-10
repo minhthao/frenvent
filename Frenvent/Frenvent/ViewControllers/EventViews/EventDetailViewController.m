@@ -466,6 +466,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        [self.navigationController.barHideOnSwipeGestureRecognizer removeTarget:self action:@selector(swipe:)];
+    }
+}
+
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
     [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
@@ -540,9 +547,11 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     if ([event.markType intValue] == MARK_TYPE_FAVORITE) {
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_NORMAL];
         [[self saveButton] setSelected:false];
+        [ToastView showToastInParentView:self.view withText:@"Removed event from your calendar" withDuaration:3.0];
     } else {
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_FAVORITE];
         [[self saveButton] setSelected:true];
+        [ToastView showToastInParentView:self.view withText:@"Event added to your calendar" withDuaration:3.0];
     }
     [self.mainView reloadData];
 }
@@ -598,7 +607,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(void)handleLocationButtonTap:(UIGestureRecognizer *)recogizer {
     if (self.eventDetail.longitude != 0 && self.eventDetail.latitude != 0) {
         [[self navigationSheet] showInView:[UIApplication sharedApplication].keyWindow];
-    }
+    } else [ToastView showToastInParentView:self.view withText:@"Cannot identify the event location" withDuaration:3.0];
 }
 
 #pragma mark - other view related function
@@ -799,10 +808,8 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         separator.backgroundColor = [UIColor colorWithRed:238/255.0 green:238/255.0 blue:238/255.0 alpha:1.0];
         [locationView addSubview:separator];
         
-        if (self.eventDetail.longitude != 0 || self.eventDetail.latitude != 0) {
-            UITapGestureRecognizer *locationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLocationButtonTap:)];
-            [locationView addGestureRecognizer:locationTap];
-        }
+        UITapGestureRecognizer *locationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLocationButtonTap:)];
+        [locationView addGestureRecognizer:locationTap];
         
         [containerView addSubview:locationView];
         currentHeight += 44;
@@ -810,6 +817,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     
     //adding the time
     UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, currentHeight, screenWidth - 20, 44)];
+    timeView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *timeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(saveButtonClick:)];
+    [timeView addGestureRecognizer:timeTap];
+    
     UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 15, 15)];
     timeIcon.image = [UIImage imageNamed:@"EventDetailTimeIcon"];
     [timeView addSubview:timeIcon];

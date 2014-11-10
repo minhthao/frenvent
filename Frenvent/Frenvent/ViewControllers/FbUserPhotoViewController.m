@@ -29,6 +29,10 @@
         
         [self.mainView addSubview:pageScrollView];
     } else [self.navigationController popViewControllerAnimated:true];
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

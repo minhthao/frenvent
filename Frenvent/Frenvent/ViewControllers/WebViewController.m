@@ -38,7 +38,7 @@
 -(NSMutableArray *)quoteArray {
     if (_quoteArray == nil) {
         _quoteArray = [[NSMutableArray alloc] init];
-        [_quoteArray addObject:@"Hey, I found your profile on TappedIn, and became deeply mesmerized. So I was wonder if I could befriend and talk with you. And by the way, I'm also going to the event ' FILL HERE' tomorrow!"];
+        [_quoteArray addObject:@"Hey, I found your profile on TappedIn, and became deeply mesmerized. So I was wonder if I could add you as a friend and have a delightful conversation with you."];
     }
     return _quoteArray;
 }
@@ -76,6 +76,13 @@
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        [self.navigationController.barHideOnSwipeGestureRecognizer removeTarget:self action:@selector(swipe:)];
     }
 }
 

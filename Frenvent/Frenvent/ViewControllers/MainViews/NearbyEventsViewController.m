@@ -151,13 +151,9 @@ BOOL isUpdating;
             pinView.animatesDrop = YES;
             pinView.canShowCallout = YES;
             
-            // Add a detail disclosure button to the callout.
-            UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-            pinView.rightCalloutAccessoryView = rightButton;
-            
             // Add an image to the left callout.
             UIImageView *eventPicture = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-            [eventPicture setImageWithURL:[NSURL URLWithString:((MyAnnotation *)annotation).event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
+            [eventPicture setImageWithURL:[NSURL URLWithString:((MyAnnotation *)annotation).event.picture]];
             
             pinView.leftCalloutAccessoryView = eventPicture;
         } else {
