@@ -60,10 +60,7 @@
     
     [[UINavigationBar appearance] setBarTintColor:themeColor];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
-//    NSShadow *shadow = [NSShadow new];
-//    [shadow setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8]];
-//    [shadow setShadowOffset: CGSizeMake(0.0f, 1.0f)];
+
     [[UINavigationBar appearance] setTitleTextAttributes:
             @{ NSForegroundColorAttributeName:[UIColor whiteColor],
                NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:17]}];

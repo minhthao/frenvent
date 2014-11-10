@@ -18,6 +18,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.scrollsToTop= false;
         self.contentSize = CGSizeMake(self.frame.size.width , self.frame.size.height);
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = false;

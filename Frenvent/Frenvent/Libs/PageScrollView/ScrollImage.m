@@ -21,15 +21,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
-        [self.layer setMasksToBounds:NO];
-        [self.layer setShadowColor:[[UIColor darkGrayColor] CGColor]];
-        [self.layer setShadowRadius:1];
-        [self.layer setShadowOffset:CGSizeMake(0.5, 0.5)];
-        [self.layer setShadowOpacity:0.35f];
-        [self.layer setBorderWidth:0.5f];
-        [self.layer setBorderColor:[[MyColor eventCellButtonsContainerBorderColor] CGColor]];
-
+        self.backgroundColor = [UIColor colorWithRed:226/255.0 green:229/255.0 blue:232/255.0 alpha:1];
         
         UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTap:)];
         [self setUserInteractionEnabled:true];
@@ -43,10 +35,10 @@
         self.label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 20)];
         self.label.backgroundColor = [UIColor clearColor];
         self.label.textColor =[UIColor whiteColor];
-        self.label.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
+        self.label.font = [UIFont fontWithName:@"SourceSansPro-Bold" size:14];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.shadowColor = [UIColor blackColor];
-        self.label.shadowOffset = CGSizeMake(1.0, 1.0);
+        self.label.shadowOffset = CGSizeMake(0.5, 0.5);
         [self addSubview:self.label];
     }
     return self;

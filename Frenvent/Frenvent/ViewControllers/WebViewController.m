@@ -10,6 +10,7 @@
 #import "RecommendFbUserRequest.h"
 #import "DbFBUserRequest.h"
 #import "ToastView.h"
+#import "Constants.h"
 
 @interface WebViewController ()
 @property (nonatomic, strong) RecommendFbUserRequest *recommendFbUserRequest;
@@ -37,7 +38,7 @@
 -(NSMutableArray *)quoteArray {
     if (_quoteArray == nil) {
         _quoteArray = [[NSMutableArray alloc] init];
-        [_quoteArray addObject:@"Hey, I found you on \n friendfiend"];
+        [_quoteArray addObject:@"Hey, I found your profile on TappedIn, and became deeply mesmerized. So I was wonder if I could befriend and talk with you. And by the way, I'm also going to the event ' FILL HERE' tomorrow!"];
     }
     return _quoteArray;
 }
@@ -56,49 +57,42 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.shareButton setEnabled:false];
+    
     if (self.isModal) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
-    }
+        self.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.uid];
+    } else ([DbFBUserRequest addFbUserWithUid:self.uid andName:self.name]);
+    
+    [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
+    self.title = self.name ? self.name : @"Recommended Friend";
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
+}
 
-    if (self.url != nil) [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
-    if (self.uid != nil && self.name != nil) {
-        self.title = self.name;
-        if ([DbFBUserRequest addFbUserWithUid:self.uid andName:self.name])
-            [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
-    } else if (self.uid != nil) {
-        self.title = @"Recommended Friend";
-        //this case, you are getting the view from the modal, so we did not need to add it to the db anymore
-        NSString *urlString = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.uid];
-        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
-        [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
 
 #pragma mark - web view delegate
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [self pickQuoteAndInsertIntoMessageTextArea];
-    
-//    NSString *currentUrl = webView.request.URL.absoluteString;
-//    if ([currentUrl rangeOfString:@"m.facebook.com/home.php?"].location != NSNotFound) {
-//        [[self secondLoginWebView] removeFromSuperview];
-//        _secondLoginWebView = nil;
-//        _loginErrorLabel = nil;
-//        [self navigateToMainPage];
-//    } else if (![currentUrl isEqualToString:@"https://m.facebook.com/"]) {
-//        [self loginErrorLabel].hidden = false;
-//        [[self secondLoginWebView] goBack];
-//    }
-
 }
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }

@@ -71,7 +71,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Frenvent would like to access your location service</string>
+	<string>TappedIn would like to access your location service</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

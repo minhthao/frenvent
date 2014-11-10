@@ -8,102 +8,78 @@
 
 #import "MyEventManager.h"
 #import "Event.h"
+#import "EventCoreData.h"
 
-static NSString * const UNREPLIED_EVENTS_HEADER = @"UNREPLIED";
-static NSString * const REPLIED_EVENTS_HEADER = @"REPLIED";
+static NSString * const HEADER_UNREPLIED = @"Unreplied";
+static NSString * const HEADER_REPLIED = @"Replied";
+static NSString * const HEADER_PAST = @"History";
+
+@interface MyEventManager()
+@property (nonatomic, strong) NSArray *repliedEvents;
+@property (nonatomic, strong) NSArray *unrepliedEvents;
+@property (nonatomic, strong) NSArray *pastEvents;
+@property (nonatomic, strong) NSMutableArray *headers;
+@end
 
 @implementation MyEventManager
-#pragma mark - private method
-/**
- * Get the title array for sections
- * @return Array of Title string
- */
-- (NSMutableArray *)getSectionTitlesArray {
-    NSMutableArray *sectionTitles = [[NSMutableArray alloc] init];
-    if ([_unrepliedEvents count] > 0) [sectionTitles addObject:UNREPLIED_EVENTS_HEADER];
-    if ([_repliedEvents count] > 0) [sectionTitles addObject:REPLIED_EVENTS_HEADER];
-    
-    return sectionTitles;
-}
 
 #pragma mark - public methods
 /**
- * Set the replied and unreplied events
- * @param replied event
- * @param unreplied events
+ * Load the data for events
  */
-- (void)setRepliedEvents:(NSArray *)myRepliedEvents unrepliedEvents:(NSArray *)myUnrepliedEvents {
-    _repliedEvents = [NSMutableArray arrayWithArray:myRepliedEvents];
-    _unrepliedEvents = [NSMutableArray arrayWithArray:myUnrepliedEvents];
+-(void)loadData {
+    self.repliedEvents = [EventCoreData getUserRepliedOngoingEvents];
+    self.unrepliedEvents = [EventCoreData getUserUnrepliedOngoingEvents];
+    self.pastEvents = [EventCoreData getUserPastEvents];
+    self.headers = [[NSMutableArray alloc] init];
+    if ([self.unrepliedEvents count] > 0) [self.headers addObject:HEADER_UNREPLIED];
+    if ([self.repliedEvents count] > 0) [self.headers addObject:HEADER_REPLIED];
+    if ([self.pastEvents count] > 0) [self.headers addObject:HEADER_PAST];
 }
 
 /**
- * Set the replied and unreplied events, and compute the distance to the current location
- * @param replied event
- * @param unreplied events
- * @param current location
+ * get the title for the header in a particular section
+ * @param section number
+ * @return title
  */
-- (void)setRepliedEvents:(NSArray *)repliedEvent unrepliedEvents:(NSArray *)unrepliedEvents withCurrentLocation:(CLLocation *)currentLocation {
-    [self setRepliedEvents:repliedEvent unrepliedEvents:unrepliedEvents];
-    if (currentLocation != nil) [self setCurrentLocation:currentLocation];
+-(NSString *)getTitleForHeaderInSection:(NSInteger)section {
+    return [self.headers objectAtIndex:section];
 }
-
-/**
- * Set the current location to compute the distance of each event
- * @param CLLocation
- */
-- (void)setCurrentLocation:(CLLocation *)currentLocation {
-    for (Event *event in _repliedEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
-    }
-    
-    for (Event *event in _unrepliedEvents) {
-        [event computeDistanceToCurrentLocation:currentLocation];
-    }
-}
-
 
 /**
  * Get the number of session to be display in the table view.
  * This is equal to the number of event classes
  * @return integer number of sessions
  */
-- (NSInteger) getNumberOfSections {
-    return [[self getSectionTitlesArray] count];
+-(NSInteger)getNumberOfSections {
+    return [[self headers] count];
 }
 
 /**
- * Get the title at given section index
+ * Get the number of rows for the given section
  * @param section number
- * @return title string
+ * @return number of row
  */
-- (NSString *) getTitleAtSection:(NSInteger)sectionNumber {
-    return [[self getSectionTitlesArray] objectAtIndex:sectionNumber];
+-(NSInteger)getNumberOfRowsInSection:(NSInteger)section {
+    if ([[self getTitleForHeaderInSection:section] isEqualToString:HEADER_UNREPLIED])
+        return [self.unrepliedEvents count];
+    else if ([[self getTitleForHeaderInSection:section] isEqualToString:HEADER_REPLIED])
+        return [self.repliedEvents count];
+    else return [self.pastEvents count];
+
 }
 
 /**
- * Get the events at a given section
- * @param section number
- * @return Array of Events
- */
-- (NSArray *) getEventsAtSection:(NSInteger)sectionNumber {
-    NSString *sectionTitle = [self getTitleAtSection:sectionNumber];
-    
-    if ([sectionTitle isEqualToString:UNREPLIED_EVENTS_HEADER]) return _unrepliedEvents;
-    if ([sectionTitle isEqualToString:REPLIED_EVENTS_HEADER]) return _repliedEvents;
-    
-    return nil;
-}
-
-/**
- * Hide the event at a given index path
+ * Get the event at the given index path
  * @param index path
+ * @return Event
  */
-- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *sectionTitle = [self getTitleAtSection:indexPath.section];
-    
-    if ([sectionTitle isEqualToString:UNREPLIED_EVENTS_HEADER]) [_unrepliedEvents removeObjectAtIndex:indexPath.row];
-    if ([sectionTitle isEqualToString:REPLIED_EVENTS_HEADER]) [_repliedEvents removeObjectAtIndex:indexPath.row];
+-(Event *)getEventAtIndexPath:(NSIndexPath *)indexPath {
+    if ([[self getTitleForHeaderInSection:indexPath.section] isEqualToString:HEADER_UNREPLIED])
+        return [self.unrepliedEvents objectAtIndex:indexPath.row];
+    else if ([[self getTitleForHeaderInSection:indexPath.section] isEqualToString:HEADER_REPLIED])
+        return [self.repliedEvents objectAtIndex:indexPath.row];
+    else return [self.pastEvents objectAtIndex:indexPath.row];
 }
 
 @end

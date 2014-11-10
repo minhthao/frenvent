@@ -39,7 +39,24 @@
 {
     [super viewDidLoad];
     self.loginView.delegate = self;
-    self.loginView.readPermissions = @[@"user_events", @"email", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"];
+    self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"];
+    
+    for(id object in self.loginView.subviews){
+        if([[object class] isSubclassOfClass:[UIButton class]]){
+            UIButton* button = (UIButton*)object;
+            [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+            [button addTarget:self action:@selector(openFacebookAuthentication) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+
+
+-(void)openFacebookAuthentication {
+    NSArray *permission = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"];
+    
+    [FBSession setActiveSession: [[FBSession alloc] initWithPermissions:permission] ];
+    
+    [[FBSession activeSession] openWithBehavior:FBSessionLoginBehaviorForcingWebView completionHandler:^(FBSession *session, FBSessionState status, NSError *error) { }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,8 +79,6 @@
         [defaults setObject:[user objectID] forKey:FB_LOGIN_USER_ID];
         [defaults setObject:[user name] forKey:FB_LOGIN_USER_NAME];
         [defaults setObject:[user objectForKey:@"gender"] forKey:FB_LOGIN_USER_GENDER];
-        NSString *email = [user objectForKey:@"email"] ? [user objectForKey:@"email"] : @"";
-        [defaults setObject:email forKey:FB_LOGIN_USER_EMAIL];
         
         [defaults synchronize];
 
@@ -79,9 +94,6 @@
             [self performSegueWithIdentifier:@"initialize" sender:Nil];
         else [[self locationManager] startUpdatingLocation];
     }
-}
-
-- (void) loginViewShowingLoggedInUser:(FBLoginView *)loginView {
 }
 
 #pragma mark - location manager delegates

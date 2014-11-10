@@ -96,11 +96,15 @@
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
     [self.searchDisplayController.searchBar setTranslucent:false];
+    
+    UITextField *textField = [[self.searchDisplayController.searchBar subviews] objectAtIndex:1];
+    [textField setFont:[UIFont fontWithName:@"SourceSansPro-Regular" size:13]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
 
@@ -119,19 +123,55 @@
 // Get the section title
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (_searchBar.text == nil || [_searchBar.text length] == 0) {
-        if (section == 1) return @"USER";
-        else if (section == 2) return @"GENERAL";
+        if (section == 1) return @"User";
+        else if (section == 2) return @"General";
     }
     return nil;
 }
 
+// Customize the title
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section != 0) {
+        UILabel *myLabel = [[UILabel alloc] init];
+        myLabel.frame = CGRectMake(5, 0, 300, 25);
+        myLabel.font = [UIFont fontWithName:@"SourceSansPro-SemiBold" size:15];
+        myLabel.textColor = [UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0];
+        myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+        
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        
+        UIView *labelContainer = [[UIView alloc] init];
+        labelContainer.frame = CGRectMake(0, 0, screenWidth, 25);
+        labelContainer.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
+        [labelContainer addSubview:myLabel];
+        
+        UIView *topBorber = [[UIView alloc] init];
+        topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
+        topBorber.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+        
+        UIView *bottomBorder = [[UIView alloc] init];
+        bottomBorder.frame = CGRectMake(0, 25, screenWidth, 1);
+        bottomBorder.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+        
+        UIView *headerView = [[UIView alloc] init];
+        [headerView addSubview:labelContainer];
+        [headerView addSubview:topBorber];
+        [headerView addSubview:bottomBorder];
+        
+        return headerView;
+    } else return nil;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section != 0 ) return 26;
+    else return 0;
+}
+
 // Get the number of row in section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_searchBar.text == nil || [_searchBar.text length] == 0) {
-        if (section == 0) return 1;
-        if (section == 1) return 3;
-        else return 1;
-    } else return [[self searchEvents] count];
+    if (_searchBar.text == nil || [_searchBar.text length] == 0) return 1;
+    else return [[self searchEvents] count];
 }
 
 // unless it is the first row in menu table, we will enable selection
@@ -143,13 +183,7 @@
 // Give an high of table view cell
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_searchBar.text == nil || [_searchBar.text length] == 0) return 40.0;
-    else return 70.0;
-}
-
-// Give an estimate to the height of table. For optimization purpose
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_searchBar.text == nil || [_searchBar.text length] == 0) return 40.0;
-    else return 70.0;
+    else return 95;
 }
 
 // Display the table view cell
@@ -196,32 +230,13 @@
         
         UIImageView *cellIcon = (UIImageView *)[cell viewWithTag:300];
         UILabel *cellLabel = (UILabel *)[cell viewWithTag:301];
-        UIView *separator = (UIView *)[cell viewWithTag:302];
         
         if (indexPath.section == 1) {
-            if (indexPath.row == 0) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuInvitedIcon"]];
-                cellLabel.text = @"My Events";
-                [separator setHidden:false];
-            } else if (indexPath.row == 1) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuPastEventsIcon"]];
-                cellLabel.text = @"Past Events";
-                [separator setHidden:false];
-//            } else if (indexPath.row == 2) {
-//                [cellIcon setImage:[UIImage imageNamed:@"SubMenuFavoriteIcon"]];
-//                cellLabel.text = @"Favorite Events";
-//                [separator setHidden:false];
-            } else if (indexPath.row == 2) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuTrashIcon"]];
-                cellLabel.text = @"Hidden Events";
-                [separator setHidden:true];
-            }
+            [cellIcon setImage:[UIImage imageNamed:@"SubMenuInvitedIcon"]];
+            cellLabel.text = @"My Events";
         } else if (indexPath.section == 2) {
-            if (indexPath.row == 0) {
-                [cellIcon setImage:[UIImage imageNamed:@"SubMenuLogoutIcon"]];
-                cellLabel.text = @"Logout";
-                [separator setHidden:true];
-            }
+            [cellIcon setImage:[UIImage imageNamed:@"SubMenuLogoutIcon"]];
+            cellLabel.text = @"Logout";
         }
         return cell;
     }
@@ -236,12 +251,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     if (indexPath.section == 1) {
         if (indexPath.row ==0) [self performSegueWithIdentifier:@"invitedEventView" sender:Nil];
-        else if (indexPath.row == 1) [self performSegueWithIdentifier:@"pastEventView" sender:Nil];
-        //else if (indexPath.row == 2) [self performSegueWithIdentifier:@"favoriteView" sender:Nil];
-        else if (indexPath.row == 2) [self performSegueWithIdentifier:@"trashView" sender:Nil];
     } else if (indexPath.section == 2) {
-//        if (indexPath.row == 0) [self performSegueWithIdentifier:@"settingView" sender:Nil];
-//        else
         if (indexPath.row == 0) [[self logoutActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
     }
 }

@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @protocol DbEventsRequestDelegate <NSObject>
-- (void)notifyEventRequestFailure;
 @optional
+- (void)notifyEventRequestFailure;
 - (void)notifyEventsUploaded;
 - (void)notifyEventsUploaded:(BOOL)successfullyUploaded WithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 - (void)notifyNearbyEventsInitialized;

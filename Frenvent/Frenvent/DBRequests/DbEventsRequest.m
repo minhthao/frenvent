@@ -13,7 +13,7 @@
 #import "Event.h"
 #import "EventCoreData.h"
 
-static double const DISTANCE_RADIUS = 30;
+static double const DISTANCE_RADIUS = 50;
 
 @implementation DbEventsRequest
 #pragma mark - private methods

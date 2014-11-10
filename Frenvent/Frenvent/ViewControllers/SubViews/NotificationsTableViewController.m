@@ -38,6 +38,7 @@ CLLocation *lastKnown;
 
 @interface NotificationsTableViewController ()
 
+@property(nonatomic, getter = shouldHideStatusBar) BOOL hideStatusBar;
 @property (nonatomic, strong) UIView *emptyView;
 @property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
 
@@ -301,15 +302,27 @@ CLLocation *lastKnown;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0)
+    if ([UIApplication sharedApplication].applicationIconBadgeNumber > 0) {
         [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%d", (int)[UIApplication sharedApplication].applicationIconBadgeNumber];
-    else [[self navigationController] tabBarItem].badgeValue = nil;
+        [self doRefresh:nil];
+    } else [[self navigationController] tabBarItem].badgeValue = nil;
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
 
 #pragma mark - Table view data source
@@ -342,11 +355,11 @@ CLLocation *lastKnown;
     
     UIView *topBorber = [[UIView alloc] init];
     topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
-    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    topBorber.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0];
     
     UIView *bottomBorder = [[UIView alloc] init];
     bottomBorder.frame = CGRectMake(0, 35, screenWidth, 1);
-    bottomBorder.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    bottomBorder.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0];
     
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:labelContainer];
@@ -362,6 +375,7 @@ CLLocation *lastKnown;
     return 48;
 }
 
+// table view cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[self notificationManager] isRecommendUsersSection:indexPath.section]) {
         return [self getRecommendUsersCell:tableView withIndexPath:indexPath];
@@ -375,10 +389,10 @@ CLLocation *lastKnown;
         UIView *containerView = (UIView *)[cell viewWithTag:200];
         [containerView.layer setCornerRadius:4.0f];
         [containerView.layer setMasksToBounds:NO];
-        [containerView.layer setShadowColor:[[UIColor lightGrayColor] CGColor]];
-        [containerView.layer setShadowRadius:3];
-        [containerView.layer setShadowOffset:CGSizeMake(0, 1)];
-        [containerView.layer setShadowOpacity:0.25f];
+        [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+        [containerView.layer setShadowRadius:2.5];
+        [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+        [containerView.layer setShadowOpacity:0.15f];
         
         UIView *profilePicContainer = (UIView *)[cell viewWithTag:201];
         CGRect profilePicFrame = CGRectMake(0, 0, profilePicContainer.frame.size.width, profilePicContainer.frame.size.height);
@@ -411,6 +425,11 @@ CLLocation *lastKnown;
             [profilePic setImageWithURL:[self userImageUrl]];
             [profilePicContainer addSubview:profilePic];
             
+            profilePicContainer.userInteractionEnabled = YES;
+            UITapGestureRecognizer *userProfileTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userProfileTap:)];
+            [profilePicContainer addGestureRecognizer:userProfileTap];
+            
+            
             arrowButton.hidden = true;
         } else if ([[self notificationManager] isFriendActivitySection:indexPath.section]) {
             NotificationGroup *notificationGroup = [[self notificationManager].friendActivities objectAtIndex:indexPath.row];
@@ -437,10 +456,11 @@ CLLocation *lastKnown;
     }
 }
 
+//view cell height
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[self notificationManager] isRecommendUsersSection:indexPath.section]) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        return 20 + 10 + 18 + 10 + (screenWidth - 40) * (240/280.0) + 65; //in case 320 width: this will be 363 pix
+        return 20 + 10 + 18 + 10 + (screenWidth - 40) * (240/280.0) + 57; //in case 320 width: this will be 363 pix
     }
     if ([[self notificationManager] isUserSection:indexPath.section]) {
         if ([[self notificationManager].friendsGoingoutToday count] > 0 && indexPath.row == 0)
@@ -449,6 +469,7 @@ CLLocation *lastKnown;
     return 260;
 }
 
+#pragma mark - table view cells
 //people recommend table view cell
 -(UITableViewCell *)getRecommendUsersCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"notificationRecommendUsers" forIndexPath:indexPath];
@@ -457,13 +478,16 @@ CLLocation *lastKnown;
     UIView *containerView = (UIView *)[cell viewWithTag:1];
     [containerView.layer setCornerRadius:4.0f];
     [containerView.layer setMasksToBounds:NO];
-    [containerView.layer setShadowColor:[[UIColor lightGrayColor] CGColor]];
-    [containerView.layer setShadowRadius:3];
-    [containerView.layer setShadowOffset:CGSizeMake(0, 1)];
-    [containerView.layer setShadowOpacity:0.25f];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
     
     UILabel *eventNameLabel = (UILabel *)[cell viewWithTag:2];
+    eventNameLabel.userInteractionEnabled = YES;
     eventNameLabel.attributedText = [self.event getFromEventNameAttributedString];
+    UITapGestureRecognizer *nameTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventNameTap:)];
+    [eventNameLabel addGestureRecognizer:nameTap];
 
     UIView *scrollView = (UIView *)[cell viewWithTag:3];
     for (UIView *subview in [[self usersScrollView] subviews]) {
@@ -489,10 +513,10 @@ CLLocation *lastKnown;
     UIView *containerView = (UIView *)[cell viewWithTag:300];
     [containerView.layer setCornerRadius:4.0f];
     [containerView.layer setMasksToBounds:NO];
-    [containerView.layer setShadowColor:[[UIColor lightGrayColor] CGColor]];
-    [containerView.layer setShadowRadius:3];
-    [containerView.layer setShadowOffset:CGSizeMake(0, 1)];
-    [containerView.layer setShadowOpacity:0.25f];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
     
     UILabel *notificationHeader = (UILabel *)[cell viewWithTag:301];
     notificationHeader.attributedText = [[self notificationManager] getDescriptionForFriendsGoingoutToday];
@@ -595,7 +619,6 @@ CLLocation *lastKnown;
         WebViewUser *webViewUser = [[WebViewUser alloc] init];
         webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", suggestedUser.uid];
         webViewUser.uid = suggestedUser.uid;
-        NSLog(@"%@", webViewUser.url);
         webViewUser.name = suggestedUser.name;
         [self performSegueWithIdentifier:@"webView" sender:webViewUser];
     } else {
@@ -672,6 +695,20 @@ CLLocation *lastKnown;
 
 #pragma mark - Navigation
 /**
+ * Handle event name tap
+ */
+-(void)eventNameTap:(UIGestureRecognizer *)recognizer {
+    [self eventClicked:self.event];
+}
+
+/**
+ * Handle user profile tap event
+ */
+-(void)userProfileTap:(UIGestureRecognizer *)recognizer {
+    [self performSegueWithIdentifier:@"myEventsView" sender:nil];
+}
+
+/**
  * Handle click action for typical friends activities arrow. Basically allow the option to unfollow a certain user
  */
 -(void)cardArrowClick:(UIButton *)sender {
@@ -702,6 +739,8 @@ CLLocation *lastKnown;
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;
+    } else if ([[segue identifier] isEqualToString:@"myEventsView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 

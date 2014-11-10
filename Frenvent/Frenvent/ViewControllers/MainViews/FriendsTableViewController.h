@@ -12,4 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+- (IBAction)edit:(id)sender;
+
 @end

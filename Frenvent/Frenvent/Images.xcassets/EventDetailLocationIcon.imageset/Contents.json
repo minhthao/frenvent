@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "EventDetailLocationIcon-1.png"
+      "filename" : "compass-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "EventDetailLocationIcon.png"
+      "filename" : "compass-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "EventDetailLocationIcon-2.png"
+      "filename" : "compass.png"
     }
   ],
   "info" : {

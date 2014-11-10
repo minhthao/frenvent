@@ -355,15 +355,25 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if ([self.navigationController isNavigationBarHidden]) {
-        [self.navigationController setNavigationBarHidden:NO animated:false];
-    }
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [UIApplication sharedApplication].statusBarHidden = NO;
     
     [self.profileImage.layer setMasksToBounds:YES];
     [self.profileImage.layer setBorderWidth:3];
     [self.profileImage.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

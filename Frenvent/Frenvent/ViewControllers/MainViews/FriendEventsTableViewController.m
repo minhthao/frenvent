@@ -348,11 +348,6 @@ CLLocation *lastKnown;
     self.refreshControl = [self uiRefreshControl];
     
     [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:false];
     
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
@@ -362,9 +357,19 @@ CLLocation *lastKnown;
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
 
 #pragma mark - Table view data source
@@ -431,10 +436,10 @@ CLLocation *lastKnown;
     UIView *shadowView = (UIView *)[cell viewWithTag:199];
     [shadowView.layer setCornerRadius:4.0f];
     [shadowView.layer setMasksToBounds:NO];
-    [shadowView.layer setShadowColor:[[UIColor lightGrayColor] CGColor]];
-    [shadowView.layer setShadowRadius:3];
-    [shadowView.layer setShadowOffset:CGSizeMake(0, 1)];
-    [shadowView.layer setShadowOpacity:0.25f];
+    [shadowView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [shadowView.layer setShadowRadius:2.5];
+    [shadowView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [shadowView.layer setShadowOpacity:0.15f];
 
     
     Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];

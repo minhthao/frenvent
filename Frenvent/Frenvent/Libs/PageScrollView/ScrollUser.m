@@ -73,6 +73,7 @@
     
     if (user.numMutualFriends == 1) self.mutualFriend.text = [NSString stringWithFormat:@"%d friend in common", user.numMutualFriends];
     else if (user.numMutualFriends != 0) self.mutualFriend.text = [NSString stringWithFormat:@"%d friends in common", user.numMutualFriends];
+    else self.name.frame = CGRectMake(20, self.name.frame.origin.y + 10, self.name.frame.size.width, 22);
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {

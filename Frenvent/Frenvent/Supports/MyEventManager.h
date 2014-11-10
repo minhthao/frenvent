@@ -7,20 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Event.h"
 
 @interface MyEventManager : NSObject
 
-@property (nonatomic, strong) NSMutableArray *repliedEvents;
-@property (nonatomic, strong) NSMutableArray *unrepliedEvents;
-
-
-- (void)setRepliedEvents:(NSArray *)repliedEvent unrepliedEvents:(NSArray *)unrepliedEvents;
-- (void)setRepliedEvents:(NSArray *)repliedEvent unrepliedEvents:(NSArray *)unrepliedEvents withCurrentLocation:(CLLocation *)currentLocation;
-- (void)setCurrentLocation:(CLLocation *)currentLocation;
-- (NSInteger) getNumberOfSections;
-- (NSString *) getTitleAtSection:(NSInteger)sectionNumber;
-- (NSArray *) getEventsAtSection:(NSInteger)sectionNumber;
-
-- (void)hideEventAtIndexPath:(NSIndexPath *)indexPath;
+-(void)loadData;
+-(NSString *)getTitleForHeaderInSection:(NSInteger)section;
+-(NSInteger)getNumberOfSections;
+-(NSInteger)getNumberOfRowsInSection:(NSInteger)section;
+-(Event *)getEventAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

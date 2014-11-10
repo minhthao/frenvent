@@ -160,7 +160,7 @@
  */
 -(NSAttributedString *)getDescriptionForFriendsGoingoutToday {
     NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:14]};
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Light" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Regular" size:14]};
 
     NSString *firstFriendName = ((EventParticipant *)[self.friendsGoingoutToday objectAtIndex:0]).friend.name;
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:firstFriendName attributes:boldFont];
@@ -199,7 +199,7 @@
  */
 -(NSAttributedString *)getDescriptionForNotificationGroup:(NotificationGroup *)notificationGroup {
     NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:14]};
-    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Light" size:14]};
+    NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Regular" size:14]};
     
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:notificationGroup.friend.name attributes:boldFont];
 

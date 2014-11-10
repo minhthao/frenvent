@@ -76,12 +76,12 @@
         
         self.location = [[UILabel alloc] initWithFrame:CGRectMake(0, 21, infoFrame.size.width, 18)];
         self.location.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
-        self.location.font = [UIFont fontWithName:@"SourceSansPro-Light" size:14];
+        self.location.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
         [eventInfoContainerView addSubview:self.location];
     
         self.time = [[UILabel alloc] initWithFrame:CGRectMake(0, 39, infoFrame.size.width, 18)];
         self.time.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
-        self.time.font = [UIFont fontWithName:@"SourceSansPro-Light" size:14];
+        self.time.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
         [eventInfoContainerView addSubview:self.time];
     }
     return self;

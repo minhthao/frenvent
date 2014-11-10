@@ -51,18 +51,14 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 @property (nonatomic, strong) UIActionSheet *navigationSheet;
 
 @property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
-@property (nonatomic, strong) NSString *rsvpToChangeTo;
-
 @property (nonatomic, strong) ShareEventRequest *shareEventRequest;
-
-@property (nonatomic, strong) UIImageView *cover;
-@property (nonatomic, strong) UILabel *eventTitle;
-@property (nonatomic, strong) UILabel *rsvpStatus;
-@property (nonatomic, strong) UILabel *startTime;
 
 @property (nonatomic, strong) UIButton *joinButton;
 @property (nonatomic, strong) UIButton *saveButton;
 @property (nonatomic, strong) UIButton *moreButton;
+
+@property (nonatomic, strong) PagedUserScrollView *usersScrollView;
+@property (nonatomic, strong) NSMutableArray *quoteArrays;
 
 @end
 
@@ -86,10 +82,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
  * @return DbEventsRequest
  */
 - (DbEventsRequest *)dbEventsRequest {
-    if (_dbEventsRequest == nil) {
-        _dbEventsRequest = [[DbEventsRequest alloc] init];
-        _dbEventsRequest.delegate = self;
-    }
+    if (_dbEventsRequest == nil) _dbEventsRequest = [[DbEventsRequest alloc] init];
     return _dbEventsRequest;
 }
 
@@ -202,80 +195,16 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 }
 
 /**
- * Lazily instantiate the cover 
- * @return cover
- */
--(UIImageView *)cover {
-    if (_cover == nil) {
-        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 150)];
-        _cover.contentMode = UIViewContentModeScaleAspectFill;
-        _cover.clipsToBounds = true;
-        if ([self.eventDetail.cover length] > 0)
-            [_cover setImageWithURL:[NSURL URLWithString:self.eventDetail.cover]];
-        else [_cover setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
-
-        [self.headerView addSubview:_cover];
-    }
-    return _cover;
-}
-
-/**
- * Lazily instantiate the event title
- * @return event title lable
- */
--(UILabel *)eventTitle {
-    if (_eventTitle == nil) {
-        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        
-        _eventTitle = [[UILabel alloc] init];
-        _eventTitle.text = self.eventDetail.name;
-        _eventTitle.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
-        _eventTitle.textColor = [UIColor whiteColor];
-        _eventTitle.shadowColor = [UIColor blackColor];
-        _eventTitle.shadowOffset = CGSizeMake(1, 1);
-        _eventTitle.numberOfLines = 3;
-        
-        float viewHeight = [_eventTitle sizeThatFits:CGSizeMake(screenWidth - 8, FLT_MAX)].height;
-        _eventTitle.frame = CGRectMake(8, 122 - viewHeight, screenWidth - 16, viewHeight);
-        
-        [self.headerView addSubview:_eventTitle];
-    }
-    return _eventTitle;
-}
-
-/**
- * Lazily instantiate the event rsvp and privacy
- * @return privacy and rsvp status
- */
--(UILabel *)rsvpStatus {
-    if (_rsvpStatus == nil) {
-        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _rsvpStatus = [[UILabel alloc] initWithFrame:CGRectMake(8, 124 , screenWidth - 16, 21)];
-        _rsvpStatus.text = [self.eventDetail getDisplayPrivacyAndRsvp];
-        _rsvpStatus.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:15];
-        _rsvpStatus.textColor = [UIColor whiteColor];
-        _rsvpStatus.shadowColor = [UIColor darkGrayColor];
-        _rsvpStatus.shadowOffset = CGSizeMake(0, 1);
-        [self.headerView addSubview:_rsvpStatus];
-    }
-    return _rsvpStatus;
-}
-
-/**
  * Lazily instantiate the join button
  * @return UIButton
  */
 -(UIButton *)joinButton {
     if (_joinButton == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, screenWidth * 0.33, 50)];
-        _joinButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
-        [_joinButton setTitle:@"Join" forState:UIControlStateNormal];
+        _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, screenWidth * 0.33, 75)];
         [_joinButton setImage:[UIImage imageNamed:@"EventDetailJoinButton"] forState:UIControlStateNormal];
         [_joinButton setImage:[UIImage imageNamed:@"EventDetailJoinButtonSelected"] forState:UIControlStateSelected];
         [_joinButton addTarget:self action:@selector(joinButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self formatMenuButton:_joinButton];
     }
     return _joinButton;
 }
@@ -287,13 +216,10 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(UIButton *)saveButton {
     if (_saveButton == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.335, 0, screenWidth * 0.33, 50)];
-        _saveButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
-        [_saveButton setTitle:@"Save" forState:UIControlStateNormal];
+        _saveButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.335, 0, screenWidth * 0.33, 75)];
         [_saveButton setImage:[UIImage imageNamed:@"EventDetailSaveButton"] forState:UIControlStateNormal];
         [_saveButton setImage:[UIImage imageNamed:@"EventDetailSaveButtonSelected"] forState:UIControlStateSelected];
         [_saveButton addTarget:self action:@selector(saveButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self formatMenuButton:_saveButton];
     }
     return _saveButton;
 }
@@ -305,45 +231,47 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(UIButton *)moreButton {
     if (_moreButton == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _moreButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.67, 0, screenWidth * 0.33, 50)];
-        _moreButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
-        [_moreButton setTitle:@"More" forState:UIControlStateNormal];
+        _moreButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.67, 0, screenWidth * 0.33, 75)];
         [_moreButton setImage:[UIImage imageNamed:@"EventDetailAboutButton"] forState:UIControlStateNormal];
         [_moreButton addTarget:self action:@selector(moreButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self formatMenuButton:_moreButton];
     }
     return _moreButton;
 }
 
-/**
- * Lazily instantiate the start time label
- * @return UILabel
- */
--(UILabel *)startTime {
-    if (_startTime == nil) {
+//init the paged user scroll view
+- (PagedUserScrollView *)usersScrollView {
+    if (_usersScrollView == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _startTime = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, screenWidth - 70, 45)];
-        _startTime.numberOfLines = 2;
-        _startTime.font = [UIFont fontWithName:@"HelveticaNeue" size:14.5];
-        _startTime.textColor = [UIColor darkGrayColor];
+        CGRect scrollViewFrame = CGRectMake(17, 0, screenWidth - 34, (screenWidth - 40) * (240/280.0));
+        
+        _usersScrollView = [[PagedUserScrollView alloc] initWithFrame:scrollViewFrame];
+        _usersScrollView.delegate = self;
     }
-    return _startTime;
+    return _usersScrollView;
 }
 
-//@property (nonatomic, strong) UILabel *startTime;
+//init the quote array
+- (NSMutableArray *)quoteArrays {
+    if (_quoteArrays == nil) {
+        _quoteArrays = [[NSMutableArray alloc] init];
+        [_quoteArrays addObject:@"“Hey that bubble chat icon looks like a perfect ice breaker, don’t you think?”"];
+        [_quoteArrays addObject:@"“You’re not gonna wait for me to add you, right?”"];
+    }
+    return _quoteArrays;
+}
 
-
-#pragma mark - UIActionSheet and rsvp delegate
+#pragma mark - UIActionSheet, back click, and alertview delegate
+/**
+ * delegate for the action sheet
+ */
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (self.eventDetail != nil) {
         if (actionSheet.tag == ACTION_SHEET_RSVP_ATTENDING) {
             switch (buttonIndex) {
                 case 0:
-                    self.rsvpToChangeTo = RSVP_UNSURE;
                     [[self eventRsvpRequest] replyUnsureToEvent:self.eventDetail.eid];
                     break;
                 case 1:
-                    self.rsvpToChangeTo = RSVP_DECLINED;
                     [[self eventRsvpRequest] replyDeclineToEvent:self.eventDetail.eid];
                     break;
                 default:
@@ -352,47 +280,34 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         } else if (actionSheet.tag == ACTION_SHEET_RSVP_MAYBE){
             switch (buttonIndex) {
                 case 0:
-                    self.rsvpToChangeTo = RSVP_ATTENDING;
                     [[self eventRsvpRequest] replyAttendingToEvent:self.eventDetail.eid];
                     break;
-                    
                 case 1:
-                    self.rsvpToChangeTo = RSVP_DECLINED;
                     [[self eventRsvpRequest] replyDeclineToEvent:self.eventDetail.eid];
                     break;
-                    
                 default:
                     break;
             }
         } else if (actionSheet.tag == ACTION_SHEET_RSVP_NOT_REPLIED) {
             switch (buttonIndex) {
                 case 0:
-                    self.rsvpToChangeTo = RSVP_ATTENDING;
                     [[self eventRsvpRequest] replyAttendingToEvent:self.eventDetail.eid];
                     break;
-                    
                 case 1:
-                    self.rsvpToChangeTo = RSVP_UNSURE;
                     [[self eventRsvpRequest] replyUnsureToEvent:self.eventDetail.eid];
                     break;
-
                 case 2:
-                    self.rsvpToChangeTo = RSVP_DECLINED;
                     [[self eventRsvpRequest] replyDeclineToEvent:self.eventDetail.eid];
                     break;
-                    
                 default:
                     break;
             }
         } else if (actionSheet.tag == ACTION_SHEET_RSVP_DEFAULT) {
             switch (buttonIndex) {
                 case 0:
-                    self.rsvpToChangeTo = RSVP_ATTENDING;
                     [[self eventRsvpRequest] replyAttendingToEvent:self.eventDetail.eid];
                     break;
-                    
                 case 1:
-                    self.rsvpToChangeTo = RSVP_UNSURE;
                     [[self eventRsvpRequest] replyUnsureToEvent:self.eventDetail.eid];
                     break;
                 default:
@@ -403,11 +318,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
                 case 0:
                     [[self shareEventRequest] shareToFriendTheEventWithEid:self.eventDetail.eid];
                     break;
-                    
                 case 1:
                     [[self shareEventRequest] shareToWallTheEvent:self.eventDetail.eid];
                     break;
-                    
                 default:
                     break;
 
@@ -428,27 +341,47 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
 }
 
+/**
+ * Delegate for the alert view. Happen when the queried failed to get the event detail. Force close the view
+ */
+-(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [self.navigationController popViewControllerAnimated:true];
+}
+
+/**
+ * Back click delegate, call when the back click button is pressed for the case from applink
+ */
+-(void)backClick {
+    [self dismissViewControllerAnimated:true completion:NULL];
+}
+
+#pragma mark - requests delegates
+/**
+ * Delegate for event rsvp
+ * @param success state
+ * @param current rsvp
+ */
 -(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp {
     if (success) {
-        self.eventDetail.rsvp = self.rsvpToChangeTo;
-        self.rsvpStatus.text = [self.eventDetail getDisplayPrivacyAndRsvp];
-        [self refreshJoinButtonView];
+        self.eventDetail.rsvp = rsvp;
+        [self.mainView reloadData];
         [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP" withDuaration:3.0];
     } else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
 }
 
+/**
+ * Delegate to notify that shae event request have been completed
+ * @param boolean
+ */
 -(void)notifyShareEventRequestSuccess:(BOOL)success {
     if (success) [ToastView showToastInParentView:self.view withText:@"Event shared successfully" withDuaration:3.0];
     else [ToastView showToastInParentView:self.view withText:@"Fail to share event" withDuaration:3.0];
 }
 
-
--(void)notifyEventRequestFailure {
-    //do nothing when you fail to upload the event
-}
-
-
 #pragma mark - delegate for request
+/**
+ * If the event did not exist, remove it from our local database and exist
+ */
 - (void)notifyEventDidNotExist {
     [self.loadingSpinner stopAnimating];
     [EventCoreData removeEventWithEid:self.eid];
@@ -461,6 +394,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [message show];
 }
 
+/**
+ * If the query for event fail fail, simply exist
+ */
 - (void)notifyEventDetailsQueryFail {
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
                                                       message:@"Error getting event information."
@@ -471,62 +407,38 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [message show];
 }
 
+/**
+ * Notify that event query have been completed successfull and with the result
+ * @param event detail
+ */
 - (void)notifyEventDetailsQueryCompletedWithResult:(EventDetail *)eventDetail {
-    self.eventDetail = eventDetail;
-    
     [eventDetail addToCoreData];
     Event *event = [EventCoreData getEventWithEid:eventDetail.eid];
     [[self dbEventsRequest] uploadEvents:@[event]];
+    self.shareButton.enabled = [event canShare];
     
-    if (![event canRsvp]) [[self joinButton] setEnabled:false];
-    [self refreshJoinButtonView];
-    if ([[event markType] intValue] == MARK_TYPE_FAVORITE) [[self saveButton] setSelected:true];
-    else [[self saveButton] setSelected:false];
-    
-    if ([event canShare]) [self.shareButton setEnabled:true];
-    
+    self.eventDetail = eventDetail;
     self.title = eventDetail.name;
-    [self cover];
-    [self rsvpStatus];
-    [self eventTitle];
-    
-    [self startTime].text = [eventDetail getEventDisplayTime];
+    [self showTopView:eventDetail];
+    [self.mainView reloadData];
     
     [self.loadingSpinner stopAnimating];
-    [self.mainView setHidden:false];
-    [self.mainView reloadData];
-}
-
--(void)notifyEventsUploaded {
-    //lets just do nothing for now
-}
-
--(void)notifyEventDetailRecommendUserQueryFail {
-}
-
--(void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends {
-    self.recommendFriends = suggestFriends;
-    [self reloadTableData];
 }
 
 /**
- * Ask the main view to reload the data
+ * Notify that query for recommended people is completed with a set of result
+ * @param array of suggest friends
  */
--(void)reloadTableData {
-    if (self.recommendFriends == nil) [self performSelector:@selector(reloadTableData) withObject:nil afterDelay:0.2];
-    else {
-        //if ([self.recommendFriends count] > 0)[[self userScrollView] setSuggestedUsers:self.recommendFriends];
-        [self.mainView reloadData];
-    }
+-(void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends {
+    self.recommendFriends = suggestFriends;
+    [self.mainView reloadData];
 }
 
-#pragma mark - alert view
--(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self.navigationController popViewControllerAnimated:true];
-}
-
--(void)backClick {
-    [self dismissViewControllerAnimated:true completion:NULL];
+/**
+ * Notify that query for recommended people has failed
+ */
+-(void)notifyEventDetailRecommendUserQueryFail {
+    //do nothing
 }
 
 #pragma mark - view delegates
@@ -534,67 +446,71 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [super viewDidLoad];
     [self.shareButton setEnabled:false];
     
-    if (self.eid != nil) {
-        [[self eventDetailsRequest] queryEventDetail:self.eid];
-        [[self eventDetailRecommendUserRequest] queryRecommendUser:self.eid];
-    }
+    [[self eventDetailsRequest] queryEventDetail:self.eid];
+    [[self eventDetailRecommendUserRequest] queryRecommendUser:self.eid];
     
-    if (self.isModal) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
-    }
-    
-    [self.loadingSpinner setHidesWhenStopped:true];
-    [self.loadingSpinner startAnimating];
-    [self.mainView setHidden:true];
+    if (self.isModal) self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if ([self.navigationController isNavigationBarHidden]) {
-        [self.navigationController setNavigationBarHidden:NO animated:false];
-    }
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [UIApplication sharedApplication].statusBarHidden = NO;
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    self.headerView.frame = CGRectMake(0, 0, screenWidth, 120);
     
-    self.headerView.frame = CGRectMake(0, 0, screenWidth, 245);
-    
-    UIView *buttonViews = [[UIView alloc] initWithFrame:CGRectMake(0, 150 , screenWidth, 50)];
-    NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor whiteColor] CGColor], (id)[[MyColor eventCellButtonsContainerBorderColor] CGColor], (id)[[UIColor whiteColor] CGColor], nil];
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = buttonViews.bounds;
-    gradient.colors = separatorColor;
-    [buttonViews.layer insertSublayer:gradient atIndex:0];
-    
-    [buttonViews addSubview:[self joinButton]];
-    [buttonViews addSubview:[self saveButton]];
-    [buttonViews addSubview:[self moreButton]];
-    [self.headerView addSubview:buttonViews];
-    
-    UIView *timeViews = [[UIView alloc] initWithFrame:CGRectMake(0, 200, screenWidth, 45)];
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
-    separator.backgroundColor = [UIColor lightGrayColor];
-    [timeViews addSubview:separator];
-    UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 25, 25)];
-    timeIcon.contentMode = UIViewContentModeScaleAspectFill;
-    timeIcon.image = [UIImage imageNamed:@"EventDetailTimeIcon"];
-    [timeViews addSubview:timeIcon];
-    [timeViews addSubview:[self startTime]];
-    [self.headerView addSubview:timeViews];
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"webView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        WebViewController *viewController = segue.destinationViewController;
+        WebViewUser *webViewUser = (WebViewUser *)sender;
+        viewController.url = webViewUser.url;
+        viewController.uid = webViewUser.uid;
+        viewController.name = webViewUser.name;
+    } else if ([[segue identifier] isEqualToString:@"eventWebView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        EventWebViewController *viewController = segue.destinationViewController;
+        if (sender) {
+            viewController.url = [NSString stringWithFormat:@"https://m.facebook.com/events/%@", self.eventDetail.eid];
+            viewController.eid = self.eventDetail.eid;
+        } else {
+            viewController.url = [NSString stringWithFormat:@"https://m.facebook.com/events/%@/permalink/guests/?filter=friends", self.eventDetail.eid];
+        }
+    } else if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+        NSString *uid = (NSString *)sender;
+        FbUserInfoViewController *viewController = segue.destinationViewController;
+        viewController.targetUid = uid;
+    }
+}
+
 
 #pragma mark - handle item click
+/**
+ * Delegate for share button
+ */
 - (IBAction)shareAction:(id)sender {
     if ([FBDialogs canPresentMessageDialog])
         [[self shareActionSheet] showInView:[UIApplication sharedApplication].keyWindow];
     else [[self shareEventRequest] shareToWallTheEvent:self.eventDetail.eid];
 }
 
-- (IBAction)joinButtonClick:(id)sender {
+/**
+ * delegate for the join button
+ */
+- (void)joinButtonClick:(id)sender {
     [[self joinButton] setHighlighted:true];
     
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
@@ -613,11 +529,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles:nil];
         [message show];
-        [self refreshJoinButtonView];
     }
 }
 
-- (IBAction)saveButtonClick:(id)sender {
+/**
+ * Delegate for save button
+ */
+- (void)saveButtonClick:(id)sender {
     Event *event = [EventCoreData getEventWithEid:self.eventDetail.eid];
     if ([event.markType intValue] == MARK_TYPE_FAVORITE) {
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_NORMAL];
@@ -626,9 +544,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         [EventCoreData setEventMarkType:event withType:MARK_TYPE_FAVORITE];
         [[self saveButton] setSelected:true];
     }
+    [self.mainView reloadData];
 }
 
-- (IBAction)moreButtonClick:(id)sender {
+/**
+ * delegate for more button
+ */
+- (void)moreButtonClick:(id)sender {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
         [self performSegueWithIdentifier:@"eventWebView" sender:[NSNumber numberWithBool:true]];
@@ -642,6 +564,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
 }
 
+/**
+ * delegate for participant click
+ */
 -(void)participantClick:(NSString *)uid {
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
@@ -676,447 +601,427 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
 }
 
--(void)userClicked:(SuggestFriend *)suggestedUser {
-    WebViewUser *webViewUser = [[WebViewUser alloc] init];
-    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", suggestedUser.uid];
-    webViewUser.uid = suggestedUser.uid;
-    webViewUser.name = suggestedUser.name;
-    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
-}
-
-#pragma mark - handle button state so that what it display is correct
-- (void)refreshJoinButtonView {
-    if ([self.eventDetail.rsvp isEqualToString:RSVP_ATTENDING] || [self.eventDetail.rsvp isEqualToString:RSVP_UNSURE])
-        [[self joinButton] setSelected:true];
-    else {
-        [[self joinButton] setSelected:false];
-        [[self joinButton] setHighlighted:false];
-    }
-}
-
--(void)formatMenuButton:(UIButton *)button {
-    [button setTitleColor:[UIColor colorWithRed:127/255.0 green:127/255.0 blue:127/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-    [button setTitleColor:[UIColor colorWithRed:59/255.0 green:89/255.0 blue:152/255.0 alpha:1.0] forState:UIControlStateSelected];
-    [button setTitleColor:[UIColor colorWithRed:212/255.0 green:212/255.0 blue:212/255.0 alpha:1.0] forState:UIControlStateDisabled];
+#pragma mark - other view related function
+/**
+ * show the header view as soon as the query for the event detail is done
+ * @param event detail
+ */
+-(void)showTopView:(EventDetail *)eventDetail {
+    //get the cover
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    UIImageView *cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 120)];
+    cover.contentMode = UIViewContentModeScaleAspectFill;
+    cover.clipsToBounds = true;
+    if ([eventDetail.cover length] > 0) [cover setImageWithURL:[NSURL URLWithString:eventDetail.cover]];
+    else [cover setImage:[MyColor imageWithColor:[UIColor lightGrayColor]]];
     
-    [button setImageEdgeInsets:UIEdgeInsetsMake(-14, 31, 0, 0)];
-    [button setTitleEdgeInsets:UIEdgeInsetsMake(25, -26, 0, 0)];
+    //format the title
+    UILabel *eventName = [[UILabel alloc] init];
+    eventName.text = eventDetail.name;
+    eventName.font = [UIFont fontWithName:@"SourceSansPro-Semibold" size:16];
+    eventName.textColor = [UIColor whiteColor];
+    eventName.numberOfLines = 2;
+    float viewHeight = [eventName sizeThatFits:CGSizeMake(screenWidth - 70, FLT_MAX)].height;
+    eventName.frame = CGRectMake(20, 105 - viewHeight, screenWidth - 70, viewHeight);
     
-    NSArray *buttonsColor = [NSArray arrayWithObjects:(id)[[UIColor colorWithRed:250/255.0 green:250/255.0 blue:250/255.0 alpha:1.0] CGColor], (id)[[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1.0] CGColor], nil];
-    
+    //adding overlay
     CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = button.bounds;
-    gradient.colors = buttonsColor;
-    [button.layer insertSublayer:gradient atIndex:0];
-    [button bringSubviewToFront:button.imageView];
+    gradient.frame = CGRectMake(0, 90 - viewHeight, screenWidth, viewHeight + 30);
+    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithWhite:0 alpha:0.75] CGColor], nil];
+    [cover.layer insertSublayer:gradient atIndex:0];
+    
+    //add all the components to view
+    [self.headerView addSubview:cover];
+    [self.headerView addSubview:eventName];
 }
 
 #pragma mark - table view delegates
+//number of sections in table
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.eventDetail != nil) {
-        if ([self.eventDetail.eDescription length] > 0) return 2;
-        else return 1;
-    }
-    else return 0;
+    if (self.eventDetail == nil) return 0;
+    else return 1;
 }
 
+//number of row in section. If recommended users are found, then 3. Otherwise, it will be 2
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.eventDetail != nil) {
-        if (section == 0) {
-            NSInteger numRow = 1;
-            if ([self.eventDetail.location length] > 0) numRow++;
-            if ([self.recommendFriends count] > 0) numRow++;
-            return numRow;
-        } else return 1;
-    } else return 0;
+    NSInteger numRows = 1;
+    if (self.recommendFriends != nil && [self.recommendFriends count] > 0) numRows++;
+    if ([self.eventDetail.eDescription length] > 0) numRows++;
+    return numRows;
 }
 
+// customized header view
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    UIView *buttonsContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 75)];
+    buttonsContainer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    [buttonsContainer.layer setMasksToBounds:NO];
+    [buttonsContainer.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [buttonsContainer.layer setShadowRadius:2];
+    [buttonsContainer.layer setShadowOffset:CGSizeMake(0, 2)];
+    [buttonsContainer.layer setShadowOpacity:0.15f];
+    
+    Event *event = [EventCoreData getEventWithEid:self.eventDetail.eid];
+    [self saveButton].selected = ([event.markType intValue] == MARK_TYPE_FAVORITE);
+    
+    [self joinButton].enabled = [event canRsvp];
+    [self joinButton].selected = ([event.rsvp isEqualToString:RSVP_ATTENDING] || [event.rsvp isEqualToString:RSVP_UNSURE]);
+    
+    [buttonsContainer addSubview:[self joinButton]];
+    [buttonsContainer addSubview:[self saveButton]];
+    [buttonsContainer addSubview:[self moreButton]];
+
+    [headerView addSubview:buttonsContainer];
+    return headerView;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 80;
+}
+
+//cell for table view
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-   if (indexPath.section == 0) {
-        if ([self.eventDetail.location length] > 0) {
-            if (indexPath.row == 0) {
-                return [self getLocationTableViewCell:tableView withIndexPath:indexPath];
-            } else if (indexPath.row == 1) {
-                if ([self.eventDetail.attendingFriends count] > 0)
-                    return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
-                else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
-            } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
-        } else {
-            if (indexPath.row == 0) {
-                if ([self.eventDetail.attendingFriends count] > 0)
-                    return [self getEventMembersWithFriendTableViewCell:tableView withIndexPath:indexPath];
-                else return [self getEventMembersWithoutFriendTableViewCell:tableView withIndexPath:indexPath];
-            } else return [self getEventRecommendUserTableViewCell:tableView withIndexPath:indexPath];
-        }
-    } else return [self getEventDescriptionTableViewCell:tableView withIndexPath:indexPath];
+    if (indexPath.row == 0) {
+        if (self.recommendFriends != nil && [self.recommendFriends count] > 0)
+            return [self recommendUsersViewCell:tableView cellForRowAtIndexPath:indexPath];
+        else return [self infoViewCell:tableView cellForRowAtIndexPath:indexPath];
+    } else if (indexPath.row == 1) {
+        if (self.recommendFriends != nil && [self.recommendFriends count] > 0)
+            return [self infoViewCell:tableView cellForRowAtIndexPath:indexPath];
+        else return [self descriptionViewCell:tableView cellForRowAtIndexPath:indexPath];
+    } else return [self descriptionViewCell:tableView cellForRowAtIndexPath:indexPath];
 }
 
+//height for each view cell
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        if ([self.eventDetail.location length] > 0) {
-            if (indexPath.row == 0) return 45;
-            else if (indexPath.row == 1) {
-                if ([self.eventDetail.attendingFriends count] > 0) return 155;
-                else return 70;
-            } else return 190;
-        } else {
-            if (indexPath.row == 0) {
-                if ([self.eventDetail.attendingFriends count] > 0) return 155;
-                else return 70;
-            } else return 190;
-        }
-    } else return [self calculateDescriptionViewHeight];
-}
-
--(CGFloat)calculateDescriptionViewHeight {
+    CGFloat infoHeight = 114;
+    if ([self.eventDetail.location length] > 0) infoHeight += 44;
+    if ([self.eventDetail.attendingFriends count] > 0) infoHeight += 85;
+    
     UITextView *tempView = [[UITextView alloc] init];
-    tempView.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
     tempView.text = self.eventDetail.eDescription;
+    tempView.textContainer.lineFragmentPadding = 0;
+    tempView.textContainerInset = UIEdgeInsetsZero;
+    tempView.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
     
-    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 36, FLT_MAX)];
-    return textViewSize.height + 15 + 5 + 15 + 5; //for padding, detail label pad, detail label, detail label bottom pad, and textview bottom pad
+    CGSize textViewSize = [tempView sizeThatFits:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 50, FLT_MAX)];
+    CGFloat descriptionHeight = textViewSize.height + 72;
+
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat recommendHeight = 15 + 10 + 18 + 10 + (screenWidth - 40) * (240/280.0) + 59;
+    
+    if (indexPath.row == 0) {
+        if (self.recommendFriends != nil && [self.recommendFriends count] > 0) return recommendHeight;
+        else return infoHeight;
+    } else if (indexPath.row == 1) {
+        if (self.recommendFriends != nil && [self.recommendFriends count] > 0) return infoHeight;
+        else return descriptionHeight;
+    } else return descriptionHeight;
+    
 }
 
-#pragma mark - get the table view cells
+#pragma mark - table view cells
 /**
- * Get and format the location table view cell
- * @param tableview
- * @param indexPath
- * @return UITableViewCell
+ * Table view cell for the recommend users
+ * @param tableView
+ * @param indexpath
+ * @return table cell
  */
--(UITableViewCell *)getLocationTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailLocationCell" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailLocationCell"];
+-(UITableViewCell *)recommendUsersViewCell:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"recommendUsersView" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"recommendUsersView"];
     
-    for (UIView *subview in [cell.contentView subviews])
+    
+    UIView *containerView = (UIView *)[cell viewWithTag:1];
+    [containerView.layer setCornerRadius:4.0f];
+    [containerView.layer setMasksToBounds:NO];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
+    
+    UIView *scrollView = (UIView *)[cell viewWithTag:3];
+    for (UIView *subview in [[self usersScrollView] subviews]) {
         [subview removeFromSuperview];
+    }
     
-    UITapGestureRecognizer *navigationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLocationButtonTap:)];
-    [cell.contentView setUserInteractionEnabled:true];
-    [cell.contentView addGestureRecognizer:navigationTap];
+    [[self usersScrollView] setSuggestedUsers:self.recommendFriends];
+    [scrollView addSubview:[self usersScrollView]];
     
-    float screenWidth = cell.contentView.frame.size.width;
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
-    separator.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
-    [cell.contentView addSubview:separator];
-    
-    UIImageView *locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 25, 25)];
-    locationIcon.contentMode = UIViewContentModeScaleAspectFill;
-    locationIcon.image = [UIImage imageNamed:@"EventDetailLocationIcon"];
-    [cell.contentView addSubview:locationIcon];
-    
-    UILabel *locationLabel= [[UILabel alloc] initWithFrame:CGRectMake(55, 0, screenWidth - 70, 45)];
-    locationLabel.text = self.eventDetail.location;
-    locationLabel.numberOfLines = 2;
-    locationLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.5];
-    locationLabel.textColor = [UIColor darkGrayColor];
-    [cell.contentView addSubview:locationLabel];
-    
+    UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
+    quoteLabel.text = [self pickupQuote];
     return cell;
 }
 
 /**
- * Get and format the event member (with friends) table view cell
- * @param tableview
- * @param indexPath
- * @return UITableViewCell
+ * Table view cell for the info view
+ * @param tableView
+ * @param indexpath
+ * @return table cell
  */
--(UITableViewCell *)getEventMembersWithFriendTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailMemberCell" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailMemberCell"];
+-(UITableViewCell *)infoViewCell:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoViewCell" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"infoViewCell"];
     
-    for (UIView *subview in [cell.contentView subviews]) {
-        [subview removeFromSuperview];
+    UIView *containerView = (UIView *)[cell viewWithTag:1];
+    [containerView.layer setCornerRadius:4.0f];
+    [containerView.layer setMasksToBounds:NO];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
+    
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat currentHeight = 0;
+    
+    //adding the location
+    if ([self.eventDetail.location length] > 0) {
+        UIView *locationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth - 20, 44)];
+        
+        //adding the image
+        UIImageView *locationIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 15, 15)];
+        locationIcon.image = [UIImage imageNamed:@"EventDetailLocationIcon"];
+        [locationView addSubview:locationIcon];
+        
+        //adding the location text
+        UILabel *locationText = [[UILabel alloc] initWithFrame:CGRectMake(45, 14, screenWidth - 85, 18)];
+        locationText.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+        locationText.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+        locationText.text = self.eventDetail.location;
+        [locationView addSubview:locationText];
+        
+        //adding the separator
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 43, screenWidth - 20, 1)];
+        separator.backgroundColor = [UIColor colorWithRed:238/255.0 green:238/255.0 blue:238/255.0 alpha:1.0];
+        [locationView addSubview:separator];
+        
+        if (self.eventDetail.longitude != 0 || self.eventDetail.latitude != 0) {
+            UITapGestureRecognizer *locationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLocationButtonTap:)];
+            [locationView addGestureRecognizer:locationTap];
+        }
+        
+        [containerView addSubview:locationView];
+        currentHeight += 44;
     }
     
-    //add the shadow to separate the top views
-    float cellWidth = [[UIScreen mainScreen] bounds].size.width;
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cellWidth, 1)];
-    NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor lightGrayColor] CGColor], (id)[[MyColor eventCellButtonNormalBackgroundColor] CGColor], nil];
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = separator.bounds;
-    gradient.colors = separatorColor;
-    [separator.layer insertSublayer:gradient atIndex:0];
-    [cell.contentView addSubview:separator];
+    //adding the time
+    UIView *timeView = [[UIView alloc] initWithFrame:CGRectMake(0, currentHeight, screenWidth - 20, 44)];
+    UIImageView *timeIcon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 15, 15)];
+    timeIcon.image = [UIImage imageNamed:@"EventDetailTimeIcon"];
+    [timeView addSubview:timeIcon];
     
-    //mask the container to get the border and round corner
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(8, 10, cellWidth - 16, 140)];
-    containerView.backgroundColor = [UIColor whiteColor];
-    [containerView.layer setCornerRadius:3.0f];
-    [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
-    [cell.contentView addSubview:containerView];
-
-    //add the list of friends interested
-    UIView *friendsAttendingView = [[UIView alloc] initWithFrame:CGRectMake(10, 5, containerView.frame.size.width - 20, 55)];
+    UILabel *timeText = [[UILabel alloc] initWithFrame:CGRectMake(45, 14, screenWidth - 85, 18)];
+    timeText.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+    timeText.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    timeText.text = [self.eventDetail getEventDisplayTime];
+    [timeView addSubview:timeText];
     
-    CGFloat participantViewSize = friendsAttendingView.frame.size.height;
-    UIScrollView *friendsAttendingScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, friendsAttendingView.frame.size.width, participantViewSize)];
-    [friendsAttendingView addSubview:friendsAttendingScrollView];
-    [friendsAttendingScrollView setContentSize:CGSizeMake((participantViewSize + 5) * [self.eventDetail.attendingFriends count] - 5, participantViewSize)];
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 43, screenWidth - 20, 1)];
+    separator.backgroundColor = [UIColor colorWithRed:238/255.0 green:238/255.0 blue:238/255.0 alpha:1.0];
+    [timeView addSubview:separator];
+    
+    [containerView addSubview:timeView];
+    currentHeight += 44;
+    
+    //adding the attended friends
+    if ([self.eventDetail.attendingFriends count] > 0) {
+        UIView *attendingFriendsView = [[UIView alloc] initWithFrame:CGRectMake(0, currentHeight, screenWidth - 20, 85)];
 
-    for (int i = 0; i < [self.eventDetail.attendingFriends count]; i++) {
-        CGRect participantFrame = CGRectMake((participantViewSize + 5) * i, 0, participantViewSize, participantViewSize);
-        EventParticipantView *participantView = [[EventParticipantView alloc] initWithFrame:participantFrame];
-        participantView.delegate = self;
-        [participantView setEventPartipant:[self.eventDetail.attendingFriends objectAtIndex:i]];
-        [friendsAttendingScrollView addSubview:participantView];
+        //add the scroll view for attending friends
+        UIScrollView *friendsAttendingScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(10, 8, screenWidth - 40, 50)];
+        [friendsAttendingScrollView setContentSize:CGSizeMake(55 * [self.eventDetail.attendingFriends count] - 5, 50)];
+        
+        for (int i = 0; i < [self.eventDetail.attendingFriends count]; i++) {
+            EventParticipantView *participantView = [[EventParticipantView alloc] initWithFrame:CGRectMake(55 * i, 0, 50, 50)];
+            participantView.delegate = self;
+            [participantView setEventPartipant:[self.eventDetail.attendingFriends objectAtIndex:i]];
+            [friendsAttendingScrollView addSubview:participantView];
+        }
+        [attendingFriendsView addSubview:friendsAttendingScrollView];
+        
+        //add the text of friend attendings and member
+        UILabel *friendsAttending = [[UILabel alloc] initWithFrame:CGRectMake(10, 63, containerView.frame.size.width - 20, 18)];
+        friendsAttending.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+        friendsAttending.numberOfLines = 1;
+        friendsAttending.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+        friendsAttending.attributedText = [self.eventDetail getFriendsInterested];
+        [attendingFriendsView addSubview:friendsAttending];
+        
+        //add the line separator
+        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 84, screenWidth - 20, 1)];
+        separator.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
+        [attendingFriendsView addSubview:separator];
+        
+        [containerView addSubview:attendingFriendsView];
+        currentHeight += 85;
     }
-    [containerView addSubview:friendsAttendingView];
     
-    //display the text of friend attendings and member
-    UILabel *friendsAttending = [[UILabel alloc] initWithFrame:CGRectMake(10, 62, containerView.frame.size.width - 20, 20)];
-    friendsAttending.textColor = [UIColor colorWithRed:150/255.0 green:150/255.0 blue:150/255.0 alpha:1.0];
-    friendsAttending.numberOfLines = 1;
-    friendsAttending.attributedText = [self.eventDetail getFriendsInterested];
-    [containerView addSubview:friendsAttending];
+    //finally we added in the number of people interested
+    UIView *interestedNumberView = [[UIView alloc] initWithFrame:CGRectMake(0, currentHeight, screenWidth - 20, 60)];
+    UITapGestureRecognizer *interestedNumberViewTap =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMembersContainerTap:)];
+    [interestedNumberView addGestureRecognizer:interestedNumberViewTap];
+    CGFloat labelWidth = (screenWidth - 20)/3;
     
+    //add the view for number of going
+    UIView *joinView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, labelWidth, 60)];
+    UILabel *joinNumber = [[UILabel alloc] initWithFrame:CGRectMake(0, 11, labelWidth, 22)];
+    joinNumber.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
+    joinNumber.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:18];
+    joinNumber.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    joinNumber.textAlignment = NSTextAlignmentCenter;
+    [joinView addSubview:joinNumber];
     
-    //Now we add the member container
-    UIView *membersContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 85, containerView.frame.size.width, 55)];
-    UITapGestureRecognizer *membersContainerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMembersContainerTap:)];
-    [membersContainer setUserInteractionEnabled:true];
-    [containerView addGestureRecognizer:membersContainerTap];
+    UILabel *joinText = [[UILabel alloc] initWithFrame:CGRectMake(0, 34, labelWidth, 13)];
+    joinText.text = @"Going";
+    joinText.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:10];
+    joinText.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    joinText.textAlignment = NSTextAlignmentCenter;
+    [joinView addSubview:joinText];
     
-    UIView *memberSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, 1)];
-    memberSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
-    [membersContainer addSubview:memberSeparator];
+    [interestedNumberView addSubview:joinView];
     
-    [membersContainer addSubview:[self getNumMembersView:membersContainer.frame.size.width]];
-    [containerView addSubview:membersContainer];
+    //add the view for the number of maybe
+    UIView *maybeView = [[UIView alloc] initWithFrame:CGRectMake(labelWidth, 0, labelWidth, 60)];
+    UILabel *maybeNumber = [[UILabel alloc] initWithFrame:CGRectMake(0, 11, labelWidth, 22)];
+    maybeNumber.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
+    maybeNumber.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:18];
+    maybeNumber.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    maybeNumber.textAlignment = NSTextAlignmentCenter;
+    [maybeView addSubview:maybeNumber];
     
-    return cell;
-}
-
-/**
- * Get the number of members view
- * @return UIView
- */
--(UIView *)getNumMembersView:(float)viewWidth {
-    UIView *membersView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewWidth, 55)];
-    float width = viewWidth * 0.33;
-    
-    //join button
-    UIView *joinView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 55)];
-    UILabel *numGoing = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
-    numGoing.text = [NSString stringWithFormat:@"%d", self.eventDetail.attendingCount];
-    numGoing.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
-    numGoing.textColor = [UIColor darkGrayColor];
-    numGoing.textAlignment = NSTextAlignmentCenter;
-    [joinView addSubview:numGoing];
-    
-    UILabel *goingText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
-    goingText.text = @"Going";
-    goingText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
-    goingText.textColor = [UIColor darkGrayColor];
-    goingText.textAlignment = NSTextAlignmentCenter;
-    [joinView addSubview:goingText];
-    
-    [membersView addSubview:joinView];
-    
-    UIView *firstSeparator = [[UIView alloc] initWithFrame:CGRectMake(width, 8, 1, 39)];
-    firstSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
-    [membersView addSubview:firstSeparator];
-    
-    //maybe button
-    UIView *maybeView = [[UIView alloc] initWithFrame:CGRectMake(0.335 * viewWidth, 0, width, 55)];
-    UILabel *numMaybe = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
-    numMaybe.text = [NSString stringWithFormat:@"%d", self.eventDetail.unsureCount];
-    numMaybe.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
-    numMaybe.textColor = [UIColor darkGrayColor];
-    numMaybe.textAlignment = NSTextAlignmentCenter;
-    [maybeView addSubview:numMaybe];
-    
-    UILabel *maybeText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
+    UILabel *maybeText = [[UILabel alloc] initWithFrame:CGRectMake(0, 34, labelWidth, 13)];
     maybeText.text = @"Maybe";
-    maybeText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
-    maybeText.textColor = [UIColor darkGrayColor];
+    maybeText.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:10];
+    maybeText.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
     maybeText.textAlignment = NSTextAlignmentCenter;
     [maybeView addSubview:maybeText];
     
-    [membersView addSubview:maybeView];
+    [interestedNumberView addSubview:maybeView];
     
-    UIView *secondSeparator = [[UIView alloc] initWithFrame:CGRectMake(0.665 * viewWidth, 8, 1, 39)];
-    secondSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
-    [membersView addSubview:secondSeparator];
+    //add the view for the number of invited
+    UIView *invitedView = [[UIView alloc] initWithFrame:CGRectMake(labelWidth * 2, 0, labelWidth, 60)];
+    UILabel *invitedNumber = [[UILabel alloc] initWithFrame:CGRectMake(0, 11, labelWidth, 22)];
+    invitedNumber.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
+    invitedNumber.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:18];
+    invitedNumber.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    invitedNumber.textAlignment = NSTextAlignmentCenter;
+    [invitedView addSubview:invitedNumber];
     
-    //invite button
-    UIView *invitedView = [[UIView alloc] initWithFrame:CGRectMake(0.67 * viewWidth, 0, width, 55)];
-    UILabel *numInvited = [[UILabel alloc] initWithFrame:CGRectMake(0, 7, width, 21)];
-    numInvited.text = [NSString stringWithFormat:@"%d", self.eventDetail.unrepliedCount];
-    numInvited.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
-    numInvited.textColor = [UIColor darkGrayColor];
-    numInvited.textAlignment = NSTextAlignmentCenter;
-    [invitedView addSubview:numInvited];
-    
-    UILabel *invitedText = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, width, 15)];
-    invitedText.text = @"Invited";
-    invitedText.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:12];
-    invitedText.textColor = [UIColor darkGrayColor];
+    UILabel *invitedText = [[UILabel alloc] initWithFrame:CGRectMake(0, 34, labelWidth, 13)];
+    invitedText.text = @"Maybe";
+    invitedText.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:10];
+    invitedText.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
     invitedText.textAlignment = NSTextAlignmentCenter;
     [invitedView addSubview:invitedText];
     
-    [membersView addSubview:invitedView];
+    [interestedNumberView addSubview:invitedView];
     
-    return membersView;
-}
-
-/**
- * Get and format the event members (without friends) table view cell
- * @param tableview
- * @param indexPath
- * @return UITableViewCell
- */
--(UITableViewCell *)getEventMembersWithoutFriendTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDetailMemberWithoutFriendCell" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDetailMemberWithoutFriendCell"];
-    
-    for (UIView *subview in [cell.contentView subviews]) {
-        [subview removeFromSuperview];
-    }
-    
-    //add the shadow to separate the top views
-    float cellWidth = [[UIScreen mainScreen] bounds].size.width;
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cellWidth, 1)];
-    NSArray *separatorColor = [NSArray arrayWithObjects:(id)[[UIColor lightGrayColor] CGColor], (id)[[MyColor eventCellButtonNormalBackgroundColor] CGColor], nil];
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = separator.bounds;
-    gradient.colors = separatorColor;
-    [separator.layer insertSublayer:gradient atIndex:0];
-    [cell.contentView addSubview:separator];
-    
-    //mask the container to get the border and round corner
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(8, 10, cellWidth - 16, 55)];
-    containerView.backgroundColor = [UIColor whiteColor];
-    [containerView.layer setCornerRadius:3.0f];
-    [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
-    [cell.contentView addSubview:containerView];
-    
-    //Now we add the member container
-    UIView *membersContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, containerView.frame.size.height)];
-    UITapGestureRecognizer *membersContainerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMembersContainerTap:)];
-    [membersContainer setUserInteractionEnabled:true];
-    [containerView addGestureRecognizer:membersContainerTap];
-    
-    UIView *memberSeparator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, containerView.frame.size.width, 1)];
-    memberSeparator.backgroundColor = [UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0];
-    [membersContainer addSubview:memberSeparator];
-    
-    [membersContainer addSubview:[self getNumMembersView:membersContainer.frame.size.width]];
-    [containerView addSubview:membersContainer];
+    [containerView addSubview:interestedNumberView];
     
     return cell;
 }
 
 /**
- * Get and format the recommend users table view cell
- * @param tableview
- * @param indexPath
- * @return UITableViewCell
+ * Table view cell for the description view
+ * @param tableView
+ * @param indexpath
+ * @return table cell
  */
--(UITableViewCell *)getEventRecommendUserTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"recommendUserCell" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"recommendUserCell"];
+-(UITableViewCell *)descriptionViewCell:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"descriptionViewCell" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"descriptionViewCell"];
     
-    //mask the container to get the border and round corner
-    UIView *containerView = (UIView *)[cell viewWithTag:300];
-    [containerView.layer setCornerRadius:3.0f];
-    [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
-    containerView.backgroundColor = [UIColor whiteColor];
-
-    UIView *usersView = (UIView *)[cell viewWithTag:301];
-    [usersView setBackgroundColor:[UIColor clearColor]];
+    UIView *containerView = (UIView *)[cell viewWithTag:1];
+    [containerView.layer setCornerRadius:4.0f];
+    [containerView.layer setMasksToBounds:NO];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
     
-    for (UIView *subview in [usersView subviews])
-        [subview removeFromSuperview];
-    
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    float scaleFactor = screenWidth/320;
-    
-    PagedUserScrollView *userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, usersView.frame.size.height)];
-    userScrollView.delegate = self;
-    [userScrollView setSuggestedUsers:self.recommendFriends];
-    
-    [usersView addSubview:userScrollView];
-    
-    return cell;
-}
-
-/**
- * Get and format the event description table view cell
- * @param tableview
- * @param indexPath
- * @return UITableViewCell
- */
--(UITableViewCell *)getEventDescriptionTableViewCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"eventDescriptionCell" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"eventDescriptionCell"];
-    
-    for (UIView *subview in [cell.contentView subviews])
-        [subview removeFromSuperview];
-    
-    CGFloat viewHeight = [self calculateDescriptionViewHeight];
-    CGFloat viewWidth = self.mainView.frame.size.width;
-    [cell.contentView setFrame:CGRectMake(0, 0, viewWidth , viewHeight)];
-    
-    UIView *containerView  = [[UIView alloc] initWithFrame:CGRectMake(8, 10, viewWidth - 16, viewHeight - 15)];
-    [containerView.layer setCornerRadius:3.0f];
-    [containerView.layer setMasksToBounds:YES];
-    [containerView.layer setBorderWidth:0.5f];
-    [containerView.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
-    containerView.backgroundColor = [UIColor whiteColor];
-    [cell.contentView addSubview:containerView];
-    
-    UILabel *aboutLabel =  [[UILabel alloc] initWithFrame:CGRectMake(10, 5, viewWidth - 36, 15)];
-    aboutLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:14];
-    aboutLabel.text = @"About";
-    [containerView addSubview:aboutLabel];
-    
-    UITextView *description = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, viewWidth - 36, viewHeight - 40)];
-    description.font = [UIFont fontWithName:@"HelveticaNeue" size:13.0];
-    description.scrollEnabled = NO;
-    description.editable = NO;
+    UITextView *description = (UITextView *)[cell viewWithTag:2];
+    description.textContainer.lineFragmentPadding = 0;
+    description.textContainerInset = UIEdgeInsetsZero;
     description.text = self.eventDetail.eDescription;
-    description.dataDetectorTypes = UIDataDetectorTypeLink;
-    description.backgroundColor = [UIColor clearColor];
-    description.tintColor = [UIColor blueColor];
-    [containerView addSubview:description];
-
+    description.textColor = [UIColor colorWithRed:112/255.0 green:112/255.0 blue:112/255.0 alpha:1.0];
+    description.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+    description.scrollsToTop = false;
+    
     return cell;
 }
 
-
-#pragma mark - Navigation
- // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"webView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-        WebViewController *viewController = segue.destinationViewController;
-        WebViewUser *webViewUser = (WebViewUser *)sender;
-        viewController.url = webViewUser.url;
-        viewController.uid = webViewUser.uid;
-        viewController.name = webViewUser.name;
-    } else if ([[segue identifier] isEqualToString:@"eventWebView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-        EventWebViewController *viewController = segue.destinationViewController;
-        if (sender) {
-            viewController.url = [NSString stringWithFormat:@"https://m.facebook.com/events/%@", self.eventDetail.eid];
-            viewController.eid = self.eventDetail.eid;
-        } else {
-            viewController.url = [NSString stringWithFormat:@"https://m.facebook.com/events/%@/permalink/guests/?filter=friends", self.eventDetail.eid];
-        }
-    } else if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-        NSString *uid = (NSString *)sender;
-        FbUserInfoViewController *viewController = segue.destinationViewController;
-        viewController.targetUid = uid;
+#pragma mark - others and delegates
+/**
+ * Delegate for when the suggested friends scroll view scroll from one view to another
+ * @param scroll view
+ */
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == [self usersScrollView]) {
+        NSIndexPath *recommendUsersIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        UITableViewCell *cell = [self.mainView cellForRowAtIndexPath:recommendUsersIndexPath];
+        UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
+        
+        [UIView transitionWithView:quoteLabel duration:.5f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            quoteLabel.text = [self pickupQuote];
+        } completion:nil];
     }
 }
+
+/**
+ * A simple function that will returned a random pick up quote
+ * @return NSString
+ */
+-(NSString *)pickupQuote {
+    return (NSString *)[[self quoteArrays] objectAtIndex:(rand() % [[self quoteArrays] count])];
+}
+
+/**
+ * Handle the case when any of the suggested friends is clicked
+ * @param suggest friend
+ */
+-(void)userClicked:(SuggestFriend *)suggestedUser {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        WebViewUser *webViewUser = [[WebViewUser alloc] init];
+        webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", suggestedUser.uid];
+        webViewUser.uid = suggestedUser.uid;
+        webViewUser.name = suggestedUser.name;
+        [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+}
+
+/**
+ * Handle the case when the say hi button is clicked
+ * @param suggest friend
+ */
+-(void)hiButtonClicked:(SuggestFriend *)suggestedUser {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        WebViewUser *webViewUser = [[WebViewUser alloc] init];
+        webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", suggestedUser.uid];
+        webViewUser.uid = suggestedUser.uid;
+        webViewUser.name = suggestedUser.name;
+        [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+}
+
 
 @end

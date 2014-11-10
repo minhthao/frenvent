@@ -94,6 +94,13 @@ BOOL isUpdating;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

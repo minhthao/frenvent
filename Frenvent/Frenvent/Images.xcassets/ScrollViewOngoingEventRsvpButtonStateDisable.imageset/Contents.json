@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "OngoingEventRsvpButtonStateDisable-2.png"
+      "filename" : "OngoingEventRsvoButtonStateDisable-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "OngoingEventRsvpButtonStateDisable-1.png"
+      "filename" : "OngoingEventRsvoButtonStateDisable-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "OngoingEventRsvpButtonStateDisable.png"
+      "filename" : "OngoingEventRsvoButtonStateDisable.png"
     }
   ],
   "info" : {

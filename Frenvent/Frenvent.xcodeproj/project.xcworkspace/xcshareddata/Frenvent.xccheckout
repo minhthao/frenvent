@@ -14,7 +14,7 @@
 		<string>https://github.com/minhthao/frenvent.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Frenvent/Frenvent.xcodeproj/project.xcworkspace</string>
+	<string>Frenvent/Frenvent.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>E894D71A572430E92D3A44EEC6723DAC5218DF51</key>

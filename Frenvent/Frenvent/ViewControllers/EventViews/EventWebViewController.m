@@ -69,31 +69,38 @@
 #pragma mark - web view delegate
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    //[self updateButtons];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    //[self updateButtons];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    //[self updateButtons];
 }
 
 #pragma mark - view delegates
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.shareButton setEnabled:false];
-    if (self.url != nil) {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
-        Event *event = [EventCoreData getEventWithEid:self.eid];
-        if ([event canShare] && self.eid != nil) [self.shareButton setEnabled:true];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.url]]];
+    Event *event = [EventCoreData getEventWithEid:self.eid];
+    self.shareButton.enabled = [event canShare];
+    self.title = event.name;
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    }];
 }
 
 - (IBAction)shareButtonClick:(id)sender {

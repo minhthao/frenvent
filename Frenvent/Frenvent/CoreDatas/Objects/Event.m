@@ -120,7 +120,7 @@ static double const METER_IN_MILE = 1609.344;
         
         //create attributes for the string that we are going to use
         NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
-        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Light" andSize:14];
+        NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Regular" andSize:14];
         
         NSAttributedString *firstFriendAttributedString = [[NSAttributedString alloc] initWithString:((Friend *)[interestedFriends objectAtIndex:0]).name attributes:boldStringAttributes];
         
@@ -229,9 +229,9 @@ static double const METER_IN_MILE = 1609.344;
  */
 - (NSAttributedString *) getFromEventNameAttributedString {
     NSDictionary *boldStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Semibold" andSize:14];
-    NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Light" andSize:14];
+    NSDictionary *normalStringAttributes = [self getAttributesForStringWithFont:@"SourceSansPro-Regular" andSize:14];
     
-    NSMutableAttributedString *name = [[NSMutableAttributedString alloc] initWithString:@"From event " attributes:normalStringAttributes];
+    NSMutableAttributedString *name = [[NSMutableAttributedString alloc] initWithString:@"Meet me at " attributes:normalStringAttributes];
     [name appendAttributedString:[[NSAttributedString alloc ] initWithString:self.name attributes:boldStringAttributes]];
     return name;
 }

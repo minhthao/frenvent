@@ -68,11 +68,15 @@ NSArray *allFriends;
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
     [self.searchDisplayController.searchBar setTranslucent:NO];
+    
+    UITextField *textField = [[self.searchDisplayController.searchBar subviews] objectAtIndex:1];
+    [textField setFont:[UIFont fontWithName:@"SourceSansPro-Regular" size:13]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,11 +124,11 @@ NSArray *allFriends;
     
     UIView *topBorber = [[UIView alloc] init];
     topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
-    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    topBorber.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
     
     UIView *bottomBorder = [[UIView alloc] init];
-    topBorber.frame = CGRectMake(0, 35, screenWidth, 1);
-    topBorber.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
+    bottomBorder.frame = CGRectMake(0, 25, screenWidth, 1);
+    bottomBorder.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
     
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:labelContainer];
@@ -160,7 +164,7 @@ NSArray *allFriends;
     
     UIImageView *profilePicture = (UIImageView *)[cell viewWithTag:101];
     UILabel *username = (UILabel *)[cell viewWithTag:102];
-    if ([self.favoriteFriends containsObject:friend.uid]) {
+    if ([self.favoriteFriends containsObject:friend.uid] || !self.editButton.selected) {
         [profilePicture setAlpha:1.0];
         [username setTextColor:[UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0]];
     } else {
@@ -178,61 +182,38 @@ NSArray *allFriends;
 
 //handle the selected action
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
-    if ([internetReachable isReachable]) {
-        NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
-        NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
-        Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
-
-        [self performSegueWithIdentifier:@"friendInfoView" sender:friend.uid];
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
-                                                          message:@"Connect to internet and try again."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        [message show];
-    }
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-// Override to support conditional editing of the table view.
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return(YES);
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
-    NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
-    Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
-
-    if ([self.favoriteFriends containsObject:friend.uid]) return @"Unfollow      ";
-    else return @"Follow      ";
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *sectionTitle = [[self friendManager].sectionTitles objectAtIndex:indexPath.section];
     NSArray *sectionFriends = [[self friendManager] getSectionedFriendsList:sectionTitle];
     Friend *friend = [sectionFriends objectAtIndex:indexPath.row];
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UIImageView *mark = (UIImageView *)[cell viewWithTag:103];
-
-    if (![self.favoriteFriends containsObject:friend.uid]) {
-        [self.favoriteFriends addObject:friend.uid];
-        [FriendCoreData setFriend:friend toFavorite:true];
-        mark.hidden = false;
+    if (self.editButton.selected) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UIImageView *mark = (UIImageView *)[cell viewWithTag:103];
+        
+        if (![self.favoriteFriends containsObject:friend.uid]) {
+            [self.favoriteFriends addObject:friend.uid];
+            [FriendCoreData setFriend:friend toFavorite:true];
+            mark.hidden = false;
+        } else {
+            [self.favoriteFriends removeObject:friend.uid];
+            [FriendCoreData setFriend:friend toFavorite:false];
+            mark.hidden = true;
+        }
+        [self.tableView reloadData];
     } else {
-        [self.favoriteFriends removeObject:friend.uid];
-        [FriendCoreData setFriend:friend toFavorite:false];
-        mark.hidden = true;
+        Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+        if ([internetReachable isReachable])
+            [self performSegueWithIdentifier:@"friendInfoView" sender:friend.uid];
+        else {
+            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                              message:@"Connect to internet and try again."
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            [message show];
+        }
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-    [self.tableView reloadData];
-}
-
-- (BOOL)tableView:(UITableView *)tableview shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
 }
 
 #pragma mark - search bar delegate
@@ -258,6 +239,12 @@ NSArray *allFriends;
         viewController.shouldReadjustInset = true;
         viewController.targetUid = uid;
     }
+}
+
+- (IBAction)edit:(id)sender {
+    if (self.editButton.selected) [self.editButton setSelected:NO];
+    else [self.editButton setSelected:YES];
+    [self.tableView reloadData];
 }
 
 @end

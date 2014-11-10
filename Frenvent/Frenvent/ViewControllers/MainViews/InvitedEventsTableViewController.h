@@ -11,7 +11,7 @@
 #import "EventRsvpRequest.h"
 #import "ShareEventRequest.h"
 
-@interface InvitedEventsTableViewController : UITableViewController <CLLocationManagerDelegate, MyEventsRequestDelegate>
+@interface InvitedEventsTableViewController : UITableViewController <MyEventsRequestDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 - (IBAction)doRefresh:(id)sender;

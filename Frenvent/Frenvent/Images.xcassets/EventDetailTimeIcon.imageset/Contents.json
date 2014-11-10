@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "EventDetailTimeIcon-1.png"
+      "filename" : "clock-2.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "EventDetailTimeIcon.png"
+      "filename" : "clock-1.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "EventDetailTimeIcon-2.png"
+      "filename" : "clock.png"
     }
   ],
   "info" : {

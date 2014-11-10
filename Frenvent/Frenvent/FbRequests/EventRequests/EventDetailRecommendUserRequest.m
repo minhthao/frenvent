@@ -103,10 +103,10 @@ static int const QUERY_LIMIT = 500;
                                           else if (user1.numMutualFriends < user2.numMutualFriends) return NSOrderedDescending;
                                           else return NSOrderedSame;
                                       } else if ([user1.gender isEqualToString:userGender] && ![user2.gender isEqualToString:userGender]) {
-                                          if (user1.numMutualFriends > 0 && user2.numMutualFriends == 0) return NSOrderedAscending;
+                                          if (user1.numMutualFriends > 5 && user2.numMutualFriends == 0) return NSOrderedAscending;
                                           else return NSOrderedDescending;
                                       } else {
-                                          if (user1.numMutualFriends == 0 && user2.numMutualFriends > 0) return NSOrderedDescending;
+                                          if (user1.numMutualFriends == 0 && user2.numMutualFriends > 5) return NSOrderedDescending;
                                           else return NSOrderedAscending;
                                       }
                                   }];

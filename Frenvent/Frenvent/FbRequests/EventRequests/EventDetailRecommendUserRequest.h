@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol EventDetailRecommendUserRequestDelegate <NSObject>
-@required
+@optional
 - (void)notifyEventDetailRecommendUserQueryFail;
+@required
 - (void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends;
 @end
 

@@ -24,7 +24,6 @@ CLLocation *lastKnown;
 
 @interface InvitedEventsTableViewController ()
 @property (nonatomic, strong) MyEventManager *eventManager;
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
 @property (nonatomic, strong) MyEventsRequest *myEventsRequest;
 
@@ -34,6 +33,9 @@ CLLocation *lastKnown;
 
 @implementation InvitedEventsTableViewController
 #pragma mark - instantiation
+/**
+ * Lazily instantiate the empty view
+ */
 -(UIView *)emptyView {
     if (_emptyView == nil) {
         float screenHeight = [[UIScreen mainScreen] bounds].size.height;
@@ -61,35 +63,9 @@ CLLocation *lastKnown;
 - (MyEventManager *) eventManager {
     if (_eventManager == nil) {
         _eventManager = [[MyEventManager alloc] init];
-        [self.eventManager setRepliedEvents:[EventCoreData getUserRepliedOngoingEvents] unrepliedEvents:[EventCoreData getUserUnrepliedOngoingEvents]];
-    }
-    
-    return _eventManager;
-}
-
-/**
- * Lazily instantiate and get the event manager object
- * @return Event Manager
- */
-- (MyEventManager *) eventManager:(CLLocation *)currentLocation {
-    if (_eventManager == nil) {
-        _eventManager = [[MyEventManager alloc] init];
-        [self.eventManager setRepliedEvents:[EventCoreData getUserRepliedOngoingEvents] unrepliedEvents:[EventCoreData getUserUnrepliedOngoingEvents] withCurrentLocation:currentLocation];
+        [_eventManager loadData];
     }
     return _eventManager;
-}
-
-/**
- * Lazily obtain the managed object context
- * @return Location manager
- */
-- (CLLocationManager *)locationManager {
-    if (_locationManager == nil) {
-        _locationManager = [[CLLocationManager alloc] init];
-        _locationManager.delegate = self;
-        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-    }
-    return _locationManager;
 }
 
 /**
@@ -101,9 +77,6 @@ CLLocation *lastKnown;
         _uiRefreshControl = [[UIRefreshControl alloc] init];
         // Configure Refresh Control
         [_uiRefreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
-        
-        // Configure View Controller
-        [self setRefreshControl:_uiRefreshControl];
     }
     return _uiRefreshControl;
 }
@@ -121,14 +94,15 @@ CLLocation *lastKnown;
 }
 
 #pragma mark - refresh control methods
-- (void)refresh:(id)sender {
+/**
+ * selector for refreshing
+ */
+-(void)refresh:(id)sender {
     [self.refreshButton setEnabled:false];
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
-        if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-            [[self locationManager] startUpdatingLocation];
-        else [[self myEventsRequest] refreshMyEvents];
+        [[self myEventsRequest] refreshMyEvents];
     } else {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
                                                           message:@"Connect to internet and try again."
@@ -137,8 +111,7 @@ CLLocation *lastKnown;
                                                 otherButtonTitles:nil];
         
         [message show];
-        [[self uiRefreshControl] endRefreshing];
-        [self.refreshButton setEnabled:true];
+        [self endRefresh];
     }
 }
 
@@ -148,41 +121,23 @@ CLLocation *lastKnown;
     [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentOffset.y - [self uiRefreshControl].frame.size.height) animated:YES];
 }
 
-#pragma mark - delegate for my events request
-- (void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [[self uiRefreshControl] endRefreshing];
-    [self.refreshButton setEnabled:true];
-}
-
-- (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
-    [[self eventManager]  setRepliedEvents:[EventCoreData getUserRepliedOngoingEvents] unrepliedEvents:[EventCoreData getUserUnrepliedOngoingEvents] withCurrentLocation:lastKnown];
-    
+/**
+ * Method that basically update the latest info to the table at the end of refreshing
+ */
+-(void)endRefresh {
+    [[self eventManager] loadData];
     [self.tableView reloadData];
     [[self uiRefreshControl] endRefreshing];
     [self.refreshButton setEnabled:true];
 }
 
-#pragma mark - location manager delegates
-//delegate for location manager, call back for location update
-- (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    [[self locationManager] stopUpdatingLocation];
-    
-    if (locations != nil && [locations count] > 0) {
-        lastKnown = [locations objectAtIndex:0];
-        
-        if (_eventManager == nil) [self eventManager:lastKnown];
-        else if ([[self uiRefreshControl] isRefreshing]) [[self myEventsRequest] refreshMyEvents];
-        else {
-            [self.eventManager setCurrentLocation:[locations objectAtIndex:0]];
-            [self.tableView reloadData];
-        }
-
-    }
+#pragma mark - delegate for my events request
+- (void)notifyMyEventsQueryEncounterError:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [self endRefresh];
 }
 
-// End refreshing if the cl location manager encounter error
-- (void) locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if ([[self uiRefreshControl] isRefreshing]) [[self myEventsRequest] refreshMyEvents];
+- (void)notifyMyEventsQueryCompletedWithResult:(NSArray *)allEvents :(NSMutableDictionary *)newEvents {
+    [self endRefresh];
 }
 
 #pragma mark - view delegate
@@ -191,19 +146,24 @@ CLLocation *lastKnown;
     [super viewDidLoad];
     self.tableView.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
     self.tableView.nxEV_emptyView = [self emptyView];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-        [[self locationManager] startUpdatingLocation];
+    [self setRefreshControl:[self uiRefreshControl]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = YES;
+        [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
+    }
 }
 
-//handle when it receive the memory warning
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    }];
 }
 
 #pragma mark - table view delegate
@@ -214,28 +174,49 @@ CLLocation *lastKnown;
 
 // Get the section title
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [[self eventManager] getTitleAtSection:section];
+    return [[self eventManager] getTitleForHeaderInSection:section];
 }
+
+// Customize the title
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *myLabel = [[UILabel alloc] init];
+    myLabel.frame = CGRectMake(10, 6, 300, 18);
+    myLabel.font = [UIFont fontWithName:@"SourceSansPro-SemiBold" size:14];
+    myLabel.textColor = [UIColor colorWithRed:23/255.0 green:23/255.0 blue:23/255.0 alpha:1.0];
+    myLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIView *labelContainer = [[UIView alloc] init];
+    labelContainer.frame = CGRectMake(0, 0, screenWidth, 30);
+    labelContainer.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0];
+    [labelContainer addSubview:myLabel];
+    
+    UIView *topBorber = [[UIView alloc] init];
+    topBorber.frame = CGRectMake(0, 0, screenWidth, 1);
+    topBorber.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+    
+    UIView *bottomBorder = [[UIView alloc] init];
+    bottomBorder.frame = CGRectMake(0, 30, screenWidth, 1);
+    bottomBorder.backgroundColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:labelContainer];
+    if (section != 0) [headerView addSubview:topBorber];
+    [headerView addSubview:bottomBorder];
+    
+    return headerView;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 31;
+}
+
 
 // Get the number of rows in each section
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[self eventManager] getEventsAtSection:section] count];
-}
-
-// Override to support conditional editing of the table view.
-- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return(YES);
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
-    [EventCoreData setEventMarkType:event withType:MARK_TYPE_HIDDEN];
-    [[self eventManager] hideEventAtIndexPath:indexPath];
-    [self.tableView reloadData];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Hide";
+    return [[self eventManager] getNumberOfRowsInSection:section];
 }
 
 // Get the cell in the table
@@ -247,36 +228,31 @@ CLLocation *lastKnown;
     bgColorView.backgroundColor = [UIColor orangeColor];
     [cell setSelectedBackgroundView:bgColorView];
     
-    Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+    Event *event = [[self eventManager] getEventAtIndexPath:indexPath];
     
     UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:400];
     UILabel *eventName = (UILabel *)[cell viewWithTag:401];
     UILabel *eventLocation = (UILabel *)[cell viewWithTag:402];
-    UILabel *eventFriendsInterested = (UILabel *)[cell viewWithTag:403];
     UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
-    UILabel *eventDistance = (UILabel *)[cell viewWithTag:405];
+    UIView *border = (UIView *)[cell viewWithTag:405];
     
     [eventPicture setImageWithURL:[NSURL URLWithString:event.picture] placeholderImage:[UIImage imageNamed:@"placeholder.png"] ];
     eventName.text = event.name;
-    eventLocation.text = event.location;
-    
-    if ([event getRsvpAttributedString] != nil)
-        eventFriendsInterested.attributedText = [event getRsvpAttributedString];
-    else eventFriendsInterested.attributedText = [event getFriendsInterestedAttributedString];
-    
+    eventLocation.text = event.location;    
     eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
-    eventDistance.text = [event getDistanceString];
-    
+    border.hidden = (indexPath.row == ([tableView numberOfRowsInSection:indexPath.section] - 1));
+
     return cell;
 }
 
+//delegate for when user select a certain row
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:true];
     
     //we check if there is a internet connection, if no then stop refreshing and alert
     Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
     if ([internetReachable isReachable]) {
-        Event *event = [[[self eventManager] getEventsAtSection:indexPath.section] objectAtIndex:indexPath.row];
+        Event *event = [[self eventManager] getEventAtIndexPath:indexPath];
         [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
     } else {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
