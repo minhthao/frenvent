@@ -359,13 +359,16 @@ CLLocation *lastKnown;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:false];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:false];
     
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

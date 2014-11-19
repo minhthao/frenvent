@@ -10,8 +10,9 @@
 #import "LoginViewController.h"
 #import "Constants.h"
 #import "AppDelegate.h"
+#import "MyColor.h"
 
-#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+BOOL didGoToInitView;
 
 @interface LoginViewController ()
 
@@ -35,9 +36,9 @@
     return _locationManager;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    didGoToInitView = false;
     self.loginView.delegate = self;
     self.loginView.readPermissions = @[@"user_events", @"friends_events", @"friends_work_history", @"read_stream", @"friends_photos"];
     
@@ -48,6 +49,10 @@
             [button addTarget:self action:@selector(openFacebookAuthentication) forControlEvents:UIControlEventTouchUpInside];
         }
     }
+    
+    [self.guestButton.layer setCornerRadius:20];
+    [self.guestButton.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+    [self.guestButton.layer setBorderWidth:1];
 }
 
 
@@ -81,26 +86,25 @@
         [defaults setObject:[user objectForKey:@"gender"] forKey:FB_LOGIN_USER_GENDER];
         
         [defaults synchronize];
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-        // The following line must only run under iOS 8. This runtime check prevents
-        // it from running if it doesn't exist (such as running under iOS 7 or earlier).
+        
         if ([[self locationManager] respondsToSelector:@selector(requestAlwaysAuthorization)]) {
             [[self locationManager] requestAlwaysAuthorization];
         }
-#endif
         
-        if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined)
+        if ((![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusNotDetermined) && !didGoToInitView) {
+            didGoToInitView = YES;
             [self performSegueWithIdentifier:@"initialize" sender:Nil];
-        else [[self locationManager] startUpdatingLocation];
+        } else [[self locationManager] startUpdatingLocation];
     }
 }
 
 #pragma mark - location manager delegates
 //delegate for location manager, call back for reauthorization
 - (void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    if (status != kCLAuthorizationStatusNotDetermined)
+    if (status != kCLAuthorizationStatusNotDetermined && !didGoToInitView) {
+        didGoToInitView = YES;
         [self performSegueWithIdentifier:@"initialize" sender:Nil];
+    }
 }
 
 //delegate for location manager, call back for location update
@@ -108,4 +112,7 @@
     [[self locationManager] stopUpdatingLocation];
 }
 
+- (IBAction)continueAsGuestClick:(id)sender {
+    [self performSegueWithIdentifier:@"guestView" sender:Nil];
+}
 @end

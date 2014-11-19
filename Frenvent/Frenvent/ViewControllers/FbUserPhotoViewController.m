@@ -14,11 +14,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = NO;
+    }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
     if ([self.photoUrls count] > 0) {
         PagedPhotoScrollView *pageScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(0, 0, self.mainView.frame.size.width, self.mainView.frame.size.height)];
         pageScrollView.shouldShowImageIndex = true;
@@ -29,10 +42,6 @@
         
         [self.mainView addSubview:pageScrollView];
     } else [self.navigationController popViewControllerAnimated:true];
-    
-    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
-        self.navigationController.hidesBarsOnSwipe = NO;
-    }
 }
 
 - (void)didReceiveMemoryWarning {

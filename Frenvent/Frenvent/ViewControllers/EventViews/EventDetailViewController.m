@@ -254,8 +254,16 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 - (NSMutableArray *)quoteArrays {
     if (_quoteArrays == nil) {
         _quoteArrays = [[NSMutableArray alloc] init];
-        [_quoteArrays addObject:@"“Hey that bubble chat icon looks like a perfect ice breaker, don’t you think?”"];
-        [_quoteArrays addObject:@"“You’re not gonna wait for me to add you, right?”"];
+        [_quoteArrays addObject:@"“The first step is you have to say that you like.”"];
+        [_quoteArrays addObject:@"“Setting goals is the first step in turning the invisible into the visible.”"];
+        [_quoteArrays addObject:@"“The first step toward meaningful relationship is awareness.”"];
+        [_quoteArrays addObject:@"“Faith is taking the first step even when you don't see the whole staircase.”"];
+        [_quoteArrays addObject:@"“A journey of a thousand miles begins with a single step.”"];
+        [_quoteArrays addObject:@"“Trust is the first step to friendship.”"];
+        [_quoteArrays addObject:@"“The vision must be followed by venture.”"];
+        [_quoteArrays addObject:@"“It is not enough to stare up the steps - step up the stairs!”"];
+        [_quoteArrays addObject:@"“The difference between a hero and a coward is one step sideways.”"];
+        [_quoteArrays addObject:@"“Everything starts with one step, or one brick, or one word or one day.”"];
     }
     return _quoteArrays;
 }
@@ -450,6 +458,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [[self eventDetailRecommendUserRequest] queryRecommendUser:self.eid];
     
     if (self.isModal) self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClick)];
+    
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    self.headerView.frame = CGRectMake(0, 0, screenWidth, 120);
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -457,13 +468,13 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [UIApplication sharedApplication].statusBarHidden = NO;
     
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    self.headerView.frame = CGRectMake(0, 0, screenWidth, 120);
-    
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

@@ -14,7 +14,6 @@
 #import "TimeSupport.h"
 #import "Event.h"
 #import "Friend.h"
-#import "EventParticipant.h"
 #import "DBNotificationRequest.h"
 #import "FriendCoreData.h"
 
@@ -67,11 +66,7 @@
     for (Event *event in todayEvents)
         [friends unionSet:event.friendsInterested];
     for (Friend *friend in friends) {
-        EventParticipant *participant = [[EventParticipant alloc] init];
-        participant.friend = friend;
-        participant.rsvpStatus = @"";
-        
-        [self.friendsGoingoutToday addObject:participant];
+        [self.friendsGoingoutToday addObject:friend];
     }
     
     //and finally we get all the ongoing events that you got invited to but not replied
@@ -162,14 +157,14 @@
     NSDictionary *boldFont = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Semibold" size:14]};
     NSDictionary *mediumFont = @{NSFontAttributeName: [UIFont fontWithName:@"SourceSansPro-Regular" size:14]};
 
-    NSString *firstFriendName = ((EventParticipant *)[self.friendsGoingoutToday objectAtIndex:0]).friend.name;
+    NSString *firstFriendName = ((Friend *)[self.friendsGoingoutToday objectAtIndex:0]).name;
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:firstFriendName attributes:boldFont];
     
     if ([self.friendsGoingoutToday count] == 1) {
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is going out today" attributes:mediumFont]];
     } else if ([self.friendsGoingoutToday count] == 2) {
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" and " attributes:mediumFont]];
-        NSString *secondFriendName = ((EventParticipant *)[self.friendsGoingoutToday objectAtIndex:1]).friend.name;
+        NSString *secondFriendName = ((Friend *)[self.friendsGoingoutToday objectAtIndex:1]).name;
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:secondFriendName attributes:boldFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" are going out today" attributes:mediumFont]];
     } else if ([self.friendsGoingoutToday count] > 2) {
@@ -204,11 +199,11 @@
     NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:notificationGroup.friend.name attributes:boldFont];
 
     if ([notificationGroup.events count] > 1) {
-        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested to " attributes:mediumFont]];
+        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested in " attributes:mediumFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", (int)[notificationGroup.events count]] attributes:boldFont]];
         [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" events" attributes:mediumFont]];
     } else if ([notificationGroup.events count] == 1) {
-        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested to the event" attributes:mediumFont]];
+        [description appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested in the event" attributes:mediumFont]];
     }
     
     return description;

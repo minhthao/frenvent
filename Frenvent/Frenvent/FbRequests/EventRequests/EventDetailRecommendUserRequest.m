@@ -112,9 +112,9 @@ static int const QUERY_LIMIT = 500;
                                   }];
                                   
                                   NSMutableArray *suggestFriends = [[NSMutableArray alloc] init];
-                                  for (int i = 0; i < MIN(10, [recommendUsers count]); i++) {
+                                  for (int i = 0; i < MIN(30, [recommendUsers count]); i++) {
                                       if (((SuggestFriend *)[recommendUsers objectAtIndex:i]).numMutualFriends > 5 ||
-                                          [suggestFriends count] < 5)
+                                          [suggestFriends count] < 15)
                                           [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
                                   }
                                   

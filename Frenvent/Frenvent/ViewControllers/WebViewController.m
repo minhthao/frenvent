@@ -11,6 +11,7 @@
 #import "DbFBUserRequest.h"
 #import "ToastView.h"
 #import "Constants.h"
+#import "FriendCoreData.h"
 
 @interface WebViewController ()
 @property (nonatomic, strong) RecommendFbUserRequest *recommendFbUserRequest;
@@ -77,6 +78,9 @@
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -97,7 +101,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self pickQuoteAndInsertIntoMessageTextArea];
+//    if (![FriendCoreData getFriendWithUid:self.uid])
+//        [self pickQuoteAndInsertIntoMessageTextArea];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

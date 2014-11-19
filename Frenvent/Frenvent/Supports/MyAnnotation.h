@@ -8,6 +8,7 @@
 
 #import <MapKit/MapKit.h>
 #import "Event.h"
+#import "UIFont+SystemFontOverride.h"
 
 @interface MyAnnotation : MKPointAnnotation
 

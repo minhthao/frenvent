@@ -11,7 +11,6 @@
 #import "Event.h"
 #import "EventCoreData.h"
 #import "Friend.h"
-#import "EventParticipant.h"
 
 @implementation EventDetail
 
@@ -62,7 +61,7 @@
 }
 
 -(NSAttributedString *)getFriendsInterested {
-    Friend *friend = ((EventParticipant *)[self.attendingFriends objectAtIndex:0]).friend;
+    Friend *friend = [self.attendingFriends objectAtIndex:0];
     
     NSMutableAttributedString *friendInterested = [[NSMutableAttributedString alloc] initWithString:friend.name attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:13]}];
     [friendInterested appendAttributedString:[[NSAttributedString alloc] initWithString:@" is interested" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:13]}]];

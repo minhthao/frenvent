@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C2DA80C3-F0BB-47EE-9CEF-75A9C45F9E8B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TapppingIn</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E894D71A572430E92D3A44EEC6723DAC5218DF51</key>
+		<string>https://github.com/minhthao/frenvent.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Frenvent/TapppingIn.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E894D71A572430E92D3A44EEC6723DAC5218DF51</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/minhthao/frenvent.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E894D71A572430E92D3A44EEC6723DAC5218DF51</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E894D71A572430E92D3A44EEC6723DAC5218DF51</string>
+			<key>IDESourceControlWCCName</key>
+			<string>frenvent</string>
+		</dict>
+	</array>
+</dict>
+</plist>

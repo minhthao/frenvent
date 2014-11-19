@@ -29,6 +29,8 @@ NSInteger numQueriesDone;
 NSInteger numFriendsEvents;
 NSInteger numMyEvents;
 
+NSInteger quotePos;
+
 @interface FirstLoadingViewController ()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -36,6 +38,8 @@ NSInteger numMyEvents;
 @property (nonatomic, strong) MyEventsRequest *myEventsRequest;
 @property (nonatomic, strong) FriendsRequest *friendsRequest;
 @property (nonatomic, strong) DbEventsRequest *dbEventsRequest;
+@property (nonatomic, strong) NSMutableArray *quoteArray;
+
 @end
 
 @implementation FirstLoadingViewController 
@@ -100,6 +104,22 @@ NSInteger numMyEvents;
         _dbEventsRequest.delegate = self;
     }
     return _dbEventsRequest;
+}
+
+/**
+ * Lazily instantiate the quote array
+ * @return NSArray
+ */
+-(NSMutableArray *)quoteArray {
+    if (_quoteArray == nil) {
+        _quoteArray = [[NSMutableArray alloc] init];
+        [_quoteArray addObject:@"Configure initial settings"];
+        [_quoteArray addObject:@"Getting a lot of events"];
+        [_quoteArray addObject:@"Getting suggested companions"];
+        [_quoteArray addObject:@"Loading graphic data"];
+        [_quoteArray addObject:@"Finishing up, please wait ..."];
+    }
+    return _quoteArray;
 }
 
 #pragma mark - friend events delegate
@@ -168,7 +188,7 @@ NSInteger numMyEvents;
     
     DbUserRequest *userRequest = [[DbUserRequest alloc] init];
     [userRequest registerUser:uid :name :numFriendsEvents :numMyEvents];
-    [self performSelector:@selector(goToMainView) withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(goToMainView) withObject:nil afterDelay:0.2];
 }
 
 #pragma mark - location manager delegate
@@ -196,7 +216,11 @@ NSInteger numMyEvents;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:false];
-
+    [self.loadingImage setImage:[UIImage animatedImageNamed:@"loading" duration:1.0f]];
+    quotePos = 0;
+    self.loadingText.text = [[self quoteArray] objectAtIndex:0];
+    [self animatedLabel];
+    
     numQueriesDone = 0;
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
         [[self locationManager] startUpdatingLocation];
@@ -205,6 +229,17 @@ NSInteger numMyEvents;
     [[self friendsRequest] initFriends];
     [[self friendEventsRequest] initFriendEvents];
     [[self myEventsRequest] initMyEvents];
+}
+
+- (void)animatedLabel {
+    [UIView transitionWithView:self.loadingText duration:3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+    } completion:^(BOOL finished) {
+        if (quotePos != [[self quoteArray] count] - 1) {
+            quotePos ++;
+            self.loadingText.text = [[self quoteArray] objectAtIndex:quotePos];
+            [self animatedLabel];
+        }
+    }];
 }
 
 #pragma mark - selector for navigating within the view

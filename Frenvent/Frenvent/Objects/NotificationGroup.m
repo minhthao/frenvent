@@ -10,4 +10,6 @@
 
 @implementation NotificationGroup
 
+@synthesize events;
+@synthesize friend;
 @end

@@ -14,6 +14,7 @@
 #import "DBNotificationRequest.h"
 @interface FirstLoadingViewController : UIViewController <CLLocationManagerDelegate, FriendEventsRequestDelegate, MyEventsRequestDelegate, FriendsRequestDelegate, DbEventsRequestDelegate, DBNotificationRequestDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *loadingView;
+@property (strong, nonatomic) IBOutlet UIImageView *loadingImage;
+@property (strong, nonatomic) IBOutlet UILabel *loadingText;
 
 @end

@@ -26,8 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
 @property (weak, nonatomic) IBOutlet UITableView *mainView;
 
-
-@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
 
 
 

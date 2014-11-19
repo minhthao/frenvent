@@ -95,6 +95,9 @@
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {

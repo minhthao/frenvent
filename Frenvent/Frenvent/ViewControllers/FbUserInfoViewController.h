@@ -11,29 +11,20 @@
 #import "Friend.h"
 #import "PagedPhotoScrollView.h"
 #import "PagedEventScrollView.h"
-#import "PagedUserScrollView.h"
-#import "FbUserInfoButtons.h"
+#import "PagedFbUserScrollView.h"
 #import "EventRsvpRequest.h"
 #import "RecommendFbUserRequest.h"
 
-@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedUserScrollViewDelegate, FbUserInfoButtonsDelegate, EventRsvpRequestDelegate, RecommendFbUserRequestDelegate, UIActionSheetDelegate>
-- (IBAction)viewSegments:(id)sender;
+@interface FbUserInfoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FbUserInfoRequestDelegate, UIAlertViewDelegate, PagedPhotoScrollViewDelegate, PagedEventScrollViewDelegate, PagedFbUserScrollViewDelegate,EventRsvpRequestDelegate, RecommendFbUserRequestDelegate, UIActionSheetDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *eventTable;
 @property (weak, nonatomic) IBOutlet UITableView *mainTable;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
 
-@property (weak, nonatomic) IBOutlet UISegmentedControl *viewSegmentControl;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 - (IBAction)shareClicked:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIImageView *coverImage;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-@property (weak, nonatomic) IBOutlet UILabel *username;
-@property (weak, nonatomic) IBOutlet UILabel *numMutualFriends;
-
 @property (nonatomic, strong) NSString *targetUid;
-@property (nonatomic) BOOL shouldReadjustInset;
 
 @end

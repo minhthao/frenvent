@@ -17,6 +17,7 @@
 #import "EventDetailViewController.h"
 #import "TimeSupport.h"
 #import "ToastView.h"
+#import "UIFont+SystemFontOverride.h"
 
 static double const DEFAULT_LATITUDE = 37.43;
 static double const DEFAULT_LONGITUDE = -122.17;
@@ -95,13 +96,15 @@ BOOL isUpdating;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:false];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = NO;
+    }
+
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    [UIView animateWithDuration:0.2 animations:^{
-        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
-    }];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -151,8 +154,14 @@ BOOL isUpdating;
             pinView.animatesDrop = YES;
             pinView.canShowCallout = YES;
             
+            // Add a detail disclosure button to the callout.
+            UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            pinView.rightCalloutAccessoryView = rightButton;
+            pinView.rightCalloutAccessoryView.frame = CGRectZero;
+            
             // Add an image to the left callout.
-            UIImageView *eventPicture = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            UIImageView *eventPicture = [[UIImageView alloc] initWithFrame:CGRectMake(pinView.frame.origin.x, pinView.frame.origin.y, pinView.frame.size.height, pinView.frame.size.height)];
+            eventPicture.contentMode = UIViewContentModeScaleAspectFill;
             [eventPicture setImageWithURL:[NSURL URLWithString:((MyAnnotation *)annotation).event.picture]];
             
             pinView.leftCalloutAccessoryView = eventPicture;
@@ -211,7 +220,8 @@ BOOL isUpdating;
             MyAnnotation *myAnnotation = [[MyAnnotation alloc] init];
             myAnnotation.event = event;
             myAnnotation.coordinate = CLLocationCoordinate2DMake([event.latitude doubleValue], [event.longitude doubleValue]);
-            myAnnotation.title = event.name;
+            
+            myAnnotation.title = ([event.name length] <= 23 ? event.name : [NSString stringWithFormat:@"%@...", [event.name substringToIndex:22]]);
             myAnnotation.subtitle = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
             [newAnnotations addObject:myAnnotation];
         }
@@ -249,24 +259,23 @@ BOOL isUpdating;
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles:nil];
         [message show];
+    } else {
+        MKCoordinateRegion region = [self.mapView region];
+        CLLocationCoordinate2D center = region.center;
+        double latitudeDelta = region.span.latitudeDelta;
+        double longitudeDelta = region.span.longitudeDelta;
+        
+        double lowerLong = center.longitude - longitudeDelta;
+        double lowerLat = center.latitude - latitudeDelta;
+        
+        double upperLong = center.longitude + longitudeDelta;
+        double upperLat = center.latitude + latitudeDelta;
+        
+        [[self dbEventRequest] refreshNearbyEvents:lowerLong :lowerLat :upperLong :upperLat];
+        [self createAndDisplayPin];
     }
-
     
     [self.refreshButton setEnabled:false];
-    
-    MKCoordinateRegion region = [self.mapView region];
-    CLLocationCoordinate2D center = region.center;
-    double latitudeDelta = region.span.latitudeDelta;
-    double longitudeDelta = region.span.longitudeDelta;
-    
-    double lowerLong = center.longitude - longitudeDelta;
-    double lowerLat = center.latitude - latitudeDelta;
-    
-    double upperLong = center.longitude + longitudeDelta;
-    double upperLat = center.latitude + latitudeDelta;
-    
-    [[self dbEventRequest] refreshNearbyEvents:lowerLong :lowerLat :upperLong :upperLat];
-    [self createAndDisplayPin];
 }
 
 #pragma mark - UIActionSheet and filter

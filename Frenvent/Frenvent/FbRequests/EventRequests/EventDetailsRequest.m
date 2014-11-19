@@ -8,12 +8,9 @@
 
 #import "EventDetailsRequest.h"
 #import "EventDetail.h"
-#import "EventParticipant.h"
 #import "Event.h"
-#import "FriendCoreData.h"
+#import "EventCoreData.h"
 #import "TimeSupport.h"
-
-static int16_t const QUERY_LIMIT = 5000;
 
 @implementation EventDetailsRequest
 
@@ -23,15 +20,12 @@ static int16_t const QUERY_LIMIT = 5000;
  */
 - (NSDictionary *) prepareQueryParams:(NSString *)eid {
     NSString *myRsvp = [NSString stringWithFormat:@"SELECT rsvp_status FROM event_member WHERE eid = %@ AND uid = me()", eid];
-    NSString *eventParticipants = [NSString stringWithFormat:@"SELECT uid, rsvp_status FROM event_member WHERE eid = %@ AND "
-                                   "uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND "
-                                   "(rsvp_status = \"attending\" OR rsvp_status = \"unsure\") LIMIT %d", eid, QUERY_LIMIT];
     NSString *eventInfo = [NSString stringWithFormat:@"SELECT name, pic_big, pic_cover, start_time, end_time, "
                            "location, venue, description, attending_count, unsure_count, not_replied_count, host, privacy "
                            "FROM event WHERE eid = %@", eid];
     
-    NSString *query = [NSString stringWithFormat:@"{'myRsvp':'%@', 'eventParticipants':'%@', 'eventInfo':'%@'}",
-                       myRsvp, eventParticipants, eventInfo];
+    NSString *query = [NSString stringWithFormat:@"{'myRsvp':'%@', 'eventInfo':'%@'}",
+                       myRsvp, eventInfo];
     
     NSDictionary *queryParams = @{@"q": query};
     return queryParams;
@@ -77,6 +71,8 @@ static int16_t const QUERY_LIMIT = 5000;
 
               EventDetail *eventDetail =  [[EventDetail alloc] init];
               eventDetail.eid = eid;
+              eventDetail.attendingFriends = [[EventCoreData getEventWithEid:eid].friendsInterested allObjects];
+              
               
               NSArray *data = (NSArray *)result[@"data"];
               
@@ -90,20 +86,6 @@ static int16_t const QUERY_LIMIT = 5000;
                       if ([resultSet count] > 0)
                           rsvp = resultSet[0][@"rsvp_status"];
                       eventDetail.rsvp = rsvp;
-                  } else if ([data[i][@"name"] isEqualToString:@"eventParticipants"]) {
-                      //get attendees
-                      NSMutableArray *participants = [[NSMutableArray alloc] init];
-                      for (NSDictionary *participantDic in resultSet) {
-                          EventParticipant *participant = [[EventParticipant alloc] init];
-                          participant.rsvpStatus = participantDic[@"rsvp_status"];
-                          NSString *uid = participantDic[@"uid"];
-                          Friend *friendParticipant = [FriendCoreData getFriendWithUid:uid];
-                          participant.friend = friendParticipant;
-                          
-                          [participants addObject:participant];
-                      }
-                      
-                      eventDetail.attendingFriends = participants;
                   } else if ([data[i][@"name"] isEqualToString:@"eventInfo"]) {
                       if ([resultSet count] > 0) {
                           //now set all the event details information

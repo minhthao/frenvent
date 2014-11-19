@@ -25,16 +25,16 @@
 @synthesize updateManager = _updateManager;
 
 + (void)initialize {
-    [iRate sharedInstance].appStoreID = 908123368;
-    
-    [iRate sharedInstance].daysUntilPrompt = 3;
-    [iRate sharedInstance].usesUntilPrompt = 5;
-    [iRate sharedInstance].remindPeriod = 2;
-    [iRate sharedInstance].messageTitle = @"Rate Frenvent";
-    [iRate sharedInstance].messageTitle = @"Please rate us on iTunes store!";
-    [iRate sharedInstance].cancelButtonLabel = @"Cancel";
-    [iRate sharedInstance].rateButtonLabel = @"Rate";
-    [iRate sharedInstance].remindButtonLabel = @"";
+//    [iRate sharedInstance].appStoreID = 908123368;
+//    
+//    [iRate sharedInstance].daysUntilPrompt = 3;
+//    [iRate sharedInstance].usesUntilPrompt = 5;
+//    [iRate sharedInstance].remindPeriod = 2;
+//    [iRate sharedInstance].messageTitle = @"Rate TappedIn";
+//    [iRate sharedInstance].messageTitle = @"Please rate us on iTunes store!";
+//    [iRate sharedInstance].cancelButtonLabel = @"Cancel";
+//    [iRate sharedInstance].rateButtonLabel = @"Rate";
+//    [iRate sharedInstance].remindButtonLabel = @"";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -178,7 +178,6 @@
     if (_persistentStoreCoordinator != nil) {
         return _persistentStoreCoordinator;
     }
-    
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Frenvent.sqlite"];
     
     NSError *error = nil;

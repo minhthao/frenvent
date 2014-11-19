@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LoginViewController : UIViewController <FBLoginViewDelegate, CLLocationManagerDelegate>
+- (IBAction)continueAsGuestClick:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *guestButton;
 
 @end

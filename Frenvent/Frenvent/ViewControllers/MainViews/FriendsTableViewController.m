@@ -77,6 +77,13 @@ NSArray *allFriends;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:false];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    
+    if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
+        self.navigationController.hidesBarsOnSwipe = NO;
+    }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -219,6 +226,9 @@ NSArray *allFriends;
 #pragma mark - search bar delegate
 //handle the case where the new item is typed in the search
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self.navigationController setNavigationBarHidden:YES animated:false];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    
     if ([searchText length] > 0) {
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"name contains[c] %@", searchText];
         NSArray *searchResults = [allFriends filteredArrayUsingPredicate:resultPredicate];
@@ -236,7 +246,6 @@ NSArray *allFriends;
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         NSString *uid = (NSString *)sender;
         FbUserInfoViewController *viewController = segue.destinationViewController;
-        viewController.shouldReadjustInset = true;
         viewController.targetUid = uid;
     }
 }

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EventParticipant.h"
+#import "Friend.h"
 
 @protocol EventParticipantViewDelegate <NSObject>
 @optional
@@ -18,6 +18,6 @@
 
 @property (nonatomic, weak) id<EventParticipantViewDelegate> delegate;
 
--(void)setEventPartipant:(EventParticipant *)participant;
+-(void)setEventPartipant:(Friend *)friend;
 
 @end

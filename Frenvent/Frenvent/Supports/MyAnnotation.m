@@ -7,6 +7,7 @@
 //
 
 #import "MyAnnotation.h"
+#import "UIFont+SystemFontOverride.h"
 
 @implementation MyAnnotation
 

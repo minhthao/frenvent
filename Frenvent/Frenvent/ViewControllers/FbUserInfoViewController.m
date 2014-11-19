@@ -14,66 +14,46 @@
 #import "MyColor.h"
 #import "WebViewController.h"
 #import "Event.h"
-#import "TimeSupport.h"
 #import "EventDetailViewController.h"
 #import "PagedPhotoScrollView.h"
 #import "PagedEventScrollView.h"
-#import "PagedUserScrollView.h"
+#import "PagedFbUserScrollView.h"
 #import "FbUserPhotoViewController.h"
-#import "FbUserInfoButtons.h"
 #import "WebViewUser.h"
 #import "ToastView.h"
 #import "EventRsvpRequest.h"
 #import "DbFBUserRequest.h"
 #import "RecommendFbUserRequest.h"
 #import "Reachability.h"
-#import "UITableView+NXEmptyView.h"
 
 @interface FbUserInfoViewController ()
-
-@property (nonatomic, strong) UIView *emptyView;
 
 @property (nonatomic, strong) UIActionSheet *rsvpActionSheet;
 
 @property (nonatomic, strong) FbUserInfoRequest *fbUserInfoRequest;
 @property (nonatomic, strong) EventRsvpRequest *eventRsvpRequest;
 @property (nonatomic, strong) RecommendFbUserRequest *recommendFbUserRequest;
-@property (nonatomic, strong) NSArray *ongoingEvents;
-@property (nonatomic, strong) NSArray *pastEvents;
-@property (nonatomic, strong) NSArray *photoUrls;
-@property (nonatomic, strong) NSArray *suggestedFriends;
+@property (nonatomic, strong) FbUserInfo *fbUserInfo;
 
 @property (nonatomic, strong) PagedEventScrollView *eventScrollView;
 @property (nonatomic, strong) PagedPhotoScrollView *photoScrollView;
-@property (nonatomic, strong) PagedUserScrollView *userScrollView;
-@property (nonatomic, strong) FbUserInfoButtons *userInfoButtons;
+@property (nonatomic, strong) PagedFbUserScrollView *userScrollView;
 
 @property (nonatomic, strong) Event *eventToBeRsvp;
 @property (nonatomic, strong) UIButton *rsvpButton;
 
+@property (nonatomic, strong) UIButton *profileButton;
+@property (nonatomic, strong) UIButton *photoButton;
+@property (nonatomic, strong) UIButton *messageButton;
+
 @end
 
 @implementation FbUserInfoViewController
-#pragma mark - initiation and private methods
--(UIView *)emptyView {
-    if (_emptyView == nil) {
-        float screenHeight = [[UIScreen mainScreen] bounds].size.height;
-        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        _emptyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
-        _emptyView.backgroundColor = [MyColor eventCellButtonNormalBackgroundColor];
-        
-        UILabel *noResult = [[UILabel alloc] initWithFrame:CGRectMake(0, screenHeight/2 - 50, screenWidth, 36)];
-        noResult.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
-        noResult.textColor = [MyColor eventCellButtonsContainerBorderColor];
-        noResult.shadowColor = [UIColor whiteColor];
-        noResult.textAlignment = NSTextAlignmentCenter;
-        noResult.shadowOffset = CGSizeMake(1, 1);
-        noResult.text = @"No events";
-        [_emptyView addSubview:noResult];
-    }
-    return _emptyView;
-}
-
+#pragma mark - initiation and private methodss
+/**
+ * Lazily instantiate the rsvp action sheet
+ * @return UIActionSheet
+ */
 - (UIActionSheet *)rsvpActionSheet {
     if (_rsvpActionSheet == nil) {
         _rsvpActionSheet =  [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Going", @"Maybe", nil];
@@ -82,6 +62,10 @@
     return _rsvpActionSheet;
 }
 
+/**
+ * Lazily instantiate the fb user info request
+ * @return FbUserInfoRequest
+ */
 - (FbUserInfoRequest *)fbUserInfoRequest {
     if (_fbUserInfoRequest == nil) {
         _fbUserInfoRequest = [[FbUserInfoRequest alloc] init];
@@ -90,6 +74,10 @@
     return _fbUserInfoRequest;
 }
 
+/**
+ * Lazily instantiate the event rsvp request
+ * @return EventRsvpRequest
+ */
 - (EventRsvpRequest *)eventRsvpRequest {
     if (_eventRsvpRequest == nil) {
         _eventRsvpRequest = [[EventRsvpRequest alloc] init];
@@ -98,6 +86,10 @@
     return _eventRsvpRequest;
 }
 
+/**
+ * Lazily instantiate the recommend fb user request
+ * @return RecommendFbUserRequest
+ */
 - (RecommendFbUserRequest *)recommendFbUserRequest {
     if (_recommendFbUserRequest == nil) {
         _recommendFbUserRequest = [[RecommendFbUserRequest alloc] init];
@@ -106,45 +98,87 @@
     return _recommendFbUserRequest;
 }
 
+/**
+ * Lazily instantiate the event scroll view
+ * @return PagedEventScrollView
+ */
 - (PagedEventScrollView *)eventScrollView {
     if (_eventScrollView == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        float scaleFactor = screenWidth/320;
-        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, 150)];
+        _eventScrollView =  [[PagedEventScrollView alloc] initWithFrame:CGRectMake(17, 0, screenWidth - 34, 170)];
         _eventScrollView.delegate = self;
     }
     return _eventScrollView;
 }
 
+/**
+ * Lazily instantiate the photo scroll view
+ * @return PagedPhotoScrollView
+ */
 - (PagedPhotoScrollView *)photoScrollView {
     if (_photoScrollView == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        float scaleFactor = screenWidth/320;
-        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor , 0, 296 * scaleFactor, 150)];
+        _photoScrollView = [[PagedPhotoScrollView alloc] initWithFrame:CGRectMake(17 , 0, screenWidth - 34, 0.6 * screenWidth)];
         _photoScrollView.delegate = self;
     }
     return _photoScrollView;
 }
 
-- (PagedUserScrollView *)userScrollView {
+/**
+ * Lazily instantiate the user scroll view
+ * @return PagedFbUserScrollView
+ */
+- (PagedFbUserScrollView *)userScrollView {
     if (_userScrollView == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        float scaleFactor = screenWidth/320;
-        _userScrollView = [[PagedUserScrollView alloc] initWithFrame:CGRectMake(12 * scaleFactor, 0, 296 * scaleFactor, 150)];
+        _userScrollView = [[PagedFbUserScrollView alloc] initWithFrame:CGRectMake(17, 0, screenWidth - 34, 170)];
         _userScrollView.delegate = self;
     }
     return _userScrollView;
 }
 
-- (FbUserInfoButtons *)userInfoButtons {
-    if (_userInfoButtons == nil) {
+/**
+ * Lazily instantiate the profile button
+ * @return UIButton
+ */
+-(UIButton *)profileButton {
+    if (_profileButton == nil) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        float scaleFactor = screenWidth/320;
-        _userInfoButtons = [[FbUserInfoButtons alloc] initWithFrame:CGRectMake(10 * scaleFactor, 5, 300 * scaleFactor, 64)];
-        _userInfoButtons.delegate = self;
+        _profileButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, screenWidth * 0.33, 75)];
+        [_profileButton setImage:[UIImage imageNamed:@"FbUserInfoProfileButton"] forState:UIControlStateNormal];
+        [_profileButton addTarget:self action:@selector(profileButtonTap) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _userInfoButtons;
+    return _profileButton;
 }
+
+/**
+ * Lazily instantiate the save button
+ * @return UIButton
+ */
+-(UIButton *)messageButton {
+    if (_messageButton == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _messageButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.335, 0, screenWidth * 0.33, 75)];
+        [_messageButton setImage:[UIImage imageNamed:@"FbUserInfoMessageButton"] forState:UIControlStateNormal];
+        [_messageButton addTarget:self action:@selector(messageButtonTap) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _messageButton;
+}
+
+/**
+ * Lazily instantiate the more button
+ * @return UIButton
+ */
+-(UIButton *)photoButton {
+    if (_photoButton == nil) {
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        _photoButton = [[UIButton alloc] initWithFrame:CGRectMake(screenWidth * 0.67, 0, screenWidth * 0.33, 75)];
+        [_photoButton setImage:[UIImage imageNamed:@"FbUserInfoPhotoButton"] forState:UIControlStateNormal];
+        [_photoButton addTarget:self action:@selector(photoButtonTap) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _photoButton;
+}
+
 
 #pragma mark - alert view and actionsheet delegates
 -(void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -226,12 +260,30 @@
     [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
+-(void)hiButtonClicked:(SuggestFriend *)suggestedUser {
+    Reachability *internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    if ([internetReachable isReachable]) {
+        WebViewUser *webViewUser = [[WebViewUser alloc] init];
+        webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", suggestedUser.uid];
+        webViewUser.uid = suggestedUser.uid;
+        webViewUser.name = suggestedUser.name;
+        [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Internet Connections"
+                                                          message:@"Connect to internet and try again."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+}
+
 #pragma mark - button tap
 - (void)profileButtonTap {
     WebViewUser *webViewUser = [[WebViewUser alloc] init];
     webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?id=%@", self.targetUid];
     webViewUser.uid = self.targetUid;
-    webViewUser.name = self.username.text;
+    webViewUser.name = self.fbUserInfo.name;
     [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
@@ -239,7 +291,7 @@
     WebViewUser *webViewUser = [[WebViewUser alloc] init];
     webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/messages/compose?ids=%@", self.targetUid];
     webViewUser.uid = self.targetUid;
-    webViewUser.name = self.username.text;
+    webViewUser.name = self.fbUserInfo.name;
     [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
@@ -247,112 +299,76 @@
     WebViewUser *webViewUser = [[WebViewUser alloc] init];
     webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=photos&id=%@", self.targetUid];
     webViewUser.uid = self.targetUid;
-    webViewUser.name = self.username.text;
+    webViewUser.name = self.fbUserInfo.name;
     [self performSegueWithIdentifier:@"webView" sender:webViewUser];
 }
 
-- (void)friendButtonTap {
-    WebViewUser *webViewUser = [[WebViewUser alloc] init];
-    webViewUser.url = [NSString stringWithFormat:@"https://m.facebook.com/profile.php?v=friends&id=%@", self.targetUid];
-    webViewUser.uid = self.targetUid;
-    webViewUser.name = self.username.text;
-    [self performSegueWithIdentifier:@"webView" sender:webViewUser];
+- (IBAction)shareClicked:(id)sender {
+    [[self recommendFbUserRequest] shareUserWithUid:self.targetUid];
 }
 
 #pragma mark - Fb user info request delegate
--(void)notifyFbUserInfoRequestFail {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                      message:@"User did not exist or you don't have permission to access this user."
-                                                     delegate:self
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:nil];
-    
-    [message show];
-}
-
--(void)fbUserInfoRequestMutualFriendsCount:(int16_t)mutualFriendsCount {
-    self.numMutualFriends.text = [NSString stringWithFormat:@"%d mutual friends", mutualFriendsCount];
-}
-
--(void)fbUserInfoRequestName:(NSString *)name {
-    self.username.text = name;
-    if ([DbFBUserRequest addFbUserWithUid:self.targetUid andName:name])
-        [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
-}
-
--(void)fbUserInfoRequestOngoingEvents:(NSArray *)ongoingEvents {
-    self.ongoingEvents = ongoingEvents;
-    if ([self.ongoingEvents count] > 0) {
-        [[self eventScrollView] setEvents:ongoingEvents];
-        [self.mainTable reloadData];
-        [self.eventTable reloadData];
-    }
-}
-
--(void)fbUserInfoRequestSuggestedFriends:(NSArray *)users {
-    self.suggestedFriends = users;
-    if ([self.suggestedFriends count] > 0) {
-        [[self userScrollView] setSuggestedUsers:users];
-        [self.mainTable reloadData];
-    }
-}
-
--(void)fbUserInfoRequestPhotos:(NSArray *)urls {
-    self.photoUrls = urls;
-    if ([self.photoUrls count] > 0) {
-        [[self photoScrollView] setScrollViewPhotoUrls:urls withContentModeFit:NO];
-        [self.mainTable reloadData];
-    }
-}
-
--(void)fbUserInfoRequestPastEvents:(NSArray *)pastEvents {
-    self.pastEvents = pastEvents;
-    if ([self.pastEvents count] > 0) [self.eventTable reloadData];
-}
-
--(void)fbUserInfoRequestProfileCover:(NSString *)cover {
-    //we first setup the view
-    [self.mainTable setHidden:false];
+-(void)fbUserInfoRequestResult:(FbUserInfo *)userInfo {
+    self.fbUserInfo = userInfo;
     [self.loadingSpinner stopAnimating];
-    [self.viewSegmentControl setEnabled:true];
-    [self.viewSegmentControl setSelectedSegmentIndex:0];
-    [self.shareButton setEnabled:true];
     
-    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-    self.coverImage.frame = CGRectMake(0, 0, screenWidth, self.coverImage.frame.size.height);
-    
-    if ([cover length] > 0)
-        [self.coverImage setImageWithURL:[NSURL URLWithString:cover]];
-    else [self.coverImage setImage:[MyColor imageWithColor:[UIColor darkGrayColor]]];
-}
-
-#pragma mark - view delegate
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.eventTable.nxEV_hideSeparatorLinesWhenShowingEmptyView = true;
-    self.eventTable.nxEV_emptyView = [self emptyView];
-    [self.mainTable setHidden:true];
-    [self.eventTable setHidden:true];
-    [self.loadingSpinner setHidesWhenStopped:true];
-    [self.loadingSpinner startAnimating];
-    [self.shareButton setEnabled:false];
-    [self.viewSegmentControl setEnabled:false];
-    [self userInfoButtons];
-
-    //view load
-    if (self.targetUid != nil) {
-        NSString *profilePictureUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=100&height=100", self.targetUid];
-        [self.profileImage setImageWithURL:[NSURL URLWithString:profilePictureUrl]];
-        [[self fbUserInfoRequest] queryFbUserInfo:self.targetUid];
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Unknown Error"
-                                                          message:@"Frenvent encounter unknown error, attempt to recover to prev state."
+    if (userInfo == nil) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:@"User did not exist or you don't have permission to access this user."
                                                          delegate:self
                                                 cancelButtonTitle:@"OK"
                                                 otherButtonTitles:nil];
         
         [message show];
+    } else {
+        if (userInfo.recommendFriends && [userInfo.recommendFriends count] > 0)
+            [[self userScrollView] setSuggestedUsers:userInfo.recommendFriends];
+        if (userInfo.photos && [userInfo.photos count] > 0)
+            [[self photoScrollView] setScrollViewPhotoUrls:self.fbUserInfo.photos withContentModeFit:NO];
+        if (userInfo.events && [userInfo.events count] > 0)
+            [[self eventScrollView] setEvents:self.fbUserInfo.events];
+        
+        float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+        
+        UIImageView *cover = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, self.headerView.frame.size.height)];
+        cover.backgroundColor = [UIColor lightGrayColor];
+        cover.contentMode = UIViewContentModeScaleAspectFill;
+        cover.clipsToBounds = YES;
+        if (userInfo.cover != nil && [userInfo.cover length] > 0) [cover setImageWithURL:[NSURL URLWithString:userInfo.cover]];
+        CAGradientLayer *gradient = [CAGradientLayer layer];
+        gradient.frame = CGRectMake(0, self.headerView.frame.size.height - 40, screenWidth, 40);
+        gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[UIColor colorWithWhite:0 alpha:0.95] CGColor], nil];
+        [cover.layer insertSublayer:gradient atIndex:0];
+        [self.headerView addSubview:cover];
+
+        UIImageView *profilePic = [[UIImageView alloc] initWithFrame:CGRectMake(20, self.headerView.frame.size.height - 90, 75, 75)];
+        profilePic.contentMode = UIViewContentModeScaleAspectFill;
+        [profilePic.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        [profilePic.layer setBorderWidth:2];
+        NSString *profileUrl = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?width=150&height=150", self.targetUid];
+        [profilePic setImageWithURL:[NSURL URLWithString:profileUrl]];
+        [self.headerView addSubview:profilePic];
+        
+        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(110, self.headerView.frame.size.height - 35, screenWidth - 130, 20)];
+        name.font = [UIFont fontWithName:@"SourceSansPro-Semibold" size:16];
+        name.textColor = [UIColor whiteColor];
+        name.text = userInfo.name;
+        [self.headerView addSubview:name];
+        self.title = userInfo.name;
+            
+        [self.mainTable reloadData];
+        if ([DbFBUserRequest addFbUserWithUid:self.targetUid andName:userInfo.name])
+            [self.shareButton setEnabled:[FBDialogs canPresentMessageDialog]];
+        
     }
+}
+
+#pragma mark - view delegate
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.shareButton setEnabled:false];
+
+    [[self fbUserInfoRequest] queryFbUserInfo:self.targetUid];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -360,14 +376,13 @@
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [UIApplication sharedApplication].statusBarHidden = NO;
     
-    [self.profileImage.layer setMasksToBounds:YES];
-    [self.profileImage.layer setBorderWidth:3];
-    [self.profileImage.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-    
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -386,183 +401,123 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - view segment
-- (IBAction)viewSegments:(id)sender {
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-    NSInteger index = [segmentedControl selectedSegmentIndex];
-    
-    if (index == 0) {
-        [self.mainTable setHidden:false];
-        [self.eventTable setHidden:true];
-    } else if (index == 1) {
-        [self.mainTable setHidden:true];
-        [self.eventTable setHidden:false];
-    }
-}
-
-- (IBAction)shareClicked:(id)sender {
-    [[self recommendFbUserRequest] shareUserWithUid:self.targetUid];
-}
-
 #pragma mark - table view delegate
-// Get the number of section in the table view
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if ([tableView isEqual:self.mainTable]) return 2;
-    else {
-        NSInteger numSections = 0;
-        if ([self.ongoingEvents count] > 0) numSections++;
-        if ([self.pastEvents count] > 0) numSections++;
-        return numSections;
-    }
+//number of sections in table
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (self.fbUserInfo == nil) return 0;
+    else return 1;
 }
 
-// Get the section title
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ([tableView isEqual:self.mainTable]) return nil;
-    else {
-        if (section == 0 && [self.ongoingEvents count] > 0) return @"FUTURE EVENTS";
-        else if ((section == 0 && [self.ongoingEvents count] == 0) || section == 1) return @"PAST EVENTS";
-        else return nil;
-    }
+//number of row in section. If recommended users are found, then 3. Otherwise, it will be 2
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger numRows = 0;
+    if (self.fbUserInfo.recommendFriends && [self.fbUserInfo.recommendFriends count] > 0) numRows++;
+    if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) numRows++;
+    if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) numRows++;
+
+    return numRows;
 }
 
-// Get the number of row in section
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([tableView isEqual:self.mainTable]) {
-        if (section == 0) return 1;
-        else {
-            NSInteger numRow = 0;
-            if ([self.suggestedFriends count] > 0) numRow++;
-            if ([self.ongoingEvents count] > 0) numRow++;
-            if ([self.photoUrls count] > 0) numRow++;
-            return numRow;
-        }
-    } else {
-        if (section == 0 && [self.ongoingEvents count] > 0) return [self.ongoingEvents count];
-        else if ((section == 0 && [self.ongoingEvents count] == 0) || section == 1) return [self.pastEvents count];
-        else return 0;
-    }
+// customized header view
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc] init];
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    UIView *buttonsContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 75)];
+    buttonsContainer.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    [buttonsContainer.layer setMasksToBounds:NO];
+    [buttonsContainer.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [buttonsContainer.layer setShadowRadius:2];
+    [buttonsContainer.layer setShadowOffset:CGSizeMake(0, 2)];
+    [buttonsContainer.layer setShadowOpacity:0.15f];
+    
+    [buttonsContainer addSubview:[self profileButton]];
+    [buttonsContainer addSubview:[self photoButton]];
+    [buttonsContainer addSubview:[self messageButton]];
+    
+    [headerView addSubview:buttonsContainer];
+    return headerView;
+}
+
+// Customize the height for the title
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 80;
 }
 
 // Display the table view cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isEqual:self.eventTable]) return [self eventCellForRowAtIndexPath:indexPath];
-    else return [self mainContentCellForRowAtIndexPath:indexPath];
-}
-
-//handle the selected action
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Event *event;
-    if (indexPath.section == 0 && [self.ongoingEvents count] > 0) event =
-        [self.ongoingEvents objectAtIndex:indexPath.row];
-    else if ((indexPath.section == 0 && [self.ongoingEvents count] == 0) || indexPath.section == 1)
-        event = [self.pastEvents objectAtIndex:indexPath.row];
-    [self performSegueWithIdentifier:@"eventDetailView" sender:event.eid];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isEqual:self.eventTable]) return 105;
-    else {
-        if (indexPath.section == 0) return 80;
-        else return 210;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellView" forIndexPath:indexPath];
+    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellView"];
+    
+    UIView *containerView = (UIView *)[cell viewWithTag:100];
+    [containerView.layer setCornerRadius:4.0f];
+    [containerView.layer setMasksToBounds:NO];
+    [containerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [containerView.layer setShadowRadius:2.5];
+    [containerView.layer setShadowOffset:CGSizeMake(0, 2)];
+    [containerView.layer setShadowOpacity:0.15f];
+    
+    UILabel *label = (UILabel *)[cell viewWithTag:101];
+    UIView *scrollViewContainer = (UIView *)[cell viewWithTag:102];
+    
+    for (UIView *subView in scrollViewContainer.subviews) {
+        [subView removeFromSuperview];
     }
-}
-
-#pragma mark - table view cell configuration
-- (UITableViewCell *)eventCellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self.eventTable dequeueReusableCellWithIdentifier:@"fbUserEventItem" forIndexPath:indexPath];
-    if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fbUserEventItem"];
     
-    UIView *bgColorView = [[UIView alloc] init];
-    bgColorView.backgroundColor = [UIColor orangeColor];
-    [cell setSelectedBackgroundView:bgColorView];
+    NSString *shortenName = [[self.fbUserInfo.name componentsSeparatedByString:@" "] objectAtIndex:0];
     
-    Event *event;
-    if (indexPath.section == 0 && [self.ongoingEvents count] > 0)
-        event = [self.ongoingEvents objectAtIndex:indexPath.row];
-    else if ((indexPath.section == 0 && [self.ongoingEvents count] == 0) || indexPath.section == 1)
-        event = [self.pastEvents objectAtIndex:indexPath.row];
-    
-    UIImageView *eventPicture = (UIImageView *)[cell viewWithTag:400];
-    UILabel *eventName = (UILabel *)[cell viewWithTag:401];
-    UILabel *eventLocation = (UILabel *)[cell viewWithTag:402];
-    UILabel *eventHost = (UILabel *)[cell viewWithTag:403];
-    UILabel *eventStartTime = (UILabel *)[cell viewWithTag:404];
-    
-    [eventPicture setImageWithURL:[NSURL URLWithString:event.picture]];
-    eventName.text = event.name;
-    eventLocation.text = event.location;
-    eventHost.attributedText = [event getHostAttributedString];
-    
-    eventStartTime.text = [TimeSupport getDisplayDateTime:[event.startTime longLongValue]];
-    return cell;
-
-}
-
-- (UITableViewCell *)mainContentCellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        UITableViewCell *cell = [self.mainTable dequeueReusableCellWithIdentifier:@"fbUserInfoMainContentButtons" forIndexPath:indexPath];
-        if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fbUserInfoMainContentButtons"];
-        [cell setUserInteractionEnabled:true];
-        
-        UIView *contentView = (UIView *)[cell viewWithTag:1000];
-        [contentView addSubview:[self userInfoButtons]];
-        return cell;
-    } else {
-        UITableViewCell *cell = [self.mainTable dequeueReusableCellWithIdentifier:@"fbUserInfoMainContentViews" forIndexPath:indexPath];
-        if (cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"fbUserInfoMainContentViews"];
-        
-        UIView *cellContainer = (UIView *)[cell viewWithTag:100];
-        [cellContainer.layer setCornerRadius:3.0f];
-        [cellContainer.layer setMasksToBounds:YES];
-        [cellContainer.layer setBorderWidth:0.5f];
-        [cellContainer.layer setBorderColor:[[UIColor lightGrayColor] CGColor]];
-        
-        UILabel *cellTitleLabel = (UILabel *)[cell viewWithTag:101];
-        UIView *scrollContainer = (UIView *)[cell viewWithTag:102];
-        
-        for (UIView *subview in [scrollContainer subviews])
-            [subview removeFromSuperview];
-        
-        if ([self.ongoingEvents count] > 0) {
-            if (indexPath.row == 0) {
-                cellTitleLabel.text = @"Upcoming Events";
-                [scrollContainer addSubview:[self eventScrollView]];
+    if (indexPath.row == 0) {
+        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
+            label.text = @"Upcoming Events";
+            [scrollViewContainer addSubview:[self eventScrollView]];
+        } else if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) {
+            label.text = @"User Photos";
+            [scrollViewContainer addSubview:[self photoScrollView]];
+        } else {
+            label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
+            [scrollViewContainer addSubview:[self userScrollView]];
+        }
+    } else if (indexPath.row == 1) {
+        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
+            if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) {
+                label.text = @"User Photos";
+                [scrollViewContainer addSubview:[self photoScrollView]];
             } else {
-                if ([self.photoUrls count] > 0) {
-                    if (indexPath.row == 1) {
-                        cellTitleLabel.text = @"Photos";
-                        [scrollContainer addSubview:[self photoScrollView]];
-                    } else {
-                        cellTitleLabel.text = @"Suggested Friends";
-                        [scrollContainer addSubview:[self userScrollView]];
-                    }
-                } else {
-                    cellTitleLabel.text = @"Suggested Friends";
-                    [scrollContainer addSubview:[self userScrollView]];
-                }
-            }
-        } else if ([self.photoUrls count] > 0) {
-            if (indexPath.row == 0) {
-                cellTitleLabel.text = @"Photos";
-                [scrollContainer addSubview:[self photoScrollView]];
-            } else {
-                cellTitleLabel.text = @"Suggested Friends";
-                [scrollContainer addSubview:[self userScrollView]];
+                label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
+                [scrollViewContainer addSubview:[self userScrollView]];
             }
         } else {
-            cellTitleLabel.text = @"Suggested Friends";
-            [scrollContainer addSubview:[self userScrollView]];
+            label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
+            [scrollViewContainer addSubview:[self userScrollView]];
         }
-        
-        return cell;
+    } else {
+        label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
+        [scrollViewContainer addSubview:[self userScrollView]];
     }
+    
+    return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    float screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    if (indexPath.row == 0) {
+        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) return 241;
+        else if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) return 0.6 * screenWidth + 71;
+        else return 241;
+    } else if (indexPath.row == 1) {
+        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
+            if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) return 0.6 * screenWidth + 71;
+            else return 241;
+        } else return 241;
+    } else return 241;
 }
 
 #pragma mark - segue preparation
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"webView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         WebViewController *viewController = segue.destinationViewController;
         WebViewUser *webViewUser = (WebViewUser *)sender;
         viewController.url = webViewUser.url;
@@ -577,7 +532,7 @@
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
         int photoIndex = [(NSNumber *)sender intValue];
         FbUserPhotoViewController *viewController = segue.destinationViewController;
-        viewController.photoUrls = self.photoUrls;
+        viewController.photoUrls = self.fbUserInfo.photos;
         viewController.index = photoIndex;
     }
 }

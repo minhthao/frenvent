@@ -18,7 +18,6 @@
 #import "BackwardTimeSupport.h"
 #import "NotificationManager.h"
 #import "NotificationGroup.h"
-#import "EventParticipant.h"
 #import "EventParticipantView.h"
 #import "FbUserInfoViewController.h"
 #import "Reachability.h"
@@ -169,8 +168,16 @@ CLLocation *lastKnown;
 - (NSMutableArray *)quoteArrays {
     if (_quoteArrays == nil) {
         _quoteArrays = [[NSMutableArray alloc] init];
-        [_quoteArrays addObject:@"“Hey that bubble chat icon looks like a perfect ice breaker, don’t you think?”"];
-        [_quoteArrays addObject:@"“You’re not gonna wait for me to add you, right?”"];
+        [_quoteArrays addObject:@"“The first step is you have to say that you like.”"];
+        [_quoteArrays addObject:@"“It is impossible to win the race unless you venture to run.”"];
+        [_quoteArrays addObject:@"“The first step toward meaningful relationship is awareness.”"];
+        [_quoteArrays addObject:@"“Faith is taking the first step even when you don't see the whole staircase.”"];
+        [_quoteArrays addObject:@"“A journey of a thousand miles begins with a single step.”"];
+        [_quoteArrays addObject:@"“Trust is the first step to friendship.”"];
+        [_quoteArrays addObject:@"“The vision must be followed by venture.”"];
+        [_quoteArrays addObject:@"“It is not enough to stare up the steps - step up the stairs!”"];
+        [_quoteArrays addObject:@"“Nothing ventured, nothing gained. And venture belongs to the adventurous.”"];
+        [_quoteArrays addObject:@"“Everything starts with one step, or one brick, or one word or one day.”"];
     }
     return _quoteArrays;
 }
@@ -178,8 +185,8 @@ CLLocation *lastKnown;
 #pragma mark - other delegates
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        NSString *reviewURL = @"itms-apps://itunes.apple.com/app/id908123368";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+//        NSString *reviewURL = @"itms-apps://itunes.apple.com/app/id908123368";
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
     }
 }
 
@@ -318,6 +325,9 @@ CLLocation *lastKnown;
         self.navigationController.hidesBarsOnSwipe = YES;
         [self.navigationController.barHideOnSwipeGestureRecognizer addTarget:self action:@selector(swipe:)];
     }
+    
+    CGRect navFrame =  self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -328,7 +338,8 @@ CLLocation *lastKnown;
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    [[UIApplication sharedApplication] setStatusBarHidden:(self.navigationController.navigationBar.frame.origin.y < 0) withAnimation:UIStatusBarAnimationSlide];
+    //[UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
 }
 
 #pragma mark - Table view data source
@@ -448,9 +459,7 @@ CLLocation *lastKnown;
             notificationHeader.attributedText = [[self notificationManager] getDescriptionForNotificationGroup:notificationGroup];
             EventParticipantView *participantView = [[EventParticipantView alloc] initWithFrame:profilePicFrame];
             participantView.delegate = self;
-            EventParticipant *participant = [[EventParticipant alloc] init];
-            participant.friend = notificationGroup.friend;
-            [participantView setEventPartipant:participant];
+            [participantView setEventPartipant:notificationGroup.friend];
             [profilePicContainer addSubview:participantView];
             
             arrowButton.hidden = false;
@@ -711,7 +720,7 @@ CLLocation *lastKnown;
  * Handle user profile tap event
  */
 -(void)userProfileTap:(UIGestureRecognizer *)recognizer {
-    [self performSegueWithIdentifier:@"myEventsView" sender:nil];
+    self.tabBarController.selectedIndex = 4;
 }
 
 /**
@@ -745,9 +754,7 @@ CLLocation *lastKnown;
         NSString *eid = (NSString *)sender;
         EventDetailViewController *viewController = segue.destinationViewController;
         viewController.eid = eid;
-    } else if ([[segue identifier] isEqualToString:@"myEventsView"]) {
-        self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
+    } 
 }
 
 - (IBAction)rateAction:(id)sender {
