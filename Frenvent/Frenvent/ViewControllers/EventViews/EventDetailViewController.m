@@ -474,7 +474,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     }
     
     CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -485,7 +485,14 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+        
+        if (![UIApplication sharedApplication].statusBarHidden) {
+            CGRect navFrame =  self.navigationController.navigationBar.frame;
+            self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
+        }
+    }];
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -505,6 +512,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
             viewController.eid = self.eventDetail.eid;
         } else {
             viewController.url = [NSString stringWithFormat:@"https://m.facebook.com/events/%@/permalink/guests/?filter=friends", self.eventDetail.eid];
+            viewController.eid = self.eventDetail.eid;
         }
     } else if ([[segue identifier] isEqualToString:@"friendInfoView"]) {
         self.navigationItem.backBarButtonItem=[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];

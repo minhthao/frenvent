@@ -26,7 +26,7 @@
     }
     
     CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 
 -(void)viewDidAppear:(BOOL)animated {

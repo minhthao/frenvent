@@ -115,9 +115,6 @@
     if ([self.navigationController respondsToSelector:@selector(barHideOnSwipeGestureRecognizer)]) {
         self.navigationController.hidesBarsOnSwipe = NO;
     }
-    
-    CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
 }
 
 #pragma mark - Table view data source

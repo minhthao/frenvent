@@ -153,11 +153,13 @@ NSInteger quotePos;
 #pragma mark - friends delegate
 - (void) notifyFriendsQueryCompleted {
     numQueriesDone ++;
+    [[self friendEventsRequest] initFriendEvents];
    [self checkIfAllQueryCompleted];
 }
 
 - (void) notifyFriendsQueryError {
     numQueriesDone ++;
+    [[self friendEventsRequest] initFriendEvents];
     [self checkIfAllQueryCompleted];
 }
 
@@ -227,7 +229,6 @@ NSInteger quotePos;
     else numQueriesDone++;
     
     [[self friendsRequest] initFriends];
-    [[self friendEventsRequest] initFriendEvents];
     [[self myEventsRequest] initMyEvents];
 }
 

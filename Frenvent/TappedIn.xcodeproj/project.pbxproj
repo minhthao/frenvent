@@ -1201,7 +1201,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Minh Thao Nguyen (P8QMLR5W8P)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1221,7 +1221,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "3974bde1-e101-49e9-9476-5cdf4cc875d1";
+				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1242,7 +1242,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Minh Thao Nguyen (P8QMLR5W8P)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1256,7 +1256,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PROVISIONING_PROFILE = "3974bde1-e101-49e9-9476-5cdf4cc875d1";
+				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1267,7 +1267,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Minh Thao Nguyen (P8QMLR5W8P)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1282,7 +1282,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = TappedIn;
-				PROVISIONING_PROFILE = "3974bde1-e101-49e9-9476-5cdf4cc875d1";
+				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1292,7 +1292,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Minh Thao Nguyen (P8QMLR5W8P)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1307,7 +1307,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = TappedIn;
-				PROVISIONING_PROFILE = "3974bde1-e101-49e9-9476-5cdf4cc875d1";
+				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

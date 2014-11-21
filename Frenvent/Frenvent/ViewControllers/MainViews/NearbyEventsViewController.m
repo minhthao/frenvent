@@ -89,7 +89,6 @@ BOOL isUpdating;
     self.filterType = FILTER_TYPE_ALL_EVENT;
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.mapView setShowsUserLocation:YES];
-    [self.refreshButton setEnabled:false];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -102,7 +101,7 @@ BOOL isUpdating;
     }
 
     CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 
 

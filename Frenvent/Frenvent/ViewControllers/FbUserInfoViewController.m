@@ -382,7 +382,7 @@
     }
     
     CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -393,7 +393,14 @@
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+        
+        if (![UIApplication sharedApplication].statusBarHidden) {
+            CGRect navFrame =  self.navigationController.navigationBar.frame;
+            self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -468,32 +475,32 @@
     NSString *shortenName = [[self.fbUserInfo.name componentsSeparatedByString:@" "] objectAtIndex:0];
     
     if (indexPath.row == 0) {
-        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
+        if (self.fbUserInfo.recommendFriends && [self.fbUserInfo.recommendFriends count] > 0) {
+            label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
+            [scrollViewContainer addSubview:[self userScrollView]];
+        } else if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
             label.text = @"Upcoming Events";
             [scrollViewContainer addSubview:[self eventScrollView]];
-        } else if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) {
+        } else {
             label.text = @"User Photos";
             [scrollViewContainer addSubview:[self photoScrollView]];
-        } else {
-            label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
-            [scrollViewContainer addSubview:[self userScrollView]];
         }
     } else if (indexPath.row == 1) {
-        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
-            if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) {
+        if (self.fbUserInfo.recommendFriends && [self.fbUserInfo.recommendFriends count] > 0) {
+            if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
+                label.text = @"Upcoming Events";
+                [scrollViewContainer addSubview:[self eventScrollView]];
+            } else {
                 label.text = @"User Photos";
                 [scrollViewContainer addSubview:[self photoScrollView]];
-            } else {
-                label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
-                [scrollViewContainer addSubview:[self userScrollView]];
             }
         } else {
-            label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
-            [scrollViewContainer addSubview:[self userScrollView]];
+            label.text = @"User Photos";
+            [scrollViewContainer addSubview:[self photoScrollView]];
         }
     } else {
-        label.text = [NSString stringWithFormat:@"People %@'s been hanging out with", shortenName];
-        [scrollViewContainer addSubview:[self userScrollView]];
+        label.text = @"User Photos";
+        [scrollViewContainer addSubview:[self photoScrollView]];
     }
     
     return cell;
@@ -503,15 +510,14 @@
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     
     if (indexPath.row == 0) {
-        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) return 241;
-        else if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) return 0.6 * screenWidth + 71;
-        else return 241;
+        if (self.fbUserInfo.recommendFriends && [self.fbUserInfo.recommendFriends count] > 0) return 241;
+        else if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) return 241;
     } else if (indexPath.row == 1) {
-        if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) {
-            if (self.fbUserInfo.photos && [self.fbUserInfo.photos count] > 0) return 0.6 * screenWidth + 71;
-            else return 241;
-        } else return 241;
-    } else return 241;
+        if (self.fbUserInfo.recommendFriends && [self.fbUserInfo.recommendFriends count] > 0) {
+            if (self.fbUserInfo.events && [self.fbUserInfo.events count] > 0) return 241;
+        }
+    }
+    return 0.6 * screenWidth + 71;
 }
 
 #pragma mark - segue preparation

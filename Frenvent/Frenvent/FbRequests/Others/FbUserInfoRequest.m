@@ -32,6 +32,7 @@
     NSString *userInfo = [NSString stringWithFormat:@"SELECT name, pic_cover FROM user WHERE uid = %@", uid];
     NSString *userPhoto = [NSString stringWithFormat:@"SELECT src_big, caption_tags FROM photo WHERE owner = %@ ORDER BY created DESC LIMIT 50", uid];
     
+    NSLog(@"%@", uid);
     NSString *query = [NSString stringWithFormat:@"{'userInfo':'%@', 'userPhoto':'%@'}", userInfo, userPhoto];
     
     NSDictionary *queryParams = @{@"q": query};

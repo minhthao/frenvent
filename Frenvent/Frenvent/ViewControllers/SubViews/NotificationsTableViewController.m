@@ -327,7 +327,7 @@ CLLocation *lastKnown;
     }
     
     CGRect navFrame =  self.navigationController.navigationBar.frame;
-    self.navigationController.navigationBar.frame = CGRectMake(0, 20, navFrame.size.width, navFrame.size.height);
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -338,8 +338,14 @@ CLLocation *lastKnown;
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    [[UIApplication sharedApplication] setStatusBarHidden:(self.navigationController.navigationBar.frame.origin.y < 0) withAnimation:UIStatusBarAnimationSlide];
-    //[UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+    [UIView animateWithDuration:0.2 animations:^{
+        [UIApplication sharedApplication].statusBarHidden = (self.navigationController.navigationBar.frame.origin.y < 0);
+        
+        if (![UIApplication sharedApplication].statusBarHidden) {
+            CGRect navFrame =  self.navigationController.navigationBar.frame;
+            self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
+        }
+    }];
 }
 
 #pragma mark - Table view data source
