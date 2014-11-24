@@ -60,6 +60,8 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 @property (nonatomic, strong) PagedUserScrollView *usersScrollView;
 @property (nonatomic, strong) NSMutableArray *quoteArrays;
 
+@property (nonatomic, strong) UIRefreshControl *uiRefreshControl;
+
 @end
 
 @implementation EventDetailViewController
@@ -372,7 +374,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(void)notifyEventRsvpSuccess:(BOOL)success withRsvp:(NSString *)rsvp {
     if (success) {
         self.eventDetail.rsvp = rsvp;
-        [self.mainView reloadData];
+        [self.tableView reloadData];
         [ToastView showToastInParentView:self.view withText:@"Event successfully RSVP" withDuaration:3.0];
     } else [ToastView showToastInParentView:self.view withText:@"Fail to RSVP event" withDuaration:3.0];
 }
@@ -391,7 +393,6 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
  * If the event did not exist, remove it from our local database and exist
  */
 - (void)notifyEventDidNotExist {
-    [self.loadingSpinner stopAnimating];
     [EventCoreData removeEventWithEid:self.eid];
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
                                                       message:@"Event no longer exist."
@@ -428,9 +429,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     self.eventDetail = eventDetail;
     self.title = eventDetail.name;
     [self showTopView:eventDetail];
-    [self.mainView reloadData];
-    
-    [self.loadingSpinner stopAnimating];
+    [self.tableView reloadData];
 }
 
 /**
@@ -439,14 +438,19 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
  */
 -(void)notifyEventDetailRecommendUserCompleteWithResult:(NSArray *)suggestFriends {
     self.recommendFriends = suggestFriends;
-    [self.mainView reloadData];
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
+    [self.refreshControl removeFromSuperview];
+
 }
 
 /**
  * Notify that query for recommended people has failed
  */
 -(void)notifyEventDetailRecommendUserQueryFail {
-    //do nothing
+    [self.refreshControl endRefreshing];
+    [self.refreshControl removeFromSuperview];
+
 }
 
 #pragma mark - view delegates
@@ -461,6 +465,9 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
     
     float screenWidth = [[UIScreen mainScreen] bounds].size.width;
     self.headerView.frame = CGRectMake(0, 0, screenWidth, 120);
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl beginRefreshing];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -572,7 +579,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
         [[self saveButton] setSelected:true];
         [ToastView showToastInParentView:self.view withText:@"Event added to your calendar" withDuaration:3.0];
     }
-    [self.mainView reloadData];
+    [self.tableView reloadData];
 }
 
 /**
@@ -992,7 +999,7 @@ static NSInteger const ACTION_SHEET_NAVIGATION = 6;
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == [self usersScrollView]) {
         NSIndexPath *recommendUsersIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        UITableViewCell *cell = [self.mainView cellForRowAtIndexPath:recommendUsersIndexPath];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:recommendUsersIndexPath];
         UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
         
         [UIView transitionWithView:quoteLabel duration:.5f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^{

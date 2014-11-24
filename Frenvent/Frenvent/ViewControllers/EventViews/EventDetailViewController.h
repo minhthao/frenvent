@@ -15,16 +15,13 @@
 #import "EventDetailRecommendUserRequest.h"
 #import "PagedUserScrollView.h"
 
-@interface EventDetailViewController : UIViewController <EventDetailsRequestDelegate, UIAlertViewDelegate, DbEventsRequestDelegate, ShareEventRequestDelegate, EventRsvpRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, EventParticipantViewDelegate, EventDetailRecommendUserRequestDelegate, PagedUserScrollViewDelegate, UIScrollViewDelegate>
+@interface EventDetailViewController : UITableViewController <EventDetailsRequestDelegate, UIAlertViewDelegate, DbEventsRequestDelegate, ShareEventRequestDelegate, EventRsvpRequestDelegate, UIActionSheetDelegate,  EventParticipantViewDelegate, EventDetailRecommendUserRequestDelegate, PagedUserScrollViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSString *eid;
 @property (nonatomic) BOOL isModal;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *shareButton;
 - (IBAction)shareAction:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSpinner;
-@property (weak, nonatomic) IBOutlet UITableView *mainView;
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 

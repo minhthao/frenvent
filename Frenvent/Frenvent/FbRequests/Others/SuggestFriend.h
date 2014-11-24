@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *cover;
 @property (nonatomic) int numMutualFriends;
+@property (nonatomic, strong) NSString *mutualFriendName;
 
 @property (nonatomic, strong) NSString *rsvpStatus;
 @property (nonatomic, strong) NSString *gender;

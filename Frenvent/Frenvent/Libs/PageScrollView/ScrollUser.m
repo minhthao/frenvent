@@ -43,14 +43,15 @@
         [self.profilePicture.layer insertSublayer:gradient atIndex:0];
         [self addSubview:self.profilePicture];
         
-        self.name = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 50, frame.size.width - 100, 22)];
+        self.name = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 50, frame.size.width - 85, 22)];
         [self.name setFont:[UIFont fontWithName:@"SourceSansPro-Bold" size:18]];
         [self.name setTextColor:[UIColor whiteColor]];
         [self addSubview:self.name];
         
-        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 28, frame.size.width - 100, 18)];
-        [self.mutualFriend setFont:[UIFont fontWithName:@"SourceSansPro-Regular" size:14]];
-        [self.mutualFriend setTextColor:[UIColor whiteColor]];
+        self.mutualFriend = [[UILabel alloc] initWithFrame:CGRectMake(20, frame.size.height - 28, frame.size.width - 85, 18)];
+        self.mutualFriend.font = [UIFont fontWithName:@"SourceSansPro-Regular" size:14];
+        self.mutualFriend.textColor = [UIColor whiteColor];
+        self.mutualFriend.numberOfLines = 1;
         [self addSubview:self.mutualFriend];
         
         self.sayHiButton = [[UIButton alloc] initWithFrame:CGRectMake(frame.size.width - 54, frame.size.height - 52, 34, 34)];
@@ -71,9 +72,25 @@
     
     self.name.text = user.name;
     
-    if (user.numMutualFriends == 1) self.mutualFriend.text = [NSString stringWithFormat:@"%d friend in common", user.numMutualFriends];
-    else if (user.numMutualFriends != 0) self.mutualFriend.text = [NSString stringWithFormat:@"%d friends in common", user.numMutualFriends];
-    else self.name.frame = CGRectMake(20, self.name.frame.origin.y + 10, self.name.frame.size.width, 22);
+    NSDictionary *boldStringAttributes = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Bold" size:14]};
+    NSDictionary *normalStringAttributed = @{NSFontAttributeName:[UIFont fontWithName:@"SourceSansPro-Regular" size:14]};
+    
+    if (user.numMutualFriends == 0) {
+        self.name.frame = CGRectMake(20, self.name.frame.origin.y + 10, self.name.frame.size.width, 22);
+    } else {
+        if (!user.mutualFriendName) {
+            if (user.numMutualFriends == 1) self.mutualFriend.text = @"1 common friend";
+            else self.mutualFriend.text = [NSString stringWithFormat:@"%d common friends", user.numMutualFriends];
+        }
+        
+        NSMutableAttributedString *mutualFriends = [[NSMutableAttributedString alloc] initWithString:[user.mutualFriendName componentsSeparatedByString: @" "][0] attributes:boldStringAttributes];
+        if (user.numMutualFriends != 1) {
+            [mutualFriends appendAttributedString:[[NSAttributedString alloc] initWithString:@" and " attributes:normalStringAttributed]];
+            [mutualFriends appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", user.numMutualFriends - 1] attributes:boldStringAttributes]];
+            [mutualFriends appendAttributedString:[[NSAttributedString alloc] initWithString:@" others are friends" attributes:normalStringAttributed]];
+        } else [mutualFriends appendAttributedString:[[NSAttributedString alloc] initWithString:@" is friend" attributes:normalStringAttributed]];
+        [self.mutualFriend setAttributedText:mutualFriends];
+    }
 }
 
 -(void)handleUserTap:(UITapGestureRecognizer *)recognizer {

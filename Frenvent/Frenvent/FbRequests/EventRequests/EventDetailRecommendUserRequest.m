@@ -9,6 +9,7 @@
 #import "EventDetailRecommendUserRequest.h"
 #import "SuggestFriend.h"
 #import "Constants.h"
+#import "FriendCoreData.h"
 
 static int const QUERY_LIMIT = 500;
 
@@ -25,9 +26,7 @@ static int const QUERY_LIMIT = 500;
                               eid, QUERY_LIMIT];
     NSString *participantInfo = @"SELECT uid, name, mutual_friend_count, sex, pic_cover FROM user "
                                  "WHERE uid IN (SELECT uid FROM #participants)";
-                                   
-                                   
-                                   
+    
     NSString *query = [NSString stringWithFormat:@"{'participants':'%@', 'participantInfo':'%@'}",
                        participants, participantInfo];
     
@@ -35,6 +34,10 @@ static int const QUERY_LIMIT = 500;
     return queryParams;
 }
 
+/**
+ * Query for the recommended user
+ * @param eid
+ */
 -(void)queryRecommendUser:(NSString *)eid {
     if ([FBSession activeSession].isOpen &&
         [[FBSession activeSession] hasGranted:@"friends_events"] &&
@@ -53,6 +56,10 @@ static int const QUERY_LIMIT = 500;
     } else [self.delegate notifyEventDetailRecommendUserQueryFail];
 }
 
+/**
+ * Process the query results for the recommend users
+ * @param eid
+ */
 -(void)doQueryForRecommendUser:(NSString *)eid {
     NSDictionary *queryParams = [self prepareQueryParams:eid];
     
@@ -91,7 +98,7 @@ static int const QUERY_LIMIT = 500;
                                       suggestFriend.cover = cover;
                                       
                                       [recommendUsers addObject:suggestFriend];
-                                    }
+                                  }
                                   
                                   //now we sort the suggest friends
                                   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -118,10 +125,64 @@ static int const QUERY_LIMIT = 500;
                                           [suggestFriends addObject:[recommendUsers objectAtIndex:i]];
                                   }
                                   
-                                  [self.delegate notifyEventDetailRecommendUserCompleteWithResult:suggestFriends];
+                                  if (suggestFriends.count == 0) [self.delegate notifyEventDetailRecommendUserCompleteWithResult:suggestFriends];
+                                  else [self queryMutualFriendName:suggestFriends];
                               }
                           }];
 }
 
+/**
+ * Prepare the query method to get the name of the mutual friends
+ * @param NSArray
+ * @return NSDictionary
+ */
+- (NSDictionary *) prepareMutualFriendNameQueryParams:(NSArray *)suggestFriends {
+    NSMutableString *query = [[NSMutableString alloc] initWithString:@"{"];
+    
+    for (int i = 0; i < suggestFriends.count; i++) {
+        if (((SuggestFriend *)[suggestFriends objectAtIndex:i]).numMutualFriends > 0) {
+            NSString *subQueryName = [NSString stringWithFormat:@"query%d", i];
+            NSString *subQuery = [NSString stringWithFormat:@"SELECT uid2, uid1 FROM friend WHERE uid1=%@ AND uid2 IN (SELECT uid2 FROM friend WHERE uid1=me() LIMIT 5000) LIMIT 1", ((SuggestFriend *)[suggestFriends objectAtIndex:i]).uid];
+            NSString *subQueryWithName = [NSString stringWithFormat:@"'%@':'%@'", subQueryName, subQuery];
+            [query appendString:subQueryWithName];
+            if (i != suggestFriends.count - 1) [query appendString:@", "];
+        }
+    }
+    [query appendString:@"}"];
+    
+    NSDictionary *queryParams = @{@"q": query};
+    return queryParams;
+}
+
+/**
+ * Do the query for getting the mutual friend name
+ * @param NSArray
+ */
+- (void)queryMutualFriendName:(NSArray *)suggestFriends {
+    NSDictionary *queryParams = [self prepareMutualFriendNameQueryParams:suggestFriends];
+    
+    [FBRequestConnection startWithGraphPath:@"/fql"
+                                 parameters:queryParams
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error) {
+                                  NSArray *data = (NSArray *)result[@"data"];
+                                  
+                                  for (NSInteger i = 0; i < data.count; i++) {
+                                      for (NSDictionary *uids in data[i][@"fql_result_set"]) {
+                                          for (SuggestFriend *suggestFriend in suggestFriends) {
+                                              if ([suggestFriend.uid isEqualToString:uids[@"uid1"]]) {
+                                                  suggestFriend.mutualFriendName = [FriendCoreData getFriendWithUid:uids[@"uid2"]].name;
+                                                  break;
+                                              }
+                                          }
+                                      }
+                                  }
+                                  
+                              }
+                              [self.delegate notifyEventDetailRecommendUserCompleteWithResult:suggestFriends];
+                          }
+     ];
+}
 
 @end
