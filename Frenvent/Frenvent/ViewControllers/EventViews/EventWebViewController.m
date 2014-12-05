@@ -69,6 +69,11 @@
 #pragma mark - web view delegate
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    CGRect navFrame = self.navigationController.navigationBar.frame;
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, navFrame.size.width, 64);
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

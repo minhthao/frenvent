@@ -54,7 +54,6 @@ CLLocation *lastKnown;
 @property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) EventDetailRecommendUserRequest *recommendUserRequest;
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) NSMutableArray *quoteArrays;
 @property (nonatomic, strong) PagedUserScrollView *usersScrollView;
 
 @end
@@ -162,24 +161,6 @@ CLLocation *lastKnown;
         _usersScrollView.delegate = self;
     }
     return _usersScrollView;
-}
-
-//init the quote array
-- (NSMutableArray *)quoteArrays {
-    if (_quoteArrays == nil) {
-        _quoteArrays = [[NSMutableArray alloc] init];
-        [_quoteArrays addObject:@"“The first step is you have to say that you like.”"];
-        [_quoteArrays addObject:@"“It is impossible to win the race unless you venture to run.”"];
-        [_quoteArrays addObject:@"“The first step toward meaningful relationship is awareness.”"];
-        [_quoteArrays addObject:@"“Faith is taking the first step even when you don't see the whole staircase.”"];
-        [_quoteArrays addObject:@"“A journey of a thousand miles begins with a single step.”"];
-        [_quoteArrays addObject:@"“Trust is the first step to friendship.”"];
-        [_quoteArrays addObject:@"“The vision must be followed by venture.”"];
-        [_quoteArrays addObject:@"“It is not enough to stare up the steps - step up the stairs!”"];
-        [_quoteArrays addObject:@"“Nothing ventured, nothing gained. And venture belongs to the adventurous.”"];
-        [_quoteArrays addObject:@"“Everything starts with one step, or one brick, or one word or one day.”"];
-    }
-    return _quoteArrays;
 }
 
 #pragma mark - other delegates
@@ -470,6 +451,7 @@ CLLocation *lastKnown;
             
             arrowButton.hidden = false;
             [arrowButton setUserInteractionEnabled:YES];
+            [arrowButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
             [arrowButton addTarget:self action:@selector(cardArrowClick:) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -481,7 +463,7 @@ CLLocation *lastKnown;
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[self notificationManager] isRecommendUsersSection:indexPath.section]) {
         float screenWidth = [[UIScreen mainScreen] bounds].size.width;
-        return 20 + 10 + 18 + 10 + (screenWidth - 40) * (240/280.0) + 57; //in case 320 width: this will be 363 pix
+        return 20 + 10 + 18 + 10 + (screenWidth - 40) * (240/280.0) + 17; //in case 320 width: this will be 315 pix
     }
     if ([[self notificationManager] isUserSection:indexPath.section]) {
         if ([[self notificationManager].friendsGoingoutToday count] > 0 && indexPath.row == 0)
@@ -518,8 +500,6 @@ CLLocation *lastKnown;
     [[self usersScrollView] setSuggestedUsers:[self notificationManager].recommendUsers];
     [scrollView addSubview:[self usersScrollView]];
     
-    UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
-    quoteLabel.text = [self pickupQuote];
     return cell;
 
 }
@@ -651,30 +631,6 @@ CLLocation *lastKnown;
         [message show];
     }
 
-}
-
-/**
- * Delegate for when the suggested friends scroll view scroll from one view to another
- * @param scroll view
- */
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView == [self usersScrollView]) {
-        NSIndexPath *recommendUsersIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:recommendUsersIndexPath];
-        UILabel *quoteLabel = (UILabel *)[cell viewWithTag:4];
-        
-        [UIView transitionWithView:quoteLabel duration:.5f options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            quoteLabel.text = [self pickupQuote];
-        } completion:nil];
-    }
-}
-
-/**
- * A simple function that will returned a random pick up quote
- * @return NSString
- */
--(NSString *)pickupQuote {
-    return (NSString *)[[self quoteArrays] objectAtIndex:(rand() % [[self quoteArrays] count])];
 }
 
 /**

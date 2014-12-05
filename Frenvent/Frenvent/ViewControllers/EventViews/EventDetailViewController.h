@@ -15,7 +15,7 @@
 #import "EventDetailRecommendUserRequest.h"
 #import "PagedUserScrollView.h"
 
-@interface EventDetailViewController : UITableViewController <EventDetailsRequestDelegate, UIAlertViewDelegate, DbEventsRequestDelegate, ShareEventRequestDelegate, EventRsvpRequestDelegate, UIActionSheetDelegate,  EventParticipantViewDelegate, EventDetailRecommendUserRequestDelegate, PagedUserScrollViewDelegate, UIScrollViewDelegate>
+@interface EventDetailViewController : UITableViewController <EventDetailsRequestDelegate, UIAlertViewDelegate, DbEventsRequestDelegate, ShareEventRequestDelegate, EventRsvpRequestDelegate, UIActionSheetDelegate,  EventParticipantViewDelegate, EventDetailRecommendUserRequestDelegate, PagedUserScrollViewDelegate>
 
 @property (nonatomic, strong) NSString *eid;
 @property (nonatomic) BOOL isModal;

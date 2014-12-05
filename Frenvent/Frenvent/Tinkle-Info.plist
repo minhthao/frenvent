@@ -39,10 +39,10 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.ebeam.tappedin</string>
+			<string>com.ebeam.tinkle</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tappedin</string>
+				<string>tinkle</string>
 				<string>fb166467296867875</string>
 			</array>
 		</dict>
@@ -71,7 +71,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>TappedIn would like to access your location service</string>
+	<string>Tinkle would like to access your location service</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

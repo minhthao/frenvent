@@ -13,7 +13,7 @@
 #import "EventDetailRecommendUserRequest.h"
 #import "PagedUserScrollView.h"
 
-@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate, EventDetailRecommendUserRequestDelegate, CLLocationManagerDelegate, PagedUserScrollViewDelegate, UIScrollViewDelegate>
+@interface NotificationsTableViewController : UITableViewController <PagedEventScrollViewDelegate, EventParticipantViewDelegate, UIActionSheetDelegate, EventRsvpRequestDelegate, UIAlertViewDelegate, EventDetailRecommendUserRequestDelegate, CLLocationManagerDelegate, PagedUserScrollViewDelegate>
 
 - (IBAction)rateAction:(id)sender;
 

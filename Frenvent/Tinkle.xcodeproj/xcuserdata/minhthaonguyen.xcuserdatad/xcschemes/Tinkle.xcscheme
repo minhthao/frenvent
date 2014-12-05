@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3E57FB261959517200D3293D"
-               BuildableName = "TappedIn.app"
-               BlueprintName = "TappedIn"
-               ReferencedContainer = "container:TappedIn.xcodeproj">
+               BuildableName = "Tinkle.app"
+               BlueprintName = "Tinkle"
+               ReferencedContainer = "container:Tinkle.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,24 +28,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3E57FB461959517200D3293D"
-               BuildableName = "TappedInTests.xctest"
-               BlueprintName = "TappedInTests"
-               ReferencedContainer = "container:TappedIn.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E57FB261959517200D3293D"
-            BuildableName = "TappedIn.app"
-            BlueprintName = "TappedIn"
-            ReferencedContainer = "container:TappedIn.xcodeproj">
+            BuildableName = "Tinkle.app"
+            BlueprintName = "Tinkle"
+            ReferencedContainer = "container:Tinkle.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E57FB261959517200D3293D"
-            BuildableName = "TappedIn.app"
-            BlueprintName = "TappedIn"
-            ReferencedContainer = "container:TappedIn.xcodeproj">
+            BuildableName = "Tinkle.app"
+            BlueprintName = "Tinkle"
+            ReferencedContainer = "container:Tinkle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3E57FB261959517200D3293D"
-            BuildableName = "TappedIn.app"
-            BlueprintName = "TappedIn"
-            ReferencedContainer = "container:TappedIn.xcodeproj">
+            BuildableName = "Tinkle.app"
+            BlueprintName = "Tinkle"
+            ReferencedContainer = "container:Tinkle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

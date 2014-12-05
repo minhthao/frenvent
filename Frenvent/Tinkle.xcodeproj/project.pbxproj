@@ -170,20 +170,20 @@
 		3E34E0F1199355D0006532A6 /* EventParticipantView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventParticipantView.m; path = ViewControllers/EventViews/EventParticipantView.m; sourceTree = "<group>"; };
 		3E34E0F319941CF6006532A6 /* EventDetailRecommendUserRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventDetailRecommendUserRequest.h; path = FbRequests/EventRequests/EventDetailRecommendUserRequest.h; sourceTree = "<group>"; };
 		3E34E0F419941CF6006532A6 /* EventDetailRecommendUserRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventDetailRecommendUserRequest.m; path = FbRequests/EventRequests/EventDetailRecommendUserRequest.m; sourceTree = "<group>"; };
-		3E57FB271959517200D3293D /* TappedIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TappedIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E57FB271959517200D3293D /* Tinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E57FB2A1959517200D3293D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3E57FB2C1959517200D3293D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		3E57FB2E1959517200D3293D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3E57FB301959517200D3293D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		3E57FB341959517200D3293D /* TappedIn-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TappedIn-Info.plist"; sourceTree = "<group>"; };
+		3E57FB341959517200D3293D /* Tinkle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tinkle-Info.plist"; sourceTree = "<group>"; };
 		3E57FB361959517200D3293D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E57FB381959517200D3293D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3E57FB3A1959517200D3293D /* TappedIn-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TappedIn-Prefix.pch"; sourceTree = "<group>"; };
+		3E57FB3A1959517200D3293D /* Tinkle-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tinkle-Prefix.pch"; sourceTree = "<group>"; };
 		3E57FB3B1959517200D3293D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3E57FB3C1959517200D3293D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		3E57FB3F1959517200D3293D /* Frenvent.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Frenvent.xcdatamodel; sourceTree = "<group>"; };
-		3E57FB471959517200D3293D /* TappedInTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TappedInTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E57FB511959517200D3293D /* TappedInTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TappedInTests-Info.plist"; sourceTree = "<group>"; };
+		3E57FB471959517200D3293D /* TinkleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinkleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E57FB511959517200D3293D /* TinkleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TinkleTests-Info.plist"; sourceTree = "<group>"; };
 		3E57FB531959517200D3293D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E57FB551959517200D3293D /* TappedInTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TappedInTests.m; sourceTree = "<group>"; };
 		3E57FB661959587400D3293D /* TimeSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSupport.h; path = Supports/TimeSupport.h; sourceTree = "<group>"; };
@@ -446,8 +446,8 @@
 		3E57FB281959517200D3293D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3E57FB271959517200D3293D /* TappedIn.app */,
-				3E57FB471959517200D3293D /* TappedInTests.xctest */,
+				3E57FB271959517200D3293D /* Tinkle.app */,
+				3E57FB471959517200D3293D /* TinkleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -496,10 +496,10 @@
 				3E57FB3E1959517200D3293D /* Frenvent.xcdatamodeld */,
 				3E57FB3B1959517200D3293D /* AppDelegate.h */,
 				3E57FB3C1959517200D3293D /* AppDelegate.m */,
-				3E57FB341959517200D3293D /* TappedIn-Info.plist */,
+				3E57FB341959517200D3293D /* Tinkle-Info.plist */,
 				3E57FB351959517200D3293D /* InfoPlist.strings */,
 				3E57FB381959517200D3293D /* main.m */,
-				3E57FB3A1959517200D3293D /* TappedIn-Prefix.pch */,
+				3E57FB3A1959517200D3293D /* Tinkle-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -517,7 +517,7 @@
 		3E57FB501959517200D3293D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3E57FB511959517200D3293D /* TappedInTests-Info.plist */,
+				3E57FB511959517200D3293D /* TinkleTests-Info.plist */,
 				3E57FB521959517200D3293D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -920,9 +920,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3E57FB261959517200D3293D /* TappedIn */ = {
+		3E57FB261959517200D3293D /* Tinkle */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3E57FB591959517200D3293D /* Build configuration list for PBXNativeTarget "TappedIn" */;
+			buildConfigurationList = 3E57FB591959517200D3293D /* Build configuration list for PBXNativeTarget "Tinkle" */;
 			buildPhases = (
 				3E57FB231959517200D3293D /* Sources */,
 				3E57FB241959517200D3293D /* Frameworks */,
@@ -932,14 +932,14 @@
 			);
 			dependencies = (
 			);
-			name = TappedIn;
+			name = Tinkle;
 			productName = Frenvent;
-			productReference = 3E57FB271959517200D3293D /* TappedIn.app */;
+			productReference = 3E57FB271959517200D3293D /* Tinkle.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3E57FB461959517200D3293D /* TappedInTests */ = {
+		3E57FB461959517200D3293D /* TinkleTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3E57FB5C1959517200D3293D /* Build configuration list for PBXNativeTarget "TappedInTests" */;
+			buildConfigurationList = 3E57FB5C1959517200D3293D /* Build configuration list for PBXNativeTarget "TinkleTests" */;
 			buildPhases = (
 				3E57FB431959517200D3293D /* Sources */,
 				3E57FB441959517200D3293D /* Frameworks */,
@@ -950,9 +950,9 @@
 			dependencies = (
 				3E57FB4E1959517200D3293D /* PBXTargetDependency */,
 			);
-			name = TappedInTests;
+			name = TinkleTests;
 			productName = FrenventTests;
-			productReference = 3E57FB471959517200D3293D /* TappedInTests.xctest */;
+			productReference = 3E57FB471959517200D3293D /* TinkleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -976,7 +976,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3E57FB221959517200D3293D /* Build configuration list for PBXProject "TappedIn" */;
+			buildConfigurationList = 3E57FB221959517200D3293D /* Build configuration list for PBXProject "Tinkle" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -988,8 +988,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3E57FB261959517200D3293D /* TappedIn */,
-				3E57FB461959517200D3293D /* TappedInTests */,
+				3E57FB261959517200D3293D /* Tinkle */,
+				3E57FB461959517200D3293D /* TinkleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1152,7 +1152,7 @@
 /* Begin PBXTargetDependency section */
 		3E57FB4E1959517200D3293D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3E57FB261959517200D3293D /* TappedIn */;
+			target = 3E57FB261959517200D3293D /* Tinkle */;
 			targetProxy = 3E57FB4D1959517200D3293D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1274,14 +1274,14 @@
 					"$(PROJECT_DIR)/Frenvent/frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Frenvent/TappedIn-Prefix.pch";
+				GCC_PREFIX_HEADER = "Frenvent/Tinkle-Prefix.pch";
 				IBSC_WARNINGS = YES;
-				INFOPLIST_FILE = "Frenvent/TappedIn-Info.plist";
+				INFOPLIST_FILE = "Frenvent/Tinkle-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = TappedIn;
+				PRODUCT_NAME = Tinkle;
 				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1299,14 +1299,14 @@
 					"$(PROJECT_DIR)/Frenvent/frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Frenvent/TappedIn-Prefix.pch";
+				GCC_PREFIX_HEADER = "Frenvent/Tinkle-Prefix.pch";
 				IBSC_WARNINGS = YES;
-				INFOPLIST_FILE = "Frenvent/TappedIn-Info.plist";
+				INFOPLIST_FILE = "Frenvent/Tinkle-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = TappedIn;
+				PRODUCT_NAME = Tinkle;
 				PROVISIONING_PROFILE = "ae3cfee0-8a45-4804-9637-699590d2bab3";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1327,8 +1327,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "FrenventTests/TappedInTests-Info.plist";
-				PRODUCT_NAME = TappedInTests;
+				INFOPLIST_FILE = "FrenventTests/TinkleTests-Info.plist";
+				PRODUCT_NAME = TinkleTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1345,8 +1345,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Frenvent/TappedIn-Prefix.pch";
-				INFOPLIST_FILE = "FrenventTests/TappedInTests-Info.plist";
-				PRODUCT_NAME = TappedInTests;
+				INFOPLIST_FILE = "FrenventTests/TinkleTests-Info.plist";
+				PRODUCT_NAME = TinkleTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1355,7 +1355,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3E57FB221959517200D3293D /* Build configuration list for PBXProject "TappedIn" */ = {
+		3E57FB221959517200D3293D /* Build configuration list for PBXProject "Tinkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3E57FB571959517200D3293D /* Debug */,
@@ -1364,7 +1364,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3E57FB591959517200D3293D /* Build configuration list for PBXNativeTarget "TappedIn" */ = {
+		3E57FB591959517200D3293D /* Build configuration list for PBXNativeTarget "Tinkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3E57FB5A1959517200D3293D /* Debug */,
@@ -1373,7 +1373,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3E57FB5C1959517200D3293D /* Build configuration list for PBXNativeTarget "TappedInTests" */ = {
+		3E57FB5C1959517200D3293D /* Build configuration list for PBXNativeTarget "TinkleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3E57FB5D1959517200D3293D /* Debug */,
