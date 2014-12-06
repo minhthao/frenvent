@@ -25,16 +25,16 @@
 @synthesize updateManager = _updateManager;
 
 + (void)initialize {
-//    [iRate sharedInstance].appStoreID = 908123368;
-//    
-//    [iRate sharedInstance].daysUntilPrompt = 3;
-//    [iRate sharedInstance].usesUntilPrompt = 5;
-//    [iRate sharedInstance].remindPeriod = 2;
-//    [iRate sharedInstance].messageTitle = @"Rate TappedIn";
-//    [iRate sharedInstance].messageTitle = @"Please rate us on iTunes store!";
-//    [iRate sharedInstance].cancelButtonLabel = @"Cancel";
-//    [iRate sharedInstance].rateButtonLabel = @"Rate";
-//    [iRate sharedInstance].remindButtonLabel = @"";
+    [iRate sharedInstance].appStoreID = 948758310;
+    
+    [iRate sharedInstance].daysUntilPrompt = 3;
+    [iRate sharedInstance].usesUntilPrompt = 5;
+    [iRate sharedInstance].remindPeriod = 2;
+    [iRate sharedInstance].messageTitle = @"Rate Tinkle";
+    [iRate sharedInstance].messageTitle = @"Please rate us on iTunes store!";
+    [iRate sharedInstance].cancelButtonLabel = @"Cancel";
+    [iRate sharedInstance].rateButtonLabel = @"Rate";
+    [iRate sharedInstance].remindButtonLabel = @"";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -231,7 +231,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *urlString = [url absoluteString];
     if ([urlString rangeOfString:@"fb-messenger"].location != NSNotFound &&
-        [urlString rangeOfString:@"frenvent://event/"].location != NSNotFound &&
+        [urlString rangeOfString:@"tinkle://event/"].location != NSNotFound &&
         [defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
         
         NSRange range = [urlString rangeOfString:@"?al_applink_data"];
@@ -256,7 +256,7 @@
         }
         return true;
     } else if ([urlString rangeOfString:@"fb-messenger"].location != NSNotFound &&
-               [urlString rangeOfString:@"frenvent://user/"].location != NSNotFound &&
+               [urlString rangeOfString:@"tinkle://user/"].location != NSNotFound &&
                [defaults boolForKey:LOGIN_DATA_INITIALIZED]) {
         
         NSRange range = [urlString rangeOfString:@"?al_applink_data"];

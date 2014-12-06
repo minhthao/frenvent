@@ -123,7 +123,7 @@ CLLocation *lastKnown;
 //Get the alert
 - (UIAlertView *)ratingAlert {
     if (_ratingAlert == nil) {
-        _ratingAlert = [[UIAlertView alloc] initWithTitle:@"Rate Frenvent"
+        _ratingAlert = [[UIAlertView alloc] initWithTitle:@"Rate Tinkle"
                                                   message:@"Please rate us on iTunes store!"
                                                  delegate:self
                                         cancelButtonTitle:@"Cancel"
@@ -166,8 +166,8 @@ CLLocation *lastKnown;
 #pragma mark - other delegates
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-//        NSString *reviewURL = @"itms-apps://itunes.apple.com/app/id908123368";
-//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+        NSString *reviewURL = @"itms-apps://itunes.apple.com/app/id948758310";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
     }
 }
 

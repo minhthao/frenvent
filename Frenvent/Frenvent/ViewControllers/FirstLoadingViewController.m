@@ -218,7 +218,7 @@ NSInteger quotePos;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:false];
-    [self.loadingImage setImage:[UIImage animatedImageNamed:@"loading" duration:1.0f]];
+    [self.loadingImage setImage:[UIImage animatedImageNamed:@"loading" duration:2.0f]];
     quotePos = 0;
     self.loadingText.text = [[self quoteArray] objectAtIndex:0];
     [self animatedLabel];
